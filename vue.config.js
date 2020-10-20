@@ -1,0 +1,86 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: gaojiahao
+ * @Date: 2020-10-19 15:37:14
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-10-20 16:06:06
+ */
+const { endianness } = require('os');
+const path = require('path')
+const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
+let proxyConfig = require('./config/proxyConfig')
+
+const publicPath = 'Rose'
+module.exports = {
+    publicPath: `/${publicPath}`, // 基本路径`/${publicPath}`
+    outputDir: 'dist', // 输出文件目录
+    lintOnSave: false, // eslint-loader 是否在保存的时候检查
+    // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
+    // webpack配置
+    chainWebpack: (config) => {
+        config.module
+        .rule('vue')
+        .test(/\.vue$/)
+        .use('iview-loader')
+        .loader('iview-loader')
+        .tap(options => {
+            options = {
+                prefix: false
+            }
+            return options
+        })
+        .end()
+        .use('vue-loader')
+        .loader('vue-loader')
+        .tap(options => {
+            options = {
+                extractCSS: IS_PROD ? true : false, // 把vue的css提取到单独的文件，默认
+            }
+            return options
+        })
+        .end()
+    },
+    configureWebpack: (config) => {
+        if (process.env.NODE_ENV === 'production') {
+            // 为生产环境修改配置...
+            config.mode = 'production'
+        } else {
+            // 为开发环境修改配置...
+            config.mode = 'development'
+        }
+        Object.assign(config, {
+            // 开发生产共同配置
+            resolve: {
+                alias: {
+                    '@': path.resolve(__dirname, './src'),
+                    '@components': path.resolve(__dirname, './src/components'),
+                    '@service': path.resolve(__dirname, './src/service'),
+                    '@views': path.resolve(__dirname, './src/views')
+                } // 别名配置
+            }
+        })
+    },
+    productionSourceMap: false, // 生产环境是否生成 sourceMap 文件
+    // css相关配置
+    css: {
+        extract: true, // 是否使用css分离插件 ExtractTextPlugin
+        sourceMap: false, // 开启 CSS source maps?
+        // css预设器配置项
+        loaderOptions: {},
+        // 启用 CSS modules for all css / pre-processor files.
+        requireModuleExtension: true
+    },
+    parallel: require('os').cpus().length > 1, // 是否为 Babel 或 TypeScript 使用 thread-loader。该选项在系统的 CPU 有多于一个内核时自动启用，仅作用于生产构建。
+    pwa: {}, // PWA 插件相关配置 see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
+    // webpack-dev-server 相关配置
+    devServer: {
+        hot:true,
+        open : true,
+        port : 8080,
+        host : "0.0.0.0",
+        proxy:  proxyConfig.proxy,
+    },
+    // 第三方插件配置
+    pluginOptions: {}
+}
