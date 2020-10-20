@@ -4,19 +4,17 @@
  * @Author: Gabriel.gaojiahao
  * @Date: 2019-03-25 10:56:56
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-20 17:00:26
+ * @LastEditTime: 2020-10-20 17:09:24
  -->
 <template>
 <div class="loadding" v-show="show">
-    <spinner type='ripple' size='50px'></spinner>
+    <Spinner type='ripple' size='50px'></Spinner>
 </div>
 </template>
 
 <script>
 import {
-    Button,
-    Input,
-    Message
+    Spin
 } from 'view-design';
 
 export default {

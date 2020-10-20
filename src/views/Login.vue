@@ -69,6 +69,7 @@ export default {
                 params.userCode = this.userCode;
                 params.password = this.passWord;
             }
+
         }
     },
     created() {
