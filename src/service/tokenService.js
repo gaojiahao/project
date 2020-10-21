@@ -85,7 +85,7 @@ let tokenService = {
       let params = {
         method: 'post',
         baseURL: window.baseURL || '',
-        url: '/H_roleplay-si/login',
+        url: '/api/app/user/login',
         headers: {
           'Content-Type': 'application/json',
         },

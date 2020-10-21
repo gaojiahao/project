@@ -1,5 +1,15 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: gaojiahao
+ * @Date: 2020-10-20 14:22:42
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-10-21 10:53:06
+ */
 import Vue from 'vue';
-import { AlertModule } from 'vux'
+import {
+  Message
+} from 'view-design';
 
 // 错误处理回调
 export default function errorHandler(err) {
@@ -7,10 +17,11 @@ export default function errorHandler(err) {
     err = '抱歉，数据似乎出了点问题，请稍后重试'
   }
   // 弹窗提醒
-  AlertModule.show({
-    title: '提示',
-    content: err,
-    onHide: () => {
+  this.$Message.info({
+    background: true,
+    content: 'err',
+    closable: true,
+    onClose() {
       Vue.prototype.$loading.hide();
       Vue.prototype.$HandleLoad.hide();
     }

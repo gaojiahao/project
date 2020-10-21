@@ -4,17 +4,21 @@
  * @Author: Gabriel.gaojiahao
  * @Date: 2019-03-25 10:56:56
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-20 17:09:24
+ * @LastEditTime: 2020-10-21 09:29:15
  -->
 <template>
 <div class="loadding" v-show="show">
-    <Spinner type='ripple' size='50px'></Spinner>
+    <Spin size="large" fix>
+        <Icon type="ios-loading" size=18 class="spin-icon-load"></Icon>
+        <div>Loading</div>
+    </Spin>
 </div>
 </template>
 
 <script>
 import {
-    Spin
+    Spin,
+    Icon
 } from 'view-design';
 
 export default {
@@ -25,7 +29,8 @@ export default {
         }
     },
     components: {
-        Spinner
+        Spin,
+        Icon
     }
 }
 </script>
@@ -42,13 +47,22 @@ export default {
     background: #fff;
     z-index: 100;
 
-    .vux-spinner {
-        top: 50%;
-        left: 50%;
-        @include loading_fill_color();
-        @include loading_stroke_color();
-        position: absolute;
-        transform: translate(-50%, -50%);
+    .spin-icon-load {
+        animation: ani-demo-spin 1s linear infinite;
+    }
+
+    @keyframes ani-demo-spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
     }
 }
 </style>

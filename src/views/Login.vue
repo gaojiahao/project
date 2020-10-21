@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 16:28:17
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-20 16:54:47
+ * @LastEditTime: 2020-10-21 09:38:42
 -->
 <template>
 <div class="login">
@@ -52,7 +52,6 @@ export default {
     },
     methods: {
         login() {
-            console.log('aaa');
             let params = {};
             if (this.isMobileLogin) {
                 if (!this.mobile || !this.testCode) {
@@ -66,10 +65,24 @@ export default {
                     this.$Message.info('请输入用户名或密码');
                     return;
                 }
-                params.userCode = this.userCode;
+                params.username = this.userCode;
                 params.password = this.passWord;
             }
-
+            this.$loading.show();
+            debugger
+            tokenService.pcLogin(params).then(data => {
+                var token = tokenService.getToken(true);
+                this.loginIn = true;
+                localStorage.setItem('userCode', this.userCode);
+                this.$loading.hide();
+                this.$router.replace('/');
+            }).catch(err => {
+                this.$loading.hide();
+                this.$Message['warning']({
+                    background: true,
+                    content: err.message
+                });
+            });
         }
     },
     created() {

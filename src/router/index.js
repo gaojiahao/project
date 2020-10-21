@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-20 15:49:58
+ * @LastEditTime: 2020-10-21 09:56:50
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -19,7 +19,10 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta:{auth:true}
+    meta:{
+      auth:true,
+      title:'小竹熊ERP'
+    }
   },
   
   {

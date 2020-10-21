@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-20 16:06:06
+ * @LastEditTime: 2020-10-21 12:18:21
  */
 const { endianness } = require('os');
 const path = require('path')
@@ -56,7 +56,9 @@ module.exports = {
                     '@': path.resolve(__dirname, './src'),
                     '@components': path.resolve(__dirname, './src/components'),
                     '@service': path.resolve(__dirname, './src/service'),
-                    '@views': path.resolve(__dirname, './src/views')
+                    '@views': path.resolve(__dirname, './src/views'),
+                    '@scss': path.resolve(__dirname, './src/scss'),
+                    '@plugins': path.resolve(__dirname, './src/plugins'),
                 } // 别名配置
             }
         })
@@ -67,7 +69,11 @@ module.exports = {
         extract: true, // 是否使用css分离插件 ExtractTextPlugin
         sourceMap: false, // 开启 CSS source maps?
         // css预设器配置项
-        loaderOptions: {},
+        loaderOptions: {
+              scss: {
+                prependData: `@import "@scss/base.scss";`
+              },
+        },
         // 启用 CSS modules for all css / pre-processor files.
         requireModuleExtension: true
     },
@@ -75,11 +81,22 @@ module.exports = {
     pwa: {}, // PWA 插件相关配置 see https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa
     // webpack-dev-server 相关配置
     devServer: {
-        hot:true,
-        open : true,
-        port : 8080,
-        host : "0.0.0.0",
-        proxy:  proxyConfig.proxy,
+        // hot:true,
+        // open : true,
+        // port : 8080,
+        // host : "0.0.0.0",
+        proxy: {
+            //配置跨域
+            '/api': {
+                target: 'http://crossborder.erp.com',//这里后台的地址模拟的;应该填写你们真实的后台接口
+                //ws: true,
+                changOrigin: true,//允许跨域
+                pathRewrite: {
+                    '^/api': '/api'//请求的时候使用这个api就可以
+                }
+            }
+            
+        }
     },
     // 第三方插件配置
     pluginOptions: {}

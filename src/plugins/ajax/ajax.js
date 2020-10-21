@@ -4,14 +4,16 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-20 14:29:15
+ * @LastEditTime: 2020-10-21 11:05:30
  */
 import Fly from 'flyio/dist/npm/fly'
 // 请求地址引入
 import tokenService from '@service/tokenService'
 // 弹窗插件引入
-import { AlertModule } from 'vux'
-import errHandle from 'plugins/errHandle'
+import {
+  Message
+} from 'view-design';
+import errHandle from '@plugins/errHandle'
 
 let qs = require('querystring');
 // 请求插件引入
@@ -87,10 +89,11 @@ fly.interceptors.response.use(
       return tokenService.login()
       .then((token) => {
         console.log('token已更新');
-        AlertModule.show({
-          title: '温馨提示',
+        this.$Message.info({
+          background: true,
           content: '您的登录状态似乎有点问题，不用担心，页面刷新之后就好',
-          onHide() {
+          closable: true,
+          onClose() {
             location.reload();
           }
         })
@@ -123,7 +126,7 @@ let Rxports = {
     return new Promise((resolve, reject) => {
       let params = {
         method: opts.type || opts.method || 'GET',
-        baseURL:window.baseURL||'',
+        baseURL:'http://crossborder.erp.com',
         url: ensureUrl(opts.url),
         headers: {
           'Content-Type': opts.contentType || '*/*',
@@ -259,22 +262,10 @@ let Rxports = {
   }
 };
 function ensureUrl(url) {
-  if (/^\/H_roleplay-si/i.test(url)) {
+  if (/^\/api/i.test(url)) {
       return url;
-  } else if (/^\/R_roleplay-si/i.test(url)) {
-      return url.replace(/^\/R_roleplay-si/i, '/H_roleplay-si');
-  } else if (/^\/account-api/i.test(url)) {
-      return url;
-  }  else if (/^\/analysis-api/i.test(url)) {
-    return url;
-  } else if (/^\/corebiz-api/i.test(url)) {
-      return url;
-  } else if (/^\/svc-nodejs/i.test(url)) {
-    return url;
-  } else if (/^\/mrp-api/i.test(url)) {
-    return url;
   } else {
-      return '/H_roleplay-si' + url;
+      return '/api' + url;
   }
 }
 export default Rxports;
