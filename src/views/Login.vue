@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 16:28:17
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-21 09:38:42
+ * @LastEditTime: 2020-10-21 14:51:55
 -->
 <template>
 <div class="login">
@@ -51,6 +51,13 @@ export default {
         }
     },
     methods: {
+        /**
+         * @name: gaojiahao
+         * @test: 登录
+         * @msg: 
+         * @param {*}
+         * @return {*}
+         */
         login() {
             let params = {};
             if (this.isMobileLogin) {
@@ -69,7 +76,6 @@ export default {
                 params.password = this.passWord;
             }
             this.$loading.show();
-            debugger
             tokenService.pcLogin(params).then(data => {
                 var token = tokenService.getToken(true);
                 this.loginIn = true;
@@ -82,6 +88,7 @@ export default {
                     background: true,
                     content: err.message
                 });
+                this.$router.replace('/');
             });
         }
     },

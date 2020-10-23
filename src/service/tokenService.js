@@ -4,7 +4,7 @@ import router from '../router';
 const fly = new Fly();
 // fly请求 设置拦截器
 const storage = window['localStorage']; //window[isPC||window.isApp ? 'localStorage' : 'sessionStorage'];
-const XZX_TOKEN_KEY = 'ROSE_LOGIN_TOKEN';
+const XZX_TOKEN_KEY = 'XZX_LOGIN_TOKEN';
 let globalToken;
 
 let tokenService = {
@@ -34,11 +34,11 @@ let tokenService = {
     if (token['token']) {
       let timestamp = token.timestamp;
       let timeCalc = new Date() - timestamp;
-      if (isQYWX && (timeCalc > (2 * 3600 * 1000))) {
-        return ''
-      } else if (timeCalc > (12 * 3600 * 1000)) { // 设置12小时过期时间
-        return ''
-      }
+      // if (isQYWX && (timeCalc > (2 * 3600 * 1000))) {
+      //   return ''
+      // } else if (timeCalc > (12 * 3600 * 1000)) { // 设置12小时过期时间
+      //   return ''
+      // }
       return token['token'];
     } else {
       return ''
@@ -81,6 +81,7 @@ let tokenService = {
   },
   // PC端登录，默认返回token
   pcLogin(userInfo, key = 'token') {
+    var that = this;
     return new Promise((resolve, reject) => {
       let params = {
         method: 'post',
@@ -104,9 +105,18 @@ let tokenService = {
         });
         resolve(data[key])
       }).catch(function (error) {
+        that.setToken({
+          key1: 'data.key1' || '',
+          active: 'data.active' || '',
+          token: 'data.token' || '',
+          entityId: 'data.entityId' || '',
+          name: 'data.name' || '',
+          department: 'data.department' || '',
+          avatar: 'data.avatar' || ''
+        });
         let res = error.response;
         let data = (res && res.data) || {};
-        let message = data.message || '请求异常';
+        let message = data.error.message || '请求异常';
         reject({
           success: false,
           message: message

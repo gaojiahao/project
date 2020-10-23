@@ -4,10 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-21 12:18:21
+ * @LastEditTime: 2020-10-23 16:17:32
  */
 const { endianness } = require('os');
-const path = require('path')
+const path = require('path');
+const loader = require('sass-loader');
 const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
 let proxyConfig = require('./config/proxyConfig')
 
@@ -18,28 +19,19 @@ module.exports = {
     lintOnSave: false, // eslint-loader 是否在保存的时候检查
     // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
     // webpack配置
-    chainWebpack: (config) => {
+    chainWebpack: config => {
         config.module
         .rule('vue')
-        .test(/\.vue$/)
-        .use('iview-loader')
-        .loader('iview-loader')
-        .tap(options => {
-            options = {
-                prefix: false
-            }
-            return options
-        })
-        .end()
         .use('vue-loader')
         .loader('vue-loader')
-        .tap(options => {
-            options = {
-                extractCSS: IS_PROD ? true : false, // 把vue的css提取到单独的文件，默认
-            }
-            return options
+        .options({
+            extractCSS: IS_PROD ? true : false, // 把vue的css提取到单独的文件，默认
         })
         .end()
+        .use('iview')
+        .loader('iview-loader')
+        .options({prefix: false})
+        .end();
     },
     configureWebpack: (config) => {
         if (process.env.NODE_ENV === 'production') {
@@ -52,8 +44,10 @@ module.exports = {
         Object.assign(config, {
             // 开发生产共同配置
             resolve: {
+                extensions: ['.js', '.json', '.vue', '.scss', '.css'],
                 alias: {
                     '@': path.resolve(__dirname, './src'),
+                    '@assets': path.resolve(__dirname, './src/assets'),
                     '@components': path.resolve(__dirname, './src/components'),
                     '@service': path.resolve(__dirname, './src/service'),
                     '@views': path.resolve(__dirname, './src/views'),
