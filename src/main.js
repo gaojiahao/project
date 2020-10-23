@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
@@ -12,21 +12,21 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
-import VueRouter from "vue-router"
-import {Message,Switch,Circle} from 'view-design';
-import 'view-design/dist/styles/iview.css';
+import VueRouter from "vue-router";
+import { Message, Switch, Circle } from "view-design";
+import "view-design/dist/styles/iview.css";
 //引用自定义组件
-import Loading from '@plugins/loading/pageLoad/loading'
+import Loading from "@plugins/loading/pageLoad/loading";
 
 Vue.config.productionTip = false;
-Vue.directive('title', {
-  inserted: function (el, binding) {
-  document.title = el.dataset.title
+Vue.directive("title", {
+  inserted: function(el, binding) {
+    document.title = el.dataset.title;
   }
-})
+});
 //注册组件
-Vue.component('i-switch', Switch);
-Vue.component('i-circle', Circle);
+Vue.component("i-switch", Switch);
+Vue.component("i-circle", Circle);
 //组件挂载到vue $this上
 Vue.prototype.$Message = Message;
 /**plugin */

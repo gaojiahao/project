@@ -7,62 +7,59 @@
  * @LastEditTime: 2020-10-21 09:29:15
  -->
 <template>
-<div class="loadding" v-show="show">
+  <div class="loadding" v-show="show">
     <Spin size="large" fix>
-        <Icon type="ios-loading" size=18 class="spin-icon-load"></Icon>
-        <div>Loading</div>
+      <Icon type="ios-loading" size="18" class="spin-icon-load"></Icon>
+      <div>Loading</div>
     </Spin>
-</div>
+  </div>
 </template>
 
 <script>
-import {
-    Spin,
-    Icon
-} from 'view-design';
+import { Spin, Icon } from "view-design";
 
 export default {
-    name: "Loading",
-    data() {
-        return {
-            show: false
-        }
-    },
-    components: {
-        Spin,
-        Icon
-    }
-}
+  name: "Loading",
+  data() {
+    return {
+      show: false
+    };
+  },
+  components: {
+    Spin,
+    Icon
+  }
+};
 </script>
 
 <style lang="scss" scoped>
 .loadding {
-    //加载动画
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    background: #fff;
-    z-index: 100;
+  //加载动画
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: #fff;
+  z-index: 100;
 
-    .spin-icon-load {
-        animation: ani-demo-spin 1s linear infinite;
+  .spin-icon-load {
+    animation: ani-demo-spin 1s linear infinite;
+  }
+
+  @keyframes ani-demo-spin {
+    from {
+      transform: rotate(0deg);
     }
 
-    @keyframes ani-demo-spin {
-        from {
-            transform: rotate(0deg);
-        }
-
-        50% {
-            transform: rotate(180deg);
-        }
-
-        to {
-            transform: rotate(360deg);
-        }
+    50% {
+      transform: rotate(180deg);
     }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 </style>

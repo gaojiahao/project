@@ -1,5 +1,5 @@
 /*
- * @Descripttion: 
+ * @Descripttion:
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
@@ -10,7 +10,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@views/Home.vue";
 import Login from "@views/Login.vue";
-import tokenService from '@service/tokenService'
+import tokenService from "@service/tokenService";
 
 Vue.use(VueRouter);
 
@@ -19,18 +19,18 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta:{
-      auth:true,
-      title:'小竹熊ERP'
+    meta: {
+      auth: true,
+      title: "小竹熊ERP"
     }
   },
-  
+
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     component: Login,
     meta: {
-      title: '登录'
+      title: "登录"
     }
   }
   // 动态路径参数 以冒号开头
@@ -48,28 +48,28 @@ const routes = [
 
 const router = new VueRouter({
   routes,
-  mode: 'history',
-  base: 'Rose'
+  mode: "history",
+  base: "Rose"
 });
 
 /**
  * @name: gaojiahao
  * @test: 路由全局前置守卫
- * @msg: 
+ * @msg:
  * @param {*}
  * @return {*}
  */
 router.beforeEach((to, from, next) => {
-  if(to.matched.some( m => m.meta.auth)){     
-    // 对路由进行验证     
-    if(tokenService.getToken() != '' && to.name !== 'Login'){ // 已经登陆       
-      next();   // 正常跳转到你设置好的页面     
+  if (to.matched.some(m => m.meta.auth)) {
+    // 对路由进行验证
+    if (tokenService.getToken() != "" && to.name !== "Login") {
+      // 已经登陆
+      next(); // 正常跳转到你设置好的页面
+    } else {
+      next({ path: "/login" });
     }
-    else{       
-      next({path:'/login'});
-    } 
-  } else{ 
+  } else {
     next();
   }
-})
+});
 export default router;
