@@ -26,6 +26,42 @@
     position: fixed; 
     width: 100%;
     z-index: 10;
+    .item {
+        float: left;
+        padding: 0 20px;
+        position: relative;
+        cursor: pointer;
+        z-index: 3;
+        transition: all 0.2s ease-in-out;
+        color: #fff;
+    
+        img {
+            width: 30px;
+        }
+    }
+    
+    .title {
+        color: #fff;
+        font-size: 24px;
+    }
+    
+    .right-item {
+        float: right;
+        padding: 0 20px;
+        position: relative;
+        cursor: pointer;
+        z-index: 3;
+        transition: all 0.2s ease-in-out;
+        color: #fff;
+    
+        img {
+            width: 30px;
+        }
+    }
+    
+    .right-title {
+        font-size: 12px;
+    }
 }
 .container{
     min-height: 100vh;
@@ -36,14 +72,28 @@
         height: 100vh; 
         left: 0;
         overflow: auto;
-        top:64px
+        top:64px;
+        background: #DEE7F4;
+        .title-menu{
+            padding: 14px 24px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1;
+            transition: all 0.2s ease-in-out;
+            background: #8D9CC5;
+            color: #103164;
+            font-size: 16px;
+            .main-button{
+                margin-left: -5px;
+            }
+        }
     }
     .content{
         transition: all .2s ease-in-out;
-        position: fixed;
+        position: relative;
         height: 100vh;
         overflow: auto;
-        top: 64px;
+        top: 0px;
         width: 100%;
 
         .content-panel{
@@ -84,10 +134,4 @@
 }
 .marginLeft{
     margin-left: 200px;
-}
-.break-container{
-    width: 100%;
-    height: 60px;
-    line-height: 46px;
-    display: inline-block;
 }

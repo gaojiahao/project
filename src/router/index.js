@@ -4,27 +4,46 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-21 09:56:50
+ * @LastEditTime: 2020-10-27 10:44:22
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "@views/Home.vue";
+import Index from "@views/home/index";
 import Login from "@views/Login.vue";
+import Home from "@views/Home.vue";
+import TypeManager from "@views/basicinfo/typeManager";
 import tokenService from "@service/tokenService";
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: "/",
+  { 
+    path: '/', 
     name: "Home",
     component: Home,
     meta: {
-      auth: true,
-      title: "小竹熊ERP"
-    }
+      title: "小竹熊",
+      auth: true      //检查权限true
+    },
+    children:[
+      {
+        path: "/index",
+        name: "Index",
+        component: Index,
+        meta: {
+          title: "首页"
+        },
+      },
+      {
+        path: "/basicinfo",
+        name: "basicinfo",
+        component: TypeManager,
+        meta: {
+          title: "基础信息"
+        },
+      },
+    ],
   },
-
   {
     path: "/login",
     name: "Login",

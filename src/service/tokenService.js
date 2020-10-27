@@ -87,7 +87,6 @@ let tokenService = {
   },
   // PC端登录，默认返回token
   pcLogin(userInfo, key = "token") {
-    debugger;
     var that = this;
     return new Promise((resolve, reject) => {
       let params = {
@@ -106,24 +105,15 @@ let tokenService = {
           this.setToken({
             key1: data.key1 || "",
             active: data.active || "",
-            token: data.token || "",
+            token: data || "",
             entityId: data.entityId || "",
             name: data.name || "",
             department: data.department || "",
             avatar: data.avatar || ""
           });
-          resolve(data[key]);
+          resolve(data);
         })
         .catch(function(error) {
-          that.setToken({
-            key1: "data.key1" || "",
-            active: "data.active" || "",
-            token: "data.token" || "",
-            entityId: "data.entityId" || "",
-            name: "data.name" || "",
-            department: "data.department" || "",
-            avatar: "data.avatar" || ""
-          });
           let res = error.response;
           let data = (res && res.data) || {};
           let message = data.error.message || "请求异常";

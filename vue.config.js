@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-23 17:30:11
+ * @LastEditTime: 2020-10-24 11:57:03
  */
 const { endianness } = require("os");
 const path = require("path");
@@ -44,7 +44,7 @@ module.exports = {
     Object.assign(config, {
       // 开发生产共同配置
       resolve: {
-        extensions: [".js", ".json", ".vue", ".scss", ".css"],
+        extensions: [".js", ".json", ".vue", ".scss", ".css", ".less"],
         alias: {
           "@": path.resolve(__dirname, "./src"),
           "@assets": path.resolve(__dirname, "./src/assets"),
@@ -52,7 +52,9 @@ module.exports = {
           "@service": path.resolve(__dirname, "./src/service"),
           "@views": path.resolve(__dirname, "./src/views"),
           "@scss": path.resolve(__dirname, "./src/scss"),
-          "@plugins": path.resolve(__dirname, "./src/plugins")
+          "@plugins": path.resolve(__dirname, "./src/plugins"),
+          "@less": path.resolve(__dirname, "./src/less"),
+          "@mixins": path.resolve(__dirname, "./src/mixins")
         } // 别名配置
       }
     });
@@ -66,6 +68,9 @@ module.exports = {
     loaderOptions: {
       scss: {
         prependData: `@import "@scss/base.scss";`
+      },
+      less: {
+        javascriptEnabled: true
       }
     },
     // 启用 CSS modules for all css / pre-processor files.
@@ -95,7 +100,9 @@ module.exports = {
   pluginOptions: {
     "style-resources-loader": {
       preProcessor: "less",
-      patterns: []
+      patterns: [
+        path.resolve(__dirname, './src/less/common.less')
+      ]
     }
   }
 };

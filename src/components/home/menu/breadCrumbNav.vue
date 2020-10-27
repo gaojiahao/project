@@ -4,66 +4,43 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 16:56:06
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-23 09:59:09
+ * @LastEditTime: 2020-10-26 18:22:37
 -->
 <template>
-  <div class="nav">
-    <div class="top-nav">
-      <Breadcrumb :style="{ float: 'left' }">
-        <BreadcrumbItem>主页</BreadcrumbItem>
-        <BreadcrumbItem>分类管理</BreadcrumbItem>
-        <BreadcrumbItem>新建</BreadcrumbItem>
-      </Breadcrumb>
-    </div>
-    <!-- <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
-        <TestForm></TestForm>
-    </Content> -->
-    <Card>
-      <div style="height: 800px">Content</div>
-    </Card>
-  </div>
+<div class="break-container">
+    <Breadcrumb :style="{ margin: '16px 0', float: 'left' }">
+        <BreadcrumbItem>基础信息</BreadcrumbItem>
+        <BreadcrumbItem>店铺管理</BreadcrumbItem>
+        <BreadcrumbItem>添加店铺</BreadcrumbItem>
+    </Breadcrumb>
+</div>
 </template>
 
 <script>
-import { Breadcrumb, BreadcrumbItem, Content, Layout, Card } from "view-design";
-import TestForm from "@components/basicinfo/testForm";
-import TestTree from "@components/basicinfo/testTree";
-
-export default {
-  name: "BreadcrumbNav",
-  props: {},
-  components: {
+import {
     Breadcrumb,
     BreadcrumbItem,
-    Content,
-    Layout,
-    TestForm,
-    TestTree,
-    Card
-  },
-  data() {
-    return {};
-  },
-  methods: {}
+} from "view-design";
+
+export default {
+    name: "breadCrumbNav",
+    props: {},
+    components: {
+        Breadcrumb,
+        BreadcrumbItem,
+    },
+    data() {
+        return {};
+    },
+    methods: {}
 };
 </script>
 
 <style lang="scss" scoped>
-.nav {
-  background: #f5f7f9;
-  width: 100%;
-  padding: 24px;
-  position: fixed;
-  height: 100vh;
-  right: 0;
-  top: 64px;
-  left: 200px;
-  overflow-x: scroll;
-  flex: auto;
-}
-
-.top-nav {
-  height: 40px;
-  line-height: 40px;
+.break-container {
+    width: 100%;
+    height: 60px;
+    line-height: 46px;
+    display: inline-block;
 }
 </style>
