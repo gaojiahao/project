@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-27 11:45:16
+ * @LastEditTime: 2020-10-27 19:20:40
  */
 //引用插件
 import Vue from "vue";
@@ -13,7 +13,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import VueRouter from "vue-router";
-import { Message, Switch, Circle,Tree,Icon,Button,Span } from "view-design";
+import { Message, Switch, Circle,Tree,Icon,Button,Span,Badge } from "view-design";
 import "view-design/dist/styles/iview.css";
 //引用自定义组件
 import Loading from "@plugins/loading/pageLoad/loading";
@@ -30,6 +30,7 @@ Vue.component("Tree", Tree);
 Vue.component("Icon", Icon);
 Vue.component("Button", Button);
 Vue.component("Span", Span);
+Vue.component("Badge", Badge);
 Vue.component("i-switch", Switch);
 Vue.component("i-circle", Circle);
 //组件挂载到vue $this上

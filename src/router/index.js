@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-27 10:44:22
+ * @LastEditTime: 2020-10-28 15:11:42
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -13,6 +13,7 @@ import Login from "@views/Login.vue";
 import Home from "@views/Home.vue";
 import TypeManager from "@views/basicinfo/typeManager";
 import tokenService from "@service/tokenService";
+import errorHandler from '@components/public/errorHandler';
 
 Vue.use(VueRouter);
 
@@ -27,7 +28,7 @@ const routes = [
     },
     children:[
       {
-        path: "/index",
+        path: "index",
         name: "Index",
         component: Index,
         meta: {
@@ -35,12 +36,22 @@ const routes = [
         },
       },
       {
-        path: "/basicinfo",
+        path: "basicinfo",
         name: "basicinfo",
         component: TypeManager,
         meta: {
           title: "基础信息"
         },
+        children:[
+          {
+            path: "typeManager",
+            name: "TypeManager",
+            component: TypeManager,
+            meta: {
+              title: "分类管理"
+            },
+          },  
+        ]
       },
     ],
   },
@@ -51,7 +62,15 @@ const routes = [
     meta: {
       title: "登录"
     }
-  }
+  },
+  {
+    path: "*",
+    name: "/errorHandler",
+    component: errorHandler,
+    meta: {
+      title: "页面出错"
+    }
+  },
   // 动态路径参数 以冒号开头
   // { path: '/user/:id', component: User },
   // {
@@ -91,4 +110,9 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
+const originalPush = VueRouter.prototype.push
+   VueRouter.prototype.push = function push(location) {
+   return originalPush.call(this, location).catch(err => err)
+}
 export default router;

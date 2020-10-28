@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 16:28:17
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-27 10:25:12
+ * @LastEditTime: 2020-10-27 18:46:14
 -->
 <template>
 <div class="login">
@@ -86,7 +86,7 @@ export default {
                     this.loginIn = true;
                     localStorage.setItem("userCode", this.userCode);
                     this.$loading.hide();
-                    this.$router.replace("/");
+                    this.$router.replace("/index");
                     this.reload();
                 })
                 .catch(err => {

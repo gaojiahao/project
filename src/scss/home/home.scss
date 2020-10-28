@@ -74,8 +74,9 @@
         overflow: auto;
         top:64px;
         background: #DEE7F4;
+        width:150px;max-width:150px;min-width:150px;flex:0 0 150px;
         .title-menu{
-            padding: 14px 24px;
+            padding: 14px 14px;
             position: relative;
             cursor: pointer;
             z-index: 1;
@@ -133,5 +134,8 @@
     margin-left: 78px;
 }
 .marginLeft{
-    margin-left: 200px;
+    margin-left: 150px;
+}
+.ivu-menu-submenu-title > i, .ivu-menu-submenu-title span > i {
+    margin-right: 0px;
 }

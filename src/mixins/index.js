@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-26 14:16:58
+ * @LastEditTime: 2020-10-28 14:40:51
  */
 export default {
     data() {
@@ -16,7 +16,7 @@ export default {
             value: 'index',
             children: [],
           },
-          'baseinfo': {
+          'basicinfo': {
             name: '基础信息',
             value: 'basicinfo',
             children: [
@@ -69,6 +69,15 @@ export default {
       };
     },
     created() {
-        this.leftMenu = this.menuList['baseinfo'];
+        var storage = window.sessionStorage;
+        var activeMenu =  JSON.parse(storage.getItem("activeMenu"));
+        if(activeMenu&&activeMenu.oneLevel){  
+          this.leftMenu = activeMenu;
+        } else {
+          var data = {};
+          data['oneLevel'] = this.menuList['index'];
+          this.leftMenu = data;
+          storage.setItem("activeMenu", JSON.stringify(data));
+        }
     },
   };

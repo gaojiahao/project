@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-27 15:27:10
+ * @LastEditTime: 2020-10-28 14:05:10
 -->
 <template>
 <div class="layout">
@@ -16,14 +16,14 @@
         </Header>
         <Layout class="container">
             <!-- 左侧菜单 -->
-            <Sider ref="side1" hide-trigger breakpoint="md" class="container-sider" v-model="isCollapsed" collapsible :collapsed-width="78">
+            <Sider ref="side1" hide-trigger breakpoint="md" class="container-sider" v-model="isCollapsed" collapsible :collapsed-width="78" v-if="leftMenu&&leftMenu.oneLevel.value!='index'" :width="150">
                 <Menu active-name="typeManager" :theme="theme1" width="auto" :open-names="['1']" :class="menuitemClasses">
                     <div class="title-menu">
-                        <Icon type="ios-apps" :style="{verticalAlign: '-0.05em'}" v-show="!isCollapsed" />
-                        <span v-show="!isCollapsed">基础信息</span>
-                        <Icon type="ios-menu" @click.native="collapsedSider" :class="rotateIcon" />
+                        <Icon type="ios-apps" :style="{verticalAlign: '-0.05em'}" @click.native="collapsedSider" />
+                        <span v-show="!isCollapsed">{{leftMenu&&leftMenu.oneLevel.name}}</span>
+                        <!--<Icon type="ios-menu" @click.native="collapsedSider" :class="rotateIcon" />-->
                     </div>
-                    <template v-for="(item,index) in leftMenu.children">
+                    <template v-for="(item,index) in leftMenu&&leftMenu.oneLevel.children" v-if="leftMenu&&leftMenu.oneLevel.children.length">
                         <!--<MenuItem name="item.value" v-if="!item.children">
                         <Icon type="ios-navigate" />
                         <span v-show="!isCollapsed">{{ item.name }}</span>
@@ -43,14 +43,14 @@
                 </Menu>
             </Sider>
             <!-- 右侧内容模块 -->
-            <div :class="[isCollapsed ? 'marginRight' : 'marginLeft']" class="content">
+            <div :class="[ leftMenu&&leftMenu.oneLevel.value!='index' ? (isCollapsed ? 'marginRight' : 'marginLeft') : '']" class="content">
                 <div class="content-panel">
                     <!-- 面包屑导航条 -->
-                    <BreadcrumbNav></BreadcrumbNav>
+                    <BreadcrumbNav v-if="leftMenu&&leftMenu.oneLevel.value!='index'"></BreadcrumbNav>
                     <!-- 内容模块 -->
                     <transition>
                         <keep-alive>
-                            <router-view v-if="routerAlive" @click.native="routerRefresh"></router-view>
+                            <router-view v-if="routerAlive"></router-view>
                         </keep-alive>
                     </transition>
                 </div>
@@ -77,7 +77,6 @@ import {
     Card
 } from "view-design";
 import Head from "@/components/home/head/head";
-import LeftMenu from "@/components/home/menu/leftMenu";
 import BreadcrumbNav from "@/components/home/menu/breadCrumbNav";
 import TestForm from "@components/basicinfo/testForm";
 import TestTree from "@components/basicinfo/testTree";
@@ -90,7 +89,6 @@ export default {
     name: "Home",
     components: {
         Head,
-        LeftMenu,
         Layout,
         Header,
         Menu,
@@ -131,13 +129,8 @@ export default {
         },
     },
     methods: {
-        routerRefresh() {
-            // this.routerAlive = false;
-            // this.$nextTick(() => {
-            //     this.routerAlive = true;
-            // });
-        },
         collapsedSider() {
+            debugger
             this.$refs.side1.toggleCollapse();
         },
         setMenu() {
@@ -153,4 +146,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "@scss/home/home";
+</style>
+<style scoped>
+.ivu-menu-vertical /deep/ .ivu-menu-submenu-title-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+}
 </style>
