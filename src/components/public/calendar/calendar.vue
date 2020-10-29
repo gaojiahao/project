@@ -12,7 +12,7 @@
 }
 
 .wh_container {
-    max-width: 410px;
+    /*max-width: 410px;*/
     margin: auto;
 }
 
@@ -40,13 +40,15 @@ li {
     flex: 2.5;
 }
 
-.wh_content_all {
+.wh_content_all_cl {
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
         "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
-    background-color: #0fc37c;
+    background-color: #fff;
     width: 100%;
     overflow: hidden;
     padding-bottom: 8px;
+    border: 1px solid #dfe0e6;
+    border-radius: 6px;
 }
 
 .wh_content {
@@ -63,7 +65,7 @@ li {
 }
 
 .wh_content_item,
-wh_content_item_tag {
+.wh_content_item_tag {
     font-size: 15px;
     width: 13.4%;
     text-align: center;
@@ -143,7 +145,7 @@ wh_content_item_tag {
 </style>
 <template>
 <section class="wh_container">
-    <div class="wh_content_all">
+    <div class="wh_content_all_cl">
         <div class="wh_top_changge">
             <li @click="PreMonth(myDate,false)">
                 <div class="wh_jiantou1"></div>

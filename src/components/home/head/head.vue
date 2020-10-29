@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 12:25:05
+ * @LastEditTime: 2020-10-29 15:22:10
 -->
 <template>
 <div class="head">
@@ -12,14 +12,13 @@
         <li class="item"><img :src="systemInfo.asetLogoUrl" /></li>
         <li class="item title">后台管理系统</li>
         <template v-for="(item,index) in menuList">
-            <!--<router-link :to="'/'+item.value">-->
             <MenuItem name="item.value" v-if="item.value=='index'" @click.native="clickMenu(item)" :class="[item.value==activeIndex ? 'active' : '']">
             <Icon type="ios-paper" />
             {{ item.name }}
             </MenuItem>
             <Submenu :name="item.value" :key="index" v-if="item.value!='index'">
                 <template slot="title">
-                    <Icon type="ios-people" />
+                    <Icon type="ios-people" @click.native="clickMenu(item)" />
                     {{ item.name }}
                 </template>
                 <MenuGroup :title="data.name" v-for="(data,k) in item.children" :key="k" @click.native="clickMenu(item,data)">
@@ -28,7 +27,6 @@
                     </MenuItem>
                 </MenuGroup>
             </Submenu>
-            <!--</router-link>-->
         </template>
         <li class="right-item right-title">
             admin
@@ -90,7 +88,6 @@ export default {
             var data = {};
             var storage = window.sessionStorage;
             var routerPath = "/";
-            debugger
             if (one) {
                 data['oneLevel'] = one;
                 routerPath = routerPath + one.value;

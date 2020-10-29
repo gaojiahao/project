@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 11:41:29
+ * @LastEditTime: 2020-10-29 14:08:04
 -->
 <template>
 <div>
@@ -12,13 +12,13 @@
         <Button type="primary" :style="{float:'right'}" @click="saveLayoutConfig">Primary</Button>
     </div>
     <grid-layout :layout.sync="layoutConfig" :col-num="12" :row-height="30" :is-draggable="true" :is-resizable="true" :is-mirrored="false" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
-        <grid-item v-for="item in layoutConfig" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" @moved="movedEvent">
+        <grid-item v-for="item in layoutConfig" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" @moved="movedEvent" @resized="resizedEvent">
             <XCalendar v-if="item.component=='XCalendar'"></XCalendar>
             <XMessage :messageList="messageList" v-else-if="item.component=='XMessage'"></XMessage>
             <XQuick :quickList="quickList" v-else-if="item.component=='XQuick'"></XQuick>
             <XTable v-else-if="item.component=='XTable'"></XTable>
             <template v-else>
-                <div style="background: aquamarine; width:100%;height: 100%;">自定义模块</div>
+                <div style="background: #2d8cf0; width:100%;height: 100%;">自定义模块</div>
             </template>
         </grid-item>
     </grid-layout>
@@ -137,7 +137,11 @@ export default {
         saveLayoutConfig() {
             this.showSave = false;
             console.log('保存页面布局成功！');
-        }
+        },
+        resizedEvent() {
+            this.showSave = true;
+            console.log('调整大小结束！')
+        },
     },
     created() {}
 }

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 09:40:18
+ * @LastEditTime: 2020-10-29 15:28:16
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -23,6 +23,7 @@ const routes = [
     path: '/', 
     name: "Home",
     component: Home,
+    redirect:'index',   //默认子路由
     meta: {
       title: "小竹熊",
       auth: true      //检查权限true
@@ -112,6 +113,7 @@ router.beforeEach((to, from, next) => {
     // 对路由进行验证
     if (tokenService.getToken() != "" && to.name !== "Login") {
       // 已经登陆
+      console.log(to.name);
       next(); // 正常跳转到你设置好的页面
     } else {
       next({ path: "/login" });
