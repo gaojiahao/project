@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-27 19:14:50
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 17:57:22
+ * @LastEditTime: 2020-10-29 11:02:08
 -->
 <template>
 <div class="message">
@@ -105,7 +105,7 @@ export default {
 .message {
     padding: 0 10px;
     margin: 10px 0px 10px 10px;
-    width: 400px;
+
     background-color: #ffffff;
     flex: 1;
     border: 1px solid #dfe0e6;

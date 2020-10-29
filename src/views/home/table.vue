@@ -4,36 +4,38 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 19:22:29
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 19:45:20
+ * @LastEditTime: 2020-10-29 11:09:00
 -->
 <template>
 <div>
-    <div style="width: 200px;text-align: left;">表格统计</div>
-    <Divider />
-    <!--<Table border :columns="columns1" :data="data1" :row-class-name="rowClassName"></Table>-->
-    <div style="width:100%; margin-bottom:15px;display:flex;margin-top: 15px;justify-content: space-between;">
-        <div style="">
-            <RadioGroup v-model="buttonSize" type="button">
-                <Radio label="large">全部产品</Radio>
-                <Radio label="default">待上架</Radio>
-                <Radio label="small">预期</Radio>
-                <Radio label="big">已上架</Radio>
-            </RadioGroup>
+    <Card style="margin: 0px 10px 10px 0px;width:100%;background-color: #ffffff; flex:1;">
+        <div style="width: 200px;text-align: left;">表格统计</div>
+        <Divider />
+        <!--<Table border :columns="columns1" :data="data1" :row-class-name="rowClassName"></Table>-->
+        <div style="width:100%; margin-bottom:15px;display:flex;margin-top: 15px;justify-content: space-between;">
+            <div style="">
+                <RadioGroup v-model="buttonSize" type="button">
+                    <Radio label="large">全部产品</Radio>
+                    <Radio label="default">待上架</Radio>
+                    <Radio label="small">预期</Radio>
+                    <Radio label="big">已上架</Radio>
+                </RadioGroup>
+            </div>
+            <div style="">
+                <Select v-model="model1" style="width:200px" placeholder="变量一">
+                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
+                <Select v-model="model1" style="width:200px" placeholder="变量二">
+                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
+                <Button type="primary" icon="ios-search">搜索</Button>
+            </div>
         </div>
-        <div style="">
-            <Select v-model="model1" style="width:200px" placeholder="变量一">
-                <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-            <Select v-model="model1" style="width:200px" placeholder="变量二">
-                <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-            <Button type="primary" icon="ios-search">搜索</Button>
+        <Table border :columns="columns1" :data="data1" stripe></Table>
+        <div style="display: flex; margin:10px;">
+            <Page :total="100" show-total />
         </div>
-    </div>
-    <Table border :columns="columns1" :data="data1" stripe></Table>
-    <div style="display: flex; margin:10px;">
-        <Page :total="100" show-total />
-    </div>
+    </Card>
 </div>
 </template>
 
@@ -47,7 +49,8 @@ import {
     Select,
     Option,
     Button,
-    Page
+    Page,
+    Card
 } from "view-design";
 export default {
     name: 'XTable',
@@ -60,7 +63,8 @@ export default {
         Select,
         Option,
         Button,
-        Page
+        Page,
+        Card
     },
     data() {
         return {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 17:36:22
+ * @LastEditTime: 2020-10-29 09:40:18
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -14,6 +14,7 @@ import Home from "@views/Home.vue";
 import TypeManager from "@views/basicinfo/typeManager";
 import tokenService from "@service/tokenService";
 import errorHandler from '@components/public/errorHandler';
+import Test from "@views/Test";
 
 Vue.use(VueRouter);
 
@@ -63,6 +64,15 @@ const routes = [
       title: "登录"
     }
   },
+  {
+    path: "/test",
+    name: "Test",
+    component: Test,
+    meta: {
+      title: "测试页面"
+    }
+  },
+
   // {
   //   path: "*",
   //   name: "/errorHandler",

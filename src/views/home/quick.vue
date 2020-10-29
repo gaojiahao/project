@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-28 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 17:51:06
+ * @LastEditTime: 2020-10-29 11:39:05
 -->
 <template>
-<div style="">
-    <Card style="margin: 0px 10px 10px 0px;width:100%;background-color: #ffffff; flex:1;height:150px">
+<div style="display:flex;">
+    <Card style="margin: 0px 10px 10px 0px;width:100%;background-color: #ffffff; flex:1;">
         <div style="width: 200px;text-align: left;">快捷入口</div>
         <Divider />
         <div style="width:100%;" v-for="(item,index) in quickList" :key='index'>

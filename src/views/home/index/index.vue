@@ -4,29 +4,38 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 17:54:08
+ * @LastEditTime: 2020-10-29 11:41:29
 -->
 <template>
 <div>
-    <div style="display: flex;flex-direction:row;flex-wrap: wrap">
-        <XCalendar></XCalendar>
-        <XMessage :messageList="messageList"></XMessage>
+    <div style="margin-top: 10px;width: 100%;height: 20px;" v-show="showSave">
+        <Button type="primary" :style="{float:'right'}" @click="saveLayoutConfig">Primary</Button>
     </div>
-    <XQuick :quickList="quickList"></XQuick>
-    <Card class="">
-        <XTable></XTable>
-    </Card>
+    <grid-layout :layout.sync="layoutConfig" :col-num="12" :row-height="30" :is-draggable="true" :is-resizable="true" :is-mirrored="false" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
+        <grid-item v-for="item in layoutConfig" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" @moved="movedEvent">
+            <XCalendar v-if="item.component=='XCalendar'"></XCalendar>
+            <XMessage :messageList="messageList" v-else-if="item.component=='XMessage'"></XMessage>
+            <XQuick :quickList="quickList" v-else-if="item.component=='XQuick'"></XQuick>
+            <XTable v-else-if="item.component=='XTable'"></XTable>
+            <template v-else>
+                <div style="background: aquamarine; width:100%;height: 100%;">自定义模块</div>
+            </template>
+        </grid-item>
+    </grid-layout>
 </div>
 </template>
 
 <script>
 import {
     Card,
+    Button
 } from "view-design";
 import XTable from "@views/home/table";
 import XCalendar from "@views/home/calendar";
 import XMessage from "@views/home/message";
 import XQuick from "@views/home/quick";
+import VueGridLayout from 'vue-grid-layout';
+import LayoutJs from './layout'
 
 export default {
     name: "Index",
@@ -35,10 +44,15 @@ export default {
         XTable,
         XCalendar,
         XMessage,
-        XQuick
+        XQuick,
+        GridLayout: VueGridLayout.GridLayout,
+        GridItem: VueGridLayout.GridItem,
+        Button
     },
+    mixins: [LayoutJs],
     data() {
         return {
+            showSave: false,
             messageList: [{
                 type: 'wait',
                 text: '今日待办1',
@@ -115,5 +129,22 @@ export default {
             }, ]
         };
     },
+    methods: {
+        movedEvent() {
+            this.showSave = true;
+            console.log('拖动结束！')
+        },
+        saveLayoutConfig() {
+            this.showSave = false;
+            console.log('保存页面布局成功！');
+        }
+    },
+    created() {}
 }
 </script>
+
+<style lang="less" scoped>
+// .vue-grid-item {
+//     background: aquamarine;
+// }
+</style>
