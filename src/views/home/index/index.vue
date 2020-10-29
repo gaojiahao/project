@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 16:22:10
+ * @LastEditTime: 2020-10-28 17:54:08
 -->
 <template>
 <div>
@@ -12,11 +12,7 @@
         <XCalendar></XCalendar>
         <XMessage :messageList="messageList"></XMessage>
     </div>
-    <div class="">
-        <Card style="margin: 0px 10px 10px 0px;width:100%;background-color: #ffffff; flex:1;height:150px">
-            快捷入口
-        </Card>
-    </div>
+    <XQuick :quickList="quickList"></XQuick>
     <Card class="">
         <XTable></XTable>
     </Card>
@@ -25,25 +21,21 @@
 
 <script>
 import {
-    Tree,
     Card,
 } from "view-design";
-import TestForm from "@components/basicinfo/testForm";
-import TestTree from "@components/basicinfo/testTree";
-import Test from "@components/basicinfo/test";
 import XTable from "@views/home/table";
 import XCalendar from "@views/home/calendar";
 import XMessage from "@views/home/message";
+import XQuick from "@views/home/quick";
 
 export default {
     name: "Index",
     components: {
         Card,
-        TestForm,
-        TestTree,
         XTable,
         XCalendar,
         XMessage,
+        XQuick
     },
     data() {
         return {
@@ -79,6 +71,47 @@ export default {
                 type: 'expect',
                 text: '今日待办4',
 
+            }, ],
+            quickList: [{
+                name: '开发新品',
+                src: require('@assets/quick/createProduct.png'),
+                path: '/createProduct',
+            }, {
+                name: '新店入驻',
+                src: require('@assets/quick/addStore.png'),
+                path: '/addStore',
+            }, {
+                name: '预期查询',
+                src: require('@assets/quick/selectExpect.png'),
+                path: '/selectExpect',
+            }, {
+                name: '新增供应商',
+                src: require('@assets/quick/addGuest.png'),
+                path: '/addGuest',
+            }, {
+                name: '自定义',
+                src: require('@assets/quick/custom.png'),
+                path: '/custom',
+            }, {
+                name: '开发新品',
+                src: require('@assets/quick/createProduct.png'),
+                path: '/createProduct',
+            }, {
+                name: '新店入驻',
+                src: require('@assets/quick/addStore.png'),
+                path: '/addStore',
+            }, {
+                name: '预期查询',
+                src: require('@assets/quick/selectExpect.png'),
+                path: '/selectExpect',
+            }, {
+                name: '新增供应商',
+                src: require('@assets/quick/addGuest.png'),
+                path: '/addGuest',
+            }, {
+                name: '自定义',
+                src: require('@assets/quick/custom.png'),
+                path: '/custom',
             }, ]
         };
     },

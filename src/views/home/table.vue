@@ -4,74 +4,177 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 19:22:29
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-27 12:22:59
+ * @LastEditTime: 2020-10-28 19:45:20
 -->
 <template>
 <div>
-    <div style="    width: 200px;text-align: left;">表格统计</div>
-    <div></div>
-    <Table border :columns="columns1" :data="data1" :row-class-name="rowClassName"></Table>
+    <div style="width: 200px;text-align: left;">表格统计</div>
+    <Divider />
+    <!--<Table border :columns="columns1" :data="data1" :row-class-name="rowClassName"></Table>-->
+    <div style="width:100%; margin-bottom:15px;display:flex;margin-top: 15px;justify-content: space-between;">
+        <div style="">
+            <RadioGroup v-model="buttonSize" type="button">
+                <Radio label="large">全部产品</Radio>
+                <Radio label="default">待上架</Radio>
+                <Radio label="small">预期</Radio>
+                <Radio label="big">已上架</Radio>
+            </RadioGroup>
+        </div>
+        <div style="">
+            <Select v-model="model1" style="width:200px" placeholder="变量一">
+                <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
+            <Select v-model="model1" style="width:200px" placeholder="变量二">
+                <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </Select>
+            <Button type="primary" icon="ios-search">搜索</Button>
+        </div>
+    </div>
+    <Table border :columns="columns1" :data="data1" stripe></Table>
+    <div style="display: flex; margin:10px;">
+        <Page :total="100" show-total />
+    </div>
 </div>
 </template>
 
 <script>
 import {
-    Table
+    Table,
+    Divider,
+    Tag,
+    RadioGroup,
+    Radio,
+    Select,
+    Option,
+    Button,
+    Page
 } from "view-design";
 export default {
     name: 'XTable',
     components: {
         Table,
+        Divider,
+        Tag,
+        RadioGroup,
+        Radio,
+        Select,
+        Option,
+        Button,
+        Page
     },
     data() {
         return {
             columns1: [{
-                    title: 'Name',
+                    title: '时间',
+                    key: 'time'
+                },
+                {
+                    title: '商品',
                     key: 'name'
                 },
                 {
-                    title: 'Age',
-                    key: 'age'
+                    title: 'SKU',
+                    key: 'sku'
                 },
                 {
-                    title: 'Address',
-                    key: 'address'
+                    title: '产商',
+                    key: 'producer'
+                },
+                {
+                    title: '产商货号',
+                    key: 'producerGoodsNum'
+                },
+                {
+                    title: '状态',
+                    key: 'status'
                 }
             ],
+            dataConfig: {
+                'filterList': [{
+                    name: '全部产品',
+                    value: 'all',
+                }, {
+                    name: '待上架',
+                    value: 'all',
+                }, {
+                    name: '预期',
+                    value: 'all',
+                }, {
+                    name: '已上架',
+                    value: 'all',
+                }]
+            },
             data1: [{
-                    name: 'John Brown',
-                    age: 18,
-                    address: 'New York No. 1 Lake Park',
-                    date: '2016-10-03'
+                    time: '2020-09-17',
+                    name: '遥控飞机',
+                    sku: 'pd12345',
+                    producer: '供应商1',
+                    producerGoodsNum: 'LG008',
+                    status: 'yishangJia'
                 },
                 {
-                    name: 'Jim Green',
-                    age: 24,
-                    address: 'London No. 1 Lake Park',
-                    date: '2016-10-01'
+                    time: '2020-09-17',
+                    name: '遥控飞机',
+                    sku: 'pd12345',
+                    producer: '供应商1',
+                    producerGoodsNum: 'LG008',
+                    status: 'yishangJia'
                 },
                 {
-                    name: 'Joe Black',
-                    age: 30,
-                    address: 'Sydney No. 1 Lake Park',
-                    date: '2016-10-02'
+                    time: '2020-09-17',
+                    name: '遥控飞机',
+                    sku: 'pd12345',
+                    producer: '供应商1',
+                    producerGoodsNum: 'LG008',
+                    status: 'yishangJia'
                 },
                 {
-                    name: 'Jon Snow',
-                    age: 26,
-                    address: 'Ottawa No. 2 Lake Park',
-                    date: '2016-10-04'
+                    time: '2020-09-17',
+                    name: '遥控飞机',
+                    sku: 'pd12345',
+                    producer: '供应商1',
+                    producerGoodsNum: 'LG008',
+                    status: 'yishangJia'
+                },
+                {
+                    time: '2020-09-17',
+                    name: '遥控飞机',
+                    sku: 'pd12345',
+                    producer: '供应商1',
+                    producerGoodsNum: 'LG008',
+                    status: 'yishangJia'
+                },
+            ],
+            buttonSize: 'large',
+            cityList: [{
+                    value: 'New York',
+                    label: 'New York'
+                },
+                {
+                    value: 'London',
+                    label: 'London'
+                },
+                {
+                    value: 'Sydney',
+                    label: 'Sydney'
+                },
+                {
+                    value: 'Ottawa',
+                    label: 'Ottawa'
+                },
+                {
+                    value: 'Paris',
+                    label: 'Paris'
+                },
+                {
+                    value: 'Canberra',
+                    label: 'Canberra'
                 }
             ],
+            model1: ''
         }
     },
     methods: {
-        // rowClassName(row, index) {
-        //     console.log(index % 2)
-        //     if (index % 2 == 0) {
-        //         return 'demo-table-info-row';
-        //     }
-        // },
         rowClassName(row, index) {
             if (index % 2 == 1) {
                 return 'demo-table-info-row';
@@ -115,5 +218,10 @@ export default {
 
 .ivu-card ivu-card-bordered .ivu-card-body {
     padding: 0 16px;
+}
+</style><style lang="less" scoped>
+.ivu-divider-horizontal {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 </style>

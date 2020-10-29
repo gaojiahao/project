@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 15:11:42
+ * @LastEditTime: 2020-10-28 17:36:22
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -63,14 +63,14 @@ const routes = [
       title: "登录"
     }
   },
-  {
-    path: "*",
-    name: "/errorHandler",
-    component: errorHandler,
-    meta: {
-      title: "页面出错"
-    }
-  },
+  // {
+  //   path: "*",
+  //   name: "/errorHandler",
+  //   component: errorHandler,
+  //   meta: {
+  //     title: "页面出错"
+  //   }
+  // },
   // 动态路径参数 以冒号开头
   // { path: '/user/:id', component: User },
   // {
