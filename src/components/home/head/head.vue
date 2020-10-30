@@ -4,15 +4,15 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 15:22:10
+ * @LastEditTime: 2020-10-29 20:47:08
 -->
 <template>
 <div class="head">
-    <Menu mode="horizontal" :theme="theme1" active-name="1" @on-select="(key) => changeMenu(key, 'first')">
+    <Menu mode="horizontal" :theme="theme1" active-name="index">
         <li class="item"><img :src="systemInfo.asetLogoUrl" /></li>
-        <li class="item title">后台管理系统</li>
+        <li class="item title">跨境电商ERP</li>
         <template v-for="(item,index) in menuList">
-            <MenuItem name="item.value" v-if="item.value=='index'" @click.native="clickMenu(item)" :class="[item.value==activeIndex ? 'active' : '']">
+            <MenuItem :name="item.value" v-if="item.value=='index'" @click.native="clickMenu(item)" :class="[item.value==activeIndex ? 'active' : '']">
             <Icon type="ios-paper" />
             {{ item.name }}
             </MenuItem>
@@ -22,7 +22,7 @@
                     {{ item.name }}
                 </template>
                 <MenuGroup :title="data.name" v-for="(data,k) in item.children" :key="k" @click.native="clickMenu(item,data)">
-                    <MenuItem :name="item.value+'-'+dItem.value" v-for="(dItem,y) in data.children" :key="y">
+                    <MenuItem :name="item.value+'-'+dItem.value" v-for="(dItem,y) in data.children" :key="y" @click.native="clickMenu(item,data,dItem)">
                     {{dItem.name}}
                     </MenuItem>
                 </MenuGroup>
@@ -74,7 +74,7 @@ export default {
     data() {
         return {
             systemInfo: {
-                name: '小竹熊ERP管理系统',
+                name: '超级管理员',
                 asetLogoUrl: require("@assets/default/logo.png"),
                 asetUserUrl: require("@assets/default/ava01.png"),
             },
@@ -86,7 +86,6 @@ export default {
     methods: {
         clickMenu(one, two, third) {
             var data = {};
-            var storage = window.sessionStorage;
             var routerPath = "/";
             if (one) {
                 data['oneLevel'] = one;
@@ -100,10 +99,8 @@ export default {
                 data['thirdLevel'] = third;
                 routerPath = routerPath + '/' + third.value;
             }
-            storage.setItem("activeMenu", JSON.stringify(data));
             this.activeIndex = data;
-            // this.$store.commit('setMenuRouter', data);
-            // this.$emit('on-setmenu', {});
+            this.$store.commit('setMenuRouter', data);
             this.$router.push(routerPath);
         },
         changeMenu(data, type) {

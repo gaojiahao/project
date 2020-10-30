@@ -4,10 +4,9 @@
  * @Author: gaojiahao
  * @Date: 2020-10-20 14:22:42
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-21 10:53:06
+ * @LastEditTime: 2020-10-29 15:38:18
  */
 import Vue from "vue";
-import { Message } from "view-design";
 
 // 错误处理回调
 export default function errorHandler(err) {

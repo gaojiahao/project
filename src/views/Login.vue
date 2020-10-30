@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 16:28:17
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-27 18:46:14
+ * @LastEditTime: 2020-10-29 16:58:55
 -->
 <template>
 <div class="login">
@@ -14,7 +14,7 @@
         <Input class="account" prefix="ios-contact" v-model="userCode" placeholder="账户" />
         <Input class="password" prefix="ios-key" v-model="passWord" type="password" password placeholder="密码6-10位" />
         <div class="login">
-            <Button type="primary" @click="login">登录</Button>
+            <Button type="primary" @click="login" @keyup.enter="login">登录</Button>
         </div>
     </div>
 </div>
@@ -65,14 +65,14 @@ export default {
             let params = {};
             if (this.isMobileLogin) {
                 if (!this.mobile || !this.testCode) {
-                    this.$Message.info("请输入有效的手机号或验证码！");
+                    this.$Message.error("请输入有效的手机号或验证码！");
                     return;
                 }
                 params.userCode = this.mobile;
                 params.password = this.testCode;
             } else {
                 if (!this.userCode || !this.passWord) {
-                    this.$Message.info("请输入用户名或密码");
+                    this.$Message.error("请输入用户名或密码");
                     return;
                 }
                 params.username = this.userCode;

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 14:05:10
+ * @LastEditTime: 2020-10-30 09:05:56
 -->
 <template>
 <div class="layout">
@@ -12,7 +12,7 @@
         <!-- 顶部菜单 -->
         <Header class="header">
 
-            <Head :menuList="menuList" @on-setmenu="setMenu"></Head>
+            <Head :menuList="menuList"></Head>
         </Header>
         <Layout class="container">
             <!-- 左侧菜单 -->
@@ -24,11 +24,11 @@
                         <!--<Icon type="ios-menu" @click.native="collapsedSider" :class="rotateIcon" />-->
                     </div>
                     <template v-for="(item,index) in leftMenu&&leftMenu.oneLevel.children" v-if="leftMenu&&leftMenu.oneLevel.children.length">
-                        <!--<MenuItem name="item.value" v-if="!item.children">
+                        <MenuItem :name="item.value" v-if="!item.children">
                         <Icon type="ios-navigate" />
                         <span v-show="!isCollapsed">{{ item.name }}</span>
-                        </MenuItem>-->
-                        <Submenu :name="item.value" :key="index">
+                        </MenuItem>
+                        <Submenu :name="item.value" :key="index" v-else>
                             <template slot="title">
                                 <Icon type="ios-navigate"></Icon>
                                 <span v-show="!isCollapsed">{{ item.name }}</span>
@@ -127,20 +127,31 @@ export default {
                 this.isCollapsed ? 'rotate-icon main-button' : ''
             ];
         },
+        leftMenu() {
+            debugger
+            if (this.$store.state.menuRouter) {
+                return this.$store.state.menuRouter;
+            } else {
+                return JSON.parse(window.sessionStorage.getItem('activeMenu'));
+            }
+        }
     },
     methods: {
         collapsedSider() {
-            debugger
             this.$refs.side1.toggleCollapse();
         },
-        setMenu() {
-            this.leftMenu = this.menuList[this.$store.state.menuRouter.oneLevel.value] || [];
-            console.log('leftMenu', this.leftMenu);
-        }
     },
     created() {
-        console.log('菜单列表', this.leftMenu)
-    },
+        var activeMenu = this.$store.state.menuRouter;
+        if (activeMenu && activeMenu.oneLevel) {
+            console.log('已经有菜单了', activeMenu);
+        } else {
+            var data = {};
+            var active = this.$route.name;
+            data['oneLevel'] = this.menuList[active];
+            this.$store.commit('setMenuRouter', data);
+        }
+    }
 };
 </script>
 

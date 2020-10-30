@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-28 14:40:51
+ * @LastEditTime: 2020-10-29 19:54:33
  */
 export default {
     data() {
       return {
-        leftMenu:{},
+        // leftMenu:{},
         menuList: {
           'index': {
             name: '首页',
@@ -65,19 +65,11 @@ export default {
             value: 'customer',
             children: [],
           },
+          'authority': {
+            name: '权限管理',
+            value: 'authority',
+          },
         }
       };
-    },
-    created() {
-        var storage = window.sessionStorage;
-        var activeMenu =  JSON.parse(storage.getItem("activeMenu"));
-        if(activeMenu&&activeMenu.oneLevel){  
-          this.leftMenu = activeMenu;
-        } else {
-          var data = {};
-          data['oneLevel'] = this.menuList['index'];
-          this.leftMenu = data;
-          storage.setItem("activeMenu", JSON.stringify(data));
-        }
     },
   };

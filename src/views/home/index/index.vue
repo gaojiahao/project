@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 14:08:04
+ * @LastEditTime: 2020-10-29 15:34:01
 -->
 <template>
 <div>
     <div style="margin-top: 10px;width: 100%;height: 20px;" v-show="showSave">
-        <Button type="primary" :style="{float:'right'}" @click="saveLayoutConfig">Primary</Button>
+        <Button type="primary" :style="{float:'right'}" @click="saveLayoutConfig">保存布局</Button>
     </div>
     <grid-layout :layout.sync="layoutConfig" :col-num="12" :row-height="30" :is-draggable="true" :is-resizable="true" :is-mirrored="false" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
         <grid-item v-for="item in layoutConfig" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" @moved="movedEvent" @resized="resizedEvent">

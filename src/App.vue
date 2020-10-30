@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-27 10:33:00
+ * @LastEditTime: 2020-10-29 18:55:40
 -->
 <template>
-<div id="app" v-title data-title="小竹熊ERP">
+<div id="app" v-title data-title="跨境电商ERP">
     <!--<login v-if="!RouterState"></login>
     <Home v-else></Home>-->
     <router-view />

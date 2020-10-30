@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 15:28:16
+ * @LastEditTime: 2020-10-29 20:40:48
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -15,6 +15,7 @@ import TypeManager from "@views/basicinfo/typeManager";
 import tokenService from "@service/tokenService";
 import errorHandler from '@components/public/errorHandler';
 import Test from "@views/Test";
+import Authority from "@views/authority";
 
 Vue.use(VueRouter);
 
@@ -31,7 +32,7 @@ const routes = [
     children:[
       {
         path: "index",
-        name: "Index",
+        name: "index",
         component: Index,
         meta: {
           title: "首页"
@@ -55,6 +56,14 @@ const routes = [
           },  
         ]
       },
+      {
+        path: "authority",
+        name: "authority",
+        component: Authority,
+        meta: {
+          title: "权限管理"
+        },
+      },
     ],
   },
   {
@@ -73,15 +82,14 @@ const routes = [
       title: "测试页面"
     }
   },
-
-  // {
-  //   path: "*",
-  //   name: "/errorHandler",
-  //   component: errorHandler,
-  //   meta: {
-  //     title: "页面出错"
-  //   }
-  // },
+  {
+    path: "*",
+    name: "/errorHandler",
+    component: errorHandler,
+    meta: {
+      title: "页面出错"
+    }
+  },
   // 动态路径参数 以冒号开头
   // { path: '/user/:id', component: User },
   // {
