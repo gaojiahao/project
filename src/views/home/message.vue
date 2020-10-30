@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-10-27 19:14:50
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 19:02:58
+ * @LastEditTime: 2020-10-30 15:17:03
 -->
 <template>
 <div class="message">
     <Tabs value="name1">
         <TabPane :label="label" name="name1">
             <Scroll :on-reach-bottom="handleReachBottom">
-                <List :border="false" :split="false" v-for="(item,index) in messageList">
+                <List :border="false" :split="false" v-for="(item,index) in messageList" :key="index">
                     <ListItem>
                         <Tag color="gold" v-if="item.type=='wait'">待办</Tag>
                         <Tag color="green" v-else-if="item.type=='warn'">提醒</Tag>

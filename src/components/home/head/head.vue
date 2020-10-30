@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 20:47:08
+ * @LastEditTime: 2020-10-30 19:54:39
 -->
 <template>
 <div class="head">
@@ -12,7 +12,7 @@
         <li class="item"><img :src="systemInfo.asetLogoUrl" /></li>
         <li class="item title">跨境电商ERP</li>
         <template v-for="(item,index) in menuList">
-            <MenuItem :name="item.value" v-if="item.value=='index'" @click.native="clickMenu(item)" :class="[item.value==activeIndex ? 'active' : '']">
+            <!--<MenuItem :name="item.value" v-if="item.value=='index'" @click.native="clickMenu(item)" :class="[item.value==activeIndex ? 'active' : '']">
             <Icon type="ios-paper" />
             {{ item.name }}
             </MenuItem>
@@ -26,7 +26,10 @@
                     {{dItem.name}}
                     </MenuItem>
                 </MenuGroup>
-            </Submenu>
+            </Submenu>-->
+            <YSubmenu :item="item" :parentItem="menuList">
+
+            </YSubmenu>
         </template>
         <li class="right-item right-title">
             admin
@@ -52,6 +55,7 @@ import {
     RadioGroup,
     Radio
 } from "view-design";
+import YSubmenu from "@/components/home/menu/xSubMenu/ySubmenu";
 export default {
     name: "Head",
     props: {
@@ -69,7 +73,8 @@ export default {
         Submenu,
         MenuGroup,
         RadioGroup,
-        Radio
+        Radio,
+        YSubmenu
     },
     data() {
         return {
@@ -112,15 +117,6 @@ export default {
         var value = JSON.parse(storage.getItem("activeMenu"));
         this.activeIndex = value.oneLevel.value;
     },
-    mounted() {
-        let that = this;
-        var x = document.querySelector(".ivu-menu-submenu-title");
-        for (var i = 0; i < x.lenght; i++) {
-            x[i].addEventListener("click", function (e) {
-                that.changeMenu(e);
-            })
-        }
-    }
 };
 </script>
 
@@ -178,8 +174,17 @@ export default {
     }
 
 }
-
-.ivu-menu-item-group-title {
+</style><style scoped>
+>>>.ivu-menu-item-group-title {
+    height: 30px;
+    line-height: 30px;
+    padding-left: 8px;
     font-size: 14px;
+    color: #515a6e;
+}
+
+>>>.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item {
+    padding: 7px 16px 8px;
+    font-size: 12px !important;
 }
 </style>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-30 14:58:27
+ * @LastEditTime: 2020-10-30 20:03:04
 -->
 <template>
 <div class="layout">
@@ -16,23 +16,23 @@
         </Header>
         <Layout class="container">
             <!-- 左侧菜单 -->
-            <Sider ref="side1" hide-trigger breakpoint="md" class="container-sider" v-model="isCollapsed" collapsible :collapsed-width="78" v-if="leftMenu&&leftMenu.oneLevel.value!='index'" :width="150">
+            <Sider ref="side1" hide-trigger breakpoint="md" class="container-sider" v-model="isCollapsed" collapsible :collapsed-width="78" v-if="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" :width="150">
                 <Menu active-name="typeManager" :theme="theme1" width="auto" :open-names="['1']" :class="menuitemClasses">
                     <div class="title-menu">
-                        <Icon type="ios-apps" :style="{verticalAlign: '-0.05em'}" @click.native="collapsedSider" />
+                        <Icon type="ios-apps" :style="{verticalAlign: '-0.05em'}" @click.native="collapsedSider" style="margin-right:8px" />
                         <span v-show="!isCollapsed">{{leftMenu&&leftMenu.oneLevel.name}}</span>
                     </div>
                     <template v-for="(item,index) in leftMenu&&leftMenu.oneLevel.children">
-                        <XSubmenu :item="item" :parentItem="leftMenu">
+                        <XSubmenu :item="item" :parentItem="leftMenu" :isCollapsed="isCollapsed">
                         </XSubmenu>
                     </template>
                 </Menu>
             </Sider>
             <!-- 右侧内容模块 -->
-            <div :class="[ leftMenu&&leftMenu.oneLevel.value!='index' ? (isCollapsed ? 'marginRight' : 'marginLeft') : '']" class="content">
+            <div :class="[ leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length ? (isCollapsed ? 'marginRight' : 'marginLeft') : '']" class="content">
                 <div class="content-panel">
                     <!-- 面包屑导航条 -->
-                    <BreadcrumbNav v-if="leftMenu&&leftMenu.oneLevel.value!='index'"></BreadcrumbNav>
+                    <BreadcrumbNav v-if="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length"></BreadcrumbNav>
                     <!-- 内容模块 -->
                     <transition>
                         <keep-alive>
@@ -116,9 +116,11 @@ export default {
             ];
         },
         leftMenu() {
-            if (this.$store.state.menuRouter) {
+            //初始化菜单数据
+            if (this.$store.state.menuRouter.oneLevel) {
                 return this.$store.state.menuRouter;
             } else {
+                this.$store.commit('setMenuRouter', JSON.parse(window.sessionStorage.getItem('activeMenu')));
                 return JSON.parse(window.sessionStorage.getItem('activeMenu'));
             }
         }
