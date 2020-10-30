@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 20:40:48
+ * @LastEditTime: 2020-10-30 12:29:06
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -16,6 +16,8 @@ import tokenService from "@service/tokenService";
 import errorHandler from '@components/public/errorHandler';
 import Test from "@views/Test";
 import Authority from "@views/authority";
+import StoreManager from "@views/basicinfo/storeManager";
+import AddStore from "@views/basicinfo/storeManager/addStore";
 
 Vue.use(VueRouter);
 
@@ -53,7 +55,25 @@ const routes = [
             meta: {
               title: "分类管理"
             },
-          },  
+          },
+          {
+            path: "storeManager",
+            name: "StoreManager",
+            component: StoreManager,
+            meta: {
+              title: "店铺管理"
+            },
+            children:[
+              {
+                path: "addStore",
+                name: "AddStore",
+                component: AddStore,
+                meta: {
+                  title: "添加店铺"
+                },
+              }
+            ]
+          },
         ]
       },
       {

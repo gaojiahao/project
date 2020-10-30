@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-30 09:05:56
+ * @LastEditTime: 2020-10-30 14:58:27
 -->
 <template>
 <div class="layout">
@@ -21,24 +21,10 @@
                     <div class="title-menu">
                         <Icon type="ios-apps" :style="{verticalAlign: '-0.05em'}" @click.native="collapsedSider" />
                         <span v-show="!isCollapsed">{{leftMenu&&leftMenu.oneLevel.name}}</span>
-                        <!--<Icon type="ios-menu" @click.native="collapsedSider" :class="rotateIcon" />-->
                     </div>
-                    <template v-for="(item,index) in leftMenu&&leftMenu.oneLevel.children" v-if="leftMenu&&leftMenu.oneLevel.children.length">
-                        <MenuItem :name="item.value" v-if="!item.children">
-                        <Icon type="ios-navigate" />
-                        <span v-show="!isCollapsed">{{ item.name }}</span>
-                        </MenuItem>
-                        <Submenu :name="item.value" :key="index" v-else>
-                            <template slot="title">
-                                <Icon type="ios-navigate"></Icon>
-                                <span v-show="!isCollapsed">{{ item.name }}</span>
-                            </template>
-                            <template v-for="(data,k) in item.children">
-                                <MenuItem :name="item.value+'-'+k">
-                                {{data.name}}
-                                </MenuItem>
-                            </template>
-                        </Submenu>
+                    <template v-for="(item,index) in leftMenu&&leftMenu.oneLevel.children">
+                        <XSubmenu :item="item" :parentItem="leftMenu">
+                        </XSubmenu>
                     </template>
                 </Menu>
             </Sider>
@@ -84,6 +70,7 @@ import Test from "@components/basicinfo/test";
 import Index from "@mixins/index";
 import TypeManager from "@views/basicinfo/typeManager";
 import tokenService from "@service/tokenService";
+import XSubmenu from "@/components/home/menu/xSubMenu/xSubmenu";
 
 export default {
     name: "Home",
@@ -106,6 +93,7 @@ export default {
         Test,
         BreadcrumbNav,
         TypeManager,
+        XSubmenu
     },
     mixins: [
         Index,
@@ -128,7 +116,6 @@ export default {
             ];
         },
         leftMenu() {
-            debugger
             if (this.$store.state.menuRouter) {
                 return this.$store.state.menuRouter;
             } else {

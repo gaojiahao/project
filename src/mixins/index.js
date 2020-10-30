@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 19:54:33
+ * @LastEditTime: 2020-10-30 12:25:37
  */
 export default {
     data() {
@@ -47,7 +47,7 @@ export default {
                 children: [
                     {
                         name: '添加店铺',
-                        value: 'addSotre',
+                        value: 'addStore',
                         auth: false,    
                     }
                 ]

@@ -4,13 +4,16 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 16:56:06
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 20:59:39
+ * @LastEditTime: 2020-10-30 10:39:32
 -->
 <template>
 <div class="break-container">
     <Breadcrumb :style="{ margin: '16px 0', float: 'left' }">
         <BreadcrumbItem v-if="leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.name">{{leftMenu.oneLevel.name}}</BreadcrumbItem>
-        <BreadcrumbItem v-if="leftMenu&&leftMenu.twoLevel&&leftMenu.twoLevel.name">{{leftMenu.twoLevel.name}}</BreadcrumbItem>
+        <BreadcrumbItem v-if="(leftMenu&&leftMenu.twoLevel&&leftMenu.twoLevel.name)||
+        (leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.children[0]&&leftMenu.oneLevel.children[0]['name'])">
+            {{(leftMenu.twoLevel&&leftMenu.twoLevel.name)||(leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.children[0]&&leftMenu.oneLevel.children[0]['name'])}}
+        </BreadcrumbItem>
         <BreadcrumbItem v-if="leftMenu&&leftMenu.thirdLevel&&leftMenu.thirdLevel.name">{{leftMenu.thirdLevel.name}}</BreadcrumbItem>
     </Breadcrumb>
 </div>
@@ -31,7 +34,6 @@ export default {
     },
     computed: {
         leftMenu() {
-            debugger
             if (this.$store.state.menuRouter) {
                 return this.$store.state.menuRouter;
             } else {
