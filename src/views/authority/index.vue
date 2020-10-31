@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 18:59:51
+ * @LastEditTime: 2020-10-30 20:36:17
 -->
 <template>
 <div>
@@ -18,7 +18,7 @@
             <strong>{{ row.number }}</strong>
         </template>
         <template slot-scope="{ row, index }" slot="action">
-            <Button type="success" size="small" style="margin-right: 5px" @click="show(index)">分配权限</Button>
+            <Button type="success" size="small" style="margin-right: 5px" @click="setUserAuthority(index)">分配权限</Button>
             <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">更改状态</Button>
             <Button type="error" size="small" @click="remove(index)">删除</Button>
         </template>
@@ -28,10 +28,8 @@
             <Page :total="100" :current="1" @on-change="changePage"></Page>
         </div>
     </div>
-    <Modal v-model="modal1" title="Common Modal dialog box title" @on-ok="ok" @on-cancel="cancel">
-        <p>Content of dialog</p>
-        <p>Content of dialog</p>
-        <p>Content of dialog</p>
+    <Modal v-model="modal1" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
+        <XTree></XTree>
     </Modal>
 </div>
 </template>
@@ -44,6 +42,7 @@ import {
     Input,
     Modal
 } from "view-design";
+import XTree from "@components/public/tree/xTree"
 export default {
     name: 'authority',
     components: {
@@ -51,11 +50,16 @@ export default {
         Button,
         Page,
         Input,
-        Modal
+        Modal,
+        XTree
+    },
+    computed: {
+
     },
     data() {
         return {
             tableData1: this.mockTableData1(),
+            titleText: '',
             columns12: [{
                     title: '序号',
                     slot: 'number',
@@ -101,12 +105,18 @@ export default {
         }
     },
     methods: {
-        show(index) {
-            this.$Modal.info({
-                title: 'User Info',
-                content: `number：${this.tableData1[index].roleName}`
-            })
+        setUserAuthority(userId) {
+            debugger
+            this.titleText = '正在编辑' + this.userId + "的权限";
+            this.userId = this.tableData1[userId].roleName;
+            this.modal1 = true;
         },
+        // show(index) {
+        //     this.$Modal.info({
+        //         title: 'User Info',
+        //         content: `number：${this.tableData1[index].roleName}`
+        //     })
+        // },
         remove(index) {
             this.tableData1.splice(index, 1);
         },
@@ -131,6 +141,12 @@ export default {
         },
         changePage() {
             this.tableData1 = this.mockTableData1();
+        },
+        ok() {
+            this.$Message.info('温馨提示：分配权限成功！');
+        },
+        cancel() {
+            this.$Message.info('温馨提示：您取消了分配权限！');
         }
     },
     created() {}

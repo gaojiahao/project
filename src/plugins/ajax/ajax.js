@@ -4,13 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-21 11:05:30
+ * @LastEditTime: 2020-10-31 09:11:23
  */
 import Fly from "flyio/dist/npm/fly";
 // 请求地址引入
 import tokenService from "@service/tokenService";
 // 弹窗插件引入
-import { Message } from "view-design";
 import errHandle from "@plugins/errHandle";
 
 let qs = require("querystring");
