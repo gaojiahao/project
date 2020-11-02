@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-31 09:11:23
+ * @LastEditTime: 2020-10-31 10:28:32
  */
 import Fly from "flyio/dist/npm/fly";
 // 请求地址引入
@@ -126,7 +126,7 @@ let Rxports = {
     return new Promise((resolve, reject) => {
       let params = {
         method: opts.type || opts.method || "GET",
-        baseURL: "http://crossborder.erp.com",
+        baseURL: window.baseURL||'',
         url: ensureUrl(opts.url),
         headers: {
           "Content-Type": opts.contentType || "*/*"

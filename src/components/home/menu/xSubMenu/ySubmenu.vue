@@ -136,6 +136,7 @@ export default {
                 data['thirdLevel'] = third;
                 routerPath = routerPath + '/' + third.value;
             }
+            debugger
             this.activeIndex = data;
             this.$store.commit('setMenuRouter', data);
             this.$router.push(routerPath);
@@ -144,7 +145,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .ivu-menu-opened {
     color: #FFFFFF;
     background: #447ED9;
@@ -174,5 +175,9 @@ export default {
     min-width: 147.781px;
     transform-origin: center top;
     display: none;
+}
+
+.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item /deep/ {
+    color: #2b85e4;
 }
 </style>

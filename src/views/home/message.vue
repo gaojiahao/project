@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-27 19:14:50
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-30 15:17:03
+ * @LastEditTime: 2020-11-02 09:25:50
 -->
 <template>
 <div class="message">
@@ -110,7 +110,7 @@ export default {
     flex: 1;
     border: 1px solid #dfe0e6;
     border-radius: 6px;
-    height: 357px;
+    /*height: 357px;*/
 }
 
 >>>.ivu-badge-count {

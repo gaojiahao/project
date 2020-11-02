@@ -4,20 +4,21 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-30 12:29:06
+ * @LastEditTime: 2020-10-31 10:04:41
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Index from "@views/home/index";
 import Login from "@views/Login.vue";
 import Home from "@views/Home.vue";
-import TypeManager from "@views/basicinfo/typeManager";
+import Basicinfo from "@views/basicinfo/index";
+import TypeManager from "@views/basicinfo/typeManager/index";
 import tokenService from "@service/tokenService";
 import errorHandler from '@components/public/errorHandler';
-import Test from "@views/Test";
 import Authority from "@views/authority";
 import StoreManager from "@views/basicinfo/storeManager";
 import AddStore from "@views/basicinfo/storeManager/addStore";
+import PlatformManager from "@views/basicinfo/platformManager/index";
 
 Vue.use(VueRouter);
 
@@ -43,7 +44,8 @@ const routes = [
       {
         path: "basicinfo",
         name: "basicinfo",
-        component: TypeManager,
+        component: Basicinfo,
+        redirect:'basicinfo/typeManager',   //默认子路由
         meta: {
           title: "基础信息"
         },
@@ -54,6 +56,14 @@ const routes = [
             component: TypeManager,
             meta: {
               title: "分类管理"
+            },
+          },
+          {
+            path: "platformManager",
+            name: "PlatformManager",
+            component: PlatformManager,
+            meta: {
+              title: "平台管理"
             },
           },
           {
@@ -92,14 +102,6 @@ const routes = [
     component: Login,
     meta: {
       title: "登录"
-    }
-  },
-  {
-    path: "/test",
-    name: "Test",
-    component: Test,
-    meta: {
-      title: "测试页面"
     }
   },
   {
