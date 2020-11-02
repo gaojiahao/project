@@ -4,24 +4,31 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 11:55:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-31 12:06:38
+ * @LastEditTime: 2020-11-02 15:19:35
 -->
 <template>
 <div class="base-platfrom-add">
     <div class="content">
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
             <FormItem label="平台名称:" prop="name">
-                <Input v-model="formValidate.name" placeholder="Enter your name" :style="{width:'200px',float: 'left'}"></Input>
+                <Input v-model="formValidate.name" :style="{width:'200px',float: 'left'}"></Input>
             </FormItem>
-            <FormItem label="平台URL:" prop="mail">
-                <Input v-model="formValidate.mail" placeholder="Enter your e-mail" :style="{width:'400px',float: 'left'}"></Input>
+            <FormItem label="平台唯一code:" prop="code">
+                <Input v-model="formValidate.code" :style="{width:'200px',float: 'left'}"></Input>
             </FormItem>
-            <FormItem label="平台负责人:" prop="city">
-                <Select v-model="formValidate.city" placeholder="Select your city" :style="{width:'200px',float: 'left'}">
-                    <Option value="beijing">New York</Option>
-                    <Option value="shanghai">London</Option>
-                    <Option value="shenzhen">Sydney</Option>
+            <FormItem label="平台URL:" prop="url">
+                <Input v-model="formValidate.url" :style="{width:'400px',float: 'left'}"></Input>
+            </FormItem>
+            <FormItem label="平台负责人1:" prop="chargeUserId">
+                <Select v-model="formValidate.chargeUserId" :style="{width:'200px',float: 'left'}" clearable multiple filterable>
+                    <Option v-for="item in userList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
+            </FormItem>
+            <FormItem label="平台负责人:" prop="chargeUserId">
+                <!--<Select v-model="formValidate.chargeUserId" :style="{width:'200px',float: 'left'}" clearable multiple filterable>
+                    <Option v-for="item in userList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>-->
+                <XSelect></XSelect>
             </FormItem>
             <FormItem>
                 <div style="width:100%">
@@ -42,6 +49,7 @@ import {
     Select,
     Option,
 } from "view-design";
+import XSelect from '@components/public/xSelect/xSelect'
 export default {
     name: 'Add',
     components: {
@@ -50,91 +58,96 @@ export default {
         Input,
         Select,
         Option,
+        XSelect
     },
     data() {
+        const validateChargeUserId = (rule, value, callback) => {
+            if (value && value.length) {
+                callback();
+            } else {
+                callback(new Error('请选择平台负责人'));
+            }
+        };
         return {
             formValidate: {
                 name: '',
-                mail: '',
-                city: '',
-                gender: '',
-                interest: [],
-                date: '',
-                time: '',
-                desc: ''
+                code: '',
+                chargeUserId: '',
+                url: '',
             },
             ruleValidate: {
                 name: [{
                     required: true,
-                    message: 'The name cannot be empty',
+                    message: '请输入平台名称',
                     trigger: 'blur'
                 }],
-                mail: [{
-                        required: true,
-                        message: 'Mailbox cannot be empty',
-                        trigger: 'blur'
-                    },
-                    {
-                        type: 'email',
-                        message: 'Incorrect email format',
-                        trigger: 'blur'
-                    }
-                ],
-                city: [{
-                    required: true,
-                    message: 'Please select the city',
-                    trigger: 'change'
-                }],
-                gender: [{
-                    required: true,
-                    message: 'Please select gender',
-                    trigger: 'change'
-                }],
-                interest: [{
-                        required: true,
-                        type: 'array',
-                        min: 1,
-                        message: 'Choose at least one hobby',
-                        trigger: 'change'
-                    },
-                    {
-                        type: 'array',
-                        max: 2,
-                        message: 'Choose two hobbies at best',
-                        trigger: 'change'
-                    }
-                ],
-                date: [{
-                    required: true,
-                    type: 'date',
-                    message: 'Please select the date',
-                    trigger: 'change'
-                }],
-                time: [{
+                code: [{
                     required: true,
                     type: 'string',
-                    message: 'Please select time',
+                    message: '请输入平台唯一code',
+                    trigger: 'blur'
+                }],
+                // date: [{
+                //     required: true,
+                //     type: 'date',
+                //     message: 'Please select the date',
+                //     trigger: 'change'
+                // }],
+                url: [{
+                    required: true,
+                    type: 'string',
+                    message: '请输入平台url',
+                    trigger: 'blur'
+                }],
+                chargeUserId: [{
+                    required: true,
+                    validator: validateChargeUserId,
                     trigger: 'change'
                 }],
-                desc: [{
-                        required: true,
-                        message: 'Please enter a personal introduction',
-                        trigger: 'blur'
-                    },
-                    {
-                        type: 'string',
-                        min: 20,
-                        message: 'Introduce no less than 20 words',
-                        trigger: 'blur'
-                    }
-                ]
-            }
+            },
+            userList: [{
+                    value: '001',
+                    label: '王二'
+                },
+                {
+                    value: '002',
+                    label: '李四'
+                },
+                {
+                    value: '003',
+                    label: '马六'
+                },
+            ]
         }
     },
+    methods: {
+        handleSubmit(name) {
+            this.$refs[name].validate((valid) => {
+                if (valid) {
+                    this.$Message.success('Success!');
+                } else {
+                    this.$Message.error('Fail!');
+                }
+            })
+        },
+        handleReset(name) {
+            this.$refs[name].resetFields();
+        }
+    }
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
+>>>.ivu-form-item-error-tip {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    line-height: 1;
+    padding-top: 9px;
+    color: #ed4014;
+    padding-left: 9px;
+}
+</style><style lang="less" scoped>
 .base-platfrom-add {
     width: 100%;
 

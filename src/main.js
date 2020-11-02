@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-30 09:44:51
+ * @LastEditTime: 2020-11-02 11:00:34
  */
 //引用插件
 import Vue from "vue";
@@ -42,6 +42,10 @@ Vue.prototype.$Spin = Spin;
 /**plugin */
 Vue.use(VueRouter);
 Vue.use(Loading);
+//自定义键位置
+Vue.config.keyCodes = {
+  "media-play-pause": 179,
+}
 
 new Vue({
   router,

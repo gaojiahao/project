@@ -181,6 +181,34 @@ let tokenService = {
     return new Promise((resolve, reject) => {
       resolve();
     });
+  },
+  register(data){
+    return new Promise((resolve, reject) => {
+      let params = {
+        method: "post",
+        baseURL: window.baseURL || "",
+        url: "/api/app/user/register",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: data
+      };
+      fly
+        .request(params, params.data)
+        .then(res => {
+          console.log(res)
+          resolve(res);
+        })
+        .catch(function(error) {
+          let res = error.response;
+          let data = (res && res.data) || {};
+          let message = data.error.message || "请求异常";
+          reject({
+            success: false,
+            message: message
+          });
+        });
+    }); 
   }
 };
 export default tokenService;

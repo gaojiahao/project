@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-31 09:46:13
+ * @LastEditTime: 2020-11-02 10:25:06
 -->
 <template>
 <div class="head">
@@ -31,16 +31,26 @@
 
             </YSubmenu>
         </template>
-        <li class="right-item right-title">
-            admin
+        <li class="right-item right-title" style="padding:0px 10px;">
+            <Dropdown>
+                <div href="javascript:void(0)">
+                    admin
+                    <Icon type="md-arrow-dropdown"></Icon>
+                </div>
+                <DropdownMenu slot="list">
+                    <DropdownItem @click.native="loginOut">退出</DropdownItem>
+                </DropdownMenu>
+            </Dropdown>
         </li>
-        <li class="right-item right-title">
+        <li class="right-item right-title" style="padding:0px 10px;">
             <img :src="systemInfo.asetUserUrl" />
         </li>
         <li class="right-item right-title" style="padding:0px;">
             |
         </li>
-        <li class="right-item right-title">{{systemInfo.name}}</li>
+        <li class="right-item right-title" style="padding:0px 10px;">
+            {{systemInfo.name}}
+        </li>
     </Menu>
 </div>
 </template>
@@ -53,9 +63,14 @@ import {
     Submenu,
     MenuGroup,
     RadioGroup,
-    Radio
+    Radio,
+    Dropdown,
+    DropdownMenu,
+    DropdownItem
 } from "view-design";
 import YSubmenu from "@/components/home/menu/xSubMenu/ySubmenu";
+const XZX_TOKEN_KEY = "XZX_LOGIN_TOKEN";
+const storage = window["localStorage"];
 export default {
     name: "Head",
     props: {
@@ -74,7 +89,10 @@ export default {
         MenuGroup,
         RadioGroup,
         Radio,
-        YSubmenu
+        YSubmenu,
+        Dropdown,
+        DropdownMenu,
+        DropdownItem
     },
     data() {
         return {
@@ -110,6 +128,13 @@ export default {
         },
         changeMenu(data, type) {
             console.log(data, type);
+        },
+        loginOut() {
+            debugger
+            storage.removeItem(XZX_TOKEN_KEY);
+            sessionStorage.clear();
+            localStorage.clear();
+            this.$router.push('/login');
         }
     },
     created() {
