@@ -69,6 +69,7 @@ export default {
         }
     },
     created() {
+        debugger
         this.getEcommercePlatformList();
     }
 }

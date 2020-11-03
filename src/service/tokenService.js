@@ -1,4 +1,4 @@
-import Fly from "flyio/dist/npm/fly";
+import $flyio from '@plugins/ajax';
 import router from "../router";
 
 const fly = new Fly();
@@ -98,7 +98,7 @@ let tokenService = {
         },
         data: userInfo
       };
-      fly
+      $flyio
         .request(params, params.data)
         .then(res => {
           let data = res.data;
@@ -187,7 +187,7 @@ let tokenService = {
       let params = {
         method: "post",
         baseURL: window.baseURL || "",
-        url: "/api/app/user/register",
+        url: "/api/app/user/emailRegister",
         headers: {
           "Content-Type": "application/json"
         },

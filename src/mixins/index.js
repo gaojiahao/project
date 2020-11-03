@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-30 12:25:37
+ * @LastEditTime: 2020-11-03 09:30:52
  */
 export default {
     data() {
@@ -68,6 +68,23 @@ export default {
           'authority': {
             name: '权限管理',
             value: 'authority',
+            children: [
+              {
+                name: '菜单管理',
+                value: 'menuManager',
+                auth: false,    
+              },
+              {
+                name: '用户管理',
+                value: 'userManager',
+                auth: false,    
+              },
+              {
+                name: '角色管理',
+                value: 'roleManager',
+                auth: false,    
+              }
+            ]
           },
         }
       };

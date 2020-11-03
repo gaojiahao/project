@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-24 11:57:03
+ * @LastEditTime: 2020-11-03 14:22:07
  */
 const { endianness } = require("os");
 const path = require("path");
@@ -54,7 +54,8 @@ module.exports = {
           "@scss": path.resolve(__dirname, "./src/scss"),
           "@plugins": path.resolve(__dirname, "./src/plugins"),
           "@less": path.resolve(__dirname, "./src/less"),
-          "@mixins": path.resolve(__dirname, "./src/mixins")
+          "@mixins": path.resolve(__dirname, "./src/mixins"),
+          "@utils": path.resolve(__dirname, "./src/utils")
         } // 别名配置
       }
     });

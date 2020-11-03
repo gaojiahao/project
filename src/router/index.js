@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-31 10:04:41
+ * @LastEditTime: 2020-11-03 09:27:01
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -15,10 +15,14 @@ import Basicinfo from "@views/basicinfo/index";
 import TypeManager from "@views/basicinfo/typeManager/index";
 import tokenService from "@service/tokenService";
 import errorHandler from '@components/public/errorHandler';
-import Authority from "@views/authority";
 import StoreManager from "@views/basicinfo/storeManager";
 import AddStore from "@views/basicinfo/storeManager/addStore";
 import PlatformManager from "@views/basicinfo/platformManager/index";
+//系统权限管理
+import Authority from "@views/authority";
+import MenuManager from "@views/authority/menuManager";
+import RoleManager from "@views/authority/roleManager";
+import UserManager from "@views/authority/userManager";
 
 Vue.use(VueRouter);
 
@@ -30,7 +34,7 @@ const routes = [
     redirect:'index',   //默认子路由
     meta: {
       title: "小竹熊",
-      auth: true      //检查权限true
+      // auth: true      //检查权限true
     },
     children:[
       {
@@ -93,6 +97,33 @@ const routes = [
         meta: {
           title: "权限管理"
         },
+        redirect:'authority/menuManager',
+        children:[
+          {
+            path: "roleManager",
+            name: "RoleManager",
+            component: RoleManager,
+            meta: {
+              title: "角色管理"
+            },
+          },
+          {
+            path: "menuManager",
+            name: "MenuManager",
+            component: MenuManager,
+            meta: {
+              title: "菜单管理"
+            },
+          },
+          {
+            path: "userManager",
+            name: "UserManager",
+            component: UserManager,
+            meta: {
+              title: "角色管理"
+            },
+          }
+        ]
       },
     ],
   },

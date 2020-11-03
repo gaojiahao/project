@@ -13,20 +13,31 @@ d<!--
         <div class="text">跨境电商ERP</div>
         <div class="type" v-model="type"><span :class="[type=='login' ? 'active':'']" @click="changeType('login')">登录
             </span>|<span :class="[type!='login'?'active':'']" @click="changeType('register')">注册</span></div>
-        <Input class="account" prefix="ios-mail" v-model="phoneNumber" placeholder="邮箱" @keyup.enter.native="nextFocus($event,0)" v-show="type=='register'" icon="ios-send" @click.native="send" />
-        <Input class="account" v-model="phoneVerificationCode" placeholder="邮箱验证码" @keyup.enter.native="nextFocus($event,1)" v-show="type=='register'" />
-        <Input class="account" prefix="ios-contact" v-model="userCode" placeholder="账户" @keyup.enter.native="nextFocus($event,1)" />
-        <Input class="password" prefix="ios-key" v-model="passWord" type="password" password placeholder="密码6-10位" @keyup.enter.native="nextFocus($event,2)" />
-        <div style="width: 100%;display: flex; margin-top: 20px;" v-show="type=='login'">
-            <Input v-model="code" placeholder="验证码" style="width: 80px;margin-left: 100px;float: left;" @keyup.enter.native="submitForm('ruleForm')" />
-            <s-identify :identifyCode="identifyCode" @click.native="refreshCode"></s-identify>
-        </div>
-        <div class="login" v-show="type=='login'">
-            <Button type="primary" @click="login" @keyup.enter="login">登录</Button>
-        </div>
-        <div class="login" v-show="type=='register'">
-            <Button type="primary" @click="register" @keyup.enter="register">注册</Button>
-        </div>
+        <template v-if="type=='register'">
+            <Input class="account" prefix="ios-mail" v-model="phoneNumber" placeholder="邮箱" @keyup.enter.native="nextFocus($event,0)" icon="ios-send" @click.native="send" />
+            <Input class="account" v-model="phoneVerificationCode" placeholder="邮箱验证码" @keyup.enter.native="nextFocus($event,1)" />
+            <Input class="account" prefix="ios-contact" v-model="rUserCode" placeholder="账户" @keyup.enter.native="nextFocus($event,1)" />
+            <form>
+                <Input class="password" prefix="ios-key" v-model="rPassWord" type="password" password placeholder="密码必须由数字、字母、特殊字符组合,请输入6-16位" @keyup.enter.native="nextFocus($event,2)" />
+            </form>
+            <Input class="account" prefix="md-appstore" v-model="tenantCode" placeholder="商户号" @keyup.enter.native="nextFocus($event,1)" />
+            <div class="login">
+                <Button type="primary" @click="register" @keyup.enter="register">注册</Button>
+            </div>
+        </template>
+        <template v-else>
+            <Input class="account" prefix="ios-contact" v-model="userCode" placeholder="账户" @keyup.enter.native="nextFocus($event,1)" />
+            <form>
+                <Input class="password" prefix="ios-key" v-model="passWord" type="password" password placeholder="密码6-10位" @keyup.enter.native="nextFocus($event,2)" />
+            </form>
+            <div style="width: 100%;display: flex; margin-top: 20px;">
+                <Input v-model="code" placeholder="验证码" style="width: 80px;margin-left: 100px;float: left;" @keyup.enter.native="submitForm('ruleForm')" />
+                <s-identify :identifyCode="identifyCode" @click.native="refreshCode"></s-identify>
+            </div>
+            <div class="login">
+                <Button type="primary" @click="login" @keyup.enter="login">登录</Button>
+            </div>
+        </template>
     </div>
 </div>
 </template>
@@ -39,6 +50,10 @@ import {
 } from "view-design";
 import SIdentify from '@components/public/sIdentify/sIdentify'
 import tokenService from "@service/tokenService";
+import {
+    validateEmail,
+    validatePassword
+} from '@utils/vaildata'
 
 export default {
     name: "Login",
@@ -69,7 +84,10 @@ export default {
             code: "",
             identifyCode: "",
             phoneNumber: "",
-            phoneVerificationCode: ""
+            phoneVerificationCode: "",
+            tenantCode: "",
+            rUserCode: '',
+            rPassWord: '',
         };
     },
     inject: ['reload'],
@@ -91,7 +109,6 @@ export default {
                 params.userCode = this.mobile;
                 params.password = this.testCode;
             } else {
-                debugger
                 if (!this.userCode || !this.passWord) {
                     this.$Message.error("请输入用户名或密码");
                     return;
@@ -128,29 +145,63 @@ export default {
                     this.initEL('input');
                 });
         },
-        register() {
+        /**
+         * @name: gaojiahao
+         * @test: 注册
+         * @msg:
+         * @param {*}
+         * @return {*}
+         */
+        async register() {
             let params = {};
-            if (!this.phoneNumber) {
-                this.$Message.error("请输入邮箱");
+
+            if (this.phoneNumber === '') {
+                this.$Message.error('请正确填写邮箱');
+                return;
+            } else {
+                if (this.phoneNumber !== '') {
+                    var reg = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                    if (!reg.test(this.phoneNumber)) {
+                        this.$Message.error('请输入有效的邮箱');
+                        return;
+                    }
+                }
+            }
+            if (!this.rUserCode) {
+                this.$Message.error("请输入用户名");
                 return;
             }
-            if (!this.phoneVerificationCode) {
-                this.$Message.error("请输入邮箱验证码");
+            if (this.rPassWord === '') {
+                this.$Message.error('请正确填写密码');
+                return;
+            } else {
+                if (this.rPassWord !== '') {
+                    var passwordreg = /(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,16}/
+                    if (!passwordreg.test(this.rPassWord)) {
+                        this.$Message.error('密码必须由数字、字母、特殊字符组合,请输入6-16位')
+                        return;
+                    }
+                }
+            }
+            if (!this.tenantCode) {
+                this.$Message.error("请输入商户号");
                 return;
             }
-            if (!this.userCode || !this.passWord) {
-                this.$Message.error("请输入用户名或密码");
-                return;
-            }
-            params.phoneNumber = this.phoneNumber;
-            params.phoneVerificationCode = this.phoneVerificationCode;
-            params.username = this.userCode;
-            params.password = this.passWord;
+
+            params.email = this.phoneNumber;
+            params.verificationCode = this.phoneVerificationCode;
+            params.userName = this.rUserCode;
+            params.password = this.rPassWord;
+            params.tenantCode = this.tenantCode;
             this.$loading.show();
             tokenService
                 .register(params)
-                .then(data => {
-                    console.log(data)
+                .then(res => {
+                    if (res.status == '200') {
+                        this.$loading.hide();
+                        this.$Message.info('注册成功');
+                        this.type = 'login';
+                    }
                 })
                 .catch(err => {
                     this.$loading.hide();
@@ -162,6 +213,19 @@ export default {
                     this.initEL('input');
                 });
         },
+        alertError(message) {
+            this.$Message.error({
+                content: message
+            });
+            return;
+        },
+        /**
+         * @name: gaojiahao
+         * @test: 随机验证码
+         * @msg:
+         * @param {*}
+         * @return {*}
+         */
         generatedCode() {
             const random = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
                 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
@@ -173,6 +237,13 @@ export default {
             }
             return code
         },
+        /**
+         * @name: gaojiahao
+         * @test: 更改登录注册类型
+         * @msg:
+         * @param {*}
+         * @return {*}
+         */
         changeType(type) {
             this.type = type;
         },
