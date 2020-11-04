@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 10:08:50
+ * @LastEditTime: 2020-11-03 21:05:56
 -->
 <template>
 <div>
@@ -13,17 +13,17 @@
             <Input search enter-button placeholder="菜单..." />
         </div>
         <div style="float: right;">
-            <Button type="info">新增</Button>
+            <Button type="info" @click.native="showPop">新增</Button>
             <!--<Button type="primary">更改状态</Button>
             <Button type="error">删除</Button>-->
         </div>
     </div>
-    <Table border :columns="columns12" :data="tableData1" stripe>
+    <Table row-key="id" border :columns="columns12" :data="tableData1" stripe>
         <template slot-scope="{ row }" slot="number">
             <strong>{{ row.number }}</strong>
         </template>
         <template slot-scope="{ row, index }" slot="action">
-            <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">更改状态</Button>
+            <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">编辑</Button>
             <Button type="error" size="small" @click="remove(index)">删除</Button>
         </template>
     </Table>
@@ -32,9 +32,7 @@
             <Page :total="100" :current="1" @on-change="changePage"></Page>
         </div>
     </div>
-    <Modal v-model="modal1" :title="titleText" @on-ok="ok" @on-cancel="cancel">
-        <XTree></XTree>
-    </Modal>
+    <AddMenu titleText="新建菜单" :formValidate="formValidate" :ruleValidate="ruleValidate" :show='show' :formConfig="formConfig" @save="saveMenu"></AddMenu>
 </div>
 </template>
 
@@ -46,7 +44,12 @@ import {
     Input,
     Modal
 } from "view-design";
-import XTree from "@components/public/tree/xTree"
+import AddMenu from "@components/authority/addMenu"
+import config from '@views/authority/menuManagerConfig.js'
+import {
+    addMenu
+} from '@service/authority'
+
 export default {
     name: 'MenuManager',
     components: {
@@ -55,15 +58,17 @@ export default {
         Page,
         Input,
         Modal,
-        XTree
+        AddMenu
     },
     computed: {
 
     },
+    mixins: [config],
     data() {
         return {
             tableData1: this.mockTableData1(),
             titleText: '',
+            show: false,
             columns12: [{
                     title: '序号',
                     slot: 'number',
@@ -73,7 +78,8 @@ export default {
                 },
                 {
                     title: '菜单名称',
-                    key: 'menuName'
+                    key: 'menuName',
+                    tree: true
                 },
                 {
                     title: '父级菜单',
@@ -128,7 +134,13 @@ export default {
                 data.push({
                     menuName: '菜单' + Math.floor(Math.random() * 100 + 1),
                     status: Math.floor(Math.random() * 3 + 1),
-                    createTime: new Date()
+                    createTime: new Date(),
+                    children: [{
+                        menuName: '10100',
+                        status: 'John Brown',
+                        createTime: 18,
+                        children: []
+                    }, ]
                 })
             }
             return data;
@@ -149,6 +161,24 @@ export default {
         },
         cancel() {
             this.$Message.info('温馨提示：您取消了分配权限！');
+        },
+        showPop() {
+            this.show = true;
+        },
+        saveMenu() {
+            var params = this.formValidate;
+            return new Promise((resolve, reject) => {
+                addMenu(params).then(res => {
+                    if (res.status == 200) {
+                        this.$Message.info(res.data.message);
+                    } else if (res.status == 403) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.message
+                        });
+                    }
+                });
+            });
         }
     },
     created() {}

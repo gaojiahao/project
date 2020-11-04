@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 09:27:01
+ * @LastEditTime: 2020-11-03 19:32:33
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -34,7 +34,7 @@ const routes = [
     redirect:'index',   //默认子路由
     meta: {
       title: "小竹熊",
-      // auth: true      //检查权限true
+      auth: true      //检查权限true
     },
     children:[
       {

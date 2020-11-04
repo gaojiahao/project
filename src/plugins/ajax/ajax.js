@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 11:59:02
+ * @LastEditTime: 2020-11-03 19:46:53
  */
 import Fly from "flyio/dist/npm/fly";
 // 请求地址引入
@@ -177,6 +177,17 @@ let Rxports = {
     return new Promise((resolve, reject) => {
       fly
         .post(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || "" })
+        .then(res => resolve(res))
+        .catch(err => {
+          reject(err);
+          console.log("err:", err);
+        });
+    });
+  },
+  put(opts = {}) {
+    return new Promise((resolve, reject) => {
+      fly
+        .put(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || "" })
         .then(res => resolve(res.data))
         .catch(err => {
           reject(err);

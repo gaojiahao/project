@@ -136,7 +136,6 @@ export default {
                 data['thirdLevel'] = third;
                 routerPath = routerPath + '/' + third.value;
             }
-            debugger
             this.activeIndex = data;
             this.$store.commit('setMenuRouter', data);
             this.$router.push(routerPath);

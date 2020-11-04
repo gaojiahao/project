@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-02 10:25:06
+ * @LastEditTime: 2020-11-04 10:24:28
 -->
 <template>
 <div class="head">
@@ -34,7 +34,7 @@
         <li class="right-item right-title" style="padding:0px 10px;">
             <Dropdown>
                 <div href="javascript:void(0)">
-                    admin
+                    {{userInfo.userName}}
                     <Icon type="md-arrow-dropdown"></Icon>
                 </div>
                 <DropdownMenu slot="list">
@@ -49,7 +49,7 @@
             |
         </li>
         <li class="right-item right-title" style="padding:0px 10px;">
-            {{systemInfo.name}}
+            {{userInfo.name}}
         </li>
     </Menu>
 </div>
@@ -70,7 +70,7 @@ import {
 } from "view-design";
 import YSubmenu from "@/components/home/menu/xSubMenu/ySubmenu";
 const XZX_TOKEN_KEY = "XZX_LOGIN_TOKEN";
-const storage = window["localStorage"];
+const localStorage = window["localStorage"];
 export default {
     name: "Head",
     props: {
@@ -103,7 +103,7 @@ export default {
             },
             theme1: "dark",
             activeIndex: 'index',
-
+            userInfo: {}
         };
     },
     methods: {
@@ -130,7 +130,6 @@ export default {
             console.log(data, type);
         },
         loginOut() {
-            debugger
             storage.removeItem(XZX_TOKEN_KEY);
             sessionStorage.clear();
             localStorage.clear();
@@ -140,6 +139,7 @@ export default {
     created() {
         var storage = window.sessionStorage;
         var value = JSON.parse(storage.getItem("activeMenu"));
+        this.userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY));
         this.activeIndex = value.oneLevel.value;
     },
 };

@@ -4,12 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 18:55:40
+ * @LastEditTime: 2020-11-04 09:50:40
 -->
 <template>
 <div id="app" v-title data-title="跨境电商ERP">
-    <!--<login v-if="!RouterState"></login>
-    <Home v-else></Home>-->
     <router-view />
 </div>
 </template>
@@ -31,9 +29,6 @@ export default {
         };
     },
     methods: {
-        goBack() {
-            console.log('进行了页面操作')
-        },
         reload() {
             this.RouterState = false;
             this.$nextTick(() => {
@@ -46,6 +41,39 @@ export default {
         console.log(token);
         if (token) {
             this.logginStatus = true;
+        }
+    },
+    mounted() {
+        //第一个输入框获取焦点
+        function initEl() {
+            var controls = document.getElementsByTagName('input');
+            for (var i = 0; i < controls.length; i++) {
+                if (i == 0 && controls[i].type == 'text') {
+                    controls[i].focus();
+                }
+            }
+        }
+        window.onload = function () {
+            initEl();
+        }
+        var inputGroup = document.getElementsByTagName("input");
+        var inputGroupArr = Array.from(document.getElementsByTagName("input"));
+        var iGlength = inputGroupArr.length;
+        document.onkeypress = function (e) {
+            var e = event || e;
+            console.log(inputGroupArr.indexOf(e.srcElement));
+            var idx = inputGroupArr.indexOf(e.srcElement);
+            console.log(e, e.keyCode, e.srcElement, e.which);
+            if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
+                console.log(idx)
+                if (idx == iGlength - 1) { //表明已经是最后一个输入框
+                    document.getElementsByTagName("button")[0].focus();
+                } else {
+                    inputGroup[idx + 1].focus();
+                }
+                e.preventDefault();
+            }
+            console.log(e, e.keyCode, e.srcElement, e.which);
         }
     }
 }

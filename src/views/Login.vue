@@ -14,24 +14,24 @@ d<!--
         <div class="type" v-model="type"><span :class="[type=='login' ? 'active':'']" @click="changeType('login')">登录
             </span>|<span :class="[type!='login'?'active':'']" @click="changeType('register')">注册</span></div>
         <template v-if="type=='register'">
-            <Input class="account" prefix="ios-mail" v-model="phoneNumber" placeholder="邮箱" @keyup.enter.native="nextFocus($event,0)" icon="ios-send" @click.native="send" />
-            <Input class="account" v-model="phoneVerificationCode" placeholder="邮箱验证码" @keyup.enter.native="nextFocus($event,1)" />
-            <Input class="account" prefix="ios-contact" v-model="rUserCode" placeholder="账户" @keyup.enter.native="nextFocus($event,1)" />
+            <Input class="account" prefix="ios-mail" v-model="phoneNumber" placeholder="邮箱" icon="ios-send" @click.native="send" />
+            <Input class="account" v-model="phoneVerificationCode" placeholder="邮箱验证码" />
+            <Input class="account" prefix="ios-contact" v-model="rUserCode" placeholder="账户" />
             <form>
-                <Input class="password" prefix="ios-key" v-model="rPassWord" type="password" password placeholder="密码必须由数字、字母、特殊字符组合,请输入6-16位" @keyup.enter.native="nextFocus($event,2)" />
+                <Input class="password" prefix="ios-key" v-model="rPassWord" type="password" password placeholder="密码必须由数字、字母、特殊字符组合,请输入6-16位" />
             </form>
-            <Input class="account" prefix="md-appstore" v-model="tenantCode" placeholder="商户号" @keyup.enter.native="nextFocus($event,1)" />
+            <Input class="account" prefix="md-appstore" v-model="tenantCode" placeholder="商户号" />
             <div class="login">
                 <Button type="primary" @click="register" @keyup.enter="register">注册</Button>
             </div>
         </template>
         <template v-else>
-            <Input class="account" prefix="ios-contact" v-model="userCode" placeholder="账户" @keyup.enter.native="nextFocus($event,1)" />
+            <Input class="account" prefix="ios-contact" v-model="userCode" placeholder="账户" />
             <form>
-                <Input class="password" prefix="ios-key" v-model="passWord" type="password" password placeholder="密码6-10位" @keyup.enter.native="nextFocus($event,2)" />
+                <Input class="password" prefix="ios-key" v-model="passWord" type="password" password placeholder="密码6-10位" />
             </form>
             <div style="width: 100%;display: flex; margin-top: 20px;">
-                <Input v-model="code" placeholder="验证码" style="width: 80px;margin-left: 100px;float: left;" @keyup.enter.native="submitForm('ruleForm')" />
+                <Input v-model="code" placeholder="验证码" style="width: 80px;margin-left: 100px;float: left;" />
                 <s-identify :identifyCode="identifyCode" @click.native="refreshCode"></s-identify>
             </div>
             <div class="login">
@@ -46,7 +46,6 @@ d<!--
 import {
     Button,
     Input,
-    Message
 } from "view-design";
 import SIdentify from '@components/public/sIdentify/sIdentify'
 import tokenService from "@service/tokenService";
@@ -100,6 +99,7 @@ export default {
          * @return {*}
          */
         login() {
+            debugger
             let params = {};
             if (this.isMobileLogin) {
                 if (!this.mobile || !this.testCode) {
@@ -121,19 +121,19 @@ export default {
                     this.$Message.error("验证码不能为空");
                     return;
                 }
-                params.username = this.userCode;
+                params.userName = this.userCode;
                 params.password = this.passWord;
             }
             this.$loading.show();
             tokenService
                 .pcLogin(params)
                 .then(data => {
-                    var token = tokenService.getToken(true);
-                    this.loginIn = true;
-                    localStorage.setItem("userCode", this.userCode);
-                    this.$loading.hide();
-                    this.$router.replace("/index");
-                    this.reload();
+                    var token = tokenService.getToken();
+                    if (token) {
+                        this.$loading.hide();
+                        this.$router.replace("/index");
+                        this.reload();
+                    }
                 })
                 .catch(err => {
                     this.$loading.hide();
@@ -142,7 +142,6 @@ export default {
                         content: '温馨提示：' + err.message
                     });
                     this.refreshCode();
-                    this.initEL('input');
                 });
         },
         /**
@@ -257,33 +256,6 @@ export default {
         makeCode(o, l) {
             this.identifyCode = this.generatedCode();
         },
-        //下一个输入框事件
-        nextFocus(el, index) {
-            var dom = document.getElementsByTagName('input'),
-                currInput = dom[index],
-                nextInput = dom[index + 1],
-                lastInput = dom[index - 1];
-            if (el.keyCode != 8) {
-                if (index < (2 - 1)) {
-                    nextInput.focus();
-                } else {
-                    currInput.blur();
-                }
-            } else {
-                if (index != 0) {
-                    lastInput.focus();
-                    console.log('到最后一个输入框啦！')
-                }
-            }
-            if (dom.length - 1 == index) {
-                this.nextButton();
-            }
-        },
-        nextButton() {
-            var dom = document.getElementsByTagName('button'),
-                currButton = dom[0];
-            currButton.focus();
-        },
         send() {
             if (this.phoneNumber) {
                 this.$Message.info({
@@ -291,18 +263,39 @@ export default {
                 });
             }
         },
-        initEL(type) {
-            var controls = this.$el.getElementsByTagName(type);
+    },
+    created() {},
+    mounted() {
+        //第一个输入框获取焦点
+        function initEl() {
+            var controls = document.getElementsByTagName('input');
             for (var i = 0; i < controls.length; i++) {
-                if (i == 0 && controls[i].type == 'text') { //第一个输入框获取焦点
+                if (i == 0 && controls[i].type == 'text') {
                     controls[i].focus();
                 }
             }
         }
-    },
-    created() {},
-    mounted() {
-        this.initEL('input');
+        window.onload = function () {
+            initEl();
+        }
+        var inputGroup = document.getElementsByTagName("input");
+        var inputGroupArr = Array.from(document.getElementsByTagName("input"));
+        var iGlength = inputGroupArr.length;
+        document.onkeypress = function (e) {
+            var e = event || e;
+            //console.log(inputGroupArr.indexOf(e.srcElement));
+            var idx = inputGroupArr.indexOf(e.srcElement);
+            //console.log(e, e.keyCode, e.srcElement, e.which);
+            if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
+                if (idx == iGlength - 1) { //表明已经是最后一个输入框
+                    document.getElementsByTagName("button")[0].focus();
+                } else {
+                    inputGroup[idx + 1].focus();
+                }
+                e.preventDefault();
+            }
+            //console.log(e, e.keyCode, e.srcElement, e.which);
+        }
     }
 };
 </script>

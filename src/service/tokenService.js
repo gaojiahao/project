@@ -1,4 +1,4 @@
-import $flyio from '@plugins/ajax';
+import Fly from "flyio/dist/npm/fly";
 import router from "../router";
 
 const fly = new Fly();
@@ -17,13 +17,7 @@ let tokenService = {
   // 设置token
   setToken(data) {
     globalToken = {
-      token: data.token,
-      name: data.name,
-      department: data.department,
-      avatar: data.avatar,
-      position: data.position,
-      key1: data.key1,
-      active: data.active,
+      ...data,
       timestamp: +new Date()
     };
     storage.setItem(XZX_TOKEN_KEY, JSON.stringify(globalToken));
@@ -37,11 +31,11 @@ let tokenService = {
     if (token["token"]) {
       let timestamp = token.timestamp;
       let timeCalc = new Date() - timestamp;
-      // if (isQYWX && (timeCalc > (2 * 3600 * 1000))) {
-      //   return ''
-      // } else if (timeCalc > (12 * 3600 * 1000)) { // 设置12小时过期时间
-      //   return ''
-      // }
+      if (timeCalc > (2 * 3600 * 1000)) {
+        return ''
+      } else if (timeCalc > (12 * 3600 * 1000)) { // 设置12小时过期时间
+        return ''
+      }
       return token["token"];
     } else {
       return "";
@@ -98,19 +92,11 @@ let tokenService = {
         },
         data: userInfo
       };
-      $flyio
+      fly
         .request(params, params.data)
         .then(res => {
           let data = res.data;
-          this.setToken({
-            key1: data.key1 || "",
-            active: data.active || "",
-            token: data || "",
-            entityId: data.entityId || "",
-            name: data.name || "",
-            department: data.department || "",
-            avatar: data.avatar || ""
-          });
+          this.setToken(data['data'] || "");
           resolve(data);
         })
         .catch(function(error) {

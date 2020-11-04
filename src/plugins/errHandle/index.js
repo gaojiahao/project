@@ -4,9 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-20 14:22:42
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 15:38:18
+ * @LastEditTime: 2020-11-03 19:31:21
  */
 import Vue from "vue";
+import { Message } from "view-design";
 
 // 错误处理回调
 export default function errorHandler(err) {
@@ -14,13 +15,8 @@ export default function errorHandler(err) {
     err = "抱歉，数据似乎出了点问题，请稍后重试";
   }
   // 弹窗提醒
-  this.$Message.info({
+  Message.info({
     background: true,
-    content: "err",
-    closable: true,
-    onClose() {
-      Vue.prototype.$loading.hide();
-      Vue.prototype.$HandleLoad.hide();
-    }
+    content: '接口出错：'+err,
   });
 }
