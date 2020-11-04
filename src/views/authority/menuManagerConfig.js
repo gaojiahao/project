@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 18:24:46
+ * @LastEditTime: 2020-11-04 15:57:15
  */
 export default {
   data() {
@@ -55,7 +55,8 @@ export default {
         url: '',
         isMenu: '',
         isEnabled:'',
-        parentId:''
+        parentId:'',
+        children:[]
       },
       ruleValidate: {
         name: [{

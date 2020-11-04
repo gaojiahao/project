@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 16:05:09
+ * @LastEditTime: 2020-11-04 14:45:09
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -16,21 +16,11 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
                 <RadioGroup v-model="formValidate[index]">
                     <template v-for="(ditem,dIndex) in formConfig[index]['dataSource']['data']">
-                        <Radio :label="ditem.value" :key="ditem.value">
-                            {{ditem.name}}
-                        </Radio>
+                        <Radio :label="ditem.value">{{ditem.name}}</Radio>
                     </template>
                 </RadioGroup>
             </FormItem>
         </template>
-        <!--<FormItem label="平台负责人1:" prop="chargeUserId">
-            <Select v-model="formValidate.chargeUserId" :style="{width:'200px',float: 'left'}" clearable multiple filterable>
-                <Option v-for="item in userList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-        </FormItem>
-        <FormItem label="平台负责人:" prop="chargeUserId">
-            <XSelect></XSelect>
-        </FormItem>-->
     </Form>
     <div slot="footer">
         <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
@@ -50,7 +40,7 @@ import {
     Radio
 } from "view-design";
 export default {
-    name: 'AddMenu',
+    name: 'AddChildMenu',
     components: {
         Form,
         FormItem,
@@ -84,7 +74,7 @@ export default {
                 return {}
             }
         },
-        showModel: {
+        showChildModel: {
             type: Boolean,
             default: false,
         },
@@ -101,15 +91,10 @@ export default {
                 console.log(val)
             }
         },
-        showModel: {
+        showChildModel: {
             handler(val) {
                 console.log(val)
                 this.show = val
-            }
-        },
-        formValidate: {
-            handler(val) {
-                console.log(val)
             }
         }
     },
@@ -119,13 +104,13 @@ export default {
         },
         cancel() {
             this.$emit('clear-form-data');
-            this.$emit('show-pop', false);
+            this.$emit('show-child-pop', false);
         },
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$emit('save');
-                    this.$emit('show-pop', false);
+                    this.$emit('show-child-pop', false);
                     this.$emit('clear-form-data');
                 } else {
                     this.$Message.error('保存失败');

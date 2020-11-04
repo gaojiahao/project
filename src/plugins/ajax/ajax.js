@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 19:46:53
+ * @LastEditTime: 2020-11-04 11:20:08
  */
 import Fly from "flyio/dist/npm/fly";
 // 请求地址引入
@@ -158,9 +158,7 @@ let Rxports = {
         .request(params, params.data)
         .then(res => {
           if (res) {
-            debugger
-            console.log();
-            resolve(res.data);
+            resolve(res);
           } else {
             reject();
           }

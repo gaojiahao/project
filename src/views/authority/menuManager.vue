@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 21:05:56
+ * @LastEditTime: 2020-11-04 16:09:45
 -->
 <template>
 <div>
@@ -13,26 +13,23 @@
             <Input search enter-button placeholder="菜单..." />
         </div>
         <div style="float: right;">
-            <Button type="info" @click.native="showPop">新增</Button>
+            <Button type="info" @click.native="showPop(true)">新增</Button>
             <!--<Button type="primary">更改状态</Button>
             <Button type="error">删除</Button>-->
         </div>
     </div>
-    <Table row-key="id" border :columns="columns12" :data="tableData1" stripe>
+    <Table row-key="id" :loading="loading" border :columns="columns" :data="list" stripe>
         <template slot-scope="{ row }" slot="number">
             <strong>{{ row.number }}</strong>
         </template>
         <template slot-scope="{ row, index }" slot="action">
-            <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">编辑</Button>
+            <Button type="success" size="small" style="margin-right: 5px" @click="showChildPop(true,row,index)">新建子菜单</Button>
+            <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true,row)">编辑</Button>
             <Button type="error" size="small" @click="remove(index)">删除</Button>
         </template>
     </Table>
-    <div style="margin: 10px;overflow: hidden">
-        <div style="float: right;">
-            <Page :total="100" :current="1" @on-change="changePage"></Page>
-        </div>
-    </div>
-    <AddMenu titleText="新建菜单" :formValidate="formValidate" :ruleValidate="ruleValidate" :show='show' :formConfig="formConfig" @save="saveMenu"></AddMenu>
+    <AddMenu :titleText="addMenuTitle" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="saveMenu" @show-pop="showPop" @clear-form-data="clearFormData"></AddMenu>
+    <AddChildMenu :titleText="addChildMenuTitle" :formValidate="formValidate" :ruleValidate="ruleValidate" :showChildModel='showChildModel' :formConfig="formConfig" @save="saveChildMenu" @show-child-pop="showChildPop" @clear-form-data="clearFormData"></AddChildMenu>
 </div>
 </template>
 
@@ -40,14 +37,15 @@
 import {
     Table,
     Button,
-    Page,
     Input,
     Modal
 } from "view-design";
 import AddMenu from "@components/authority/addMenu"
+import AddChildMenu from "@components/authority/addChildMenu"
 import config from '@views/authority/menuManagerConfig.js'
 import {
-    addMenu
+    addMenu,
+    getMenuList
 } from '@service/authority'
 
 export default {
@@ -55,10 +53,10 @@ export default {
     components: {
         Table,
         Button,
-        Page,
         Input,
         Modal,
-        AddMenu
+        AddMenu,
+        AddChildMenu
     },
     computed: {
 
@@ -66,40 +64,62 @@ export default {
     mixins: [config],
     data() {
         return {
-            tableData1: this.mockTableData1(),
+            list: [],
             titleText: '',
-            show: false,
-            columns12: [{
-                    title: '序号',
-                    slot: 'number',
-                    type: 'index',
-                    width: 80,
-                    align: 'center'
+            showModel: false,
+            showChildModel: false,
+            loading: true,
+            childIndex: '',
+            addMenuTitle: '新建菜单',
+            addChildMenuTitle: '新建子菜单',
+            columns: [
+                // {
+                //     title: '序号',
+                //     slot: 'number',
+                //     type: 'index',
+                //     width: 80,
+                //     align: 'center'
+                // },
+                {
+                    title: 'ID',
+                    key: 'id'
                 },
                 {
                     title: '菜单名称',
-                    key: 'menuName',
+                    key: 'displayName',
                     tree: true
                 },
                 {
+                    title: '路由地址',
+                    key: 'name',
+                },
+                {
                     title: '父级菜单',
-                    key: 'menuName'
+                    key: 'parentId'
                 },
+                // {
+                //     title: '是否菜单',
+                //     key: 'isMenu'
+                // },
+                // {
+                //     title: '子菜单',
+                //     key: 'children'
+                // },
+                // {
+                //     title: '创建时间',
+                //     key: 'createTime',
+                //     render: (h, params) => {
+                //         return h('div', this.formatDate(this.list[params.index].createTime));
+                //     }
+                // },
                 {
-                    title: '创建时间',
-                    key: 'createTime',
-                    render: (h, params) => {
-                        return h('div', this.formatDate(this.tableData1[params.index].createTime));
-                    }
-                },
-                {
-                    title: '状态',
-                    key: 'status',
+                    title: '是否启用',
+                    key: 'isEnabled',
                     width: 120,
                     render: (h, params) => {
                         const row = params.row;
-                        const color = row.status === 3 ? 'primary' : row.status === 1 ? 'success' : 'error';
-                        const text = row.status === 3 ? '默认' : row.status === 1 ? '启用' : '禁用';
+                        const color = row.isEnabled === true ? 'success' : 'error';
+                        const text = row.isEnabled === true ? '启用' : '禁用';
 
                         return h('Tag', {
                             props: {
@@ -115,35 +135,34 @@ export default {
                     align: 'center'
                 }
             ],
-            modal1: false
         }
     },
     methods: {
         setUserAuthority(userId) {
-            debugger
             this.titleText = '正在编辑' + this.userId + "的权限";
-            this.userId = this.tableData1[userId].roleName;
+            this.userId = this.list[userId].roleName;
             this.modal1 = true;
         },
         remove(index) {
-            this.tableData1.splice(index, 1);
+            this.list.splice(index, 1);
+            this.getMenuList();
         },
-        mockTableData1() {
+        //获取菜单列表
+        getMenuList() {
             let data = [];
-            for (let i = 0; i < 15; i++) {
-                data.push({
-                    menuName: '菜单' + Math.floor(Math.random() * 100 + 1),
-                    status: Math.floor(Math.random() * 3 + 1),
-                    createTime: new Date(),
-                    children: [{
-                        menuName: '10100',
-                        status: 'John Brown',
-                        createTime: 18,
-                        children: []
-                    }, ]
-                })
-            }
-            return data;
+
+            getMenuList(data).then(res => {
+                if (res.status == 200) {
+                    console.log(res.data.data.items);
+                    this.loading = false;
+                    this.list = res.data.data.items;
+                } else {
+                    this.$Message.error({
+                        background: true,
+                        content: res.message
+                    });
+                }
+            });
         },
         formatDate(date) {
             const y = date.getFullYear();
@@ -153,35 +172,90 @@ export default {
             d = d < 10 ? ('0' + d) : d;
             return y + '-' + m + '-' + d;
         },
-        changePage() {
-            this.tableData1 = this.mockTableData1();
-        },
         ok() {
             this.$Message.info('温馨提示：分配权限成功！');
         },
         cancel() {
             this.$Message.info('温馨提示：您取消了分配权限！');
         },
-        showPop() {
-            this.show = true;
+        showPop(flag, row) {
+            //有id更新操作
+            if (row && row.id) {
+                this.formValidate = {
+                    id: row.id,
+                    name: row.name,
+                    displayName: row.displayName,
+                    url: row.name,
+                    isMenu: row.isMenu ? 'true' : 'false',
+                    isEnabled: row.isEnabled ? 'true' : 'false',
+                    parentId: row.parentId,
+                    children: row.children,
+                }
+            }
+            this.showModel = flag;
         },
+        showChildPop(flag, row, index) {
+            if (row && row.id) {
+                this.childIndex = index;
+                this.formValidate.parentId = row.id;
+            }
+            this.showChildModel = flag;
+        },
+        clearFormData() {
+            this.formValidate = {
+                name: '',
+                displayName: '',
+                url: '',
+                isMenu: '',
+                isEnabled: '',
+                parentId: '',
+                children: []
+            };
+            this.childIndex = '';
+        },
+        //保存菜单
         saveMenu() {
             var params = this.formValidate;
-            return new Promise((resolve, reject) => {
-                addMenu(params).then(res => {
-                    if (res.status == 200) {
-                        this.$Message.info(res.data.message);
-                    } else if (res.status == 403) {
-                        this.$Message.error({
-                            background: true,
-                            content: res.message
-                        });
-                    }
+            if (!this.formValidate.id) {
+                return new Promise((resolve, reject) => {
+                    addMenu(params).then(res => {
+                        if (res.status == 200) {
+                            this.$Message.info(res.data.message);
+                            params = {
+                                ...params,
+                                ...res.data.data,
+                            }
+                            //this.list.push(params);
+                            this.getMenuList();
+                        } else if (res.status == 403) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.message
+                            });
+                        }
+                    });
                 });
+            } else {
+                return new Promise((resolve, reject) => {
+                    this.$Message.info('更新成功');
+                });
+            }
+        },
+        //保存子菜单
+        saveChildMenu() {
+            var params = this.formValidate;
+            return new Promise((resolve, reject) => {
+                this.list[this.childIndex].children.push(params);
             });
         }
+
     },
-    created() {}
+    created() {
+        this.getMenuList();
+    },
+    mounted() {
+
+    }
 }
 </script>
 
