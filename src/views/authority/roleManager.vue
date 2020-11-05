@@ -4,22 +4,25 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 09:17:34
+ * @LastEditTime: 2020-11-05 11:18:59
 -->
 <template>
 <div>
-    <div style="margin: 10px;overflow: hidden">
-        <div style="float: right;">
+    <div style="margin: 10px 0;overflow: hidden">
+        <div style="float: left;">
             <Input search enter-button placeholder="角色..." />
         </div>
+        <div style="float: right;">
+            <Button type="info" @click.native="showPop(true)">新建角色</Button>
+        </div>
     </div>
-    <Table border :columns="columns12" :data="tableData1" stripe>
+    <Table border :columns="columns" :data="list" stripe>
         <template slot-scope="{ row }" slot="number">
             <strong>{{ row.number }}</strong>
         </template>
         <template slot-scope="{ row, index }" slot="action">
             <Button type="success" size="small" style="margin-right: 5px" @click="setUserAuthority(index)">分配权限</Button>
-            <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">更改状态</Button>
+            <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true,row)">编辑</Button>
             <Button type="error" size="small" @click="remove(index)">删除</Button>
         </template>
     </Table>
@@ -28,8 +31,9 @@
             <Page :total="100" :current="1" @on-change="changePage"></Page>
         </div>
     </div>
-    <Modal v-model="modal1" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
-        <XTree></XTree>
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <Modal v-model="modal1" title="分配权限" @on-ok="ok" @on-cancel="cancel" width="800">
+        <XTreeAdd></XTreeAdd>
     </Modal>
 </div>
 </template>
@@ -42,7 +46,9 @@ import {
     Input,
     Modal
 } from "view-design";
-import XTree from "@components/public/tree/xTree"
+import XTreeAdd from "@components/public/tree/xTreeAdd"
+import ModalForm from "@components/public/form/modalForm"
+import config from '@views/authority/roleManagerConfig.js'
 export default {
     name: 'RoleManager',
     components: {
@@ -51,16 +57,18 @@ export default {
         Page,
         Input,
         Modal,
-        XTree
+        XTreeAdd,
+        ModalForm
     },
     computed: {
 
     },
+    mixins: [config],
     data() {
         return {
-            tableData1: this.mockTableData1(),
+            list: this.mockTableData1(),
             titleText: '',
-            columns12: [{
+            columns: [{
                     title: '序号',
                     slot: 'number',
                     type: 'index',
@@ -75,7 +83,7 @@ export default {
                     title: '创建时间',
                     key: 'createTime',
                     render: (h, params) => {
-                        return h('div', this.formatDate(this.tableData1[params.index].createTime));
+                        return h('div', this.formatDate(this.list[params.index].createTime));
                     }
                 },
                 {
@@ -101,24 +109,26 @@ export default {
                     align: 'center'
                 }
             ],
-            modal1: false
+            modal1: false,
+            showModel: false,
+            titleText: '',
         }
     },
     methods: {
         setUserAuthority(userId) {
             debugger
             this.titleText = '正在编辑' + this.userId + "的权限";
-            this.userId = this.tableData1[userId].roleName;
+            this.userId = this.list[userId].roleName;
             this.modal1 = true;
         },
         // show(index) {
         //     this.$Modal.info({
         //         title: 'User Info',
-        //         content: `number：${this.tableData1[index].roleName}`
+        //         content: `number：${this.list[index].roleName}`
         //     })
         // },
         remove(index) {
-            this.tableData1.splice(index, 1);
+            this.list.splice(index, 1);
         },
         mockTableData1() {
             let data = [];
@@ -126,7 +136,8 @@ export default {
                 data.push({
                     roleName: '角色' + Math.floor(Math.random() * 100 + 1),
                     status: Math.floor(Math.random() * 3 + 1),
-                    createTime: new Date()
+                    createTime: new Date(),
+                    id: Math.floor(Math.random() * 10000 + 1)
                 })
             }
             return data;
@@ -140,14 +151,27 @@ export default {
             return y + '-' + m + '-' + d;
         },
         changePage() {
-            this.tableData1 = this.mockTableData1();
+            this.list = this.mockTableData1();
         },
         ok() {
             this.$Message.info('温馨提示：分配权限成功！');
         },
         cancel() {
             this.$Message.info('温馨提示：您取消了分配权限！');
-        }
+        },
+        showPop(flag, row) {
+            if (row && row.id) {
+                this.formValidate['id'] = row.id;
+                this.titleText = '编辑';
+            } else {
+                this.titleText = '新建';
+            }
+            this.showModel = flag;
+        },
+        save() {
+
+        },
+        clearFormData() {}
     },
     created() {}
 }
@@ -157,5 +181,11 @@ export default {
 >>>.ivu-table th,
 >>>.ivu-table td {
     height: 28px;
+}
+
+>>>.ivu-modal-footer {
+    border-top: 0;
+    padding: 12px 18px 12px 18px;
+    text-align: right;
 }
 </style>

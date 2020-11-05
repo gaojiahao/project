@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 16:09:45
+ * @LastEditTime: 2020-11-05 11:13:10
 -->
 <template>
 <div>
@@ -13,12 +13,12 @@
             <Input search enter-button placeholder="菜单..." />
         </div>
         <div style="float: right;">
-            <Button type="info" @click.native="showPop(true)">新增</Button>
+            <Button type="info" @click.native="showPop(true)">新建菜单</Button>
             <!--<Button type="primary">更改状态</Button>
             <Button type="error">删除</Button>-->
         </div>
     </div>
-    <Table row-key="id" :loading="loading" border :columns="columns" :data="list" stripe>
+    <Table row-key="id" :loading="loading" border :columns="columns" :data="list" stripe _showChildren>
         <template slot-scope="{ row }" slot="number">
             <strong>{{ row.number }}</strong>
         </template>
@@ -28,7 +28,7 @@
             <Button type="error" size="small" @click="remove(index)">删除</Button>
         </template>
     </Table>
-    <AddMenu :titleText="addMenuTitle" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="saveMenu" @show-pop="showPop" @clear-form-data="clearFormData"></AddMenu>
+    <ModalForm :titleText="addMenuTitle" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="saveMenu" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
     <AddChildMenu :titleText="addChildMenuTitle" :formValidate="formValidate" :ruleValidate="ruleValidate" :showChildModel='showChildModel' :formConfig="formConfig" @save="saveChildMenu" @show-child-pop="showChildPop" @clear-form-data="clearFormData"></AddChildMenu>
 </div>
 </template>
@@ -40,7 +40,7 @@ import {
     Input,
     Modal
 } from "view-design";
-import AddMenu from "@components/authority/addMenu"
+import ModalForm from "@components/public/form/modalForm"
 import AddChildMenu from "@components/authority/addChildMenu"
 import config from '@views/authority/menuManagerConfig.js'
 import {
@@ -55,7 +55,7 @@ export default {
         Button,
         Input,
         Modal,
-        AddMenu,
+        ModalForm,
         AddChildMenu
     },
     computed: {
@@ -156,6 +156,7 @@ export default {
                     console.log(res.data.data.items);
                     this.loading = false;
                     this.list = res.data.data.items;
+                    //需要遍历处理子节点，默认树形展开 this.list[this.childIndex]['_showChildren'] = true;
                 } else {
                     this.$Message.error({
                         background: true,
@@ -191,6 +192,9 @@ export default {
                     parentId: row.parentId,
                     children: row.children,
                 }
+                this.addMenuTitle = '编辑菜单';
+            } else {
+                this.addMenuTitle = '新建菜单';
             }
             this.showModel = flag;
         },
@@ -246,6 +250,7 @@ export default {
             var params = this.formValidate;
             return new Promise((resolve, reject) => {
                 this.list[this.childIndex].children.push(params);
+                this.list[this.childIndex]['_showChildren'] = true;
             });
         }
 

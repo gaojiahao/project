@@ -272,6 +272,7 @@ export default {
             for (var i = 0; i < controls.length; i++) {
                 if (i == 0 && controls[i].type == 'text') {
                     controls[i].focus();
+                    console.log(controls[i])
                 }
             }
         }

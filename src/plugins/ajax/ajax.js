@@ -4,13 +4,15 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 11:20:08
+ * @LastEditTime: 2020-11-05 10:08:14
  */
 import Fly from "flyio/dist/npm/fly";
 // 请求地址引入
 import tokenService from "@service/tokenService";
 // 弹窗插件引入
 import errHandle from "@plugins/errHandle";
+//错误提示
+import { Message } from "view-design";
 
 let qs = require("querystring");
 // 请求插件引入
@@ -164,8 +166,13 @@ let Rxports = {
           }
         })
         .catch(err => {
-          reject(err);
-          console.log("err:", err);
+          Message.error({
+            background: true,
+            content: "温馨提示："+err.response.data.error.message,
+            duration: 3
+          });
+          // reject(err);
+          // console.log("err:", err);
         });
     });
   },
@@ -177,8 +184,14 @@ let Rxports = {
         .post(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || "" })
         .then(res => resolve(res))
         .catch(err => {
-          reject(err);
-          console.log("err:", err);
+          // 弹窗提醒
+            Message.error({
+              background: true,
+              content: "温馨提示："+err.response.data.error.message,
+              duration: 3
+            });
+          // reject(err);
+          // console.log("err:", err);
         });
     });
   },
@@ -188,8 +201,13 @@ let Rxports = {
         .put(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || "" })
         .then(res => resolve(res.data))
         .catch(err => {
-          reject(err);
-          console.log("err:", err);
+          Message.error({
+            background: true,
+            content: "温馨提示："+err.response.data.error.message,
+            duration: 3
+          });
+          // reject(err);
+          // console.log("err:", err);
         });
     });
   },

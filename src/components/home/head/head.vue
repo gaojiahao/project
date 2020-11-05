@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 10:24:28
+ * @LastEditTime: 2020-11-04 20:52:27
 -->
 <template>
 <div class="head">
@@ -130,8 +130,8 @@ export default {
             console.log(data, type);
         },
         loginOut() {
-            storage.removeItem(XZX_TOKEN_KEY);
-            sessionStorage.clear();
+            localStorage.removeItem(XZX_TOKEN_KEY);
+            localStorage.clear();
             localStorage.clear();
             this.$router.push('/login');
         }

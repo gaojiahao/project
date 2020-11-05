@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 20:52:40
+ * @LastEditTime: 2020-11-05 11:21:08
 -->
 <template>
 <div>
@@ -13,17 +13,17 @@
             <Input search enter-button placeholder="用户..." />
         </div>
         <div style="float: right;">
-            <Button type="info" @click.native="showPop">新增</Button>
+            <Button type="info" @click.native="showPop(true)">新建用户</Button>
             <!--<Button type="primary">更改状态</Button>
             <Button type="error">删除</Button>-->
         </div>
     </div>
-    <Table row-key="id" border :columns="columns12" :data="tableData1" stripe>
+    <Table row-key="id" border :columns="columns" :data="list" stripe>
         <template slot-scope="{ row }" slot="number">
             <strong>{{ row.number }}</strong>
         </template>
         <template slot-scope="{ row, index }" slot="action">
-            <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">编辑</Button>
+            <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true,row)">编辑</Button>
             <Button type="error" size="small" @click="remove(index)">删除</Button>
         </template>
     </Table>
@@ -32,7 +32,7 @@
             <Page :total="100" :current="1" @on-change="changePage"></Page>
         </div>
     </div>
-    <AddMenu titleText="新建用户" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel="showModel" :formConfig="formConfig" @save="saveMenu"></AddMenu>
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
 </div>
 </template>
 
@@ -44,8 +44,8 @@ import {
     Input,
     Modal
 } from "view-design";
-import AddMenu from "@components/authority/addMenu"
-import config from '@views/authority/menuManagerConfig.js'
+import ModalForm from "@components/public/form/modalForm"
+import config from '@views/authority/userManagerConfig.js'
 import {
     addMenu
 } from '@service/authority'
@@ -58,7 +58,7 @@ export default {
         Page,
         Input,
         Modal,
-        AddMenu
+        ModalForm
     },
     computed: {
 
@@ -66,10 +66,10 @@ export default {
     mixins: [config],
     data() {
         return {
-            tableData1: this.mockTableData1(),
+            list: this.mockTableData1(),
             titleText: '',
             showModel: false,
-            columns12: [{
+            columns: [{
                     title: '序号',
                     slot: 'number',
                     type: 'index',
@@ -88,7 +88,7 @@ export default {
                     title: '创建时间',
                     key: 'createTime',
                     render: (h, params) => {
-                        return h('div', this.formatDate(this.tableData1[params.index].createTime));
+                        return h('div', this.formatDate(this.list[params.index].createTime));
                     }
                 },
                 {
@@ -97,8 +97,8 @@ export default {
                     width: 120,
                     render: (h, params) => {
                         const row = params.row;
-                        const color = row.status === 3 ? 'primary' : row.status === 1 ? 'success' : 'error';
-                        const text = row.status === 3 ? '默认' : row.status === 1 ? '启用' : '禁用';
+                        const color = row.status === 1 ? 'success' : 'error';
+                        const text = row.status === 1 ? '启用' : '禁用';
 
                         return h('Tag', {
                             props: {
@@ -119,13 +119,12 @@ export default {
     },
     methods: {
         setUserAuthority(userId) {
-            debugger
             this.titleText = '正在编辑' + this.userId + "的权限";
-            this.userId = this.tableData1[userId].roleName;
+            this.userId = this.list[userId].roleName;
             this.modal1 = true;
         },
         remove(index) {
-            this.tableData1.splice(index, 1);
+            this.list.splice(index, 1);
         },
         mockTableData1() {
             let data = [];
@@ -135,6 +134,7 @@ export default {
                     status: Math.floor(Math.random() * 3 + 1),
                     roleName: '角色' + Math.floor(Math.random() * 100 + 1),
                     createTime: new Date(),
+                    id: Math.random() * 100,
                 })
             }
             return data;
@@ -148,19 +148,24 @@ export default {
             return y + '-' + m + '-' + d;
         },
         changePage() {
-            this.tableData1 = this.mockTableData1();
+            this.list = this.mockTableData1();
         },
         ok() {
-            this.$Message.info('温馨提示：分配权限成功！');
+
         },
         cancel() {
-            this.$Message.info('温馨提示：您取消了分配权限！');
+
         },
-        showPop() {
-            debugger
-            this.showModel = true;
+        showPop(flag, row) {
+            if (row && row.id) {
+                this.formValidate['id'] = row.id;
+                this.titleText = '编辑';
+            } else {
+                this.titleText = '新建';
+            }
+            this.showModel = flag;
         },
-        saveMenu() {
+        save() {
             var params = this.formValidate;
             return new Promise((resolve, reject) => {
                 addMenu(params).then(res => {
@@ -175,9 +180,27 @@ export default {
                 });
             });
         },
-        show() {
-
-        }
+        handleSubmit(name) {
+            this.$refs[name].validate((valid) => {
+                if (valid) {
+                    this.$emit('save');
+                    this.$emit('show-pop', false);
+                    this.$emit('clear-form-data');
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
+        },
+        clearFormData() {
+            this.formValidate = {
+                id: '',
+                tenantCode: '',
+                userName: '',
+                email: '',
+                status: '',
+                roleId: '',
+            };
+        },
     },
     created() {}
 }
@@ -187,5 +210,11 @@ export default {
 >>>.ivu-table th,
 >>>.ivu-table td {
     height: 28px;
+}
+
+>>>.ivu-modal-footer {
+    border-top: 0;
+    padding: 12px 18px 12px 18px;
+    text-align: right;
 }
 </style>

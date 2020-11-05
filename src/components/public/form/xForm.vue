@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 10:49:44
+ * @LastEditTime: 2020-11-05 10:55:05
 -->
 <template>
-<Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
+<div>
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
         <template v-for="(item, index) in formValidate">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
@@ -22,20 +22,17 @@
                     </template>
                 </RadioGroup>
             </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='select'">
+                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable>
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.value">{{ item.name }}</Option>
+                </Select>
+            </FormItem>
         </template>
-        <!--<FormItem label="平台负责人1:" prop="chargeUserId">
-            <Select v-model="formValidate.chargeUserId" :style="{width:'200px',float: 'left'}" clearable multiple filterable>
-                <Option v-for="item in userList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-        </FormItem>
-        <FormItem label="平台负责人:" prop="chargeUserId">
-            <XSelect></XSelect>
-        </FormItem>-->
     </Form>
-    <div slot="footer">
+    <div class="footer" style="float: right;">
         <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
     </div>
-</Modal>
+</div>
 </template>
 
 <script>
@@ -45,21 +42,21 @@ import {
     Input,
     Select,
     Option,
-    Modal,
     RadioGroup,
     Radio
 } from "view-design";
+import XSelect from '@components/public/xSelect/xSelect'
 export default {
-    name: 'AddMenu',
+    name: 'XForm',
     components: {
         Form,
         FormItem,
         Input,
         Select,
         Option,
-        Modal,
         RadioGroup,
-        Radio
+        Radio,
+        XSelect
     },
     props: {
         titleText: {
@@ -84,32 +81,27 @@ export default {
                 return {}
             }
         },
-        showModel: {
-            type: Boolean,
-            default: false,
-        },
     },
     data() {
         return {
             data: {},
-            show: false
         }
     },
     watch: {
         formConfig: {
             handler(val) {
-
+                console.log(val)
             }
         },
         showModel: {
             handler(val) {
+                console.log(val)
                 this.show = val
-                this.initEL('input');
             }
         },
         formValidate: {
             handler(val) {
-
+                console.log(val)
             }
         }
     },
@@ -170,6 +162,9 @@ export default {
     },
     mounted() {
         this.initClick();
+    },
+    created() {
+
     }
 }
 </script>

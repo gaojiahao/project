@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 10:49:44
+ * @LastEditTime: 2020-11-05 11:21:56
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -50,7 +50,7 @@ import {
     Radio
 } from "view-design";
 export default {
-    name: 'AddMenu',
+    name: 'ModalForm',
     components: {
         Form,
         FormItem,

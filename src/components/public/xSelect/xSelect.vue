@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-02 17:05:48
+ * @LastEditTime: 2020-11-04 18:10:49
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px">
@@ -18,7 +18,7 @@
             <span>{{titleText}}</span>
             <Icon type="ios-expand" @click.native="fullModel()" />
         </p>
-        <Table border :columns="columns" :data="data" stripe style="margin-top:20px">
+        <Table border :columns="columns" :data="data" stripe style="margin-top:20px" highlight-row @on-current-change="onCurrentChange()">
             <template slot-scope="{ row }" slot="number">
                 <strong>{{ row.userName }}</strong>
             </template>
@@ -97,6 +97,9 @@ export default {
         },
         fullModel() {
             this.fullscreen = this.fullscreen ? false : true;
+        },
+        onCurrentChange(currentRow, oldCurrentRow) {
+            console.log(currentRow)
         }
     }
 

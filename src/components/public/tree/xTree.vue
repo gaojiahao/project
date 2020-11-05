@@ -173,8 +173,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .demo-tree-render .ivu-tree-title {
     width: 100%;
+}
+</style><style lang="less" scoped>
+.ivu-tree /deep/ {
+    width: 600px;
 }
 </style>

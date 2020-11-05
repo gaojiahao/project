@@ -94,7 +94,7 @@
         position: relative;
         overflow: hidden;
         top: 0px;
-        width: 100%;
+        //width: calc(100% - 150px);
 
         .content-panel{
             padding: 0 16px 16px;
@@ -131,9 +131,11 @@
 }
 .marginRight{
     margin-left: 78px;
+    width: calc(100% - 78px);
 }
 .marginLeft{
     margin-left: 150px;
+    width: calc(100% - 150px);
 }
 .ivu-menu-submenu-title > i, .ivu-menu-submenu-title span > i {
     margin-right: 0px;
