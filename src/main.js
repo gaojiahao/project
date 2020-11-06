@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 09:44:39
+ * @LastEditTime: 2020-11-06 12:14:38
  */
 //引用插件
 import Vue from "vue";
@@ -13,7 +13,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import VueRouter from "vue-router";
-import { Message, Switch, Circle,Tree,Icon,Button,Span,Badge,Notice,Modal,Tag,Spin } from "view-design";
+import { Message, Switch, Circle,Tree,Icon,Button,Span,Badge,Notice,Modal,Tag,Spin,Radio,Checkbox,Input } from "view-design";
 import "view-design/dist/styles/iview.css";
 //引用自定义组件
 import Loading from "@plugins/loading/pageLoad/loading";
@@ -34,6 +34,9 @@ Vue.component("Badge", Badge);
 Vue.component("i-switch", Switch);
 Vue.component("i-circle", Circle);
 Vue.component("Tag", Tag);
+Vue.component("Radio", Radio);
+Vue.component("Checkbox", Checkbox);
+Vue.component("Input", Input);
 //组件挂载到vue $this上
 Vue.prototype.$Message = Message;
 Vue.prototype.$Notice = Notice;

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 20:20:31
+ * @LastEditTime: 2020-11-06 14:55:17
  */
 export default {
     data() {
@@ -47,7 +47,52 @@ export default {
               message: '请输入分组类别',
               trigger: 'blur'
           }],
-        }
+        },
+        formConfig2:{
+          proy:{
+            name:'属性',
+            type:'select',
+            dataSource:{
+              multiple:false,
+              type:'static',
+              data:[
+                {
+                  name: '材质',
+                  value: 'metel'
+                },
+                {
+                  name: '颜色',
+                  value: 'color'
+                },
+                {
+                  name: '大小',
+                  value: 'size'
+                },
+              ],
+            },
+            columns:[
+              {
+                name:'ID',
+                value:'id'
+              },
+              {
+                name:'属性',
+                value:'proy'
+              },
+            ],
+          },
+        },
+        formValidate2: {
+          proy: '',
+          id:'',
+        },
+        ruleValidate2: {
+          proy: [{
+              required: true,
+              message: '请输入属性',
+              trigger: 'change'
+          }],
+        },
       }
     }
   }

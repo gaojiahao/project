@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 09:32:58
+ * @LastEditTime: 2020-11-06 10:59:33
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <PlatformManagerList :list="listData" @select-item="selectItem"></PlatformManagerList>
+            <PlatformManagerList :list="listData" @select-item="selectItem" @add="add"></PlatformManagerList>
         </div>
         <div class="right">
             <div class="right-top">
@@ -65,13 +65,6 @@ export default {
             selectSBind: {},
         }
     },
-    watch: {
-        listData: {
-            handler(val) {
-                console.log(val)
-            }
-        }
-    },
     methods: {
         getEcommercePlatformList() {
             return new Promise((resolve, reject) => {
@@ -106,12 +99,16 @@ export default {
                 });
             }
         },
+        add() {
+            // this.$refs['form'].$refs['formValidate'].resetFields();
+        },
         clearFormData() {
 
         },
         selectItem(index) {
-            console.log(index)
-            this.$refs['form'].$refs['formValidate'].resetFields();
+            if (!this.$refs['form'].$refs['formValidate'].validate()) {
+                this.$refs['form'].$refs['formValidate'].resetFields();
+            }
             this.formValidate = this.listData[index];
         },
         selectPlatformBind(data) {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 09:33:16
+ * @LastEditTime: 2020-11-06 10:37:59
 -->
 <template>
 <div class="content">
@@ -101,11 +101,6 @@ export default {
                 this.show = val
             }
         },
-        formValidate: {
-            handler(val) {
-                console.log(val)
-            }
-        }
     },
     methods: {
         ok() {
@@ -128,7 +123,6 @@ export default {
         },
         initEL(type) {
             var controls = this.$el.getElementsByTagName(type);
-            console.log(controls[0].value);
             for (var i = 0; i < controls.length; i++) {
                 if (i == 0 && controls[i].type == 'text' && !controls[i].value) { //第一个输入框获取焦点
                     setTimeout(() => {

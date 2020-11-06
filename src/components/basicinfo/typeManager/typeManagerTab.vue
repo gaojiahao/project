@@ -4,25 +4,41 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 20:59:45
+ * @LastEditTime: 2020-11-06 15:03:41
 -->
 <template>
-<Tabs type="card">
-    <TabPane label="分类属性" :animated="false">
-        <Table border :columns="columns" :data="data" :width="1331">
+<Tabs type="card" :animated="false" @on-click="selectTab">
+    <TabPane label="分类属性">
+        <Table border :columns="columns" :data="data">
             <template slot-scope="{ row, index }" slot="action">
-                <Switch size="large">
+                <i-switch size="large">
                     <span slot="open">ON</span>
                     <span slot="close">OFF</span>
-                </Switch>
+                </i-switch>
             </template>
         </Table>
     </TabPane>
     <TabPane label="制作文件">
-        制作文件
+        <div style="width:100%;height:38px;margin-top:10px">
+            <div style="float:left">
+                <RadioGroup v-model="platform">
+                    <Radio label="all">全平台</Radio>
+                    <Radio label="yms">亚马孙</Radio>
+                    <Radio label="smt">速卖通</Radio>
+                    <Radio label="eBay">eBay</Radio>
+                </RadioGroup>
+            </div>
+        </div>
+        <Table border :columns="columns2" :data="data2"></Table>
     </TabPane>
-    <Button @click="" size="small" slot="extra">添加属性</Button>
-    <Button @click="" size="small" slot="extra">保存</Button>
+    <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="showPop(true)">添加属性</Button>
+    <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton">保存</Button>
+    <Button type="primary" size="small" slot="extra" v-show="activeTab==1" class="tabsButton">保存</Button>
+    <ModalForm :titleText="titleText" :formValidate="formValidate2" :ruleValidate="ruleValidate2" :showModel='showModel' :formConfig="formConfig2" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <div slot="footer">
+        <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
+    </div>
+    </Modal>
 </Tabs>
 </template>
 
@@ -31,17 +47,26 @@ import {
     Tabs,
     TabPane,
     Table,
-    Switch,
-    Button
+    Button,
+    RadioGroup,
+    Radio
 } from "view-design";
+import ModalForm from "@components/public/form/modalForm";
+import config from "@views/basicinfo/typeManager/typeManagerConfig";
 export default {
     name: 'TypeManagerTab',
     components: {
         Tabs,
         TabPane,
         Table,
-        Switch,
-        Button
+        Button,
+        RadioGroup,
+        Radio,
+        ModalForm
+    },
+    mixins: [config],
+    computed: {
+
     },
     data() {
         return {
@@ -56,6 +81,10 @@ export default {
                     key: 'proName'
                 },
                 {
+                    title: '属性值',
+                    key: 'proValue'
+                },
+                {
                     title: '属性状态',
                     slot: 'action',
                     align: 'center'
@@ -63,22 +92,117 @@ export default {
             ],
             data: [{
                     proName: '颜色',
+                    proValue: "color"
                 },
                 {
                     proName: '尺寸',
+                    proValue: "size"
                 },
                 {
                     proName: '带电',
+                    proValue: "isElect"
                 },
                 {
                     proName: '材质',
+                    proValue: "unit"
                 }
-            ]
+            ],
+            columns2: [{
+                    title: '输出文件名称',
+                    key: 'name'
+                },
+                {
+                    title: '数量',
+                    key: 'count',
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('Input', {
+                            style: {
+                                width: '100px',
+                            },
+                            props: {
+                                value: params.row.conName,
+                            },
+                            on: {
+                                'on-change': (event) => {
+                                    this.data2[params.index][params.column.key] = event.currentTarget.value; //获取编辑行的inde和编辑字段名，对表格数据进行重新赋值
+                                }
+                            }
+                        });
+                    }
+                },
+                {
+                    title: '是否需要',
+                    key: 'isCheck',
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('Checkbox', {
+                            props: {
+                                single: false
+                            },
+                            on: {
+                                'on-change': (event) => {
+                                    this.data2[params.index][params.column.key] = event; //获取编辑行的inde和编辑字段名，对表格数据进行重新赋值
+                                }
+                            }
+                        });
+                    }
+                }
+            ],
+            data2: [{
+                    name: '主视图',
+                },
+                {
+                    name: '详情图',
+
+                },
+                {
+                    name: '3D建模',
+                },
+                {
+                    name: '视频文件',
+                },
+                {
+                    name: '音频文件',
+                },
+                {
+                    name: '其他文件',
+                }
+            ],
+            activeTab: '',
+            platform: 'all',
+            titleText: '添加属性',
+            showModel: false
         }
+    },
+    methods: {
+        selectTab(name) {
+            this.activeTab = name;
+        },
+        save() {
+
+        },
+        clearFormData() {},
+        showPop(flag, row) {
+            if (row && row.id) {
+                this.formValidate['id'] = row.id;
+                this.titleText = '编辑';
+            } else {
+                this.titleText = '新建';
+            }
+            this.showModel = flag;
+        },
     }
 }
 </script>
 
 <style lang="less" scoped>
-
+.tabsButton {
+    margin-right: 10px;
+}
+</style><style scoped>
+>>>.ivu-tabs-bar {
+    border-bottom: 0;
+    margin-bottom: 0;
+}
 </style>

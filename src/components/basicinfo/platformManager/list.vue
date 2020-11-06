@@ -6,7 +6,7 @@
             <span class="text">当前平台</span>
         </div>
         <div class="right">
-            <Button type="primary" icon="md-add" size="small">新建平台
+            <Button type="primary" icon="md-add" size="small" @click.native="add">新建平台
             </Button>
         </div>
     </div>
@@ -15,7 +15,7 @@
         <template v-if="list.length">
             <List :border="false" :split="false" v-for="(item,index) in list" :key="index">
                 <ListItem>
-                    <div style="padding:0 10px 0 28px;" :class="[selectIndex!=null&&selectIndex==index ? 'active':'']" @click="selectItem(index)">
+                    <div style="padding:0 10px 0 28px;" :class="[selectIndex!=null&&selectIndex==index ? 'active':'']" @click="select(index)">
                         <span>{{item.name}}</span>&nbsp|&nbsp<span>{{item.code}}</span>
                     </div>
                 </ListItem>
@@ -73,9 +73,12 @@ export default {
                 }, 1000);
             });
         },
-        selectItem(index) {
+        select(index) {
             this.selectIndex = index;
             this.$emit('select-item', index);
+        },
+        add() {
+            this.$emit('add');
         }
     },
     created() {}
