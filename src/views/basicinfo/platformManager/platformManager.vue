@@ -4,20 +4,25 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 20:48:42
+ * @LastEditTime: 2020-11-06 09:32:58
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <TypeManagerList :list="list" @select-item="selectItem"></TypeManagerList>
+            <PlatformManagerList :list="listData" @select-item="selectItem"></PlatformManagerList>
         </div>
         <div class="right">
             <div class="right-top">
                 <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
             </div>
+            <div class="right-title">
+                类目绑定
+            </div>
             <div class="right-bottom">
-                <TypeManagerTab></TypeManagerTab>
+                <PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind>
+                <SystemCategoryBind @select-system-bind="selectSystemBind" ref="selectSystemBind"></SystemCategoryBind>
+                <NowCategoryBind></NowCategoryBind>
             </div>
         </div>
     </div>
@@ -25,9 +30,16 @@
 </template>
 
 <script>
-import TypeManagerList from "@components/basicinfo/typeManager/typeManagerList";
-import TypeManagerTab from "@components/basicinfo/typeManager/typeManagerTab";
-import config from "@views/basicinfo/typeManager/typeManagerConfig";
+import {
+    Tree,
+    Card
+} from "view-design";
+import PlatformManagerList from "@components/basicinfo/platformManager/list";
+import SystemCategoryBind from "@components/basicinfo/platformManager/systemCategoryBind";
+import PlatformCategoryBind from "@components/basicinfo/platformManager/platformCategoryBind";
+import NowCategoryBind from "@components/basicinfo/platformManager/nowCategoryBind";
+import CategoryBind from "@components/basicinfo/platformManager/categoryBind";
+import config from "@views/basicinfo/platformManager/platformManagerConfig";
 import XForm from "@components/public/form/xForm";
 import {
     addEcommercePlatform,
@@ -35,22 +47,26 @@ import {
 } from "@service/basicinfoService"
 
 export default {
-    name: "TypeManager",
+    name: "platformManager",
     mixins: [config],
     components: {
-        TypeManagerList,
+        Card,
+        PlatformManagerList,
+        CategoryBind,
         XForm,
-        TypeManagerTab
+        SystemCategoryBind,
+        PlatformCategoryBind,
+        NowCategoryBind
     },
     data() {
         return {
-            list: [],
+            listData: [],
             selectPBind: {},
             selectSBind: {},
         }
     },
     watch: {
-        list: {
+        listData: {
             handler(val) {
                 console.log(val)
             }
@@ -61,7 +77,7 @@ export default {
             return new Promise((resolve, reject) => {
                 getEcommercePlatformList().then(res => {
                     this.$nextTick(() => {
-                        this.list = res.data.items;
+                        this.listData = res.data.items;
                     });
                 });
             });
@@ -95,8 +111,8 @@ export default {
         },
         selectItem(index) {
             console.log(index)
-            //this.$refs['form'].$refs['formValidate'].resetFields();
-            this.formValidate = this.list[index];
+            this.$refs['form'].$refs['formValidate'].resetFields();
+            this.formValidate = this.listData[index];
         },
         selectPlatformBind(data) {
             this.selectPBind = data;
@@ -140,11 +156,8 @@ export default {
 
         .right {
             flex: 1;
-            display: flex;
-            flex-direction: column;
 
             .right-top {
-                flex: 1;
                 margin: 10px 10px;
                 background-color: #f5fffa;
                 border: 1px solid #dcdee2;
@@ -152,10 +165,20 @@ export default {
                 transition: all 0.2s ease-in-out;
             }
 
-            .right-bottom {
-                flex: 1;
+            .right-title {
                 margin: 10px 10px;
+                background: linear-gradient(to top, #d2effd, #ffffff);
+                border: 1px solid #dcdee2;
+                border-color: #e8eaec;
                 transition: all 0.2s ease-in-out;
+                text-align: left;
+                padding: 10px 20px;
+            }
+
+            .right-bottom {
+                transition: all 0.2s ease-in-out;
+                display: flex;
+                flex-direction: row;
             }
         }
     }

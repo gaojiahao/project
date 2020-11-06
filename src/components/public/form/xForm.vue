@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 10:55:05
+ * @LastEditTime: 2020-11-06 09:33:16
 -->
 <template>
-<div>
+<div class="content">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
         <template v-for="(item, index) in formValidate">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
@@ -28,10 +28,12 @@
                 </Select>
             </FormItem>
         </template>
+        <FormItem>
+            <div style="width:100%">
+                <Button type="primary" @click="handleSubmit('formValidate')" style="    float: left;">保存</Button>
+            </div>
+        </FormItem>
     </Form>
-    <div class="footer" style="float: right;">
-        <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
-    </div>
 </div>
 </template>
 
@@ -119,7 +121,6 @@ export default {
                 if (valid) {
                     this.$emit('save');
                     this.$emit('show-pop', false);
-                    this.$emit('clear-form-data');
                 } else {
                     this.$Message.error('保存失败');
                 }
@@ -127,11 +128,12 @@ export default {
         },
         initEL(type) {
             var controls = this.$el.getElementsByTagName(type);
+            console.log(controls[0].value);
             for (var i = 0; i < controls.length; i++) {
-                if (i == 0 && controls[i].type == 'text') { //第一个输入框获取焦点
+                if (i == 0 && controls[i].type == 'text' && !controls[i].value) { //第一个输入框获取焦点
                     setTimeout(() => {
                         controls[0].focus();
-                        console.log(controls[0]);
+                        console.log(controls[0].value);
                     }, 1000);
                 }
             }
@@ -170,6 +172,10 @@ export default {
 </script>
 
 <style scoped>
+.content {
+    padding: 40px 10px 10px 10px;
+}
+
 >>>.ivu-form-item-error-tip {
     position: absolute;
     top: 100%;

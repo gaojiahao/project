@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 11:13:10
+ * @LastEditTime: 2020-11-05 20:35:13
 -->
 <template>
 <div>
@@ -18,7 +18,7 @@
             <Button type="error">删除</Button>-->
         </div>
     </div>
-    <Table row-key="id" :loading="loading" border :columns="columns" :data="list" stripe _showChildren>
+    <Table row-key="id" :loading="loading" border :columns="columns" :data="list" stripe>
         <template slot-scope="{ row }" slot="number">
             <strong>{{ row.number }}</strong>
         </template>

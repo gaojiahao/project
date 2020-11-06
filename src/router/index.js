@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 19:32:33
+ * @LastEditTime: 2020-11-05 19:43:58
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -17,7 +17,7 @@ import tokenService from "@service/tokenService";
 import errorHandler from '@components/public/errorHandler';
 import StoreManager from "@views/basicinfo/storeManager";
 import AddStore from "@views/basicinfo/storeManager/addStore";
-import PlatformManager from "@views/basicinfo/platformManager/index";
+import PlatformManager from "@views/basicinfo/platformManager/platformManager";
 //系统权限管理
 import Authority from "@views/authority";
 import MenuManager from "@views/authority/menuManager";

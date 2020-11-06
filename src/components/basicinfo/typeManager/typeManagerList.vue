@@ -3,23 +3,17 @@
     <div class="head">
         <div class="left">
             <Icon type="md-apps" />
-            <span class="text">当前平台</span>
+            <span class="text">当前分类</span>
         </div>
         <div class="right">
-            <Button type="primary" icon="md-add" size="small">新建平台
+            <Button type="primary" icon="md-add" size="small">新建分类
             </Button>
         </div>
     </div>
     <div class="content">
         <!--<Scroll :on-reach-bottom="handleReachBottom">-->
         <template v-if="list.length">
-            <List :border="false" :split="false" v-for="(item,index) in list" :key="index">
-                <ListItem>
-                    <div style="padding:0 10px 0 28px;" :class="[selectIndex!=null&&selectIndex==index ? 'active':'']" @click="selectItem(index)">
-                        <span>{{item.name}}</span>&nbsp|&nbsp<span>{{item.code}}</span>
-                    </div>
-                </ListItem>
-            </List>
+            <Tree :data="data"></Tree>
         </template>
         <template v-else>
             暂无数据
@@ -43,7 +37,7 @@ import {
     getEcommercePlatformList
 } from "@service/basicinfoService"
 export default {
-    name: 'PlatformManagerList',
+    name: 'TypeManagerList',
     components: {
         Icon,
         Button,
@@ -62,27 +56,55 @@ export default {
     },
     data() {
         return {
-            selectIndex: null,
+            data: [{
+                id: 1,
+                title: '电子器元件',
+                loading: false,
+                expand: true,
+                children: [{
+                    id: 'a',
+                    title: '玩具类',
+                    loading: false,
+                    expand: true,
+                    children: [{
+                        id: 'a-1',
+                        title: '积木类',
+                        loading: false,
+                        expand: true,
+                        children: [{
+                            id: 'a-1-1',
+                            title: '木质积木',
+                            loading: false,
+                            children: []
+                        }, {
+                            id: 'a-1-2',
+                            title: 'pvc积木',
+                            loading: false,
+                            children: []
+                        }]
+                    }, {
+                        id: 'a-2',
+                        title: '遥控类',
+                        loading: false,
+                        expand: true,
+                        children: []
+                    }]
+                }, ]
+            }],
         }
     },
     methods: {
-        handleReachBottom() {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    console.log('get data');
-                }, 1000);
-            });
-        },
-        selectItem(index) {
-            this.selectIndex = index;
-            this.$emit('select-item', index);
-        }
+
     },
     created() {}
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
+>>>.ivu-tree-children li {
+    float: left;
+}
+</style><style lang="less" scoped>
 .base-platfrom-list {
     width: 100%;
 
@@ -112,4 +134,4 @@ export default {
         }
     }
 }
-</style>>
+</style>

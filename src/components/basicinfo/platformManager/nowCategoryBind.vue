@@ -4,11 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 17:33:21
+ * @LastEditTime: 2020-11-05 18:07:01
 -->
 <template>
 <div class="content">
-    <Tree :data="data" show-checkbox @on-check-change="checkChange" :load-data="loadData" check-strictly></Tree>
+    <div class="head">
+        <span class="text">已绑定类目</span>
+    </div>
+    <Tree :data="data"></Tree>
 </div>
 </template>
 
@@ -17,7 +20,7 @@ import {
 
 } from "view-design";
 export default {
-    name: 'CategoryBind',
+    name: 'NowCategoryBind',
     components: {
 
     },
@@ -25,9 +28,38 @@ export default {
         return {
             data: [{
                 id: 1,
-                title: '平台类目',
+                title: '电子器元件',
                 loading: false,
-                children: []
+                expand: true,
+                children: [{
+                    id: 'a',
+                    title: '玩具类',
+                    loading: false,
+                    expand: true,
+                    children: [{
+                        id: 'a-1',
+                        title: '积木类',
+                        loading: false,
+                        expand: true,
+                        children: [{
+                            id: 'a-1-1',
+                            title: '木质积木',
+                            loading: false,
+                            children: []
+                        }, {
+                            id: 'a-1-2',
+                            title: 'pvc积木',
+                            loading: false,
+                            children: []
+                        }]
+                    }, {
+                        id: 'a-2',
+                        title: '遥控类',
+                        loading: false,
+                        expand: true,
+                        children: []
+                    }]
+                }, ]
             }],
             loop: 0
         }
@@ -36,32 +68,12 @@ export default {
         selectChangeAll() {
 
         },
-        loadData(item, callback) {
-            setTimeout(() => {
-                const data = [{
-                        id: Math.random(),
-                        title: '子类目' + Math.floor(Math.random() * (100 - 1)) + 1,
-                        loading: false,
-                        children: []
-                    },
-                    {
-                        id: Math.random(),
-                        title: '子类目' + Math.floor(Math.random() * (100 - 1)) + 1,
-                        loading: false,
-                        children: []
-                    }
-                ]
-                callback(data)
-            }, 1000)
-        },
         checkChange(items, item) {
             console.log(items);
             console.log(item);
             if (items.length > 1) {
                 this.loop = 0
                 this.childnodes(this.data, items, item)
-                console.log(items);
-                console.log(item);
             }
         },
         childnodes(data, items, item) {
@@ -91,16 +103,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .content {
     flex: 1;
     margin: 0 10px;
     background-color: #f5fffa;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
-}
 
-.demo-tree-render .ivu-tree-title {
-    width: 100%;
+    .head {
+        width: 100%;
+        height: 40px;
+        background: linear-gradient(to top, #d2effd, #ffffff);
+        line-height: 40px;
+    }
 }
 </style>
