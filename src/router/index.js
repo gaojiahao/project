@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 16:19:38
+ * @LastEditTime: 2020-11-09 09:55:49
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -25,6 +25,7 @@ import PropertyManager from "@views/basicinfo/propertyManager/index";
 import BrandManager from "@views/basicinfo/brandManager/index";
 import PlatformManager from "@views/basicinfo/platformManager/platformManager";
 import StoreManager from "@views/basicinfo/storeManager";
+import StoreList from "@views/basicinfo/storeManager/storeList";
 import AddStore from "@views/basicinfo/storeManager/addStore";
 
 Vue.use(VueRouter);
@@ -93,10 +94,19 @@ const routes = [
             path: "storeManager",
             name: "StoreManager",
             component: StoreManager,
+            redirect:'storeManager/storeList',   //默认子路由
             meta: {
               title: "店铺管理"
             },
             children:[
+              {
+                path: "storeList",
+                name: "StoreList",
+                component: StoreList,
+                meta: {
+                  title: "店铺管理"
+                },
+              },
               {
                 path: "addStore",
                 name: "AddStore",

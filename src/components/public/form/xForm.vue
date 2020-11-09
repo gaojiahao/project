@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 10:37:59
+ * @LastEditTime: 2020-11-09 10:05:01
 -->
 <template>
 <div class="content">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
         <template v-for="(item, index) in formValidate">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
-                <Input v-model="formValidate[index]" :style="{width:'200px',float: 'left'}"></Input>
+                <Input v-model="formValidate[index]" :style="{width:'200px'}"></Input>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
                 <RadioGroup v-model="formValidate[index]">
@@ -178,5 +178,9 @@ export default {
     padding-top: 9px;
     color: #ed4014;
     padding-left: 9px;
+}
+
+>>>.ivu-form-item-content {
+    display: flex;
 }
 </style>

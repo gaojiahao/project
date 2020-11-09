@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 15:03:07
+ * @LastEditTime: 2020-11-09 09:59:54
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
         <template v-for="(item, index) in formValidate">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
-                <Input v-model="formValidate[index]" :style="{width:'200px',float: 'left'}"></Input>
+                <Input v-model="formValidate[index]" :style="{width:'200px'}"></Input>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
                 <RadioGroup v-model="formValidate[index]">

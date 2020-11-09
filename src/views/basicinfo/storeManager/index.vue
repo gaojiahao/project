@@ -4,49 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 09:44:51
+ * @LastEditTime: 2020-11-09 09:56:57
 -->
 <template>
-<div class="storeManager-container">
-    <div class="head">
-        <div class="select-type">
-            渠道：
-            <Button type="primary">亚马逊</Button>
-            <Button type="primary" ghost>速卖通</Button>
-            <Button type="primary" ghost>eBay</Button>
-        </div>
-    </div>
-    <div class="filter">
-        <div class="filter-button">
-            <RadioGroup v-model="filter" type="button">
-                <Radio label="large">全部</Radio>
-                <Radio label="default">已启用</Radio>
-                <Radio label="small">已停用</Radio>
-            </RadioGroup>
-        </div>
-        <div class="filter-search">
-            关键词：
-            <Input placeholder="关键词" style="width: 200px" />
-            创建时间：
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <Button type="primary" icon="ios-search">搜索</Button>
-        </div>
-    </div>
-    <div>
-        <Table border :columns="columns" :data="data" stripe>
-            <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">编辑</Button>
-            </template>
-        </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage"></Page>
-            </div>
-        </div>
-    </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
-</div>
+<router-view></router-view>
 </template>
 
 <script>

@@ -4,42 +4,78 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-30 12:25:55
+ * @LastEditTime: 2020-11-09 10:35:08
 -->
 <template>
 <div>
-    <div style="display: flex;flex-direction:row;flex-wrap: nowrap;justify-content: flex-start; width: 100%;">
-        <Card style="margin: 10px 10px;width:300px;background-color: #f5fffa; height: 750px;">
-            <TestTree></TestTree>
-        </Card>
-        <div>
-            <Card style="margin: 10px 10px;width:600px;background-color: #f5fffa;">
-                <TestForm></TestForm>
-            </Card>
-            <Card style="margin: 10px 10px;width:600px;background-color: #f5fffa;">
-                <Test></Test>
-            </Card>
-        </div>
+    <div class="top">
+        <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
+    </div>
+    <div class="bottom-title">
+        选择运营类目
+    </div>
+    <div class="bottom">
+        <PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind>
+        <NowCategoryBind></NowCategoryBind>
     </div>
 </div>
 </template>
 
 <script>
-import {
-    Tree,
-    Card
-} from "view-design";
-import TestForm from "@components/basicinfo/testForm";
-import TestTree from "@components/basicinfo/testTree";
-import Test from "@components/basicinfo/test";
+import XForm from "@components/public/form/xForm";
+import config from "@views/basicinfo/storeManager/addStoreConfig";
+import PlatformCategoryBind from "@components/basicinfo/platformManager/platformCategoryBind";
+import NowCategoryBind from "@components/basicinfo/platformManager/nowCategoryBind";
 
 export default {
     name: "AddStore",
     components: {
-        Card,
-        TestForm,
-        TestTree,
-        Test,
+        XForm,
+        PlatformCategoryBind,
+        NowCategoryBind
     },
+    data() {
+        return {
+            selectPBind: {},
+        }
+    },
+    mixins: [config],
+    methods: {
+        save() {},
+        clearFormData() {},
+        selectPlatformBind(data) {
+            this.selectPBind = data;
+        },
+    },
+    created() {
+
+    }
 }
 </script>
+
+<style lang="less" scoped>
+.top {
+    flex: 1;
+    margin: 10px 10px;
+    background-color: #f5fffa;
+    border: 1px solid #dcdee2;
+    border-color: #e8eaec;
+    transition: all 0.2s ease-in-out;
+}
+
+.bottom-title {
+    margin: 10px 10px;
+    background: linear-gradient(to top, #d2effd, #ffffff);
+    border: 1px solid #dcdee2;
+    border-color: #e8eaec;
+    transition: all 0.2s ease-in-out;
+    text-align: left;
+    padding: 10px 20px;
+}
+
+.bottom {
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    flex-direction: row;
+}
+</style>
