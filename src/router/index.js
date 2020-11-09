@@ -4,25 +4,28 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 19:43:58
+ * @LastEditTime: 2020-11-06 16:19:38
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Index from "@views/home/index";
 import Login from "@views/Login.vue";
 import Home from "@views/Home.vue";
-import Basicinfo from "@views/basicinfo/index";
-import TypeManager from "@views/basicinfo/typeManager/index";
 import tokenService from "@service/tokenService";
 import errorHandler from '@components/public/errorHandler';
-import StoreManager from "@views/basicinfo/storeManager";
-import AddStore from "@views/basicinfo/storeManager/addStore";
-import PlatformManager from "@views/basicinfo/platformManager/platformManager";
 //系统权限管理
 import Authority from "@views/authority";
 import MenuManager from "@views/authority/menuManager";
 import RoleManager from "@views/authority/roleManager";
 import UserManager from "@views/authority/userManager";
+//基础管理
+import Basicinfo from "@views/basicinfo/index";
+import TypeManager from "@views/basicinfo/typeManager/index";
+import PropertyManager from "@views/basicinfo/propertyManager/index";
+import BrandManager from "@views/basicinfo/brandManager/index";
+import PlatformManager from "@views/basicinfo/platformManager/platformManager";
+import StoreManager from "@views/basicinfo/storeManager";
+import AddStore from "@views/basicinfo/storeManager/addStore";
 
 Vue.use(VueRouter);
 
@@ -68,6 +71,22 @@ const routes = [
             component: PlatformManager,
             meta: {
               title: "平台管理"
+            },
+          },
+          {
+            path: "propertyManager",
+            name: "propertyManager",
+            component: PropertyManager,
+            meta: {
+              title: "属性管理"
+            },
+          },
+          {
+            path: "brandManager",
+            name: "brandManager",
+            component: BrandManager,
+            meta: {
+              title: "品牌管理"
             },
           },
           {

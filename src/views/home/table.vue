@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 19:22:29
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 11:09:00
+ * @LastEditTime: 2020-11-06 15:29:02
 -->
 <template>
 <div>
@@ -189,34 +189,14 @@ export default {
 }
 </script>
 
-<style>
-.ivu-table .demo-table-info-row td {
+<style scoped>
+>>>.ivu-table>>>.demo-table-info-row>>>td {
     background-color: #2db7f5;
     color: #fff;
 }
 
-.ivu-table .demo-table-error-row td {
-    background-color: #ff6600;
-    color: #fff;
-}
-
-.ivu-table td.demo-table-info-column {
+/deep/ .ivu-table /deep/ .demo-table-info-row td /deep/ {
     background-color: #2db7f5;
-    color: #fff;
-}
-
-.ivu-table .demo-table-info-cell-name {
-    background-color: #2db7f5;
-    color: #fff;
-}
-
-.ivu-table .demo-table-info-cell-age {
-    background-color: #ff6600;
-    color: #fff;
-}
-
-.ivu-table .demo-table-info-cell-address {
-    background-color: #187;
     color: #fff;
 }
 

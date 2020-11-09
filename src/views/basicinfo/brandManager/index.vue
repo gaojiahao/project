@@ -4,20 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 16:16:03
+ * @LastEditTime: 2020-11-06 16:37:32
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <TypeManagerList :list="list" @select-item="selectItem"></TypeManagerList>
+            <BrandManagerList :list="listData" @select-item="selectItem" @add="add"></BrandManagerList>
         </div>
         <div class="right">
             <div class="right-top">
                 <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
-            </div>
-            <div class="right-bottom">
-                <TypeManagerTab></TypeManagerTab>
             </div>
         </div>
     </div>
@@ -25,9 +22,12 @@
 </template>
 
 <script>
-import TypeManagerList from "@components/basicinfo/typeManager/typeManagerList";
-import TypeManagerTab from "@components/basicinfo/typeManager/typeManagerTab";
-import config from "@views/basicinfo/typeManager/typeManagerConfig";
+import {
+    Tree,
+    Card
+} from "view-design";
+import BrandManagerList from "@components/basicinfo/brandManager/brandManagerList";
+import config from "@views/basicinfo/brandManager/brandManagerConfig";
 import XForm from "@components/public/form/xForm";
 import {
     addEcommercePlatform,
@@ -35,25 +35,18 @@ import {
 } from "@service/basicinfoService"
 
 export default {
-    name: "TypeManager",
+    name: "BrandManager",
     mixins: [config],
     components: {
-        TypeManagerList,
+        Card,
+        BrandManagerList,
         XForm,
-        TypeManagerTab
     },
     data() {
         return {
-            list: [],
+            listData: [],
             selectPBind: {},
             selectSBind: {},
-        }
-    },
-    watch: {
-        list: {
-            handler(val) {
-                console.log(val)
-            }
         }
     },
     methods: {
@@ -61,7 +54,7 @@ export default {
             return new Promise((resolve, reject) => {
                 getEcommercePlatformList().then(res => {
                     this.$nextTick(() => {
-                        this.list = res.data.items;
+                        this.listData = res.data.items;
                     });
                 });
             });
@@ -90,13 +83,17 @@ export default {
                 });
             }
         },
+        add() {
+            // this.$refs['form'].$refs['formValidate'].resetFields();
+        },
         clearFormData() {
 
         },
         selectItem(index) {
-            console.log(index)
-            //this.$refs['form'].$refs['formValidate'].resetFields();
-            this.formValidate = this.list[index];
+            if (!this.$refs['form'].$refs['formValidate'].validate()) {
+                this.$refs['form'].$refs['formValidate'].resetFields();
+            }
+            this.formValidate = this.listData[index];
         },
         selectPlatformBind(data) {
             this.selectPBind = data;
@@ -127,7 +124,6 @@ export default {
         flex-wrap: nowrap;
         justify-content: flex-start;
         width: 100%;
-        max-height: 300px;
 
         .left {
             margin: 10px 10px;
@@ -141,11 +137,8 @@ export default {
 
         .right {
             flex: 1;
-            display: flex;
-            flex-direction: column;
 
             .right-top {
-                flex: 1;
                 margin: 10px 10px;
                 background-color: #f5fffa;
                 border: 1px solid #dcdee2;
@@ -153,10 +146,20 @@ export default {
                 transition: all 0.2s ease-in-out;
             }
 
-            .right-bottom {
-                flex: 1;
+            .right-title {
                 margin: 10px 10px;
+                background: linear-gradient(to top, #d2effd, #ffffff);
+                border: 1px solid #dcdee2;
+                border-color: #e8eaec;
                 transition: all 0.2s ease-in-out;
+                text-align: left;
+                padding: 10px 20px;
+            }
+
+            .right-bottom {
+                transition: all 0.2s ease-in-out;
+                display: flex;
+                flex-direction: row;
             }
         }
     }

@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 15:03:41
+ * @LastEditTime: 2020-11-06 18:04:22
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
     <TabPane label="分类属性">
-        <Table border :columns="columns" :data="data">
+        <Table border :columns="columns" :data="data" stripe>
             <template slot-scope="{ row, index }" slot="action">
                 <i-switch size="large">
                     <span slot="open">ON</span>
@@ -29,7 +29,7 @@
                 </RadioGroup>
             </div>
         </div>
-        <Table border :columns="columns2" :data="data2"></Table>
+        <Table border :columns="columns2" :data="data2" stripe></Table>
     </TabPane>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="showPop(true)">添加属性</Button>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton">保存</Button>

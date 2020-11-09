@@ -4,20 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 16:16:03
+ * @LastEditTime: 2020-11-06 16:14:48
 -->
 <template>
-<div class="platformManager-container">
-    <div class="platformManager-container-panel">
+<div class="propertyManager-container">
+    <div class="propertyManager-container-panel">
         <div class="left">
-            <TypeManagerList :list="list" @select-item="selectItem"></TypeManagerList>
+            <PropertyManagerList :list="list" @select-item="selectItem"></PropertyManagerList>
         </div>
         <div class="right">
             <div class="right-top">
                 <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
-            </div>
-            <div class="right-bottom">
-                <TypeManagerTab></TypeManagerTab>
             </div>
         </div>
     </div>
@@ -25,9 +22,8 @@
 </template>
 
 <script>
-import TypeManagerList from "@components/basicinfo/typeManager/typeManagerList";
-import TypeManagerTab from "@components/basicinfo/typeManager/typeManagerTab";
-import config from "@views/basicinfo/typeManager/typeManagerConfig";
+import PropertyManagerList from "@components/basicinfo/propertyManager/propertyManagerList";
+import config from "@views/basicinfo/propertyManager/propertyManagerConfig.js";
 import XForm from "@components/public/form/xForm";
 import {
     addEcommercePlatform,
@@ -35,12 +31,11 @@ import {
 } from "@service/basicinfoService"
 
 export default {
-    name: "TypeManager",
+    name: "PropertyManager",
     mixins: [config],
     components: {
-        TypeManagerList,
+        PropertyManagerList,
         XForm,
-        TypeManagerTab
     },
     data() {
         return {
@@ -70,19 +65,9 @@ export default {
             var params = this.formValidate;
             if (!this.formValidate.id) {
                 return new Promise((resolve, reject) => {
-                    addEcommercePlatform(params).then(res => {
-                        if (res.status == 200) {
-                            this.$Message.info('温馨提示：成功');
-                            this.getEcommercePlatformList();
-                            this.$refs['form'].$refs['formValidate'].resetFields();
-                            this.$refs['form'].initEL('input');
-                        } else if (res.status == 403) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.message
-                            });
-                        }
-                    });
+                    this.$Message.info('温馨提示：成功');
+                    this.$refs['form'].$refs['formValidate'].resetFields();
+                    this.$refs['form'].initEL('input');
                 });
             } else {
                 return new Promise((resolve, reject) => {
@@ -120,8 +105,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.platformManager-container {
-    .platformManager-container-panel {
+.propertyManager-container {
+    .propertyManager-container-panel {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;

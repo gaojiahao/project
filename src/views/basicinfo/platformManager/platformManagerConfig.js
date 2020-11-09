@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 09:14:11
+ * @LastEditTime: 2020-11-06 16:38:56
  */
 export default {
     data() {
@@ -71,7 +71,7 @@ export default {
           code: [{
               required: true,
               type: 'string',
-              message: '平台code',
+              message: '请输入平台code',
               trigger: 'blur'
           }],
           url: [{

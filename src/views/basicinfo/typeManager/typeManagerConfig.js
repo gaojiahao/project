@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 14:55:17
+ * @LastEditTime: 2020-11-06 15:34:26
  */
 export default {
     data() {
@@ -49,7 +49,7 @@ export default {
           }],
         },
         formConfig2:{
-          proy:{
+          property:{
             name:'属性',
             type:'select',
             dataSource:{
@@ -77,17 +77,17 @@ export default {
               },
               {
                 name:'属性',
-                value:'proy'
+                value:'property'
               },
             ],
           },
         },
         formValidate2: {
-          proy: '',
+          property: '',
           id:'',
         },
         ruleValidate2: {
-          proy: [{
+          property: [{
               required: true,
               message: '请输入属性',
               trigger: 'change'
