@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 09:55:49
+ * @LastEditTime: 2020-11-09 11:00:27
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -27,6 +27,8 @@ import PlatformManager from "@views/basicinfo/platformManager/platformManager";
 import StoreManager from "@views/basicinfo/storeManager";
 import StoreList from "@views/basicinfo/storeManager/storeList";
 import AddStore from "@views/basicinfo/storeManager/addStore";
+//流程管理
+import Bpm from "@views/bpm";
 
 Vue.use(VueRouter);
 
@@ -153,6 +155,14 @@ const routes = [
             },
           }
         ]
+      },
+      {
+        path: "bpm",
+        name: "Bpm",
+        component: Bpm,
+        meta: {
+          title: "流程管理"
+        },
       },
     ],
   },

@@ -127,7 +127,6 @@ export default {
         flex-wrap: nowrap;
         justify-content: flex-start;
         width: 100%;
-        max-height: 300px;
 
         .left {
             margin: 10px 10px;

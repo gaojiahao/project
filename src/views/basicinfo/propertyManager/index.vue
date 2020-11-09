@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 16:14:48
+ * @LastEditTime: 2020-11-09 18:30:59
 -->
 <template>
 <div class="propertyManager-container">
@@ -112,7 +112,6 @@ export default {
         flex-wrap: nowrap;
         justify-content: flex-start;
         width: 100%;
-        max-height: 300px;
 
         .left {
             margin: 10px 10px;

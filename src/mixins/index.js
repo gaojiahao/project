@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 09:30:52
+ * @LastEditTime: 2020-11-09 10:56:13
  */
 export default {
     data() {
@@ -85,6 +85,10 @@ export default {
                 auth: false,    
               }
             ]
+          },
+          'bpm': {
+            name: '流程管理',
+            value: 'bpm',
           },
         }
       };
