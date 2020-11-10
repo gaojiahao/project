@@ -347,6 +347,8 @@ export default {
     height: 800px;
     margin: 0 auto;
     background-color: #f5f5f5;
+    background: linear-gradient(90deg, rgba(200, 0, 0, 0.15) 10%, rgba(0, 0, 0, 0) 10%), linear-gradient(rgba(200, 0, 0, 0.15) 10%, rgba(0, 0, 0, 0) 10%);
+    background-size: 10px 10px;
 
     .super-flow__node {
         .flow-node {

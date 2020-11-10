@@ -99,7 +99,6 @@ export default {
          * @return {*}
          */
         login() {
-            debugger
             let params = {};
             if (this.isMobileLogin) {
                 if (!this.mobile || !this.testCode) {

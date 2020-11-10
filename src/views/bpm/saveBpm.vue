@@ -24,20 +24,24 @@
                 <Input v-model="nodeSetting.name" placeholder="请输入节点名称" :style="{width:'200px'}">
                 </Input>
             </FormItem>
+            <FormItem label="条件" prop="desc">
+                <Input v-model="nodeSetting.desc" placeholder="请输入条件" :style="{width:'200px'}">
+                </Input>
+            </FormItem>
             <FormItem label="参与角色" prop="name">
                 <Select :style="{width:'200px'}" clearable filterable>
-                    <Option>总经理</Option>
-                    <Option>开发主管</Option>
+                    <Option value="001">总经理</Option>
+                    <Option value="002">开发主管</Option>
                 </Select>
             </FormItem>
             <FormItem label="参与者" prop="name">
                 <Select :style="{width:'200px'}" clearable filterable>
-                    <Option>李四</Option>
-                    <Option>王五</Option>
+                    <Option value="true">李四</Option>
+                    <Option value="false">王五</Option>
                 </Select>
             </FormItem>
             <FormItem label="开启通知" prop="message">
-                <RadioGroup v-model="message">
+                <RadioGroup>
                     <Radio label="true">
                         是
                     </Radio>
@@ -51,7 +55,33 @@
                 </Input>
             </FormItem>
         </Form>
-        <Form v-show="drawerConf.type === drawerType.link" ref="linkSetting" :model="linkSetting">
+        <Form v-show="drawerConf.type === drawerType.link" ref="linkSetting" :model="linkSetting" label-position="right" :label-width="100">
+            <FormItem label="条件" prop="desc">
+                <Input v-model="nodeSetting.desc" placeholder="请输入条件" :style="{width:'200px'}">
+                </Input>
+            </FormItem>
+            <FormItem label="参与角色" prop="name">
+                <Select :style="{width:'200px'}" clearable filterable>
+                    <Option value="001">总经理</Option>
+                    <Option value="002">开发主管</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="参与者" prop="name">
+                <Select :style="{width:'200px'}" clearable filterable>
+                    <Option value="true">李四</Option>
+                    <Option value="false">王五</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="开启通知" prop="message">
+                <RadioGroup>
+                    <Radio label="true">
+                        是
+                    </Radio>
+                    <Radio label="false">
+                        否
+                    </Radio>
+                </RadioGroup>
+            </FormItem>
             <FormItem label="连线描述" prop="desc">
                 <Input v-model="linkSetting.desc" placeholder="请输入连线描述" :style="{width:'200px'}">
                 </Input>
@@ -368,7 +398,8 @@ export default {
     width: 100%;
     height: 800px;
     margin: 0 auto;
-    background-color: #f5f5f5;
+    background: linear-gradient(90deg, rgba(200, 0, 0, 0.15) 10%, rgba(0, 0, 0, 0) 10%), linear-gradient(rgba(200, 0, 0, 0.15) 10%, rgba(0, 0, 0, 0) 10%);
+    background-size: 10px 10px;
 
     .super-flow__node {
         .flow-node {

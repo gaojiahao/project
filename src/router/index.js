@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 10:27:16
+ * @LastEditTime: 2020-11-10 17:02:13
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -33,6 +33,10 @@ import SaveBpm from "@views/bpm/saveBpm";
 import SaveBpm2 from "@views/bpm/saveBpm2";
 import UpdataBpm from "@views/bpm/updataBpm";
 import BpmManager from "@views/bpm/bpmManager";
+//产品管理
+import Product from "@views/product";
+import ProductList from "@views/product/productManager/productList";
+import Sell from "@views/product/sell/sellList";
 
 Vue.use(VueRouter);
 
@@ -203,6 +207,33 @@ const routes = [
           },
         ]
       },
+      {
+        path:"product",
+        name:"Product",
+        component: Product,
+        meta: {
+          title: "产品管理"
+        },
+        redirect:'product/productList',
+        children:[
+          {
+            path: 'productList',
+            name: 'ProductList',
+            meta:{ 
+              title:'产品列表',
+            },
+            component: ProductList
+          }, 
+          {
+            path: 'sell',
+            name: 'Sell',
+            meta:{ 
+              title:'销售推品列表',
+            },
+            component: Sell
+          },  
+        ]
+      }
     ],
   },
   {

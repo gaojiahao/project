@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 09:40:31
+ * @LastEditTime: 2020-11-10 12:31:25
  */
 export default {
     data() {
@@ -67,7 +67,37 @@ export default {
             name: '产品管理',
             value: 'product',
             status: true,
-            children: [],
+            children: [
+              {
+                name: '销售推品',
+                value: 'sell',
+                status: true,
+                children: [
+                  {
+                    name: '新建成品',
+                    value: 'addFinishProduct',
+                    status: true,     
+                  },
+                  {
+                    name: '推荐审核意见',
+                    value: 'recommendAuditOpinion',
+                    status: true,     
+                  },
+                ], 
+              },
+              {
+                name: '开发新品',
+                value: 'developNewProducts',
+                status: true,
+                children: [
+                  {
+                    name: '新建新品',
+                    value: 'addNewProduct',
+                    status: true,     
+                  },
+                ],   
+              }
+            ],
           },
           'customer': {
             name: '客户管理',
