@@ -1,14 +1,14 @@
 <template>
 <!--<li class="ivu-menu-submenu" :class="[ opened&&(activeMenu==parentItem.oneLevel.value) ? 'ivu-menu-opened':'']">-->
 <li class="ivu-menu-submenu" :class="[ activeMenu ? 'ivu-menu-opened':'']">
-    <div class="ivu-menu-submenu-title" @click="clickMenu(parentItem&&parentItem.oneLevel,item)">
+    <div class="ivu-menu-submenu-title" @click="clickMenu(parentItem&&parentItem.oneLevel,item)" v-if="item&&item.status">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
         <span class="ivu-menu-text" v-if="!isCollapsed">{{item.name}}</span>
         <i class="ivu-icon ivu-icon-ios-arrow-down" :class="arrowType" v-if="item&&item.children&&item.children.length&&!isCollapsed" @click="opendedChildFun"></i>
     </div>
     <collapse-transition v-if="mode === 'vertical'">
         <ul class="ivu-menu" v-show="opendedChild||opendedChildCom" v-for="(data,k) in item.children">
-            <li class="ivu-menu-item" style="padding-left: 43px; background: #dcdee2;" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)">{{data.name}}
+            <li class="ivu-menu-item" style="padding-left: 43px; background: #dcdee2;" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.status">{{data.name}}
             </li>
         </ul>
     </collapse-transition>

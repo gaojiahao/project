@@ -197,7 +197,7 @@ export default {
                         height: 40,
                         meta: {
                             label: '开始',
-                            name: 'start'
+                            name: '开始'
                         }
                     }
                 }, {
@@ -206,44 +206,22 @@ export default {
                         width: 120,
                         height: 40,
                         meta: {
-                            label: '1',
-                            name: '1'
+                            label: '审批节点',
+                            name: '审批节点'
                         }
                     }
                 },
-                // {
-                //     label: '节点2',
-                //     value: {
-                //         width: 120,
-                //         height: 40,
-                //         meta: {
-                //             label: '2',
-                //             name: '2'
-                //         }
-                //     }
-                // },
-                // {
-                //     label: '节点3',
-                //     value: {
-                //         width: 120,
-                //         height: 40,
-                //         meta: {
-                //             label: '3',
-                //             name: '3'
-                //         }
-                //     }
-                // },
-                // {
-                //     label: '节点4',
-                //     value: {
-                //         width: 120,
-                //         height: 40,
-                //         meta: {
-                //             label: '4',
-                //             name: '4'
-                //         }
-                //     }
-                // },
+                {
+                    label: '条件节点',
+                    value: {
+                        width: 120,
+                        height: 40,
+                        meta: {
+                            label: '条件节点',
+                            name: '条件节点'
+                        }
+                    }
+                },
                 {
                     label: '结束',
                     value: {

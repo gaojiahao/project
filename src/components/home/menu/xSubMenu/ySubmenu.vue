@@ -3,14 +3,14 @@
     <div class="ivu-menu-submenu-title" @click="clickMenu(item)">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
         {{item.name}}
-        <i class="ivu-icon ivu-icon-ios-arrow-down ivu-menu-submenu-title-icon" :class="[ openedDrop ? 'ivu-icon-ios-arrow-down-transform':'']" v-if="item&&item.children&&item.children.length"></i>
+        <i class="ivu-icon ivu-icon-ios-arrow-down ivu-menu-submenu-title-icon" :class="[ openedDrop ? 'ivu-icon-ios-arrow-down-transform':'']" v-if="item&&item.children&&item.children.length&&item.status"></i>
     </div>
-    <div class="ivu-select-dropdown" :style="dropStyle" :class="[ openedDrop ? 'ivu-select-dropdown-display':'ivu-select-dropdown-none']" v-if="item&&item.children&&item.children.length">
+    <div class="ivu-select-dropdown" :style="dropStyle" :class="[ openedDrop ? 'ivu-select-dropdown-display':'ivu-select-dropdown-none']" v-if="item&&item.children&&item.children.length&&item.status">
         <ul class="ivu-menu-drop-list" v-for="(data,k) in item.children" :key='k'>
-            <li class="ivu-menu-item-group">
+            <li class="ivu-menu-item-group" v-if="data.status">
                 <div class="ivu-menu-item-group-title" @click="clickMenu(item,data)">{{data.name}}</div>
                 <ul v-for="(dItem,y) in data.children" :key="y">
-                    <li class="ivu-menu-item" @click="clickMenu(item,data,dItem)">
+                    <li class="ivu-menu-item" @click="clickMenu(item,data,dItem)" v-if="dItem.status">
                         {{dItem.name}}
                     </li>
                 </ul>

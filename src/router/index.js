@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 11:00:27
+ * @LastEditTime: 2020-11-10 10:27:16
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -29,6 +29,10 @@ import StoreList from "@views/basicinfo/storeManager/storeList";
 import AddStore from "@views/basicinfo/storeManager/addStore";
 //流程管理
 import Bpm from "@views/bpm";
+import SaveBpm from "@views/bpm/saveBpm";
+import SaveBpm2 from "@views/bpm/saveBpm2";
+import UpdataBpm from "@views/bpm/updataBpm";
+import BpmManager from "@views/bpm/bpmManager";
 
 Vue.use(VueRouter);
 
@@ -163,6 +167,41 @@ const routes = [
         meta: {
           title: "流程管理"
         },
+        redirect:'bpm/bpmManager',
+        children:[
+          {
+            path: 'bpmManager',
+            name: 'BpmManager',
+            meta:{ 
+              title:'流程管理',
+            },
+            component: BpmManager
+          },
+          {
+            path: 'saveBpm',
+            name: 'SaveBpm',
+            meta:{ 
+              title:'新建流程',
+            },
+            component: SaveBpm
+          },
+          {
+            path: 'saveBpm2',
+            name: 'SaveBpm2',
+            meta:{ 
+              title:'新建流程',
+            },
+            component: SaveBpm2
+          },
+          {
+            path: 'updataBpm',
+            name: 'UpdataBpm',
+            meta:{ 
+              title:'更新流程',
+            },
+            component: UpdataBpm
+          },
+        ]
       },
     ],
   },

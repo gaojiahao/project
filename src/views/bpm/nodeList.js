@@ -1,8 +1,9 @@
 export default {
     data() {
       return {
-        List:[
+        list:[
             {
+                id:'fdsf',
                 name:'开发审核',
                 value:'kfsh',
                 nodeList: [
@@ -182,6 +183,7 @@ export default {
                 ]
             },
             {
+                id:'czv',
                 name:'侵权审核',
                 value:'qqsh',
                 nodeList: [

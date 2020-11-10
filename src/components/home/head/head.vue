@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 20:52:27
+ * @LastEditTime: 2020-11-10 09:41:39
 -->
 <template>
 <div class="head">
@@ -12,23 +12,7 @@
         <li class="item"><img :src="systemInfo.asetLogoUrl" /></li>
         <li class="item title">跨境电商ERP</li>
         <template v-for="(item,index) in menuList">
-            <!--<MenuItem :name="item.value" v-if="item.value=='index'" @click.native="clickMenu(item)" :class="[item.value==activeIndex ? 'active' : '']">
-            <Icon type="ios-paper" />
-            {{ item.name }}
-            </MenuItem>
-            <Submenu :name="item.value" :key="index" v-if="item.value!='index'">
-                <template slot="title">
-                    <Icon type="ios-people" @click.native="clickMenu(item)" />
-                    {{ item.name }}
-                </template>
-                <MenuGroup :title="data.name" v-for="(data,k) in item.children" :key="k" @click.native="clickMenu(item,data)">
-                    <MenuItem :name="item.value+'-'+dItem.value" v-for="(dItem,y) in data.children" :key="y" @click.native="clickMenu(item,data,dItem)">
-                    {{dItem.name}}
-                    </MenuItem>
-                </MenuGroup>
-            </Submenu>-->
             <YSubmenu :item="item" :parentItem="menuList">
-
             </YSubmenu>
         </template>
         <li class="right-item right-title" style="padding:0px 10px;">

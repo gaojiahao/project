@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 18:30:59
+ * @LastEditTime: 2020-11-09 19:22:45
 -->
 <template>
 <div class="propertyManager-container">
@@ -135,6 +135,7 @@ export default {
                 border: 1px solid #dcdee2;
                 border-color: #e8eaec;
                 transition: all 0.2s ease-in-out;
+                max-height: 300px;
             }
 
             .right-bottom {

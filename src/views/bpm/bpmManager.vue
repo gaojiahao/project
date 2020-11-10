@@ -4,10 +4,34 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 19:59:03
+ * @LastEditTime: 2020-11-10 10:12:46
 -->
 <template>
-<router-view></router-view>
+<div>
+    <div style="margin: 10px 0;overflow: hidden">
+        <div style="float: left;">
+            <Input search enter-button placeholder="流程..." />
+        </div>
+        <div style="float: right;">
+            <Button type="info" @click.native="goAdd()">新建流程</Button>
+            <!--<Button type="primary">更改状态</Button>
+            <Button type="error">删除</Button>-->
+        </div>
+    </div>
+    <Table row-key="id" border :columns="columns" :data="list" stripe>
+        <template slot-scope="{ row }" slot="number">
+            <strong>{{ row.number }}</strong>
+        </template>
+        <template slot-scope="{ row, index }" slot="action">
+            <Button type="primary" size="small" style="margin-right: 5px" @click="goUpdata(row.id)">编辑</Button>
+            <Button type="error" size="small" @click="remove(index)">删除</Button>
+        </template>
+    </Table>
+    <div style="margin: 10px;overflow: hidden">
+        <div style="float: right;">
+            <Page :total="100" :current="1" @on-change="changePage"></Page>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -24,7 +48,7 @@ import {
 } from '@service/authority'
 
 export default {
-    name: 'Bpm',
+    name: 'BpmManager',
     components: {
         Table,
         Button,
@@ -90,10 +114,15 @@ export default {
     },
     methods: {
         goAdd() {
-            this.$router.push('/bpm/save');
+            this.$router.push('/bpm/saveBpm');
         },
-        goUpdata() {
-
+        goUpdata(index) {
+            this.$router.push({
+                path: '/bpm/updataBpm',
+                query: {
+                    id: index
+                }
+            });
         },
         remove(index) {
             this.list.splice(index, 1);
