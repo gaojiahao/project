@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 14:52:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 15:01:14
+ * @LastEditTime: 2020-11-10 18:00:01
  */
 import { addClass, removeClass } from './assist';
 
@@ -85,7 +85,10 @@ export default {
                 appear: props.appear
             }
         };
-
-        return h('transition', data, children);
+        if(children.length<2){
+            return h('transition', data, children);
+        } else {
+            return h('transition-group', data, children);   
+        }
     }
 };

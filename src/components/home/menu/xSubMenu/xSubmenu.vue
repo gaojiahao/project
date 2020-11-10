@@ -7,7 +7,7 @@
         <i class="ivu-icon ivu-icon-ios-arrow-down" :class="arrowType" v-if="item&&item.children&&item.children.length&&!isCollapsed" @click="opendedChildFun"></i>
     </div>
     <collapse-transition v-if="mode === 'vertical'">
-        <ul class="ivu-menu" v-show="opendedChild||opendedChildCom" v-for="(data,k) in item.children">
+        <ul class="ivu-menu" v-show="opendedChild||opendedChildCom" v-for="(data,k) in item.children" :key="k">
             <li class="ivu-menu-item" style="padding-left: 43px; background: #dcdee2;" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.status">{{data.name}}
             </li>
         </ul>
