@@ -4,13 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-03 14:22:07
+ * @LastEditTime: 2020-11-10 16:32:11
  */
 const { endianness } = require("os");
 const path = require("path");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const loader = require("sass-loader");
 const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
+const productionGzipExtensions = ["js", "css"];
 let proxyConfig = require("./config/proxyConfig");
+
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 const publicPath = "Rose";
 module.exports = {
@@ -32,6 +36,19 @@ module.exports = {
       .loader("iview-loader")
       .options({ prefix: false })
       .end();
+      //分割代码
+    config.optimization.splitChunks({
+      chunks: 'all'
+    });
+    // //压缩图片
+    // config.module
+    //   .rule('images')
+    //   .use('image-webpack-loader')
+    //   .loader('image-webpack-loader')
+    //   .options({
+    //       bypassOnDebug: true
+    //   })
+    //   .end()
   },
   configureWebpack: config => {
     if (process.env.NODE_ENV === "production") {
@@ -57,7 +74,42 @@ module.exports = {
           "@mixins": path.resolve(__dirname, "./src/mixins"),
           "@utils": path.resolve(__dirname, "./src/utils")
         } // 别名配置
-      }
+      },
+      // optimization: {
+      //   minimizer: [
+      //     new UglifyJsPlugin({
+      //       uglifyOptions: {
+      //         output: { // 删除注释
+      //           comments: false
+      //         },
+      //         //生产环境自动删除console
+      //         compress: {
+      //           //warnings: false, // 若打包错误，则注释这行
+      //           drop_debugger: true,  //清除 debugger 语句
+      //           drop_console: true,   //清除console语句
+      //           pure_funcs: ['console.log']
+      //         }
+      //       },
+      //       sourceMap: false,
+      //       parallel: true,
+      //       cache: true
+      //     })
+      //   ]
+      // },
+      // plugins: [
+      //   new CompressionWebpackPlugin({
+      //     filename: "[path].gz[query]",
+      //     algorithm: 'gzip', 
+      //     threshold: 10240,
+      //     test: new RegExp(
+      //       '\\.(' +
+      //       ['js'].join('|') +
+      //       ')$'
+      //     ),
+      //     minRatio: 0.8,
+      //     deleteOriginalAssets: false
+      //   })
+      // ] 
     });
   },
   productionSourceMap: false, // 生产环境是否生成 sourceMap 文件
