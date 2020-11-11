@@ -4,15 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 10:05:01
+ * @LastEditTime: 2020-11-11 15:09:02
 -->
 <template>
 <div class="content">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
         <template v-for="(item, index) in formValidate">
+            <!--文本框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
                 <Input v-model="formValidate[index]" :style="{width:'200px'}"></Input>
             </FormItem>
+            <!--单选框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
                 <RadioGroup v-model="formValidate[index]">
                     <template v-for="(ditem,dIndex) in formConfig[index]['dataSource']['data']">
@@ -22,16 +24,27 @@
                     </template>
                 </RadioGroup>
             </FormItem>
+            <!--formConfig[index]['dataSource']['multiple']控制选择器是否多选，单选-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='select'">
                 <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable>
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
             </FormItem>
+            <!--图片上传-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='uploadImage'">
+                <UploadImg v-model="formValidate[index]"></UploadImg>
+            </FormItem>
+            <!--文本域-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='textarea'">
+                <Input v-model="formValidate[index]" type="textarea" :autosize="{minRows: 5,maxRows: 10}" :style="{width:'400px'}" />
+            </FormItem>
         </template>
         <FormItem>
-            <div style="width:100%">
-                <Button type="primary" @click="handleSubmit('formValidate')" style="    float: left;">保存</Button>
-            </div>
+            <slot name='button'>
+                <div style="width:100%">
+                    <Button type="primary" @click="handleSubmit('formValidate')" style="    float: left;">保存</Button>
+                </div>
+            </slot>
         </FormItem>
     </Form>
 </div>
@@ -47,7 +60,7 @@ import {
     RadioGroup,
     Radio
 } from "view-design";
-import XSelect from '@components/public/xSelect/xSelect'
+import UploadImg from '@components/public/upload/uploadImg'
 export default {
     name: 'XForm',
     components: {
@@ -58,7 +71,7 @@ export default {
         Option,
         RadioGroup,
         Radio,
-        XSelect
+        UploadImg
     },
     props: {
         titleText: {
