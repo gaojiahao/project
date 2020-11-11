@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 18:09:16
+ * @LastEditTime: 2020-11-11 18:37:46
  */
 export default {
     data() {
@@ -99,7 +99,7 @@ export default {
             productCode:'',
             productName: '',
             productType: '',
-            characteristicLable:[],
+            characteristicLable:'',
             brand:'',
             isHavePackage:'',
             weight:'',

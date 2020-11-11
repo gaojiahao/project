@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 17:20:45
+ * @LastEditTime: 2020-11-11 18:32:05
 -->
 <template>
 <div>
@@ -37,7 +37,9 @@
                 </XForm>
             </div>
         </TabPane>
-        <TabPane label="销售信息">销售信息</TabPane>
+        <TabPane label="销售信息">
+            <AddNewProductTable></AddNewProductTable>
+        </TabPane>
         <TabPane label="制作文件">制作文件</TabPane>
         <TabPane label="属性">属性</TabPane>
         <TabPane label="详细描述">详细描述</TabPane>
@@ -49,6 +51,7 @@
 <script>
 import XForm from "@components/public/form/xForm";
 import config from "@views/product/developNewProducts/addNewProductConfig";
+import AddNewProductTable from "@components/product/addNewProductTable";
 import {
     Tabs,
     TabPane
@@ -59,6 +62,7 @@ export default {
         Tabs,
         TabPane,
         XForm,
+        AddNewProductTable
     },
     mixins: [config],
     methods: {

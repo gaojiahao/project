@@ -4,22 +4,28 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 18:40:18
+ * @LastEditTime: 2020-11-11 18:40:40
 -->
 <template>
 <div>
-    <div class="list" v-for="(item,index) in list" :key="index">
-        <Input v-model="list[index]" placeholder="" style="width: 100px" @on-blur="handleInput" />
+    <div class="list">
+        <span style="margin-right:10px">长</span><Input v-model="list.long" placeholder="" style="width: 100px" @on-blur="handleInput" /><span style="margin-left:10px">cm</span>
     </div>
     <div class="list">
-        <Button type="primary" shape="circle" icon="md-add" @click.native="add"></Button>
+        <span style="margin-right:10px">宽</span><Input v-model="list.wide" placeholder="" style="width: 100px" @on-blur="handleInput" /><span style="margin-left:10px">cm</span>
+    </div>
+    <div class="list">
+        <span style="margin-right:10px">高</span><Input v-model="list.high" placeholder="" style="width: 100px" @on-blur="handleInput" /><span style="margin-left:10px">cm</span>
+    </div>
+    <div class="list">
+        <span style="margin-right:10px">体积</span><Input v-model="list.volume" placeholder="" style="width: 100px" @on-blur="handleInput" /><span style="margin-left:10px">cm³</span>
     </div>
 </div>
 </template>
 
 <script>
 export default {
-    name: "texts",
+    name: "size",
     components: {},
     model: {
         prop: 'value', // prop说:我要将value1作为该组件被使用(被父组件调用)时,v-model能取到的值
@@ -33,9 +39,12 @@ export default {
     },
     data() {
         return {
-            list: [
-                ''
-            ]
+            list: {
+                long: '',
+                wide: '',
+                high: '',
+                volume: '',
+            }
         }
     },
     methods: {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 18:08:24
+ * @LastEditTime: 2020-11-11 18:25:56
 -->
 <template>
 <div class="content">
@@ -42,7 +42,7 @@
                 <Texts v-model="formValidate[index]"></Texts>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='size'">
-
+                <Size v-model="formValidate[index]"></Size>
             </FormItem>
         </template>
         <FormItem>
@@ -67,7 +67,8 @@ import {
     Radio
 } from "view-design";
 import UploadImg from '@components/public/upload/uploadImg';
-import Texts from '@components/public/input/texts'
+import Texts from '@components/public/input/texts';
+import Size from '@components/public/input/size'
 export default {
     name: 'XForm',
     components: {
@@ -79,7 +80,8 @@ export default {
         RadioGroup,
         Radio,
         UploadImg,
-        Texts
+        Texts,
+        Size
     },
     props: {
         titleText: {
