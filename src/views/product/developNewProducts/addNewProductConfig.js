@@ -4,52 +4,114 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 15:20:33
+ * @LastEditTime: 2020-11-11 18:09:16
  */
 export default {
     data() {
       return {
         formConfig:{
-          storeName:{
-            name:'商品货号',
-            type:'text',
-          },
-          storeCode:{
-            name:'商品分类',
-            type:'select',
-            dataSource:{
+          productInfo:{
+            field:{
+            productCode:{
+              name:'商品编号',
+              type:'text',
+            },
+            productName:{
+              name:'商品名称',
+              type:'text',
+            },
+            productType:{
+              name:'分类',
+              type:'select',
+              dataSource:{
                 type:'static',
                 data:[
                   {name:'积木',value:'001'},
                   {name:'灯',value:'002'}
                 ],
+              }
+            },
+            characteristicLable:{
+              name:'特性标签',
+              type:'texts',
+            },
+            brand:{
+              name:'品牌',
+              type:'text',
+            },
+            isHavePackage:{
+              name:'是否带包装',
+              type:'radio',
+              dataSource:{
+                type:'static',
+                data:[
+                  {name:'是',value:'true'},
+                  {name:'否',value:'false'}
+                ],
+              }
+            },
+            weight:{
+              name:'商品重量',
+              type:'text',
+              unit:'kg'
+            },
+            productSize:{
+              name:'商品尺寸',
+              type:'size',
+            },
             }
           },
-          imgs:{
-            name:'产品图片',
-            type:'uploadImage',
-            
-          },
-          LoginID:{
-            name:'商品名称',
-            type:'text',
-          },
-          appKey:{
-            name:'参考链接',
-            type:'text',
-          },
-          createTime:{
-            name:'推荐备注',
-            type:'textarea',
-          },
+          otherInfo:{
+            field:{
+              packaging:{
+                name:'包装材料',
+                type:'select',
+                dataSource:{
+                  type:'static',
+                  data:[
+                    {name:'积木',value:'001'},
+                    {name:'灯',value:'002'}
+                  ],
+                }
+              }, 
+              packagingCost:{
+                name:'包装成本',
+                type:'text',
+                unit:'CNY'
+              }, 
+              packagingSize:{
+                name:'包装尺寸',
+                type:'size',
+              },
+              productCharacteristic:{
+                name:'商品特点',
+                type:'textarea',
+              },
+              comment:{
+                name:'备注',
+                type:'textarea',
+              },
+            }
+          }
         },
         formValidate: {
-          storeName:'',
-          storeCode: '',
-          imgs: [],
-          LoginID:'',
-          appKey:'',
-          createTime:'',
+          productInfo:{
+            productCode:'',
+            productName: '',
+            productType: '',
+            characteristicLable:[],
+            brand:'',
+            isHavePackage:'',
+            weight:'',
+            productSize:''
+          },
+          otherInfo:{
+            packaging:'',
+            packagingCost:'',
+            packagingSize:'',
+            productCharacteristic:'',
+            comment:''
+          }
         },
         ruleValidate: {
           storeName: [{

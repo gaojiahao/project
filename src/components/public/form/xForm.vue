@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 15:09:02
+ * @LastEditTime: 2020-11-11 18:08:24
 -->
 <template>
 <div class="content">
@@ -12,7 +12,7 @@
         <template v-for="(item, index) in formValidate">
             <!--文本框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
-                <Input v-model="formValidate[index]" :style="{width:'200px'}"></Input>
+                <Input v-model="formValidate[index]" :style="{width:'200px'}"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <!--单选框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
@@ -38,6 +38,12 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='textarea'">
                 <Input v-model="formValidate[index]" type="textarea" :autosize="{minRows: 5,maxRows: 10}" :style="{width:'400px'}" />
             </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='texts'">
+                <Texts v-model="formValidate[index]"></Texts>
+            </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='size'">
+
+            </FormItem>
         </template>
         <FormItem>
             <slot name='button'>
@@ -60,7 +66,8 @@ import {
     RadioGroup,
     Radio
 } from "view-design";
-import UploadImg from '@components/public/upload/uploadImg'
+import UploadImg from '@components/public/upload/uploadImg';
+import Texts from '@components/public/input/texts'
 export default {
     name: 'XForm',
     components: {
@@ -71,7 +78,8 @@ export default {
         Option,
         RadioGroup,
         Radio,
-        UploadImg
+        UploadImg,
+        Texts
     },
     props: {
         titleText: {

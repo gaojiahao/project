@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 15:18:16
+ * @LastEditTime: 2020-11-11 15:33:10
 -->
 <template>
 <div>
@@ -26,7 +26,7 @@
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/product/developNewProducts/addNewProductConfig";
+import config from "@views/product/sell/addFinishProductConfig";
 
 export default {
     name: "AddFinishProduct",

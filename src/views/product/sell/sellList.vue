@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 19:58:17
+ * @LastEditTime: 2020-11-11 15:41:58
 -->
 <template>
 <div class="storeManager-container">
@@ -30,6 +30,7 @@
         <Table border :columns="columns" :data="data" stripe>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true)">开发</Button>
+                <Button type="primary" size="small" style="margin-right: 5px" @click="showPop2(true)">编辑</Button>
                 <Button type="info" size="small" style="margin-right: 5px" @click="showPop2(true)">审核</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="showPop(true)">调研</Button>
             </template>

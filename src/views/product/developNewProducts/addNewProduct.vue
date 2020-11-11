@@ -4,18 +4,97 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 12:04:19
+ * @LastEditTime: 2020-11-11 17:20:45
 -->
 <template>
-
+<div>
+    <Tabs type="card" :animated="false">
+        <TabPane label="基本信息">
+            <div class="bottom-title">
+                基本信息
+            </div>
+            <div class="top">
+                <XForm :formValidate="formValidate.productInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.productInfo.field" @save="save" @clear-form-data="clearFormData" ref="form">
+                    <template slot="button">
+                        <div style="width:100%">
+                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                        </div>
+                    </template>
+                </XForm>
+            </div>
+            <div class="bottom-title">
+                其他信息
+            </div>
+            <div class="top">
+                <XForm :formValidate="formValidate.otherInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.otherInfo.field" @save="save" @clear-form-data="clearFormData" ref="form">
+                    <template slot="button">
+                        <div style="width:100%">
+                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                        </div>
+                    </template>
+                </XForm>
+            </div>
+        </TabPane>
+        <TabPane label="销售信息">销售信息</TabPane>
+        <TabPane label="制作文件">制作文件</TabPane>
+        <TabPane label="属性">属性</TabPane>
+        <TabPane label="详细描述">详细描述</TabPane>
+        <TabPane label="日志文件">日志文件</TabPane>
+    </Tabs>
+</div>
 </template>
 
 <script>
+import XForm from "@components/public/form/xForm";
+import config from "@views/product/developNewProducts/addNewProductConfig";
+import {
+    Tabs,
+    TabPane
+} from "view-design";
 export default {
-    name: 'addNewProduct'
+    name: 'addNewProduct',
+    components: {
+        Tabs,
+        TabPane,
+        XForm,
+    },
+    mixins: [config],
+    methods: {
+        clearFormData() {},
+        save() {}
+    },
+    created() {}
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
+>>>.ivu-tabs-bar {
+    margin-bottom: 0;
+}
+</style><style lang="less" scoped>
+.top {
+    flex: 1;
+    background-color: #f5fffa;
+    border: 1px solid #dcdee2;
+    border-color: #e8eaec;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 10px;
+}
 
+.bottom-title {
+    background: linear-gradient(to top, #d2effd, #ffffff);
+    border: 1px solid #dcdee2;
+    border-color: #e8eaec;
+    transition: all 0.2s ease-in-out;
+    text-align: left;
+    padding: 10px 20px;
+}
+
+.bottom {
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    flex-direction: row;
+}
 </style>
