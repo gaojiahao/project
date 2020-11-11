@@ -52,15 +52,7 @@ export default {
     },
     data() {
         return {
-            defaultList: [{
-                    'name': 'a42bdcc1178e62b4694c830f028db5c0',
-                    'url': 'https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843'
-                },
-                {
-                    'name': 'bc7521e033abdd1e92222d733590f104',
-                    'url': 'https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843'
-                }
-            ],
+            defaultList: [],
             imgName: '',
             visible: false,
             uploadList: []
@@ -102,7 +94,7 @@ export default {
             return check;
         },
         handleInput(e) {
-            this.uploadList.push(e)
+            // this.uploadList.push(e)
             this.$emit('change', this.uploadList)
         }
     },
