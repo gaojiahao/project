@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 17:02:13
+ * @LastEditTime: 2020-11-11 10:03:57
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -36,7 +36,12 @@ import BpmManager from "@views/bpm/bpmManager";
 //产品管理
 import Product from "@views/product";
 import ProductList from "@views/product/productManager/productList";
-import Sell from "@views/product/sell/sellList";
+import Sell from "@views/product/sell/";
+import SellList from "@views/product/sell/sellList";
+import AddFinishProduct from "@views/product/sell/addFinishProduct";
+import DevelopNewProducts from "@views/product/developNewProducts/index";
+import DevelopNewProductsList from "@views/product/developNewProducts/developNewProductsList";
+import AddNewProduct from "@views/product/developNewProducts/addNewProduct";
 
 Vue.use(VueRouter);
 
@@ -230,8 +235,54 @@ const routes = [
             meta:{ 
               title:'销售推品列表',
             },
-            component: Sell
-          },  
+            component: Sell,
+            redirect:'sell/sellList',
+            children:[
+              {
+                path: 'sellList',
+                name: 'SellList',
+                meta:{ 
+                  title:'销售推品列表',
+                },
+                component: SellList
+              },
+              {
+                path: 'addFinishProduct',
+                name: 'AddFinishProduct',
+                meta:{ 
+                  title:'新建新品',
+                },
+                component: AddFinishProduct
+              },
+            ]
+          },
+          {
+            path: 'developNewProducts',
+            name: 'DevelopNewProducts',
+            meta:{ 
+              title:'开发新品',
+            },
+            component: DevelopNewProducts,
+            redirect:'developNewProducts/developNewProductsList',
+            children:[
+              {
+                path: 'developNewProductsList',
+                name: 'DevelopNewProductsList',
+                meta:{ 
+                  title:'开发新品',
+                },
+                component: DevelopNewProductsList
+              },
+              {
+                path: 'addNewProduct',
+                name: 'AddNewProduct',
+                meta:{ 
+                  title:'新建新品',
+                },
+                component: AddNewProduct
+              },
+            ]
+          },
         ]
       }
     ],

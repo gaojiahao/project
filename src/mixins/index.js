@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 12:31:25
+ * @LastEditTime: 2020-11-10 20:50:00
  */
 export default {
     data() {
@@ -74,7 +74,7 @@ export default {
                 status: true,
                 children: [
                   {
-                    name: '新建成品',
+                    name: '新建推品',
                     value: 'addFinishProduct',
                     status: true,     
                   },

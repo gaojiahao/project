@@ -4,48 +4,49 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 11:35:44
+ * @LastEditTime: 2020-11-11 15:18:16
 -->
 <template>
 <div>
-    <div class="top">
-        <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
-    </div>
     <div class="bottom-title">
-        选择运营类目
+        商品信息
     </div>
-    <div class="bottom">
-        <PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind>
-        <NowCategoryBind></NowCategoryBind>
+    <div class="top">
+        <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+            <template slot="button">
+                <div style="width:100%">
+                    <Button type="primary" @click="save" style="float: left;">保存</Button>
+                    <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                </div>
+            </template>
+        </XForm>
     </div>
 </div>
 </template>
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/basicinfo/storeManager/addStoreConfig";
-import PlatformCategoryBind from "@components/basicinfo/platformManager/platformCategoryBind";
-import NowCategoryBind from "@components/basicinfo/platformManager/nowCategoryBind";
+import config from "@views/product/developNewProducts/addNewProductConfig";
 
 export default {
-    name: "AddStore",
+    name: "AddFinishProduct",
     components: {
         XForm,
-        PlatformCategoryBind,
-        NowCategoryBind
     },
     data() {
         return {
-            selectPBind: {},
+
         }
     },
     mixins: [config],
     methods: {
-        save() {},
-        clearFormData() {},
-        selectPlatformBind(data) {
-            this.selectPBind = data;
+        save() {
+            this.$refs.form.handleSubmit('formValidate');
         },
+        clearFormData() {
+            this.$refs.form.$refs['formValidate'].resetFields();
+        },
+
     },
     created() {
 
@@ -56,7 +57,7 @@ export default {
 <style lang="less" scoped>
 .top {
     flex: 1;
-    margin: 10px 10px;
+    margin: 0 10px;
     background-color: #f5fffa;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
@@ -64,7 +65,7 @@ export default {
 }
 
 .bottom-title {
-    margin: 10px 10px;
+    margin: 0 10px;
     background: linear-gradient(to top, #d2effd, #ffffff);
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
