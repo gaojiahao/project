@@ -4,7 +4,7 @@
     <div class="ivu-menu-submenu-title" @click="clickMenu(parentItem&&parentItem.oneLevel,item)" v-if="item&&item.status">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
         <span class="ivu-menu-text" v-if="!isCollapsed">{{item.name}}</span>
-        <i class="ivu-icon ivu-icon-ios-arrow-down" :class="arrowType" v-if="item&&item.children&&item.children.length&&!isCollapsed" @click="opendedChildFun"></i>
+        <i class="ivu-icon ivu-icon-ios-arrow-down" :class="[(opendedChild||opendedChildCom) ? 'ivu-menu-submenu-title-icon-up' : 'ivu-menu-submenu-title-icon-down']" v-if="item&&item.children&&item.children.length&&!isCollapsed"></i>
     </div>
     <collapse-transition v-if="mode === 'vertical'">
         <ul class="ivu-menu" v-show="opendedChild||opendedChildCom" v-for="(data,k) in item.children" :key="k">
@@ -91,8 +91,9 @@ export default {
             }
         },
         opendedChildCom() {
-            if (this.$store.state.menuRouter.thirdLevel && this.$store.state.menuRouter.thirdLevel.value) {
-                return true; //需要监听的数据
+            if (this.$store.state.menuRouter.twoLevel && this.$store.state.menuRouter.twoLevel.value == this.item.value) {
+
+                return this.opendedChild ? false : true; //需要监听的数据
             } else {
                 return false;
             }
