@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 15:49:15
+ * @LastEditTime: 2020-11-12 16:09:06
 -->
 <template>
 <div>
@@ -15,7 +15,7 @@
         <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
             <template slot="button">
                 <div style="width:100%">
-                    <Button type="primary" @click="save" style="float: left;">保存</Button>
+                    <Button type="primary" @click="slotSave" style="float: left;">保存</Button>
                     <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
                 </div>
             </template>
@@ -26,10 +26,10 @@
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/product/sell/addFinishProductConfig";
+import config from "@views/customer/supplierManager/addSupplierConfig";
 
 export default {
-    name: "AddFinishProduct",
+    name: "AddSupplier",
     components: {
         XForm,
     },
@@ -40,11 +40,17 @@ export default {
     },
     mixins: [config],
     methods: {
+        slotSave() {
+            this.$refs.form.handleSubmit('formValidate');
+        },
         save() {
+            this.$Message.info('温馨提示：成功');
+            this.$refs['form'].$refs['formValidate'].resetFields()
+            this.$refs['form'].initEL('input');
 
         },
         clearFormData() {
-            this.$refs['form'].$refs['formValidate'].resetFields();
+            this.$refs.form.$refs['formValidate'].resetFields();
         },
 
     },

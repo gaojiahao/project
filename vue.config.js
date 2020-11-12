@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 16:32:11
+ * @LastEditTime: 2020-11-12 17:08:38
  */
 const { endianness } = require("os");
 const path = require("path");
@@ -145,6 +145,14 @@ module.exports = {
         changOrigin: true, //允许跨域
         pathRewrite: {
           "^/api": "/api" //请求的时候使用这个api就可以
+        }
+      },
+      "/posts": {
+        target: "http://jsonplaceholder.typicode.com", //这里后台的地址模拟的;应该填写你们真实的后台接口
+        //ws: true,
+        changOrigin: true, //允许跨域
+        pathRewrite: {
+          "^/posts": "/posts" //请求的时候使用这个api就可以
         }
       }
     }

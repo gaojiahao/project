@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 20:50:00
+ * @LastEditTime: 2020-11-12 16:20:09
  */
 export default {
     data() {
@@ -103,7 +103,34 @@ export default {
             name: '客户管理',
             value: 'customer',
             status: true,
-            children: [],
+            children: [
+              {
+                name: '供应商管理',
+                value: 'supplierManager',
+                status: true,
+                children: [
+                  {
+                    name: '新增供应商',
+                    value: 'addSupplier',
+                    status: true,
+                    children: [],
+                  },  
+                ],
+              },
+              {
+                name: '客户管理',
+                value: 'customerManager',
+                status: true,
+                children: [
+                  {
+                    name: '新增客户',
+                    value: 'addCustomer',
+                    status: true,
+                    children: [],
+                  },
+                ],
+              }
+            ],
           },
           'authority': {
             name: '权限管理',

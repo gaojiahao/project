@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 11:09:15
+ * @LastEditTime: 2020-11-12 18:55:13
 -->
 <template>
 <div>
@@ -18,7 +18,7 @@
             <div v-for="item in uploadList" class="left demo-upload">
                 <div class="demo-upload-list">
                     <template v-if="item.status === 'finished'">
-                        <img :src="item.url">
+                        <img :src="defaultVideoPic">
                         <div class="demo-upload-list-cover">
                             <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
                             <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
@@ -36,8 +36,7 @@
                 </div>
             </Upload>
             <Modal title="View Image" v-model="visible">
-                <!--<img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">-->
-                <img :src="'https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843'" v-if="visible" style="width: 100%">
+                <AudioPlayer :audio-list="audioList" :before-play="onBeforePlay" />
             </Modal>
         </div>
     </div>
@@ -74,8 +73,14 @@ export default {
         return {
             defaultList: [],
             imgName: '',
+            defaultVideoPic: require("@assets/default/defaultVideo.jpg"),
             visible: false,
-            uploadList: []
+            uploadList: [{
+                name: '111.mp3',
+                url: '@assets/default/defaultMusic.mp3',
+                status: 'finished'
+            }],
+            audioList: [require('@assets/default/defaultMusic.mp3')]
         }
     },
     methods: {
@@ -116,10 +121,14 @@ export default {
         handleInput(e) {
             // this.uploadList.push(e)
             this.$emit('change', this.uploadList)
+        },
+        // 播放前做的事
+        onBeforePlay(next) {
+            next() // 开始播放
         }
     },
     mounted() {
-        this.uploadList = this.$refs.upload.fileList;
+        //this.uploadList = this.$refs.upload.fileList;
     }
 
 }

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 18:25:56
+ * @LastEditTime: 2020-11-12 16:40:48
 -->
 <template>
 <div class="content">
@@ -147,7 +147,8 @@ export default {
         initEL(type) {
             var controls = this.$el.getElementsByTagName(type);
             for (var i = 0; i < controls.length; i++) {
-                if (i == 0 && controls[i].type == 'text' && !controls[i].value) { //第一个输入框获取焦点
+                //if (i == 0 && controls[i].type == 'text' && !controls[i].value) { //第一个输入框获取焦点
+                if (i == 0 && controls[i].type == 'text') { //第一个输入框获取焦点
                     setTimeout(() => {
                         controls[0].focus();
                         console.log(controls[0].value);

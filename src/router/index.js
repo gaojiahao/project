@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 10:03:57
+ * @LastEditTime: 2020-11-12 16:19:41
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -42,6 +42,14 @@ import AddFinishProduct from "@views/product/sell/addFinishProduct";
 import DevelopNewProducts from "@views/product/developNewProducts/index";
 import DevelopNewProductsList from "@views/product/developNewProducts/developNewProductsList";
 import AddNewProduct from "@views/product/developNewProducts/addNewProduct";
+//客户管理
+import Customer from "@views/customer";
+import CustomerManager from "@views/customer/customerManager";
+import CustomerList from "@views/customer/customerManager/customerList";
+import AddCustomer from "@views/customer/customerManager/addCustomer";
+import SupplierManager from "@views/customer/supplierManager";
+import SupplierList from "@views/customer/supplierManager/supplierList";
+import AddSupplier from "@views/customer/supplierManager/addSupplier";
 
 Vue.use(VueRouter);
 
@@ -284,6 +292,71 @@ const routes = [
             ]
           },
         ]
+      },
+      {
+        path:"customer",
+        name:"Customer",
+        component: Customer,
+        meta: {
+          title: "客户管理"
+        },
+        redirect:'customer/SupplierManager',
+        children:[
+          {
+            path: 'supplierManager',
+            name: 'SupplierManager',
+            meta:{ 
+              title:'供应商管理',
+            },
+            component: SupplierManager,
+            redirect:'supplierManager/supplierList',
+            children:[
+              {
+                path: 'supplierList',
+                name: 'SupplierList',
+                meta:{ 
+                  title:'供应商管理',
+                },
+                component: SupplierList,
+              },
+              {
+                path: 'addSupplier',
+                name: 'AddSupplier',
+                meta:{ 
+                  title:'新增供应商',
+                },
+                component: AddSupplier,
+              }, 
+            ]
+          },
+          {
+            path: 'customerManager',
+            name: 'CustomerManager',
+            meta:{ 
+              title:'客户管理',
+            },
+            component: CustomerManager,
+            redirect:'customerManager/customerList',
+            children:[
+              {
+                path: 'customerList',
+                name: 'CustomerList',
+                meta:{ 
+                  title:'客户管理',
+                },
+                component: CustomerList,
+              },
+              {
+                path: 'addCustomer',
+                name: 'AddCustomer',
+                meta:{ 
+                  title:'新增客户',
+                },
+                component: AddCustomer,
+              }, 
+            ]
+          }    
+        ]    
       }
     ],
   },

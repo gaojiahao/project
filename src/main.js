@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 14:17:38
+ * @LastEditTime: 2020-11-12 18:14:48
  */
 //引用插件
 import Vue from "vue";
@@ -15,8 +15,12 @@ import store from "./store";
 import VueRouter from "vue-router";
 import { Message, Switch, Circle,Tree,Icon,Button,Span,Badge,Notice,Modal,Tag,Spin,Radio,Checkbox,Input } from "view-design";
 import "view-design/dist/styles/iview.css";
-import SuperFlow from 'vue-super-flow'
-import 'vue-super-flow/lib/index.css'
+import SuperFlow from 'vue-super-flow';
+import 'vue-super-flow/lib/index.css';
+import VideoPlayer from 'vue-video-player';
+import 'video.js/dist/video-js.css';
+import AudioPlayer from '@liripeng/vue-audio-player'
+import '@liripeng/vue-audio-player/lib/vue-audio-player.css'
 //引用自定义组件
 import Loading from "@plugins/loading/pageLoad/loading";
 import '@less/common';
@@ -39,7 +43,6 @@ Vue.component("Tag", Tag);
 Vue.component("Radio", Radio);
 Vue.component("Checkbox", Checkbox);
 Vue.component("Input", Input);
-Vue.use(SuperFlow);
 //组件挂载到vue $this上
 Vue.prototype.$Message = Message;
 Vue.prototype.$Notice = Notice;
@@ -48,6 +51,9 @@ Vue.prototype.$Spin = Spin;
 /**plugin */
 Vue.use(VueRouter);
 Vue.use(Loading);
+Vue.use(SuperFlow);
+Vue.use(VideoPlayer);
+Vue.use(AudioPlayer);
 
 new Vue({
   router,
