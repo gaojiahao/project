@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 18:32:05
+ * @LastEditTime: 2020-11-12 11:23:50
 -->
 <template>
 <div>
@@ -39,11 +39,64 @@
         </TabPane>
         <TabPane label="销售信息">
             <AddNewProductTable></AddNewProductTable>
+            <div class="bottom-title">
+                采购信息
+            </div>
+            <div class="top">
+                <XForm :formValidate="formValidate.purchase" :ruleValidate="ruleValidate" :formConfig="formConfig.purchase.field" @save="save" @clear-form-data="clearFormData" ref="form">
+                    <template slot="button">
+                        <div style="width:100%">
+                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                        </div>
+                    </template>
+                </XForm>
+            </div>
         </TabPane>
-        <TabPane label="制作文件">制作文件</TabPane>
-        <TabPane label="属性">属性</TabPane>
-        <TabPane label="详细描述">详细描述</TabPane>
-        <TabPane label="日志文件">日志文件</TabPane>
+        <TabPane label="制作文件">
+            <div class="bottom-title">
+                文件上传
+            </div>
+            <div class="top" style="flex:display;padding:20px;flex-direction:column;display:flex">
+                <AddNewProductTableUploadPic></AddNewProductTableUploadPic>
+                <AddNewProductTableUploadVideo></AddNewProductTableUploadVideo>
+                <AddNewProductTableUpload3D></AddNewProductTableUpload3D>
+                <AddNewProductTableUploadMusic></AddNewProductTableUploadMusic>
+            </div>
+        </TabPane>
+        <TabPane label="属性">
+            <div class="bottom-title">
+                属性
+            </div>
+            <div class="top">
+                <XForm :formValidate="formValidate.property" :ruleValidate="ruleValidate" :formConfig="formConfig.property.field" @save="save" @clear-form-data="clearFormData" ref="form">
+                    <template slot="button">
+                        <div style="width:100%">
+                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                        </div>
+                    </template>
+                </XForm>
+            </div>
+        </TabPane>
+        <TabPane label="详细描述">
+            <div class="bottom-title">
+                属性
+            </div>
+            <div class="top">
+                <XForm :formValidate="formValidate.detailInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.detailInfo.field" @save="save" @clear-form-data="clearFormData" ref="form">
+                    <template slot="button">
+                        <div style="width:100%">
+                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                        </div>
+                    </template>
+                </XForm>
+            </div>
+        </TabPane>
+        <TabPane label="日志文件">
+            <AddNewProductTableLog></AddNewProductTableLog>
+        </TabPane>
     </Tabs>
 </div>
 </template>
@@ -52,6 +105,12 @@
 import XForm from "@components/public/form/xForm";
 import config from "@views/product/developNewProducts/addNewProductConfig";
 import AddNewProductTable from "@components/product/addNewProductTable";
+import AddNewProductTableUploadPic from "@components/product/addNewProductTableUploadPic";
+import AddNewProductTableUploadVideo from "@components/product/addNewProductTableUploadVideo";
+import AddNewProductTableUpload3D from "@components/product/addNewProductTableUpload3D";
+import AddNewProductTableUploadMusic from "@components/product/addNewProductTableUploadMusic";
+import AddNewProductTableLog from "@components/product/addNewProductTableLog";
+
 import {
     Tabs,
     TabPane
@@ -62,7 +121,12 @@ export default {
         Tabs,
         TabPane,
         XForm,
-        AddNewProductTable
+        AddNewProductTable,
+        AddNewProductTableUploadPic,
+        AddNewProductTableUploadVideo,
+        AddNewProductTableUpload3D,
+        AddNewProductTableUploadMusic,
+        AddNewProductTableLog
     },
     mixins: [config],
     methods: {

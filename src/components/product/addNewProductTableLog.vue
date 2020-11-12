@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 18:52:35
+ * @LastEditTime: 2020-11-12 11:25:47
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -38,7 +38,7 @@ import ModalForm from "@components/public/form/modalForm";
 import config from "@views/product/productManager/productListConfig";
 
 export default {
-    name: "AddNewProductTable",
+    name: "AddNewProductTableLog",
     components: {
         Table,
         Page,
@@ -56,26 +56,17 @@ export default {
             showModel: false,
             defaultImg: require("@assets/default/logo.png"),
             columns: [{
-                    title: '供应商名称',
+                    title: '操作动作',
                     key: 'name'
                 },
                 {
-                    title: '最小采购量',
+                    title: '操作人',
                     key: 'code'
                 },
                 {
-                    title: '采购单价',
+                    title: '操作时间',
                     key: 'supplier'
                 },
-                {
-                    title: '链接地址',
-                    key: 'developer'
-                },
-                {
-                    title: '操作',
-                    slot: 'action',
-                    align: 'center'
-                }
             ],
             dataConfig: {
                 'filterList': [{
@@ -90,40 +81,17 @@ export default {
                 }]
             },
             data: [{
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
+                name: '上传商品图',
+                code: '李四',
+                supplier: "2020-05-21",
             }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
+                name: '上传商品图',
+                code: '李四',
+                supplier: "2020-05-21",
             }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
+                name: '上传商品图',
+                code: '李四',
+                supplier: "2020-05-21",
             }],
             filter: "large"
         }
