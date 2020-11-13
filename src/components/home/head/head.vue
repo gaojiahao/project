@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 09:41:39
+ * @LastEditTime: 2020-11-13 14:13:50
 -->
 <template>
 <div class="head">
@@ -124,7 +124,7 @@ export default {
         var storage = window.sessionStorage;
         var value = JSON.parse(storage.getItem("activeMenu"));
         this.userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY));
-        this.activeIndex = value.oneLevel.value;
+        this.activeIndex = value.oneLevel && value.oneLevel.value;
     },
 };
 </script>

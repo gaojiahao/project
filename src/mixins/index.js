@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 16:20:09
+ * @LastEditTime: 2020-11-12 19:46:57
  */
 export default {
     data() {
@@ -93,6 +93,18 @@ export default {
                   {
                     name: '新建新品',
                     value: 'addNewProduct',
+                    status: true,     
+                  },
+                ],   
+              },
+              {
+                name: '主推调研',
+                value: 'mainResearch',
+                status: true,
+                children: [
+                  {
+                    name: '调研结果',
+                    value: 'researchResult',
                     status: true,     
                   },
                 ],   

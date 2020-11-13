@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 16:19:41
+ * @LastEditTime: 2020-11-13 16:23:07
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -42,6 +42,10 @@ import AddFinishProduct from "@views/product/sell/addFinishProduct";
 import DevelopNewProducts from "@views/product/developNewProducts/index";
 import DevelopNewProductsList from "@views/product/developNewProducts/developNewProductsList";
 import AddNewProduct from "@views/product/developNewProducts/addNewProduct";
+import MainResearch from "@views/research/mainResearch";
+import MainResearchList from "@views/research/mainResearch/mainResearchList";
+import ResearchResult from "@views/research/mainResearch/researchResult";
+import Research from "@views/research/mainResearch/research";
 //客户管理
 import Customer from "@views/customer";
 import CustomerManager from "@views/customer/customerManager";
@@ -291,6 +295,44 @@ const routes = [
               },
             ]
           },
+          {
+            path: 'mainResearch',
+            name: 'MainResearch',
+            meta:{ 
+              title:'主推调研',
+            },
+            component: MainResearch,
+            redirect:'mainResearch/mainResearchList',
+            children:[
+              {
+                path: 'mainResearchList',
+                name: 'MainResearchList',
+                meta:{ 
+                  title:'主推调研',
+                },
+                component: MainResearchList,
+                children:[
+                  
+                ]
+              },
+              {
+                path: 'research',
+                name: 'Research',
+                meta:{ 
+                  title:'调研',
+                },
+                component: Research,
+              },
+              {
+                path: 'researchResult',
+                name: 'ResearchResult',
+                meta:{ 
+                  title:'调研结果',
+                },
+                component: ResearchResult,
+              } 
+            ]
+          }
         ]
       },
       {

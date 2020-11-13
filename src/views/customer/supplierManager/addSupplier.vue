@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 16:09:06
+ * @LastEditTime: 2020-11-13 09:56:26
 -->
 <template>
 <div>
     <div class="bottom-title">
-        商品信息
+        供应商信息
     </div>
     <div class="top">
         <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">

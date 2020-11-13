@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 11:23:50
+ * @LastEditTime: 2020-11-13 12:29:20
 -->
 <template>
 <div>
@@ -97,6 +97,7 @@
         <TabPane label="日志文件">
             <AddNewProductTableLog></AddNewProductTableLog>
         </TabPane>
+        <Button @click="" size="small" slot="extra" type="warning">查看调研</Button>
     </Tabs>
 </div>
 </template>

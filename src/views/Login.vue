@@ -263,7 +263,9 @@ export default {
             }
         },
     },
-    created() {},
+    created() {
+        tokenService.clean();
+    },
     mounted() {
         //第一个输入框获取焦点
         function initEl() {
