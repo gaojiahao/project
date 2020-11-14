@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 14:42:56
+ * @LastEditTime: 2020-11-13 19:57:06
 -->
 <template>
 <div class="layout">
@@ -68,7 +68,6 @@ import TestForm from "@components/basicinfo/testForm";
 import TestTree from "@components/basicinfo/testTree";
 import Test from "@components/basicinfo/test";
 import Index from "@mixins/index";
-import TypeManager from "@views/basicinfo/typeManager";
 import tokenService from "@service/tokenService";
 import XSubmenu from "@/components/home/menu/xSubMenu/xSubmenu";
 
@@ -92,7 +91,6 @@ export default {
         TestTree,
         Test,
         BreadcrumbNav,
-        TypeManager,
         XSubmenu
     },
     mixins: [

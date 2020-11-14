@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 19:46:57
+ * @LastEditTime: 2020-11-14 09:07:56
  */
 export default {
     data() {
@@ -12,34 +12,16 @@ export default {
         // leftMenu:{},
         menuList: {
           'index': {
-            name: '首页',
+            name: '工作台',
             value: 'index',
             status: true,
             children: [],
           },
-          'basicinfo': {
-            name: '基础信息',
-            value: 'basicinfo',
+          'settings': {
+            name: '系统设置',
+            value: 'settings',
             status: true,
             children: [
-              {
-                name: '分类管理',
-                value: 'typeManager',
-                status: true,
-                auth: true,
-              },
-              {
-                name: '属性管理',
-                value: 'propertyManager',
-                status: true,
-                auth: false
-              },
-              {
-                name: '品牌管理',
-                value: 'brandManager',
-                status: true,
-                auth: false
-              },
               {
                 name: '平台管理',
                 value: 'platformManager',
@@ -60,31 +42,75 @@ export default {
                     }
                 ]
               },
-            ],
-            auth: '',
-          },
-          'product': {
-            name: '产品管理',
-            value: 'product',
-            status: true,
-            children: [
               {
-                name: '销售推品',
-                value: 'sell',
+                name: '分类管理',
+                value: 'typeManager',
+                status: true,
+                auth: true,
+              },
+              {
+                name: '属性管理',
+                value: 'propertyManager',
+                status: true,
+                auth: false
+              },
+              {
+                name: '品牌管理',
+                value: 'brandManager',
+                status: true,
+                auth: false
+              },
+              {
+                name: '制图选项管理',
+                value: 'makePicManager',
+                status: true,
+                auth: false
+              },
+              {
+                name: '菜单管理',
+                value: 'menuManager',
+                status: true,
+                auth: false,    
+              },
+              {
+                name: '用户管理',
+                value: 'userManager',
+                status: true,
+                auth: false,    
+              },
+              {
+                name: '角色管理',
+                value: 'roleManager',
+                status: true,
+                auth: false,    
+              },
+              {
+                name: '流程管理',
+                value: 'bpm',
                 status: true,
                 children: [
                   {
-                    name: '新建推品',
-                    value: 'addFinishProduct',
-                    status: true,     
+                    name: '新建流程',
+                    value: 'saveBpm',
+                    status: true,
+                    children: [],
                   },
                   {
-                    name: '推荐审核意见',
-                    value: 'recommendAuditOpinion',
-                    status: true,     
-                  },
-                ], 
+                    name: '更新流程',
+                    value: 'updataBpm',
+                    status: false,
+                    children: [],
+                  }
+                ],
               },
+            ],
+            auth: '',
+          },
+          'basicInfo':{
+            name: '基础资料',
+            value: 'basicInfo',
+            status: true,
+            children: [
               {
                 name: '开发新品',
                 value: 'developNewProducts',
@@ -98,24 +124,11 @@ export default {
                 ],   
               },
               {
-                name: '主推调研',
-                value: 'mainResearch',
+                name: '产品管理',
+                value: 'productManager',
                 status: true,
-                children: [
-                  {
-                    name: '调研结果',
-                    value: 'researchResult',
-                    status: true,     
-                  },
-                ],   
-              }
-            ],
-          },
-          'customer': {
-            name: '客户管理',
-            value: 'customer',
-            status: true,
-            children: [
+                children: []
+              },
               {
                 name: '供应商管理',
                 value: 'supplierManager',
@@ -142,49 +155,41 @@ export default {
                   },
                 ],
               }
-            ],
-          },
-          'authority': {
-            name: '权限管理',
-            value: 'authority',
-            status: true,
-            children: [
-              {
-                name: '菜单管理',
-                value: 'menuManager',
-                status: true,
-                auth: false,    
-              },
-              {
-                name: '用户管理',
-                value: 'userManager',
-                status: true,
-                auth: false,    
-              },
-              {
-                name: '角色管理',
-                value: 'roleManager',
-                status: true,
-                auth: false,    
-              }
             ]
           },
-          'bpm': {
-            name: '流程管理',
-            value: 'bpm',
+          'sell': {
+            name: '销售管理',
+            value: 'sell',
             status: true,
             children: [
               {
-                name: '新建流程',
-                value: 'saveBpm',
+                name: '销售推品',
+                value: 'sellManager',
                 status: true,
-                children: [],
+                children: [
+                  {
+                    name: '新建推品',
+                    value: 'addFinishProduct',
+                    status: true,     
+                  },
+                  {
+                    name: '推荐审核意见',
+                    value: 'recommendAuditOpinion',
+                    status: true,     
+                  },
+                ], 
               },
               {
-                name: '更新流程',
-                value: 'updataBpm',
-                status: false,
-                children: [],
+                name: '主推调研',
+                value: 'mainResearch',
+                status: true,
+                children: [
+                  {
+                    name: '调研结果',
+                    value: 'researchResult',
+                    status: true,     
+                  },
+                ],   
               }
             ],
           },

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:30:58
+ * @LastEditTime: 2020-10-31 10:05:40
 -->
 <template>
 <router-view></router-view>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-    name: "basicinfo",
+    name: "settings",
     components: {
 
     },

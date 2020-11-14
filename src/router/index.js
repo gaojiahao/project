@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 16:23:07
+ * @LastEditTime: 2020-11-13 20:22:09
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -13,47 +13,45 @@ import Login from "@views/Login.vue";
 import Home from "@views/Home.vue";
 import tokenService from "@service/tokenService";
 import errorHandler from '@components/public/errorHandler';
-//系统权限管理
-import Authority from "@views/authority";
-import MenuManager from "@views/authority/menuManager";
-import RoleManager from "@views/authority/roleManager";
-import UserManager from "@views/authority/userManager";
-//基础管理
+//系统设置
+import Settings from "@views/settings/index";
+import TypeManager from "@views/settings/typeManager/index";
+import PropertyManager from "@views/settings/propertyManager/index";
+import BrandManager from "@views/settings/brandManager/index";
+import PlatformManager from "@views/settings/platformManager/platformManager";
+import StoreManager from "@views/settings/storeManager";
+import StoreList from "@views/settings/storeManager/storeList";
+import AddStore from "@views/settings/storeManager/addStore";
+import MenuManager from "@views/settings/menuManager/menuManager";
+import RoleManager from "@views/settings/roleManager/roleManager";
+import UserManager from "@views/settings/userManager/userManager";
+import MakePicManager from "@views/settings/makePicManager/index";
+import Bpm from "@views/settings/bpmManager/index";
+import SaveBpm from "@views/settings/bpmManager/saveBpm";
+import SaveBpm2 from "@views/settings/bpmManager/saveBpm2";
+import UpdataBpm from "@views/settings/bpmManager/updataBpm";
+import BpmManager from "@views/settings/bpmManager/bpmManager";
+//基础设置
 import Basicinfo from "@views/basicinfo/index";
-import TypeManager from "@views/basicinfo/typeManager/index";
-import PropertyManager from "@views/basicinfo/propertyManager/index";
-import BrandManager from "@views/basicinfo/brandManager/index";
-import PlatformManager from "@views/basicinfo/platformManager/platformManager";
-import StoreManager from "@views/basicinfo/storeManager";
-import StoreList from "@views/basicinfo/storeManager/storeList";
-import AddStore from "@views/basicinfo/storeManager/addStore";
-//流程管理
-import Bpm from "@views/bpm";
-import SaveBpm from "@views/bpm/saveBpm";
-import SaveBpm2 from "@views/bpm/saveBpm2";
-import UpdataBpm from "@views/bpm/updataBpm";
-import BpmManager from "@views/bpm/bpmManager";
-//产品管理
-import Product from "@views/product";
-import ProductList from "@views/product/productManager/productList";
-import Sell from "@views/product/sell/";
-import SellList from "@views/product/sell/sellList";
-import AddFinishProduct from "@views/product/sell/addFinishProduct";
-import DevelopNewProducts from "@views/product/developNewProducts/index";
-import DevelopNewProductsList from "@views/product/developNewProducts/developNewProductsList";
-import AddNewProduct from "@views/product/developNewProducts/addNewProduct";
-import MainResearch from "@views/research/mainResearch";
-import MainResearchList from "@views/research/mainResearch/mainResearchList";
-import ResearchResult from "@views/research/mainResearch/researchResult";
-import Research from "@views/research/mainResearch/research";
-//客户管理
-import Customer from "@views/customer";
-import CustomerManager from "@views/customer/customerManager";
-import CustomerList from "@views/customer/customerManager/customerList";
-import AddCustomer from "@views/customer/customerManager/addCustomer";
-import SupplierManager from "@views/customer/supplierManager";
-import SupplierList from "@views/customer/supplierManager/supplierList";
-import AddSupplier from "@views/customer/supplierManager/addSupplier";
+import DevelopNewProducts from "@views/basicinfo/developNewProducts/index";
+import DevelopNewProductsList from "@views/basicinfo/developNewProducts/developNewProductsList";
+import AddNewProduct from "@views/basicinfo/developNewProducts/addNewProduct";
+import CustomerManager from "@views/basicinfo/customerManager";
+import ProductManager from "@views/basicinfo/productManager/productList";
+import CustomerList from "@views/basicinfo/customerManager/customerList";
+import AddCustomer from "@views/basicinfo/customerManager/addCustomer";
+import SupplierManager from "@views/basicinfo/supplierManager";
+import SupplierList from "@views/basicinfo/supplierManager/supplierList";
+import AddSupplier from "@views/basicinfo/supplierManager/addSupplier";
+//销售管理
+import Sell from "@views/sell/index";
+import SellManager from "@views/sell/sellManager/index";
+import SellList from "@views/sell/sellManager/sellList";
+import AddFinishProduct from "@views/sell/sellManager/addFinishProduct";
+import MainResearch from "@views/sell/mainResearch";
+import MainResearchList from "@views/sell/mainResearch/mainResearchList";
+import ResearchResult from "@views/sell/mainResearch/researchResult";
+import Research from "@views/sell/mainResearch/research";
 
 Vue.use(VueRouter);
 
@@ -77,44 +75,20 @@ const routes = [
         },
       },
       {
-        path: "basicinfo",
-        name: "basicinfo",
-        component: Basicinfo,
-        redirect:'basicinfo/typeManager',   //默认子路由
+        path: "settings",
+        name: "settings",
+        component: Settings,
+        redirect:'settings/platformManager',   //默认子路由
         meta: {
-          title: "基础信息"
+          title: "系统设置"
         },
         children:[
-          {
-            path: "typeManager",
-            name: "TypeManager",
-            component: TypeManager,
-            meta: {
-              title: "分类管理"
-            },
-          },
           {
             path: "platformManager",
             name: "PlatformManager",
             component: PlatformManager,
             meta: {
               title: "平台管理"
-            },
-          },
-          {
-            path: "propertyManager",
-            name: "propertyManager",
-            component: PropertyManager,
-            meta: {
-              title: "属性管理"
-            },
-          },
-          {
-            path: "brandManager",
-            name: "brandManager",
-            component: BrandManager,
-            meta: {
-              title: "品牌管理"
             },
           },
           {
@@ -144,23 +118,36 @@ const routes = [
               }
             ]
           },
-        ]
-      },
-      {
-        path: "authority",
-        name: "authority",
-        component: Authority,
-        meta: {
-          title: "权限管理"
-        },
-        redirect:'authority/menuManager',
-        children:[
           {
-            path: "roleManager",
-            name: "RoleManager",
-            component: RoleManager,
+            path: "typeManager",
+            name: "TypeManager",
+            component: TypeManager,
             meta: {
-              title: "角色管理"
+              title: "分类管理"
+            },
+          },
+          {
+            path: "propertyManager",
+            name: "propertyManager",
+            component: PropertyManager,
+            meta: {
+              title: "属性管理"
+            },
+          },
+          {
+            path: "brandManager",
+            name: "brandManager",
+            component: BrandManager,
+            meta: {
+              title: "品牌管理"
+            },
+          },
+          {
+            path: "makePicManager",
+            name: "makePicManager",
+            component: MakePicManager,
+            meta: {
+              title: "制图管理"
             },
           },
           {
@@ -176,98 +163,71 @@ const routes = [
             name: "UserManager",
             component: UserManager,
             meta: {
+              title: "用户管理"
+            },
+          },
+          {
+            path: "roleManager",
+            name: "RoleManager",
+            component: RoleManager,
+            meta: {
               title: "角色管理"
             },
-          }
-        ]
-      },
-      {
-        path: "bpm",
-        name: "Bpm",
-        component: Bpm,
-        meta: {
-          title: "流程管理"
-        },
-        redirect:'bpm/bpmManager',
-        children:[
-          {
-            path: 'bpmManager',
-            name: 'BpmManager',
-            meta:{ 
-              title:'流程管理',
-            },
-            component: BpmManager
           },
           {
-            path: 'saveBpm',
-            name: 'SaveBpm',
-            meta:{ 
-              title:'新建流程',
+            path: "bpm",
+            name: "Bpm",
+            component: Bpm,
+            meta: {
+              title: "流程管理"
             },
-            component: SaveBpm
-          },
-          {
-            path: 'saveBpm2',
-            name: 'SaveBpm2',
-            meta:{ 
-              title:'新建流程',
-            },
-            component: SaveBpm2
-          },
-          {
-            path: 'updataBpm',
-            name: 'UpdataBpm',
-            meta:{ 
-              title:'更新流程',
-            },
-            component: UpdataBpm
-          },
-        ]
-      },
-      {
-        path:"product",
-        name:"Product",
-        component: Product,
-        meta: {
-          title: "产品管理"
-        },
-        redirect:'product/productList',
-        children:[
-          {
-            path: 'productList',
-            name: 'ProductList',
-            meta:{ 
-              title:'产品列表',
-            },
-            component: ProductList
-          }, 
-          {
-            path: 'sell',
-            name: 'Sell',
-            meta:{ 
-              title:'销售推品列表',
-            },
-            component: Sell,
-            redirect:'sell/sellList',
+            redirect:'bpm/bpmManager',
             children:[
               {
-                path: 'sellList',
-                name: 'SellList',
+                path: 'bpmManager',
+                name: 'BpmManager',
                 meta:{ 
-                  title:'销售推品列表',
+                  title:'流程管理',
                 },
-                component: SellList
+                component: BpmManager
               },
               {
-                path: 'addFinishProduct',
-                name: 'AddFinishProduct',
+                path: 'saveBpm',
+                name: 'SaveBpm',
                 meta:{ 
-                  title:'新建新品',
+                  title:'新建流程',
                 },
-                component: AddFinishProduct
+                component: SaveBpm
+              },
+              {
+                path: 'saveBpm2',
+                name: 'SaveBpm2',
+                meta:{ 
+                  title:'新建流程',
+                },
+                component: SaveBpm2
+              },
+              {
+                path: 'updataBpm',
+                name: 'UpdataBpm',
+                meta:{ 
+                  title:'更新流程',
+                },
+                component: UpdataBpm
               },
             ]
           },
+        ]
+      },
+      {
+        path: "basicinfo",
+        name: "basicinfo",
+        component: Basicinfo,
+        redirect:'basicinfo/developNewProducts',   //默认子路由
+        meta: {
+          title: "基础设置"
+        },
+        children:[
           {
             path: 'developNewProducts',
             name: 'DevelopNewProducts',
@@ -296,54 +256,13 @@ const routes = [
             ]
           },
           {
-            path: 'mainResearch',
-            name: 'MainResearch',
-            meta:{ 
-              title:'主推调研',
+            path:"productManager",
+            name:"ProductManager",
+            component: ProductManager,
+            meta: {
+              title: "产品管理"
             },
-            component: MainResearch,
-            redirect:'mainResearch/mainResearchList',
-            children:[
-              {
-                path: 'mainResearchList',
-                name: 'MainResearchList',
-                meta:{ 
-                  title:'主推调研',
-                },
-                component: MainResearchList,
-                children:[
-                  
-                ]
-              },
-              {
-                path: 'research',
-                name: 'Research',
-                meta:{ 
-                  title:'调研',
-                },
-                component: Research,
-              },
-              {
-                path: 'researchResult',
-                name: 'ResearchResult',
-                meta:{ 
-                  title:'调研结果',
-                },
-                component: ResearchResult,
-              } 
-            ]
-          }
-        ]
-      },
-      {
-        path:"customer",
-        name:"Customer",
-        component: Customer,
-        meta: {
-          title: "客户管理"
-        },
-        redirect:'customer/SupplierManager',
-        children:[
+          },
           {
             path: 'supplierManager',
             name: 'SupplierManager',
@@ -397,9 +316,85 @@ const routes = [
                 component: AddCustomer,
               }, 
             ]
-          }    
-        ]    
-      }
+          },
+        ]
+      },
+      {
+        path: 'sell',
+        name: 'sell',
+        meta:{ 
+          title:'销售管理',
+        },
+        component: Sell,
+        redirect:'sell/sellManager',
+        children:[
+          {
+            path: 'sellManager',
+            name: 'SellManager',
+            redirect:'sellManager/sellList',
+            meta:{ 
+              title:'销售推品列表',
+            },
+            component: SellManager,
+            children:[
+              {
+                path: 'sellList',
+                name: 'sellList',
+                meta:{ 
+                  title:'销售推品列表',
+                },
+                component: SellList
+              },
+              {
+                path: 'addFinishProduct',
+                name: 'AddFinishProduct',
+                meta:{ 
+                  title:'新建新品',
+                },
+                component: AddFinishProduct
+              },
+            ]
+          },
+          {
+            path: 'mainResearch',
+            name: 'MainResearch',
+            meta:{ 
+              title:'主推调研',
+            },
+            component: MainResearch,
+            redirect:'mainResearch/mainResearchList',
+            children:[
+              {
+                path: 'mainResearchList',
+                name: 'MainResearchList',
+                meta:{ 
+                  title:'主推调研',
+                },
+                component: MainResearchList,
+                children:[
+                  
+                ]
+              },
+              {
+                path: 'research',
+                name: 'Research',
+                meta:{ 
+                  title:'调研',
+                },
+                component: Research,
+              },
+              {
+                path: 'researchResult',
+                name: 'ResearchResult',
+                meta:{ 
+                  title:'调研结果',
+                },
+                component: ResearchResult,
+              } 
+            ]
+          }
+        ]
+      },
     ],
   },
   {
