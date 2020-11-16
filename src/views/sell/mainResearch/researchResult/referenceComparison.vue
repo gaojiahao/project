@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-16 10:54:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 12:18:00
+ * @LastEditTime: 2020-11-16 14:36:13
 -->
 <template>
 <div>
@@ -48,7 +48,7 @@
                 <ResearchResultLog></ResearchResultLog>
             </TabPane>
             <TabPane label="历史记录">
-
+                <HistroyPriceComparison></HistroyPriceComparison>
             </TabPane>
         </Tabs>
     </div>
@@ -68,6 +68,7 @@ import {
     TabPane
 } from "view-design";
 import ResearchResultLog from "@components/sell/researchResult/researchResultLog";
+import HistroyPriceComparison from "@components/sell/researchResult/histroyPriceComparison";
 export default {
     name: 'ReferenceComparison',
     components: {
@@ -80,7 +81,8 @@ export default {
         Page,
         Tabs,
         TabPane,
-        ResearchResultLog
+        ResearchResultLog,
+        HistroyPriceComparison
     },
     data() {
         return {

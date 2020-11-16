@@ -4,15 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 12:05:58
+ * @LastEditTime: 2020-11-16 14:32:03
 -->
 <template>
 <div class="researchResultLog-container">
     <div>
         <Table border :columns="columns" :data="data" stripe>
-            <template slot-scope="{ row, index }" slot="action">
-                <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">参考比价</Button>
-            </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
@@ -36,7 +33,7 @@ import {
 import config from "@views/basicinfo/productManager/productListConfig";
 
 export default {
-    name: "AddNewProductTable",
+    name: "ResearchResultLog",
     components: {
         Table,
         Page,
@@ -53,76 +50,162 @@ export default {
             showModel: false,
             defaultImg: require("@assets/default/logo.png"),
             columns: [{
-                    title: '供应商名称',
-                    key: 'name'
+                    title: '目的地',
+                    key: 'destination'
                 },
                 {
-                    title: '最小采购量',
-                    key: 'code'
+                    title: '物流方式',
+                    key: 'logisticsMode'
                 },
                 {
-                    title: '采购单价',
-                    key: 'supplier'
+                    title: '小包运费（CNY）',
+                    key: 'smallPackagePrice'
                 },
                 {
-                    title: '链接地址',
-                    key: 'developer'
+                    title: '保底价格（CNY）',
+                    key: 'guaranteedPrice'
                 },
                 {
-                    title: '操作',
-                    slot: 'action',
-                    align: 'center'
-                }
+                    title: '原挂单价（CNY）',
+                    key: 'originalPrice'
+                },
+                {
+                    title: '店铺打折',
+                    key: 'storeDiscount',
+                    className: 'red-color',
+                },
+                {
+                    title: '区域定价折扣',
+                    key: 'areaPrice',
+                    className: 'oranger-color',
+                },
+                {
+                    title: '建议价格（USD）',
+                    key: 'proposalPrice'
+                },
+                {
+                    title: '浮动值',
+                    key: 'floatNum',
+                },
+                {
+                    title: '销售价（USD）',
+                    key: 'sellPrice',
+                    className: 'blue-color',
+                },
+                {
+                    title: '操作时间',
+                    key: 'datetime'
+                },
+                {
+                    title: '操作员',
+                    key: 'actioner'
+                },
             ],
-            dataConfig: {
-                'filterList': [{
-                    name: '全部',
-                    value: 'all',
-                }, {
-                    name: '已审核',
-                    value: 'all',
-                }, {
-                    name: '待审核',
-                    value: 'all',
-                }]
-            },
             data: [{
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                proposalPrice: 16.99,
+                floatNum: 5,
+                sellPrice: 25,
+                datetime: '2020-11-16',
+                actioner: '李四',
             }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                proposalPrice: 16.99,
+                floatNum: 5,
+                sellPrice: 25,
+                datetime: '2020-11-16',
+                actioner: '李四',
             }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                proposalPrice: 16.99,
+                floatNum: 5,
+                sellPrice: 25,
+                datetime: '2020-11-16',
+                actioner: '李四',
             }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                proposalPrice: 16.99,
+                floatNum: 5,
+                sellPrice: 25,
+                datetime: '2020-11-16',
+                actioner: '李四',
             }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                proposalPrice: 16.99,
+                floatNum: 5,
+                sellPrice: 25,
+                datetime: '2020-11-16',
+                actioner: '李四',
             }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                proposalPrice: 16.99,
+                floatNum: 5,
+                sellPrice: 25,
+                datetime: '2020-11-16',
+                actioner: '李四',
             }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }],
-            filter: "large"
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                proposalPrice: 16.99,
+                floatNum: 5,
+                sellPrice: 25,
+                datetime: '2020-11-16',
+                actioner: '李四',
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                proposalPrice: 16.99,
+                floatNum: 5,
+                sellPrice: 25,
+                datetime: '2020-11-16',
+                actioner: '李四',
+            }, ],
         }
     },
     methods: {
@@ -148,7 +231,37 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
+>>>.ivu-table td.red-color {
+    color: #ed4014;
+}
+
+>>>.ivu-table th.red-color {
+    color: #ed4014;
+}
+
+>>>.ivu-table td.oranger-color {
+    color: #ff9900;
+}
+
+>>>.ivu-table th.oranger-color {
+    color: #ff9900;
+}
+
+>>>.ivu-table td.blue-color {
+    color: #5cadff;
+}
+
+>>>.ivu-table th.blue-color {
+    color: #5cadff;
+}
+
+>>>.ivu-table-cell {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 12px;
+}
+</style><style lang="less" scoped>
 .researchResultLog-container {
     margin-top: 16px;
 
