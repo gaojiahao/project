@@ -1,6 +1,6 @@
 <template>
 <!--<li class="ivu-menu-submenu" :class="[ opened&&(activeMenu==parentItem.oneLevel.value) ? 'ivu-menu-opened':'']">-->
-<li class="ivu-menu-submenu" :class="[ activeMenu ? 'ivu-menu-opened':'']">
+<li class="ivu-menu-submenu" :class="[ activeMenu ? 'ivu-menu-opened':'ivu-menu-submenu-color']">
     <div class="ivu-menu-submenu-title" @click="clickMenu(parentItem&&parentItem.oneLevel,item)" v-if="item&&item.status">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
         <span class="ivu-menu-text" v-if="!isCollapsed">{{item.name}}</span>
@@ -176,5 +176,8 @@ export default {
     top: 50%;
     right: 10px;
     transform: translateY(-50%);
+}
+.ivu-menu-submenu-color {
+    background: #DEE7F4;    
 }
 </style>

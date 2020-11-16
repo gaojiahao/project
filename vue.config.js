@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 17:08:38
+ * @LastEditTime: 2020-11-16 18:21:37
  */
 const { endianness } = require("os");
 const path = require("path");
@@ -12,11 +12,28 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const loader = require("sass-loader");
 const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
 const productionGzipExtensions = ["js", "css"];
+const Happypack = require('happypack');
 let proxyConfig = require("./config/proxyConfig");
 
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 const publicPath = "Rose";
+const compress = new CompressionWebpackPlugin(
+  {
+    filename: info => {
+      return `${info.path}.gz${info.query}`
+    },
+    algorithm: 'gzip', 
+    threshold: 10240,
+    test: new RegExp(
+      '\\.(' +
+      ['js'].join('|') +
+      ')$'
+    ),
+    minRatio: 0.8,
+    deleteOriginalAssets: false
+  }
+ )
 module.exports = {
   publicPath: `/${publicPath}`, // 基本路径`/${publicPath}`
   outputDir: "dist", // 输出文件目录
@@ -40,7 +57,8 @@ module.exports = {
     config.optimization.splitChunks({
       chunks: 'all'
     });
-    // //压缩图片
+    config.optimization.minimize(true);
+    //压缩图片
     // config.module
     //   .rule('images')
     //   .use('image-webpack-loader')
@@ -58,6 +76,13 @@ module.exports = {
       // 为开发环境修改配置...
       config.mode = "development";
     }
+    config.plugins.push(
+      new Happypack({
+        loaders: ['babel-loader', 'vue-loader', 'iview-loader','vue-router', 'vuex',],
+        threads: 5 // 线程数取决于你电脑性能的好坏，好的电脑建议开更多线程
+      })
+    );
+    config.plugins.push(compress);
     Object.assign(config, {
       // 开发生产共同配置
       resolve: {

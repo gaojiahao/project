@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 10:12:46
+ * @LastEditTime: 2020-11-16 15:01:34
 -->
 <template>
 <div>
@@ -114,11 +114,13 @@ export default {
     },
     methods: {
         goAdd() {
-            this.$router.push('/bpm/saveBpm');
+            this.$router.push({
+                name: 'SaveBpm'
+            });
         },
         goUpdata(index) {
             this.$router.push({
-                path: '/bpm/updataBpm',
+                name: 'UpdataBpm',
                 query: {
                     id: index
                 }
