@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 18:40:18
+ * @LastEditTime: 2020-11-16 10:25:55
 -->
 <template>
 <div>
     <div class="list" v-for="(item,index) in list" :key="index">
-        <Input v-model="list[index]" placeholder="" style="width: 100px" @on-blur="handleInput" />
+        <Input v-model="list[index]" placeholder="" style="width: 100px" @on-blur="handleInput" :disabled="disabled" />
     </div>
-    <div class="list">
+    <div class="list" v-if="!disabled">
         <Button type="primary" shape="circle" icon="md-add" @click.native="add"></Button>
     </div>
 </div>
@@ -30,6 +30,10 @@ export default {
             type: String,
             default: ''
         },
+        disabled: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {

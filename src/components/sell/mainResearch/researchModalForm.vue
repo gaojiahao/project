@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 20:56:11
+ * @LastEditTime: 2020-11-14 12:35:36
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="1300">
@@ -29,9 +29,9 @@
                 </Select>
             </FormItem>
         </template>
-        <FormItem>
+        <div style="margin-left:10px">
             <Button type="primary" @click="handleSubmit('formValidate')">比价</Button>
-        </FormItem>
+        </div>
     </Form>
     <Table border :columns="columns" :data="data" stripe>
     </Table>
@@ -105,277 +105,147 @@ export default {
             data: {},
             show: false,
             columns: [{
-                    type: 'index',
-                    width: 80,
-                    align: 'center',
-                    title: '序号'
-                }, {
-                    title: '图片',
-                    key: 'img',
-                    align: 'center',
-                    render: (h, params) => {
-                        return h('div', [
-                            h('img', {
-                                attrs: {
-                                    src: params.img || require("@assets/default/logo.png")
-                                },
-                                style: {
-                                    width: '40px',
-                                    height: '40px'
-                                }
-                            }),
-                        ]);
-                    }
+                    title: '目的地',
+                    key: 'destination'
                 },
                 {
-                    title: '名称',
-                    key: 'type'
+                    title: '物流方式',
+                    key: 'logisticsMode',
+                    className: 'blue-color',
                 },
                 {
-                    title: '商品编号',
-                    key: 'sku'
+                    title: '小包运费（CNY）',
+                    key: 'smallPackagePrice'
                 },
                 {
-                    title: '供应商',
-                    key: 'color'
+                    title: '保底价格（CNY）',
+                    key: 'guaranteedPrice'
                 },
                 {
-                    title: '开发人员',
-                    key: 'productName'
+                    title: '原挂单价（CNY）',
+                    key: 'originalPrice'
                 },
                 {
-                    title: '分类',
-                    key: 'supplier'
+                    title: '店铺打折',
+                    key: 'storeDiscount',
+                    className: 'red-color',
                 },
                 {
-                    title: '特性标签',
-                    key: 'supplierNum'
+                    title: '区域定价折扣',
+                    key: 'areaPrice',
+                    className: 'oranger-color',
                 },
                 {
-                    title: '包装材料',
-                    key: 'createTime',
+                    title: '指定折扣价',
+                    key: 'sellPrice',
                 },
                 {
-                    title: '平均成本',
-                    key: 'recommendingOfficer',
-                },
-                {
-                    title: '状态',
-                    key: 'status',
-                    width: 100
-                },
-                {
-                    title: '创建时间',
-                    key: 'createTime1',
+                    title: '利润率',
+                    key: 'profitMargin',
+                    className: 'green-color',
                 },
             ],
             data: [{
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                }, {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                }, {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-                {
-                    img: '',
-                    type: '惯性积木玩具',
-                    sku: 'PD00026',
-                    color: "供应商1",
-                    productName: "李四",
-                    supplier: "玩具类",
-                    supplierNum: "普货",
-                    createTime: "顺丰45*45",
-                    recommendingOfficer: '12.699',
-                    status: "已调研",
-                    createTime1: '2020-11-06'
-                },
-            ],
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, {
+                destination: 'France',
+                logisticsMode: '美国e邮宝',
+                smallPackagePrice: 80.64,
+                guaranteedPrice: 58.64,
+                originalPrice: 60.64,
+                storeDiscount: 10,
+                areaPrice: 5,
+                sellPrice: 10,
+                profitMargin: 10,
+            }, ],
         }
     },
     watch: {
@@ -459,6 +329,42 @@ export default {
 </script>
 
 <style scoped>
+>>>.ivu-table td.red-color {
+    color: #ed4014;
+}
+
+>>>.ivu-table th.red-color {
+    color: #ed4014;
+}
+
+>>>.ivu-table td.oranger-color {
+    color: #ff9900;
+}
+
+>>>.ivu-table th.oranger-color {
+    color: #ff9900;
+}
+
+>>>.ivu-table td.blue-color {
+    color: #5cadff;
+}
+
+>>>.ivu-table th.blue-color {
+    color: #5cadff;
+}
+
+>>>.ivu-table td.green-color {
+    color: #19be6b;
+}
+
+>>>.ivu-table th.green-color {
+    color: #19be6b;
+}
+
+>>>.ivu-form {
+    display: flex;
+}
+
 >>>.ivu-form-item-error-tip {
     position: absolute;
     top: 100%;

@@ -4,34 +4,27 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:27:59
+ * @LastEditTime: 2020-11-14 13:11:15
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <RadioGroup v-model="filter" type="button">
-                <Radio label="large">全部</Radio>
-                <Radio label="default">在售</Radio>
-                <Radio label="small">待审核</Radio>
-                <Radio label="xxx">未通过</Radio>
-            </RadioGroup>
+            <Button size="small" type="primary" icon="ios-add">添加商品</Button>
+            <Button type="primary" size="small" icon="md-refresh" @click="refresh">刷新</Button>
+            <Button type="primary" size="small" icon="ios-create-outline" @click="refresh">编辑</Button>
+            <Button type="primary" size="small" icon="ios-close" @click="deleteData">删除</Button>
         </div>
         <div class="filter-search">
-            关键词：
+            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)">高级筛选</Button>
             <Input placeholder="关键词" style="width: 200px" />
-            创建时间：
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <Button type="primary" icon="ios-search">查询</Button>
-            <Button type="primary" icon="md-add-circle">添加</Button>
+            <Button size="small" type="primary">搜索</Button>
         </div>
     </div>
     <div>
-        <Table border :columns="columns" :data="data" stripe>
+        <Table border :columns="columns" :data="data" stripe ref="selection">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true)">开发</Button>
-                <Button type="primary" size="small" style="margin-right: 5px" @click="showPop2(true)">编辑</Button>
                 <Button type="info" size="small" style="margin-right: 5px" @click="showPop2(true)">审核</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="showPop(true)">调研</Button>
             </template>
@@ -43,7 +36,8 @@
         </div>
     </div>
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
-    <ModalForm :titleText="titleText2" :formValidate="formValidate2" :ruleValidate="ruleValidate2" :showModel='showModel2' :formConfig="formConfig2" @save="save" @show-pop="showPop2" @clear-form-data="clearFormData2"></ModalForm>
+
+    <SeniorFilter :formValidate="formValidate" :ruleValidate="ruleValidate" :showFilterModel='showFilterModel' :formConfig="formConfig" @setFilter="setFilter" @show-filter="showFilter"></SeniorFilter>
 </div>
 </template>
 
@@ -58,7 +52,8 @@ import {
     DatePicker
 } from "view-design";
 import ModalForm from "@components/public/form/modalForm";
-import config from "@views/sell/sellManager/sellConfig";
+import SeniorFilter from "@components/public/filter/seniorFilter";
+import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
 
 export default {
     name: "DevelopNewProductsList",
@@ -71,6 +66,7 @@ export default {
         Option,
         DatePicker,
         ModalForm,
+        SeniorFilter
     },
     mixins: [config],
     data() {
@@ -79,7 +75,13 @@ export default {
             titleText2: '',
             showModel: false,
             showModel2: false,
+            showFilterModel: false,
             columns: [{
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                },
+                {
                     type: 'index',
                     width: 80,
                     align: 'center',
@@ -148,18 +150,6 @@ export default {
                     width: 300
                 }
             ],
-            dataConfig: {
-                'filterList': [{
-                    name: '全部',
-                    value: 'all',
-                }, {
-                    name: '已审核',
-                    value: 'all',
-                }, {
-                    name: '待审核',
-                    value: 'all',
-                }]
-            },
             data: [{
                     img: '',
                     type: '玩具',
@@ -298,17 +288,33 @@ export default {
         changePage() {
 
         },
-        clearFormData2() {}
+        clearFormData2() {},
+        setFilter() {},
+        showFilter(flag) {
+            this.showFilterModel = flag;
+        },
+        refresh() {
+
+        },
+        deleteData() {}
     }
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
+>>>.ivu-input {
+    height: 26px;
+}
+
+>>>.ivu-btn-small span {
+    font-size: 12px;
+}
+</style><style lang="less" scoped>
 .storeManager-container {
     margin-top: 16px;
 
     .head {
-        height: 38px;
+        height: 30px;
 
         .select-type {
             float: left;

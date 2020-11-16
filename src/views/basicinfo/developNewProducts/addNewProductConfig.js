@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 11:19:23
+ * @LastEditTime: 2020-11-16 10:21:27
  */
 export default {
     data() {
@@ -15,10 +15,12 @@ export default {
             productCode:{
               name:'商品编号',
               type:'text',
+              disabled: true
             },
             productName:{
               name:'商品名称',
               type:'text',
+              disabled: true
             },
             productType:{
               name:'分类',
@@ -29,15 +31,18 @@ export default {
                   {name:'积木',value:'001'},
                   {name:'灯',value:'002'}
                 ],
-              }
+              },
+              disabled: true
             },
             characteristicLable:{
               name:'特性标签',
               type:'texts',
+              disabled: true
             },
             brand:{
               name:'品牌',
               type:'text',
+              disabled: true
             },
             isHavePackage:{
               name:'是否带包装',
@@ -48,16 +53,19 @@ export default {
                   {name:'是',value:'true'},
                   {name:'否',value:'false'}
                 ],
-              }
+              },
+              disabled: true
             },
             weight:{
               name:'商品重量',
               type:'text',
-              unit:'kg'
+              unit:'kg',
+              disabled: true
             },
             productSize:{
               name:'商品尺寸',
               type:'size',
+              disabled: true
             },
             }
           },

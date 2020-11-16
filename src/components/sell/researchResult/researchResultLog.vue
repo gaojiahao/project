@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 12:00:09
+ * @LastEditTime: 2020-11-16 12:05:58
 -->
 <template>
-<div class="addNewProductTable-container">
+<div class="researchResultLog-container">
     <div>
         <Table border :columns="columns" :data="data" stripe>
             <template slot-scope="{ row, index }" slot="action">
@@ -20,7 +20,6 @@
             </div>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
 </div>
 </template>
 
@@ -34,7 +33,6 @@ import {
     Option,
     DatePicker
 } from "view-design";
-import ModalForm from "@components/public/form/modalForm";
 import config from "@views/basicinfo/productManager/productListConfig";
 
 export default {
@@ -47,7 +45,6 @@ export default {
         Select,
         Option,
         DatePicker,
-        ModalForm,
     },
     mixins: [config],
     data() {
@@ -152,7 +149,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.addNewProductTable-container {
+.researchResultLog-container {
     margin-top: 16px;
 
     .head {

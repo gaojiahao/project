@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 20:22:09
+ * @LastEditTime: 2020-11-16 11:28:19
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -50,8 +50,10 @@ import SellList from "@views/sell/sellManager/sellList";
 import AddFinishProduct from "@views/sell/sellManager/addFinishProduct";
 import MainResearch from "@views/sell/mainResearch";
 import MainResearchList from "@views/sell/mainResearch/mainResearchList";
-import ResearchResult from "@views/sell/mainResearch/researchResult";
+import ResearchResult from "@views/sell/mainResearch/researchResult/index";
+import ResearchResultList from "@views/sell/mainResearch/researchResult/researchResult";
 import Research from "@views/sell/mainResearch/research";
+import ReferenceComparison from "@views/sell/mainResearch/researchResult/referenceComparison";
 
 Vue.use(VueRouter);
 
@@ -390,6 +392,25 @@ const routes = [
                   title:'调研结果',
                 },
                 component: ResearchResult,
+                redirect:'researchResult/researchResultList',
+                children:[
+                  {
+                    path: 'researchResultList',
+                    name: 'ResearchResultList',
+                    meta:{ 
+                      title:'调研结果',
+                    },
+                    component: ResearchResultList,
+                  },
+                  {
+                    path: 'referenceComparison',
+                    name: 'ReferenceComparison',
+                    meta:{ 
+                      title:'参考比价',
+                    },
+                    component: ReferenceComparison,
+                  },   
+                ]
               } 
             ]
           }

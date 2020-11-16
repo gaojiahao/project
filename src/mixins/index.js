@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-14 09:07:56
+ * @LastEditTime: 2020-11-14 09:27:39
  */
 export default {
     data() {
@@ -112,7 +112,7 @@ export default {
             status: true,
             children: [
               {
-                name: '开发新品',
+                name: '新品开发管理',
                 value: 'developNewProducts',
                 status: true,
                 children: [

@@ -4,21 +4,21 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-11 18:40:40
+ * @LastEditTime: 2020-11-16 10:36:55
 -->
 <template>
 <div>
     <div class="list">
-        <span style="margin-right:10px">长</span><Input v-model="list.long" placeholder="" style="width: 100px" @on-blur="handleInput" /><span style="margin-left:10px">cm</span>
+        <span style="margin-right:10px">长</span><Input v-model="list.long" placeholder="" style="width: 100px" @on-blur="handleInput" :disabled="disabled" /><span style="margin-left:10px">cm</span>
     </div>
     <div class="list">
-        <span style="margin-right:10px">宽</span><Input v-model="list.wide" placeholder="" style="width: 100px" @on-blur="handleInput" /><span style="margin-left:10px">cm</span>
+        <span style="margin-right:10px">宽</span><Input v-model="list.wide" placeholder="" style="width: 100px" @on-blur="handleInput" :disabled="disabled" /><span style="margin-left:10px">cm</span>
     </div>
     <div class="list">
-        <span style="margin-right:10px">高</span><Input v-model="list.high" placeholder="" style="width: 100px" @on-blur="handleInput" /><span style="margin-left:10px">cm</span>
+        <span style="margin-right:10px">高</span><Input v-model="list.high" placeholder="" style="width: 100px" @on-blur="handleInput" :disabled="disabled" /><span style="margin-left:10px">cm</span>
     </div>
     <div class="list">
-        <span style="margin-right:10px">体积</span><Input v-model="list.volume" placeholder="" style="width: 100px" @on-blur="handleInput" /><span style="margin-left:10px">cm³</span>
+        <span style="margin-right:10px">体积</span><Input v-model="list.volume" placeholder="" style="width: 100px" @on-blur="handleInput" :disabled="disabled" /><span style="margin-left:10px">cm³</span>
     </div>
 </div>
 </template>
@@ -36,6 +36,10 @@ export default {
             type: String,
             default: ''
         },
+        disabled: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {
