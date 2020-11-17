@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 18:21:37
+ * @LastEditTime: 2020-11-17 09:03:25
  */
 const { endianness } = require("os");
 const path = require("path");
@@ -54,10 +54,6 @@ module.exports = {
       .options({ prefix: false })
       .end();
       //分割代码
-    config.optimization.splitChunks({
-      chunks: 'all'
-    });
-    config.optimization.minimize(true);
     //压缩图片
     // config.module
     //   .rule('images')
@@ -72,6 +68,11 @@ module.exports = {
     if (process.env.NODE_ENV === "production") {
       // 为生产环境修改配置...
       config.mode = "production";
+      config.plugins.push(compress);
+      config.optimization.splitChunks({
+        chunks: 'all'
+      });
+      config.optimization.minimize(true);
     } else {
       // 为开发环境修改配置...
       config.mode = "development";
@@ -82,7 +83,11 @@ module.exports = {
         threads: 5 // 线程数取决于你电脑性能的好坏，好的电脑建议开更多线程
       })
     );
-    config.plugins.push(compress);
+    // config.plugins.push(compress);
+    //   config.optimization.splitChunks({
+    //     chunks: 'all'
+    //   });
+    // config.optimization.minimize(true);
     Object.assign(config, {
       // 开发生产共同配置
       resolve: {
