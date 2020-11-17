@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 10:47:24
+ * @LastEditTime: 2020-11-17 16:32:47
 -->
 <template>
 <div>
@@ -35,7 +35,7 @@
                     <Icon type="ios-camera" size="30"></Icon>
                 </div>
             </Upload>
-            <Modal title="View Image" v-model="visible">
+            <Modal :title="imgName" v-model="visible" fullscreen footer-hide>
                 <!--<img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">-->
                 <img :src="'https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843'" v-if="visible" style="width: 100%">
             </Modal>
@@ -75,7 +75,7 @@ export default {
             defaultList: [],
             imgName: '',
             visible: false,
-            uploadList: []
+            uploadList: [],
         }
     },
     methods: {

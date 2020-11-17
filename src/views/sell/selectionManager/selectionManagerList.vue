@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 20:46:14
+ * @LastEditTime: 2020-11-17 18:42:18
 -->
 <template>
 <div class="storeManager-container">
@@ -36,8 +36,8 @@
         </div>
     </div>
     <SelectionModel :titleText="titleText" :formValidate="formValidate" :showModel='showModel' @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></SelectionModel>
-
     <SeniorFilter :formValidate="formValidate" :ruleValidate="ruleValidate" :showFilterModel='showFilterModel' :formConfig="formConfig" @setFilter="setFilter" @show-filter="showFilter"></SeniorFilter>
+    <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
 
@@ -53,6 +53,7 @@ import {
 } from "view-design";
 import SelectionModel from "@components/sell/selectionManager/selectionModel";
 import SeniorFilter from "@components/public/filter/seniorFilter";
+import ImageModel from "@components/public/model/imageModel";
 import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
 
 export default {
@@ -66,7 +67,8 @@ export default {
         Option,
         DatePicker,
         SelectionModel,
-        SeniorFilter
+        SeniorFilter,
+        ImageModel
     },
     mixins: [config],
     data() {
@@ -76,6 +78,8 @@ export default {
             showModel: false,
             showModel2: false,
             showFilterModel: false,
+            visible:false,
+            srcData:{},
             columns: [
                 {
                     type: 'index',
@@ -95,6 +99,15 @@ export default {
                                 style: {
                                     width: '40px',
                                     height: '40px'
+                                },
+                                on: {
+                                    click:()=>{
+                                        this.srcData = {
+                                            imgName: '图片预览',
+                                            src: params.img || require("@assets/default/logo.png")
+                                        }
+                                        this.visible = true;
+                                    }
                                 }
                             }),
                         ]);

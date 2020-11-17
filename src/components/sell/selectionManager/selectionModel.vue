@@ -4,16 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 20:44:05
+ * @LastEditTime: 2020-11-17 17:23:49
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
-        <FormItem label="基本信息：" :style="{fontSize:'24px'}">
-        </FormItem>
-        <FormItem label="商品编号：" prop="productNum" >
-            {{formValidate.productNum}}
-        </FormItem>
+        <div class="firstItem">
+            <label class="" style="width: 120px;font-size: 16px;font-weight: 600;">基本信息：</label>
+        </div>
         <FormItem label="商品名称：" prop="productName" >
             {{formValidate.productName}}
         </FormItem>
@@ -182,5 +180,12 @@ export default {
     padding-top: 9px;
     color: #ed4014;
     padding-left: 9px;
+}
+</style>
+<style lang="less" scoped>
+.firstItem{
+        margin-bottom: 24px;
+    vertical-align: top;
+    zoom: 1;
 }
 </style>

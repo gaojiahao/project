@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 19:33:41
+ * @LastEditTime: 2020-11-17 09:24:12
  */
 export default {
     data() {
@@ -115,13 +115,13 @@ export default {
                 name: '新品开发管理',
                 value: 'developNewProducts',
                 status: true,
-                children: [
-                  {
-                    name: '新建新品',
-                    value: 'addNewProduct',
-                    status: true,     
-                  },
-                ],   
+                // children: [
+                //   {
+                //     name: '新建新品',
+                //     value: 'addNewProduct',
+                //     status: true,     
+                //   },
+                // ],   
               },
               {
                 name: '产品管理',

@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-14 13:04:09
+ * @LastEditTime: 2020-11-17 14:09:49
 -->
 <template>
 <Modal v-model="show" title="高级筛选" @on-ok="ok" @on-cancel="cancel" width="800">
-    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
-        <template v-for="(item, index) in formValidate">
+    <Form ref="formValidate" :model="formValidate" :label-width="120">
+        <template v-for="(item, index) in formConfig">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
                 <Input v-model="formValidate[index]" :style="{width:'200px'}"></Input>
             </FormItem>
@@ -27,18 +27,15 @@
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
             </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
+                <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker> - 
+                <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
+            </FormItem>
         </template>
-        <!--<FormItem label="平台负责人1:" prop="chargeUserId">
-            <Select v-model="formValidate.chargeUserId" :style="{width:'200px',float: 'left'}" clearable multiple filterable>
-                <Option v-for="item in userList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-        </FormItem>
-        <FormItem label="平台负责人:" prop="chargeUserId">
-            <XSelect></XSelect>
-        </FormItem>-->
     </Form>
     <div slot="footer">
-        <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
+        <Button @click="clearData">重置</Button>
+        <Button type="primary" @click="handleSubmit('formValidate')">筛选</Button>
     </div>
 </Modal>
 </template>
@@ -52,7 +49,8 @@ import {
     Option,
     Modal,
     RadioGroup,
-    Radio
+    Radio,
+    DatePicker
 } from "view-design";
 export default {
     name: 'SeniorFilter',
@@ -64,21 +62,10 @@ export default {
         Option,
         Modal,
         RadioGroup,
-        Radio
+        Radio,
+        DatePicker
     },
     props: {
-        formValidate: {
-            type: Object,
-            default () {
-                return {}
-            }
-        },
-        ruleValidate: {
-            type: Object,
-            default () {
-                return {}
-            }
-        },
         formConfig: {
             type: Object,
             default () {
@@ -93,46 +80,30 @@ export default {
     data() {
         return {
             data: {},
-            show: false
+            show: false,
+            formValidate:{}
         }
     },
     watch: {
-        formConfig: {
-            handler(val) {
-
-            }
-        },
         showFilterModel: {
             handler(val) {
                 this.show = val
                 this.initEL('input');
             }
         },
-        formValidate: {
-            handler(val) {
-
-            }
-        }
     },
     methods: {
         ok() {
 
         },
         cancel() {
-            this.$emit('clear-form-data');
             this.$emit('show-filter', false);
-            this.$refs['formValidate'].resetFields();
         },
-        handleSubmit(name) {
-            this.$refs[name].validate((valid) => {
-                if (valid) {
-                    this.$emit('save');
-                    this.$emit('show-filter', false);
-                    this.$emit('clear-form-data');
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })
+        clearData(){
+            this.formValidate={};
+        },
+        handleSubmit() {
+            this.$emit('set-filter', this.formValidate);
         },
         initEL(type) {
             var controls = this.$el.getElementsByTagName(type);

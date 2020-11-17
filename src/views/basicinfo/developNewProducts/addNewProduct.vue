@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:55:34
+ * @LastEditTime: 2020-11-17 16:48:14
 -->
 <template>
 <div>
@@ -17,8 +17,7 @@
                 <XForm :formValidate="formValidate.productInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.productInfo.field" @save="save" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
                         <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                            
                         </div>
                     </template>
                 </XForm>
@@ -27,17 +26,17 @@
                 其他信息
             </div>
             <div class="top">
-                <XForm :formValidate="formValidate.otherInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.otherInfo.field" @save="save" @clear-form-data="clearFormData" ref="form">
+                <XForm :formValidate="formValidate.otherInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.otherInfo.field" @save="saveOtherInfo" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
                         <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button type="primary" @click="saveOtherInfo" style="float: left;">保存</Button>
                             <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
                         </div>
                     </template>
                 </XForm>
             </div>
         </TabPane>
-        <TabPane label="销售信息">
+        <TabPane label="销售信息" :disabled="disabledSell">
             <AddNewProductTable></AddNewProductTable>
             <div class="bottom-title">
                 采购信息
@@ -46,25 +45,26 @@
                 <XForm :formValidate="formValidate.purchase" :ruleValidate="ruleValidate" :formConfig="formConfig.purchase.field" @save="save" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
                         <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button type="primary" @click="savePurchase" style="float: left;">保存</Button>
                             <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
                         </div>
                     </template>
                 </XForm>
             </div>
         </TabPane>
-        <TabPane label="制作文件">
+        <TabPane label="制作文件" :disabled="disabledUpload">
             <div class="bottom-title">
                 文件上传
             </div>
             <div class="top" style="flex:display;padding:20px;flex-direction:column;display:flex">
+                <!--上传的配置要传入-->
                 <AddNewProductTableUploadPic></AddNewProductTableUploadPic>
                 <AddNewProductTableUploadVideo></AddNewProductTableUploadVideo>
                 <AddNewProductTableUpload3D></AddNewProductTableUpload3D>
                 <AddNewProductTableUploadMusic></AddNewProductTableUploadMusic>
             </div>
         </TabPane>
-        <TabPane label="属性">
+        <TabPane label="属性" :disabled="disabledProperty">
             <div class="bottom-title">
                 属性
             </div>
@@ -72,14 +72,14 @@
                 <XForm :formValidate="formValidate.property" :ruleValidate="ruleValidate" :formConfig="formConfig.property.field" @save="save" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
                         <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button type="primary" @click="saveProperty" style="float: left;">保存</Button>
                             <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
                         </div>
                     </template>
                 </XForm>
             </div>
         </TabPane>
-        <TabPane label="详细描述">
+        <TabPane label="详细描述" :disabled="disabledDetailInfo">
             <div class="bottom-title">
                 属性
             </div>
@@ -87,18 +87,19 @@
                 <XForm :formValidate="formValidate.detailInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.detailInfo.field" @save="save" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
                         <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button type="primary" @click="saveDetailInfo" style="float: left;">保存</Button>
                             <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
                         </div>
                     </template>
                 </XForm>
             </div>
         </TabPane>
-        <TabPane label="日志文件">
+        <TabPane label="日志文件" :disabled="disabledLog">
             <AddNewProductTableLog></AddNewProductTableLog>
         </TabPane>
         <Button @click="" size="small" slot="extra" type="warning">查看调研</Button>
     </Tabs>
+    
 </div>
 </template>
 
@@ -130,9 +131,40 @@ export default {
         AddNewProductTableLog
     },
     mixins: [config],
+    data(){
+        return{
+            disabledSell: true,
+            disabledUpload: true,
+            disabledProperty: true,
+            disabledDetailInfo: true,
+            disabledLog: true,
+        }
+    },
     methods: {
         clearFormData() {},
-        save() {}
+        save() {},
+        saveOtherInfo(){
+            if(this.formValidate.productInfo.productCode){
+                this.$Message.info({content:'温馨提示：保存成功'});
+                this.disabledSell = false;
+            } else {
+                this.$Message.info({content:'温馨提示：保存失败，已有类似商品！'});
+
+            }
+        },
+        savePurchase(){
+            this.$Message.info({content:'温馨提示：保存成功'});
+            this.disabledUpload = false;
+            this.disabledProperty = false;
+        },
+        saveProperty(){
+            this.$Message.info({content:'温馨提示：保存成功'});
+            this.disabledDetailInfo = false;    
+        },
+        saveDetailInfo(){
+            this.$Message.info({content:'温馨提示：保存成功'});
+            this.disabledLog = false;        
+        }
     },
     created() {}
 }
