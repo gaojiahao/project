@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:29:47
+ * @LastEditTime: 2020-11-16 19:28:03
 -->
 <template>
 <div class="storeManager-container">
@@ -29,6 +29,7 @@
         <Table border :columns="columns" :data="data" stripe>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goResearch(row)">查看调研</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -136,7 +137,8 @@ export default {
                 }, {
                     title: '操作',
                     slot: 'action',
-                    align: 'center'
+                    align: 'center',
+                    width:200
                 }
             ],
             dataConfig: {
@@ -257,6 +259,9 @@ export default {
         },
         changePage() {
 
+        },
+        goResearch(row){
+            this.$router.push({path:'/sell/mainResearch/researchResult/researchResultList',query: {id:row.id||123}})
         }
     }
 }

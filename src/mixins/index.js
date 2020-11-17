@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-14 09:27:39
+ * @LastEditTime: 2020-11-16 19:33:41
  */
 export default {
     data() {
@@ -162,6 +162,11 @@ export default {
             value: 'sell',
             status: true,
             children: [
+              {
+                name: '选品管理',
+                value: 'selectionManager',
+                status: true,  
+              },
               {
                 name: '销售推品',
                 value: 'sellManager',

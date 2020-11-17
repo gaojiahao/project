@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 11:28:19
+ * @LastEditTime: 2020-11-16 20:01:04
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -54,6 +54,8 @@ import ResearchResult from "@views/sell/mainResearch/researchResult/index";
 import ResearchResultList from "@views/sell/mainResearch/researchResult/researchResult";
 import Research from "@views/sell/mainResearch/research";
 import ReferenceComparison from "@views/sell/mainResearch/researchResult/referenceComparison";
+import SelectionManager from "@views/sell/selectionManager/index";
+import SelectionManagerList from "@views/sell/selectionManager/selectionManagerList";
 
 Vue.use(VueRouter);
 
@@ -328,8 +330,26 @@ const routes = [
           title:'销售管理',
         },
         component: Sell,
-        redirect:'sell/sellManager',
+        redirect:'sell/selectionManager',
         children:[
+          {
+            path: 'selectionManager',
+            name: 'SelectionManager',
+            redirect:'selectionManager/selectionManagerList',
+            meta:{ 
+              title:'选品管理',
+            },
+            component: SelectionManager,
+            children:[{
+              path: 'selectionManagerList',
+              name: 'SelectionManagerList',
+              meta:{ 
+                title:'选品管理',
+              },
+              component:SelectionManagerList
+             }
+            ]
+          },
           {
             path: 'sellManager',
             name: 'SellManager',
