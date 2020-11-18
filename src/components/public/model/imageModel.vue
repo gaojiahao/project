@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 18:18:44
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 19:17:03
+ * @LastEditTime: 2020-11-18 14:51:15
 -->
 <template>
-    <Modal :title="srcData.imgName" v-model="show" fullscreen footer-hide>      
+    <Modal :title="srcData.imgName" v-model="show"  @on-cancel="cancel" fullscreen footer-hide>      
         <img :src="srcData.src" v-if="show" style="width: 100%">
     </Modal>
 </template>
@@ -41,6 +41,11 @@ export default {
                 this.show = val
             }
         }
+    },
+    methods:{
+        cancel() {
+            this.$emit('show-image-model', false);
+        },
     },
     data(){
         return {
