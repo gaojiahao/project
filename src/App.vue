@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 19:42:22
+ * @LastEditTime: 2020-11-18 14:24:47
 -->
 <template>
 <div id="app" v-title data-title="跨境电商ERP">
@@ -43,6 +43,12 @@ export default {
             this.logginStatus = true;
         }
     },
+    mounted(){
+        let top = (document.getElementById("app").offsetHeight)/3;
+        this.$Message.config({
+            top: top,
+        });
+    }
     // mounted() {
     //     //第一个输入框获取焦点
     //     function initEl() {
@@ -78,7 +84,16 @@ export default {
     // }
 }
 </script>
-
+<style lang="less">
+.ivu-message-notice-content {
+    font-size: 20px;
+}
+</style>
+<style scoped>
+>>>.ivu-message .ivu-icon {
+    font-size: 24px;
+}
+</style>
 <style lang="scss">
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
