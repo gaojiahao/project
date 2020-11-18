@@ -47,6 +47,7 @@ export default {
         let top = (document.getElementById("app").offsetHeight)/3;
         this.$Message.config({
             top: top,
+            duration: 2
         });
     }
     // mounted() {

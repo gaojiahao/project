@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 21:02:37
+ * @LastEditTime: 2020-11-18 16:24:04
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <Button size="small" icon="md-refresh" @click="refresh">刷新</Button>
+            <Button size="small" type="success" icon="md-refresh" @click="refresh">刷新</Button>
         </div>
         <div class="filter-search">
             <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)">高级筛选</Button>
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div>
-        <Table border :columns="columns" :data="data" stripe :loading="loading" >
+        <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="goResearch(row)">查看调研</Button>
@@ -53,7 +53,7 @@ import ImageModel from "@components/public/model/imageModel";
 import config from "@views/basicinfo/productManager/productListConfig";
 
 export default {
-    name: "StoreList",
+    name: "ProductList",
     components: {
         Table,
         Page,
@@ -73,7 +73,7 @@ export default {
             titleText: '',
             showModel: false,
             defaultImg: require("@assets/default/logo.png"),
-            loading : false,
+            loading : true,
             showFilterModel:false,
             srcData:{},
             visible:false,

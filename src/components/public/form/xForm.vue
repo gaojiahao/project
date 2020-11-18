@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 15:52:17
+ * @LastEditTime: 2020-11-18 15:26:48
 -->
 <template>
 <div class="content">
@@ -13,6 +13,10 @@
             <!--文本框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
                 <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
+            </FormItem>
+            <!--数值控件-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='number'">
+                <InputNumber v-model="formValidate[index]" :style="{width:'200px'}" :editable="formConfig[index]['disabled']" :precision="formConfig[index]['precision']" v-show="!formConfig[index]['hidden']"></InputNumber><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <!--单选框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
@@ -66,7 +70,8 @@ import {
     Select,
     Option,
     RadioGroup,
-    Radio
+    Radio,
+    InputNumber
 } from "view-design";
 import UploadImg from '@components/public/upload/uploadImg';
 import Texts from '@components/public/input/texts';
@@ -81,6 +86,7 @@ export default {
         Option,
         RadioGroup,
         Radio,
+        InputNumber,
         UploadImg,
         Texts,
         Size

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 09:59:54
+ * @LastEditTime: 2020-11-18 15:27:07
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -12,6 +12,10 @@
         <template v-for="(item, index) in formValidate">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
                 <Input v-model="formValidate[index]" :style="{width:'200px'}"></Input>
+            </FormItem>
+            <!--数值控件-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='number'">
+                <InputNumber v-model="formValidate[index]" :style="{width:'200px'}" :editable="formConfig[index]['disabled']" :precision="formConfig[index]['precision']" v-show="!formConfig[index]['hidden']"></InputNumber><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
                 <RadioGroup v-model="formValidate[index]">
@@ -52,7 +56,8 @@ import {
     Option,
     Modal,
     RadioGroup,
-    Radio
+    Radio,
+    InputNumber
 } from "view-design";
 export default {
     name: 'ModalForm',
@@ -64,7 +69,8 @@ export default {
         Option,
         Modal,
         RadioGroup,
-        Radio
+        Radio,
+        InputNumber
     },
     props: {
         titleText: {

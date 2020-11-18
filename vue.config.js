@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 09:03:25
+ * @LastEditTime: 2020-11-18 16:32:37
  */
 const { endianness } = require("os");
 const path = require("path");
@@ -99,6 +99,7 @@ module.exports = {
           "@service": path.resolve(__dirname, "./src/service"),
           "@views": path.resolve(__dirname, "./src/views"),
           "@scss": path.resolve(__dirname, "./src/scss"),
+          "@css": path.resolve(__dirname, "./src/css"),
           "@plugins": path.resolve(__dirname, "./src/plugins"),
           "@less": path.resolve(__dirname, "./src/less"),
           "@mixins": path.resolve(__dirname, "./src/mixins"),

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 09:23:44
+ * @LastEditTime: 2020-11-18 17:07:34
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -36,13 +36,16 @@ import Basicinfo from "@views/basicinfo/index";
 import DevelopNewProducts from "@views/basicinfo/developNewProducts/index";
 import DevelopNewProductsList from "@views/basicinfo/developNewProducts/developNewProductsList";
 import AddNewProduct from "@views/basicinfo/developNewProducts/addNewProduct";
+import ViewNewProduct from "@views/basicinfo/developNewProducts/viewNewProduct";
 import CustomerManager from "@views/basicinfo/customerManager";
 import ProductManager from "@views/basicinfo/productManager/productList";
 import CustomerList from "@views/basicinfo/customerManager/customerList";
 import AddCustomer from "@views/basicinfo/customerManager/addCustomer";
+import ViewCustomer from "@views/basicinfo/customerManager/viewCustomer";
 import SupplierManager from "@views/basicinfo/supplierManager";
 import SupplierList from "@views/basicinfo/supplierManager/supplierList";
 import AddSupplier from "@views/basicinfo/supplierManager/addSupplier";
+import ViewSupplier from "@views/basicinfo/supplierManager/viewSupplier";
 //销售管理
 import Sell from "@views/sell/index";
 import SellManager from "@views/sell/sellManager/index";
@@ -257,6 +260,14 @@ const routes = [
                 },
                 component: AddNewProduct
               },
+              {
+                path: 'viewNewProduct',
+                name: 'ViewNewProduct',
+                meta:{ 
+                  title:'查看新品',
+                },
+                component: ViewNewProduct
+              },
             ]
           },
           {
@@ -292,6 +303,14 @@ const routes = [
                 },
                 component: AddSupplier,
               }, 
+              {
+                path: 'viewSupplier',
+                name: 'ViewSupplier',
+                meta:{ 
+                  title:'查看供应商',
+                },
+                component: ViewSupplier,
+              },
             ]
           },
           {
@@ -319,6 +338,14 @@ const routes = [
                 },
                 component: AddCustomer,
               }, 
+              {
+                path: 'viewCustomer',
+                name: 'ViewCustomer',
+                meta:{ 
+                  title:'查看客户',
+                },
+                component: ViewCustomer,
+              },
             ]
           },
         ]

@@ -4,16 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 20:51:21
+ * @LastEditTime: 2020-11-18 17:12:39
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd">添加供应商</Button>
-            <Button size="small" icon="md-refresh" @click="refresh">刷新</Button>
-            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" v-show="selectedList.length>0&&selectedList.length<2">编辑</Button>
-            <Button type="error" size="small" icon="ios-close" @click="deleteData" v-show="selectedList.length>0">删除</Button>
+            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd">添加客户</Button>
+            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit">编辑</Button>
+            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm">删除</Button>
+            <!--<Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>-->
+            <Button size="small" type="success" icon="md-refresh" @click="refresh">刷新</Button>
         </div>
         <div class="filter-search">
             <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)">高级筛选</Button>
@@ -21,7 +22,7 @@
         </div>
     </div>
     <div>
-        <Table border :loading="loading" :columns="columns" :data="data" stripe @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel">
+        <Table Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="primary" icon="ios-search-outline" size="small" style="margin-right: 5px" @click="showPop(true)">查看</Button>
             </template>
@@ -47,10 +48,8 @@ import {
     Option,
     DatePicker
 } from "view-design";
-import ModalForm from "@components/public/form/modalForm";
-import SeniorFilter from "@components/public/filter/seniorFilter";
-import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
 import config from "@views/basicinfo/supplierManager/supplierListConfig";
+import list from "@mixins/list";
 
 export default {
     name: "CustomerList",
@@ -62,19 +61,12 @@ export default {
         Select,
         Option,
         DatePicker,
-        ModalForm,
-        SeniorFilter,
-        AutoCompleteSearch,
     },
-    mixins: [config],
+    mixins: [config,list],
     data() {
         return {
             titleText: '',
             showModel: false,
-            showFilterModel: false,
-            loading: true,
-            visible:false,
-            selectedList:[],
             columns: [{
                     type: 'selection',
                     width: 60,
@@ -90,7 +82,21 @@ export default {
                 },
                 {
                     title: '客户名称',
-                    key: 'name'
+                    key: 'name',
+                    render: (h, params) => {
+                        return h("span", {// 创建的标签名
+                        // 执行的一些列样式或者事件等操作
+                        style: {
+                            display: "inline-block",
+                            color: "#2d8cf0"
+                        },
+                        on:{
+                            click:()=>{// 这里给了他一个打印事件，下面有展示图
+                                this.goDetail(params.row.id)    
+                            }
+                        }
+                        },params.row.name);//  展示的内容
+                    }
                 },
                 {
                     title: '联系电话',
@@ -120,19 +126,8 @@ export default {
                     align: 'center'
                 }
             ],
-            dataConfig: {
-                'filterList': [{
-                    name: '待上架',
-                    value: 'all',
-                }, {
-                    name: '预期',
-                    value: 'all',
-                }, {
-                    name: '已上架',
-                    value: 'all',
-                }]
-            },
             data: [{
+                id:"fdsa",
                 storeName: 'TOU16231321',
                 name: '海辉玩具厂',
                 storeCode: '18218413144',
@@ -225,48 +220,11 @@ export default {
         changePage() {
 
         },
-        setFilter() {},
-        showFilter(flag) {
-            this.showFilterModel = flag;
-        },
-        onSelect(selection,row){
-            this.selectedList.push(row);
-        },
-        onSelectCancel(selection,row){
-            this.selectedList.splice(row.id, 1);
-        },
-        onSelectAllCancel(selection){
-            this.selectedList = [];
-        },
-        onSelectAll(selection){
-            this.selectedList = selection;
-        },
         goAdd(){
             this.$router.push({name:'AddSupplier'});
         },
         goEdit(){
             this.$router.push({name:'AddSupplier',query: {id:this.selectedList[0].id}});
-        },
-        refresh() {
-            this.loading = true;
-            setTimeout(() => {
-                this.loading = false;
-            }, 1000);
-        },
-        deleteData() {
-            for(var i=0;i<this.selectedList.length;i++){
-                for(var j=0;j<this.data.length;j++){
-                    if(this.selectedList[i].id==this.data[j].id){
-                        this.data.splice(j, 1);   
-                    }
-                }
-            }
-        },
-        onClear(){
-            console.log('清空了关键词');
-        },
-        setFilter(data){
-            console.log(data);
         },
         goDetail(id){
             console.log(id)
@@ -274,9 +232,7 @@ export default {
         }
     },
     created(){
-        setTimeout(() => {
-            this.loading = false;
-        }, 1000);
+
     }
 }
 </script>
@@ -285,9 +241,17 @@ export default {
 >>>.ivu-input {
     height: 26px;
 }
-
 >>>.ivu-btn-small span {
     font-size: 12px;
+}
+>>>.ivu-table-row-highlight td {
+    background-color: #B8D9FD;
+}
+>>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-hover td{
+    background-color: #B8D9FD;
+}
+>>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td{
+    background-color: #B8D9FD;
 }
 </style><style lang="less" scoped>
 .storeManager-container {

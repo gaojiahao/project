@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 14:46:58
+ * @LastEditTime: 2020-11-18 17:48:28
 -->
 <template>
 <div class="storeManager-container">
@@ -13,7 +13,7 @@
             <Button size="small" type="primary" icon="ios-add" @click.native="goAdd">添加商品</Button>
             <Button type="info" size="small" icon="ios-create-outline" @click="goEdit">编辑</Button>
             <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm">删除</Button>
-            <Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>
+            <!--<Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>-->
             <Button size="small" type="success" icon="md-refresh" @click="refresh">刷新</Button>
         </div>
         <div class="filter-search">
@@ -24,7 +24,6 @@
     <div  class="myTable">
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true)">开发</Button>
                 <Button type="info" size="small" style="margin-right: 5px" @click="showPop2(true)">审核</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="showPop(true)">调研</Button>
             </template>
@@ -99,7 +98,6 @@ export default {
                                 },
                                 on: {
                                     click:()=>{
-                                        debugger
                                         this.srcData = {
                                             imgName: '图片预览',
                                             src: params.img || require("@assets/default/logo.png")
@@ -152,12 +150,10 @@ export default {
                 {
                     title: '推荐人员',
                     key: 'recommendingOfficer',
-                    width: 100
                 },
                 {
                     title: '状态',
                     key: 'status',
-                    width: 100,
                     render: (h, params) => {
                         return h("span", {// 创建的标签名
                         // 执行的一些列样式或者事件等操作
@@ -177,6 +173,10 @@ export default {
                     key: 'modifyTime',
                 },
                 {
+                    title: '创建者',
+                    key: 'creater',
+                },
+                {
                     title: '修改者',
                     key: 'modifyer',
                 },
@@ -184,7 +184,7 @@ export default {
                     title: '操作',
                     slot: 'action',
                     align: 'center',
-                    width: 300
+                    width: 200
                 }
             ],
             data: [
@@ -201,7 +201,8 @@ export default {
                     recommendingOfficer: '李四',
                     status: "接受",
                     modifyTime:"2020-11-06",
-                    modifyer:"李四"
+                    modifyer:"李四",
+                    creater:"王五"
                 },
                 {
                     id:1,
@@ -216,7 +217,8 @@ export default {
                     recommendingOfficer: '李四',
                     status: "不接受",
                     modifyTime:"2020-11-06",
-                    modifyer:"李四"
+                    modifyer:"李四",
+                    creater:"王五"
                 },
                 {
                     id:2,
@@ -231,7 +233,8 @@ export default {
                     recommendingOfficer: '李四',
                     status: "接受",
                     modifyTime:"2020-11-06",
-                    modifyer:"李四"
+                    modifyer:"李四",
+                    creater:"王五"
                 },
                 {
                     id:3,
@@ -246,7 +249,8 @@ export default {
                     recommendingOfficer: '李四',
                     status: "接受",
                     modifyTime:"2020-11-06",
-                    modifyer:"李四"
+                    modifyer:"李四",
+                    creater:"王五"
                 },
                 {
                     id:4,
@@ -261,7 +265,8 @@ export default {
                     recommendingOfficer: '李四',
                     status: "接受",
                     modifyTime:"2020-11-06",
-                    modifyer:"李四"
+                    modifyer:"李四",
+                    creater:"王五"
                 }, 
                 {
                     id:5,
@@ -276,7 +281,8 @@ export default {
                     recommendingOfficer: '李四',
                     status: "接受",
                     modifyTime:"2020-11-06",
-                    modifyer:"李四"
+                    modifyer:"李四",
+                    creater:"王五"
                 },
             ],
         }
@@ -317,6 +323,10 @@ export default {
             if(this.activatedRow.id){
                 this.$router.push({name:'AddNewProduct',query: {id:this.activatedRow.id}});
             }
+        },
+         goDetail(id){
+            if(id)
+            this.$router.push({name:'ViewNewProduct',query: {id:id}});
         },
         
     },

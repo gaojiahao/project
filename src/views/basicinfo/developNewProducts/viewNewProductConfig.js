@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 15:52:55
+ * @LastEditTime: 2020-11-18 15:14:47
  */
 export default {
     data() {
@@ -15,12 +15,12 @@ export default {
             productCode:{
               name:'商品编号',
               type:'text',
-              disabled: false
+              disabled: true
             },
             productName:{
               name:'商品名称',
               type:'text',
-              disabled: false
+              disabled: true
             },
             productType:{
               name:'分类',
@@ -32,17 +32,17 @@ export default {
                   {name:'灯',value:'002'}
                 ],
               },
-              disabled: false
+              disabled: true
             },
             characteristicLable:{
               name:'特性标签',
               type:'texts',
-              disabled: false
+              disabled: true
             },
             brand:{
               name:'品牌',
               type:'text',
-              disabled: false
+              disabled: true
             },
             isHavePackage:{
               name:'是否带包装',
@@ -54,18 +54,18 @@ export default {
                   {name:'否',value:'false'}
                 ],
               },
-              disabled: false
+              disabled: true
             },
             weight:{
               name:'商品重量',
               type:'text',
               unit:'kg',
-              disabled: false
+              disabled: true
             },
             productSize:{
               name:'商品尺寸',
               type:'size',
-              disabled: false
+              disabled: true
             },
             }
           },
@@ -184,37 +184,37 @@ export default {
         },
         formValidate: {
           productInfo:{
-            productCode:'',
-            productName: '',
-            productType: '',
-            characteristicLable:'',
-            brand:'',
-            isHavePackage:'',
-            weight:'',
-            productSize:''
+            productCode:'范德萨发大水',
+            productName: '范德萨发',
+            productType: '发生',
+            characteristicLable:'发生',
+            brand:'发生',
+            isHavePackage:'true',
+            weight:'发生',
+            productSize:'范德萨'
           },
           otherInfo:{
-            packaging:'',
-            packagingCost:'',
-            packagingSize:'',
-            productCharacteristic:'',
-            comment:''
+            packaging:'发多少',
+            packagingCost:'发生',
+            packagingSize:'饭',
+            productCharacteristic:'发生',
+            comment:'发生范德萨发多少'
           },
           purchase:{
-            supplier:'',
-            minimumPurchaseQuantity:'',
-            purchasePrice:'',
-            url:'',
-            comment:''
+            supplier:'发多少',
+            minimumPurchaseQuantity:'发多少',
+            purchasePrice:'发是',
+            url:'发生范德萨发',
+            comment:'发的说法是的'
           },
           property:{
-            color:'',
-            packaging:'',
-            isHavePackage:'',
-            isHaveElect:''
+            color:'发生',
+            packaging:'反攻倒算',
+            isHavePackage:'个梵蒂冈是',
+            isHaveElect:'范德萨'
           },
           detailInfo:{
-            detailInfo:''
+            detailInfo:'个梵蒂冈是豆腐干豆腐干豆腐'
           }
         },
         ruleValidate: {
@@ -235,14 +235,6 @@ export default {
             message: '商品分类', 
             trigger: 'change' 
           }],
-          weight:[{ 
-            type: 'number',
-            message: '请输入正确的商品重量', 
-            trigger: 'blur',
-            transform(value) {
-              return Number(value);
-            }
-          }]
         },
         filtersConfig:{
           productType:{
@@ -303,21 +295,6 @@ export default {
                 {name:'否',value:'false'}
               ],
             },
-          },
-          modifyTime:{
-            name:'修改时间',
-            value:'modifyTime',
-            type:'dateTime',
-          },
-          creater:{
-            name:'创建者',
-            value:'creater',
-            type:'text',
-          },
-          modifyer:{
-            name:'修改者',
-            value:'modifyer',
-            type:'text',
           },
         }
       }

@@ -71,10 +71,6 @@ export default {
         setFilter(data){
             console.log(data);
         },
-        goDetail(id){
-            console.log(id)
-            this.$router.push({name:'AddNewProduct',query: {id:id}});
-        },
         onCurrentChange(currentRow,oldCurrentRow){
             this.activatedRow = currentRow;    
         },
@@ -89,6 +85,7 @@ export default {
                     this.deleteData();
                     this.$Message.info({
                         content: '删除成功',
+                        duration: 2
                     });
                 },
             });
