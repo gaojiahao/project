@@ -4,29 +4,21 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 19:28:03
+ * @LastEditTime: 2020-11-17 21:02:37
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <RadioGroup v-model="filter" type="button">
-                <Radio label="large">全部</Radio>
-                <Radio label="default">已审核</Radio>
-                <Radio label="small">待审核</Radio>
-            </RadioGroup>
+            <Button size="small" icon="md-refresh" @click="refresh">刷新</Button>
         </div>
         <div class="filter-search">
-            关键词：
-            <Input placeholder="关键词" style="width: 200px" />
-            创建时间：
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <Button type="primary" icon="ios-search">查询</Button>
+            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)">高级筛选</Button>
+            <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
         </div>
     </div>
     <div>
-        <Table border :columns="columns" :data="data" stripe>
+        <Table border :columns="columns" :data="data" stripe :loading="loading" >
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="goResearch(row)">查看调研</Button>
@@ -39,6 +31,8 @@
         </div>
     </div>
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
+    <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
 
@@ -53,6 +47,9 @@ import {
     DatePicker
 } from "view-design";
 import ModalForm from "@components/public/form/modalForm";
+import SeniorFilter from "@components/public/filter/seniorFilter";
+import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
+import ImageModel from "@components/public/model/imageModel";
 import config from "@views/basicinfo/productManager/productListConfig";
 
 export default {
@@ -66,6 +63,9 @@ export default {
         Option,
         DatePicker,
         ModalForm,
+        SeniorFilter,
+        AutoCompleteSearch,
+        ImageModel
     },
     mixins: [config],
     data() {
@@ -73,6 +73,10 @@ export default {
             titleText: '',
             showModel: false,
             defaultImg: require("@assets/default/logo.png"),
+            loading : false,
+            showFilterModel:false,
+            srcData:{},
+            visible:false,
             columns: [{
                     type: 'index',
                     width: 80,
@@ -91,6 +95,15 @@ export default {
                                 style: {
                                     width: '40px',
                                     height: '40px'
+                                },
+                                on: {
+                                    click:()=>{
+                                        this.srcData = {
+                                            imgName: '图片预览',
+                                            src: params.img || require("@assets/default/logo.png")
+                                        }
+                                        this.visible = true;
+                                    }
                                 }
                             }),
                         ]);
@@ -98,7 +111,21 @@ export default {
                 },
                 {
                     title: '名称',
-                    key: 'name'
+                    key: 'name',
+                    render: (h, params) => {
+                        return h("span", {// 创建的标签名
+                        // 执行的一些列样式或者事件等操作
+                        style: {
+                            display: "inline-block",
+                            color: "#2d8cf0"
+                        },
+                        on:{
+                            click:()=>{// 这里给了他一个打印事件，下面有展示图
+                                this.goDetail(params.row.id)    
+                            }
+                        }
+                        },params.row.name);//  展示的内容
+                    }
                 },
                 {
                     title: '商品编号',
@@ -130,7 +157,16 @@ export default {
                 },
                 {
                     title: '状态',
-                    key: 'status'
+                    key: 'status',
+                    render: (h, params) => {
+                        return h("span", {// 创建的标签名
+                        // 执行的一些列样式或者事件等操作
+                        style: {
+                            display: "inline-block",
+                            color: params.row.status=='已选' ? "#19be6b": "#ed4014"
+                        },
+                        },params.row.status);//  展示的内容
+                    }
                 }, {
                     title: '创建时间',
                     key: 'createTime'
@@ -163,7 +199,7 @@ export default {
                 label: "普货",
                 packingMaterial: '顺丰袋45*45',
                 averageCost: '￥126.66',
-                status: "已选",
+                status: "未选",
                 createTime: "2020-11-06",
             }, {
                 img: "",
@@ -262,17 +298,39 @@ export default {
         },
         goResearch(row){
             this.$router.push({path:'/sell/mainResearch/researchResult/researchResultList',query: {id:row.id||123}})
-        }
+        },
+        refresh() {
+            this.loading = true;
+            setTimeout(() => {
+                this.loading = false;
+            }, 1000);
+        },
+        showFilter(flag) {
+            this.showFilterModel = flag;
+        },
+        setFilter() {},
+    },
+    created(){
+        setTimeout(() => {
+            this.loading = false;
+        }, 1000);
     }
 }
 </script>
+<style scoped>
+>>>.ivu-input {
+    height: 26px;
+}
 
-<style lang="less" scoped>
+>>>.ivu-btn-small span {
+    font-size: 12px;
+}
+</style><style lang="less" scoped>
 .storeManager-container {
-    margin-top: 16px;
+    // margin-top: 16px;
 
     .head {
-        height: 38px;
+        height: 30px;
 
         .select-type {
             float: left;
@@ -280,7 +338,7 @@ export default {
     }
 
     .filter {
-        height: 38px;
+        height: 30px;
         ;
 
         .filter-button {
@@ -289,6 +347,7 @@ export default {
 
         .filter-search {
             float: right;
+            display: flex;
         }
     }
 }

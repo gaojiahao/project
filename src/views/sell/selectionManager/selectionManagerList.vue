@@ -4,29 +4,24 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 18:42:18
+ * @LastEditTime: 2020-11-17 20:59:45
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <RadioGroup v-model="filter" type="button">
-                <Radio label="large">全部</Radio>
-                <Radio label="default">接受</Radio>
-                <Radio label="small">不接受</Radio>
-            </RadioGroup>
+            <Button size="small" icon="md-refresh" @click="refresh">刷新</Button>
         </div>
         <div class="filter-search">
-            <Button type="primary" size="small" icon="md-refresh" @click="refresh">刷新</Button>
             <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)">高级筛选</Button>
-            <Input placeholder="关键词" style="width: 200px" />
-            <Button size="small" type="primary">搜索</Button>
+            <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
         </div>
     </div>
     <div>
-        <Table border :columns="columns" :data="data" stripe ref="selection">
+        <Table border :columns="columns" :data="data" stripe ref="selection" :loading="loading" >
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true)">选品</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -36,7 +31,7 @@
         </div>
     </div>
     <SelectionModel :titleText="titleText" :formValidate="formValidate" :showModel='showModel' @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></SelectionModel>
-    <SeniorFilter :formValidate="formValidate" :ruleValidate="ruleValidate" :showFilterModel='showFilterModel' :formConfig="formConfig" @setFilter="setFilter" @show-filter="showFilter"></SeniorFilter>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
@@ -53,6 +48,7 @@ import {
 } from "view-design";
 import SelectionModel from "@components/sell/selectionManager/selectionModel";
 import SeniorFilter from "@components/public/filter/seniorFilter";
+import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
 import ImageModel from "@components/public/model/imageModel";
 import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
 
@@ -68,6 +64,7 @@ export default {
         DatePicker,
         SelectionModel,
         SeniorFilter,
+        AutoCompleteSearch,
         ImageModel
     },
     mixins: [config],
@@ -77,9 +74,10 @@ export default {
             titleText2: '',
             showModel: false,
             showModel2: false,
-            showFilterModel: false,
-            visible:false,
+            loading : false,
+            showFilterModel:false,
             srcData:{},
+            visible:false,
             columns: [
                 {
                     type: 'index',
@@ -114,6 +112,24 @@ export default {
                     }
                 },
                 {
+                    title: '产品名称',
+                    key: 'productName',
+                    render: (h, params) => {
+                        return h("span", {// 创建的标签名
+                        // 执行的一些列样式或者事件等操作
+                        style: {
+                            display: "inline-block",
+                            color: "#2d8cf0"
+                        },
+                        on:{
+                            click:()=>{// 这里给了他一个打印事件，下面有展示图
+                                this.goDetail(params.row.id)    
+                            }
+                        }
+                        },params.row.productName);//  展示的内容
+                    }
+                },
+                {
                     title: '分类',
                     key: 'type'
                 },
@@ -124,10 +140,6 @@ export default {
                 {
                     title: '颜色',
                     key: 'color'
-                },
-                {
-                    title: '产品名称',
-                    key: 'productName'
                 },
                 {
                     title: '厂商',
@@ -314,14 +326,17 @@ export default {
 
         },
         clearFormData2() {},
-        setFilter() {},
+        deleteData() {},
+        refresh() {
+            this.loading = true;
+            setTimeout(() => {
+                this.loading = false;
+            }, 1000);
+        },
         showFilter(flag) {
             this.showFilterModel = flag;
         },
-        refresh() {
-
-        },
-        deleteData() {}
+        setFilter() {},
     }
 }
 </script>
@@ -336,7 +351,7 @@ export default {
 }
 </style><style lang="less" scoped>
 .storeManager-container {
-    margin-top: 16px;
+    // margin-top: 16px;
 
     .head {
         height: 30px;
@@ -347,7 +362,7 @@ export default {
     }
 
     .filter {
-        height: 38px;
+        height: 30px;
         ;
 
         .filter-button {
@@ -356,6 +371,7 @@ export default {
 
         .filter-search {
             float: right;
+            display: flex;
         }
     }
 }

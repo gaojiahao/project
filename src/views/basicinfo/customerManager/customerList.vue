@@ -4,30 +4,24 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:24:31
+ * @LastEditTime: 2020-11-17 20:51:21
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <RadioGroup v-model="filter" type="button">
-                <Radio label="large">全部</Radio>
-                <Radio label="default">已启用</Radio>
-                <Radio label="small">已停用</Radio>
-            </RadioGroup>
+            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd">添加供应商</Button>
+            <Button size="small" icon="md-refresh" @click="refresh">刷新</Button>
+            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" v-show="selectedList.length>0&&selectedList.length<2">编辑</Button>
+            <Button type="error" size="small" icon="ios-close" @click="deleteData" v-show="selectedList.length>0">删除</Button>
         </div>
         <div class="filter-search">
-            关键词：
-            <Input placeholder="关键词" style="width: 200px" />
-            创建时间：
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <Button type="primary" icon="ios-search">搜索</Button>
-            <Button type="primary" icon="md-add">添加</Button>
+            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)">高级筛选</Button>
+            <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
         </div>
     </div>
     <div>
-        <Table border :columns="columns" :data="data" stripe>
+        <Table border :loading="loading" :columns="columns" :data="data" stripe @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="primary" icon="ios-search-outline" size="small" style="margin-right: 5px" @click="showPop(true)">查看</Button>
             </template>
@@ -39,6 +33,7 @@
         </div>
     </div>
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
 </div>
 </template>
 
@@ -53,6 +48,8 @@ import {
     DatePicker
 } from "view-design";
 import ModalForm from "@components/public/form/modalForm";
+import SeniorFilter from "@components/public/filter/seniorFilter";
+import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
 import config from "@views/basicinfo/supplierManager/supplierListConfig";
 
 export default {
@@ -66,13 +63,23 @@ export default {
         Option,
         DatePicker,
         ModalForm,
+        SeniorFilter,
+        AutoCompleteSearch,
     },
     mixins: [config],
     data() {
         return {
             titleText: '',
             showModel: false,
+            showFilterModel: false,
+            loading: true,
+            visible:false,
+            selectedList:[],
             columns: [{
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                },{
                     type: 'index',
                     width: 80,
                     align: 'center',
@@ -217,15 +224,77 @@ export default {
         },
         changePage() {
 
+        },
+        setFilter() {},
+        showFilter(flag) {
+            this.showFilterModel = flag;
+        },
+        onSelect(selection,row){
+            this.selectedList.push(row);
+        },
+        onSelectCancel(selection,row){
+            this.selectedList.splice(row.id, 1);
+        },
+        onSelectAllCancel(selection){
+            this.selectedList = [];
+        },
+        onSelectAll(selection){
+            this.selectedList = selection;
+        },
+        goAdd(){
+            this.$router.push({name:'AddSupplier'});
+        },
+        goEdit(){
+            this.$router.push({name:'AddSupplier',query: {id:this.selectedList[0].id}});
+        },
+        refresh() {
+            this.loading = true;
+            setTimeout(() => {
+                this.loading = false;
+            }, 1000);
+        },
+        deleteData() {
+            for(var i=0;i<this.selectedList.length;i++){
+                for(var j=0;j<this.data.length;j++){
+                    if(this.selectedList[i].id==this.data[j].id){
+                        this.data.splice(j, 1);   
+                    }
+                }
+            }
+        },
+        onClear(){
+            console.log('清空了关键词');
+        },
+        setFilter(data){
+            console.log(data);
+        },
+        goDetail(id){
+            console.log(id)
+            this.$router.push({name:'AddSupplier',query: {id:id}});
         }
+    },
+    created(){
+        setTimeout(() => {
+            this.loading = false;
+        }, 1000);
     }
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
+>>>.ivu-input {
+    height: 26px;
+}
+
+>>>.ivu-btn-small span {
+    font-size: 12px;
+}
+</style><style lang="less" scoped>
 .storeManager-container {
+    // margin-top: 16px;
+
     .head {
-        height: 38px;
+        height: 30px;
 
         .select-type {
             float: left;
@@ -233,8 +302,7 @@ export default {
     }
 
     .filter {
-        height: 38px;
-        ;
+        height: 30px;
 
         .filter-button {
             float: left;
@@ -242,6 +310,7 @@ export default {
 
         .filter-search {
             float: right;
+            display: flex;
         }
     }
 }
