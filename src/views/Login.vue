@@ -32,7 +32,7 @@ d<!--
             </form>
             <div style="width: 100%;display: flex; margin-top: 20px;">
                 <Input v-model="code" placeholder="验证码" style="width: 80px;margin-left: 100px;float: left;" />
-                <s-identify :identifyCode="identifyCode" @click.native="refreshCode"></s-identify>
+                <s-identify :identifyCode="identifyCode" @click.native="refreshCode" @set-identifyCode="setIdentifyCode"></s-identify>
             </div>
             <div class="login">
                 <Button type="primary" @click="login" @keyup.enter="login">登录</Button>
@@ -112,11 +112,13 @@ export default {
                     this.$Message.error("请输入用户名或密码");
                     return;
                 }
-                if (this.code == '') {
+                if (this.code) {
+                    debugger
                     if (this.code != this.identifyCode) {
                         this.$Message.error("验证码出错");
                         return;
                     }
+                } else {
                     this.$Message.error("验证码不能为空");
                     return;
                 }
@@ -250,7 +252,7 @@ export default {
         },
         refreshCode() {
             this.identifyCode = ''
-            this.makeCode(this.identifyCodes, 4)
+            this.makeCode(this.identifyCode, 4)
         },
         makeCode(o, l) {
             this.identifyCode = this.generatedCode();
@@ -262,6 +264,9 @@ export default {
                 });
             }
         },
+        setIdentifyCode(value){
+            this.identifyCode = value;
+        }
     },
     created() {
         tokenService.clean();

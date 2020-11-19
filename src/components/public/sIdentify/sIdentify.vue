@@ -144,7 +144,9 @@ export default {
         }
     },
     mounted() {
+        debugger
         this.code = this.generatedCode();
+        this.$emit('set-identifyCode',this.code);
         this.drawPic();
     }
 }
