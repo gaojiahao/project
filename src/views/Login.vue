@@ -113,7 +113,6 @@ export default {
                     return;
                 }
                 if (this.code) {
-                    debugger
                     if (this.code != this.identifyCode) {
                         this.$Message.error("验证码出错");
                         return;

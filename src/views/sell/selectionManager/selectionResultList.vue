@@ -4,40 +4,34 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 15:59:46
+ * @LastEditTime: 2020-11-19 17:13:05
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">添加商品</Button>
-            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight">删除</Button>
-            <!--<Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>-->
+            <Button size="small" icon="md-refresh" @click="refresh">刷新</Button>
         </div>
         <div class="filter-search">
-            <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
-            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)">高级筛选</Button>
             <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
         </div>
     </div>
-    <div  class="myTable">
-        <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
+    <div>
+        <Table border :columns="columns" :data="data" stripe ref="selection" :loading="loading" >
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
-                <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel(true)">调研</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true)">指派销售</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage"></Page>
+                <Page :total="100" :current=1 @on-change="changePage"></Page>
             </div>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :showModel='showModel' @save="save" @show-pop="showPop":formConfig="formConfig" @clear-form-data="clearFormData"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
-    <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
-    <ResearchModel :showModel='showResearh' @show-research-model="showResearchModel"></ResearchModel>
+    <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
 
@@ -51,12 +45,14 @@ import {
     Option,
     DatePicker
 } from "view-design";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
-import list from "@mixins/list";
-import ResearchModel from "@components/basicinfo/developNewProductList/researchModel"
+import ModalForm from "@components/public/form/modalForm";
+import SeniorFilter from "@components/public/filter/seniorFilter";
+import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
+import ImageModel from "@components/public/model/imageModel";
+import config from "@views/sell/selectionManager/selectionResultListConfig";
 
 export default {
-    name: "DevelopNewProductsList",
+    name: "SelectionResultList",
     components: {
         Table,
         Page,
@@ -65,22 +61,23 @@ export default {
         Select,
         Option,
         DatePicker,
-        ResearchModel
+        ModalForm,
+        SeniorFilter,
+        AutoCompleteSearch,
+        ImageModel
     },
-    mixins: [config,list],
+    mixins: [config],
     data() {
         return {
             titleText: '',
             titleText2: '',
             showModel: false,
             showModel2: false,
-            showResearh: false,
+            loading : false,
+            showFilterModel:false,
+            srcData:{},
+            visible:false,
             columns: [
-                {
-                    type: 'selection',
-                    width: 60,
-                    align: 'center'
-                },
                 {
                     type: 'index',
                     width: 80,
@@ -106,7 +103,7 @@ export default {
                                             imgName: '图片预览',
                                             src: params.img || require("@assets/default/logo.png")
                                         }
-                                        this.showImageModel(true);
+                                        this.visible = true;
                                     }
                                 }
                             }),
@@ -114,7 +111,7 @@ export default {
                     }
                 },
                 {
-                    title: '产品名称',
+                    title: '名称',
                     key: 'productName',
                     render: (h, params) => {
                         return h("span", {// 创建的标签名
@@ -132,40 +129,48 @@ export default {
                     }
                 },
                 {
+                    title: '商品编号',
+                    key: 'productCode',
+                },
+                {
+                    title: '供应商',
+                    key: 'supplier'
+                },
+                {
+                    title: '开发员',
+                    key: 'recommendingOfficer',
+                    width: 100
+                },
+                {
                     title: '分类',
                     key: 'type'
                 },
                 {
-                    title: 'SKU',
+                    title: '特性标签',
                     key: 'sku'
                 },
                 {
-                    title: '颜色',
+                    title: '包装材料',
                     key: 'color'
                 },
                 {
-                    title: '厂商',
-                    key: 'supplier'
-                },
-                {
-                    title: '厂商货号',
+                    title: '平均成本',
                     key: 'supplierNum'
-                },
-                {
-                    title: '推荐人员',
-                    key: 'recommendingOfficer',
                 },
                 {
                     title: '状态',
                     key: 'status',
                     render: (h, params) => {
-                        return h("span", {// 创建的标签名
-                        // 执行的一些列样式或者事件等操作
-                        style: {
-                            display: "inline-block",
-                            color: params.row.status=='接受' ? "#19be6b": "#ed4014"
-                        },
-                        },params.row.status);//  展示的内容
+                        const row = params.row;
+                        const color = row.status === 1 ? 'success' : row.status === 2 ? 'warning' :'error';
+                        const text = row.status === 1 ? '已选' : row.status === 2 ? '委派' : '未选';
+
+                        return h('Tag', {
+                            props: {
+                                type: 'dot',
+                                color: color
+                            }
+                        }, text);
                     }
                 },
                 {
@@ -173,122 +178,134 @@ export default {
                     key: 'createTime',
                 },
                 {
-                    title: '修改时间',
-                    key: 'modifyTime',
-                },
-                {
-                    title: '创建者',
-                    key: 'creater',
-                },
-                {
-                    title: '修改者',
-                    key: 'modifyer',
-                },
-                {
                     title: '操作',
                     slot: 'action',
                     align: 'center',
-                    width: 200
                 }
             ],
-            data: [
-                {
-                    id:'fds',
+            data: [{
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
                     color: "蓝色",
                     productName: "积木",
+                    productCode: "PD00026",
                     supplier: "厂商1",
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
+                    status: 1,
                 },
                 {
-                    id:1,
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
                     color: "蓝色",
                     productName: "积木",
+                    productCode: "PD00026",
                     supplier: "厂商1",
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "不接受",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
+                    status: 2,
                 },
                 {
-                    id:2,
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
                     color: "蓝色",
                     productName: "积木",
+                    productCode: "PD00026",
                     supplier: "厂商1",
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
+                    status: 0,
                 },
                 {
-                    id:3,
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
                     color: "蓝色",
                     productName: "积木",
+                    productCode: "PD00026",
                     supplier: "厂商1",
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
+                    status: 1,
+                }, {
+                    img: '',
+                    type: '玩具',
+                    sku: 'PD00026',
+                    color: "蓝色",
+                    productName: "积木",
+                    productCode: "PD00026",
+                    supplier: "厂商1",
+                    supplierNum: "0001",
+                    createTime: "2020-11-06",
+                    recommendingOfficer: '李四',
+                    status: 1,
                 },
                 {
-                    id:4,
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
                     color: "蓝色",
                     productName: "积木",
+                    productCode: "PD00026",
                     supplier: "厂商1",
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                }, 
-                {
-                    id:5,
+                    status: 1,
+                }, {
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
                     color: "蓝色",
                     productName: "积木",
+                    productCode: "PD00026",
                     supplier: "厂商1",
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
+                    status: 1,
                 },
+                {
+                    img: '',
+                    type: '玩具',
+                    sku: 'PD00026',
+                    color: "蓝色",
+                    productName: "积木",
+                    productCode: "PD00026",
+                    supplier: "厂商1",
+                    supplierNum: "0001",
+                    createTime: "2020-11-06",
+                    recommendingOfficer: '李四',
+                    status: 1,
+                },
+                {
+                    img: '',
+                    type: '玩具',
+                    sku: 'PD00026',
+                    color: "蓝色",
+                    productName: "积木",
+                    productCode: "PD00026",
+                    supplier: "厂商1",
+                    supplierNum: "0001",
+                    createTime: "2020-11-06",
+                    recommendingOfficer: '李四',
+                    status: 1,
+                }
             ],
+            filter: "large",
+            formValidate:{
+                productNum:'商品1',
+                productName:'商品名称',
+                status:'',
+                comment:''
+            }
         }
     },
     methods: {
@@ -300,7 +317,7 @@ export default {
                 this.formValidate['id'] = row.id;
                 this.titleText = '编辑';
             } else {
-                this.titleText = '开发';
+                this.titleText = '委派销售';
             }
             this.showModel = flag;
         },
@@ -320,46 +337,33 @@ export default {
 
         },
         clearFormData2() {},
-        goAdd(){
-            this.$router.push({name:'AddNewProduct'});
+        deleteData() {},
+        refresh() {
+            this.loading = true;
+            setTimeout(() => {
+                this.loading = false;
+            }, 1000);
         },
-        goEdit(){
-            if(this.activatedRow.id){
-                this.$router.push({name:'AddNewProduct',query: {id:this.activatedRow.id}});
-            }
+        showFilter(flag) {
+            this.showFilterModel = flag;
         },
-         goDetail(id){
-            if(id)
-            this.$router.push({name:'ViewNewProduct',query: {id:id}});
-        },
-        showResearchModel(flag){
-            this.showResearh = flag;    
-        }
-        
-    },
-    created(){
-
+        setFilter() {},
     }
 }
 </script>
+
 <style scoped>
 >>>.ivu-input {
     height: 26px;
 }
+
 >>>.ivu-btn-small span {
     font-size: 12px;
 }
->>>.ivu-table-row-highlight td {
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-hover td{
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td{
-    background-color: #B8D9FD;
-}
 </style><style lang="less" scoped>
 .storeManager-container {
+    // margin-top: 16px;
+
     .head {
         height: 30px;
 
@@ -370,20 +374,15 @@ export default {
 
     .filter {
         height: 30px;
+        ;
 
         .filter-button {
             float: left;
-            .marginRight{
-                margin-right: 10px;
-            }
         }
 
         .filter-search {
             float: right;
             display: flex;
-            .marginRight{
-                margin-right: 10px;
-            }
         }
     }
 }

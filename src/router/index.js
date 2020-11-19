@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 17:07:34
+ * @LastEditTime: 2020-11-19 16:13:01
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -59,6 +59,7 @@ import Research from "@views/sell/mainResearch/research";
 import ReferenceComparison from "@views/sell/mainResearch/researchResult/referenceComparison";
 import SelectionManager from "@views/sell/selectionManager/index";
 import SelectionManagerList from "@views/sell/selectionManager/selectionManagerList";
+import SelectionResultList from "@views/sell/selectionManager/selectionResultList";
 
 Vue.use(VueRouter);
 
@@ -374,6 +375,14 @@ const routes = [
                 title:'选品管理',
               },
               component:SelectionManagerList
+             },
+             {
+              path: 'selectionResultList',
+              name: 'SelectionResultList',
+              meta:{ 
+                title:'选品结果',
+              },
+              component:SelectionResultList
              }
             ]
           },

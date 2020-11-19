@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 17:06:54
+ * @LastEditTime: 2020-11-19 16:07:25
  */
 export default {
     data() {
@@ -150,6 +150,13 @@ export default {
                 name: '选品管理',
                 value: 'selectionManager',
                 status: true,  
+                children:[
+                  {
+                    name: '选品结果',
+                    value: 'selectionResultList',
+                    status: true,
+                  }  
+                ]
               },
               {
                 name: '销售推品',

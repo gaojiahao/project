@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 11:26:18
+ * @LastEditTime: 2020-11-19 18:12:33
  */
 export default {
     data() {
@@ -24,6 +24,10 @@ export default {
           weight:{
             name:'调研链接',
             type:'text',
+          },
+          dateTime:{
+            name:'调研日期',
+            type:'dateTime',
           },
         },
         formValidate: {

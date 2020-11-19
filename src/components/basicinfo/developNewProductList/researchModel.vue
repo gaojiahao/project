@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 11:22:59
+ * @LastEditTime: 2020-11-19 15:24:29
 -->
 <template>
 <Modal v-model="show" title="调研" @on-ok="ok" @on-cancel="cancel" fullscreen >
@@ -61,9 +61,9 @@
     </div>
     <Research v-show="showResearchStatus" ref="research"></Research>
     <div slot="footer">
-        <Button type="primary" @click="handleSubmit('formValidate')" v-show="showResearchStatus">保存</Button>
+        
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showPopModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <ModalForm ref="form":titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showPopModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
 </Modal>
 </template>
 
@@ -242,6 +242,16 @@ export default {
             this.showPopModel = flag;
         },
         save(){
+            this.$Message.info({content:'温馨提示：保存成功'});
+            this.$refs.form.$refs['formValidate'].resetFields();
+            this.data.push({
+                id:'fds',
+                researchNum: 'DY000001',
+                createTime: "2020-11-06",
+                creater:"王五",
+                researchPlatform:"亚马逊",
+                researchUrl:"www.amazon.cn"    
+            }) 
 
         },
         clearFormData(){
