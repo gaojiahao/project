@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 15:27:07
+ * @LastEditTime: 2020-11-18 20:59:34
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -30,6 +30,9 @@
                 <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable>
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
+            </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
+                <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker> 
             </FormItem>
         </template>
         <!--<FormItem label="平台负责人1:" prop="chargeUserId">
@@ -57,7 +60,8 @@ import {
     Modal,
     RadioGroup,
     Radio,
-    InputNumber
+    InputNumber,
+    DatePicker
 } from "view-design";
 export default {
     name: 'ModalForm',
@@ -70,7 +74,8 @@ export default {
         Modal,
         RadioGroup,
         Radio,
-        InputNumber
+        InputNumber,
+        DatePicker
     },
     props: {
         titleText: {

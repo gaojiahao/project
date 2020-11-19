@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 15:52:55
+ * @LastEditTime: 2020-11-18 18:17:58
  */
 export default {
     data() {
@@ -86,6 +86,11 @@ export default {
                 name:'包装成本',
                 type:'text',
                 unit:'CNY'
+              }, 
+              packagingWeight:{
+                name:'包装重量',
+                type:'text',
+                unit:'KG'
               }, 
               packagingSize:{
                 name:'包装尺寸',
@@ -196,6 +201,7 @@ export default {
           otherInfo:{
             packaging:'',
             packagingCost:'',
+            packagingWeight:'',
             packagingSize:'',
             productCharacteristic:'',
             comment:''

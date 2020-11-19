@@ -1,0 +1,337 @@
+<!--
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: gaojiahao
+ * @Date: 2020-11-03 16:35:57
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-11-19 11:22:59
+-->
+<template>
+<Modal v-model="show" title="调研" @on-ok="ok" @on-cancel="cancel" fullscreen >
+    <div class="top-title">
+        商品信息
+    </div>
+    <div class="top">
+        <div class="top-box">
+            <div class="item">
+                <label>商品编号：</label>
+                <Input v-model="formData['productCode']" :style="{width:'200px'}" disabled></Input>
+            </div>
+            <div class="item">
+                <label>商品名称：</label>
+                <Input v-model="formData['productName']" :style="{width:'200px'}" disabled></Input>
+            </div>
+            <div class="item">
+                <label>商品分类：</label>
+                <Input v-model="formData['productType']" :style="{width:'200px'}" disabled></Input>
+            </div>
+            <div class="item">
+                <label>品牌：</label>
+                <Input v-model="formData['brand']" :style="{width:'200px'}" disabled></Input>
+            </div>
+            <div class="item">
+                <label>是否带包装：</label>
+                <RadioGroup v-model="formData['isPacking']">
+                    <Radio label="true" disabled>
+                        是
+                    </Radio>
+                    <Radio label="false" disabled>
+                        否
+                    </Radio>
+                </RadioGroup>
+            </div>
+        </div>
+    </div>
+    <div class="research-container">
+        <div class="filter">
+            <div class="filter-button">
+                <Button size="small" type="primary" icon="ios-add" @click.native="showPop(true)">添加调研</Button>
+                <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm">删除</Button>
+            </div>
+        </div>
+        <div  class="myTable">
+            <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-current-change="onCurrentChange">
+            </Table>
+            <div style="margin: 10px;overflow: hidden">
+                <div style="float: right;">
+                    <Page :total="100" :current="1" @on-change="changePage"></Page>
+                </div>
+            </div>
+        </div>
+    </div>
+    <Research v-show="showResearchStatus" ref="research"></Research>
+    <div slot="footer">
+        <Button type="primary" @click="handleSubmit('formValidate')" v-show="showResearchStatus">保存</Button>
+    </div>
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showPopModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+</Modal>
+</template>
+
+<script>
+import {
+    Table,
+    Page,
+    Input,
+    Select,
+    Option,
+    Modal,
+    RadioGroup,
+    Radio,
+    InputNumber
+} from "view-design";
+import Research from "@views/basicinfo/developNewProducts/research";
+import ModalForm from "@components/public/form/modalForm";
+import config from "@views/basicinfo/developNewProducts/researchConfig";
+
+export default {
+    name: 'ResearchModel',
+    components: {
+        Table,
+        Page,
+        Input,
+        Select,
+        Option,
+        Modal,
+        RadioGroup,
+        Radio,
+        InputNumber,
+        Research,
+        ModalForm
+    },
+    props: {
+        showModel: {
+            type: Boolean,
+            default: false,
+        },
+    },
+    mixins: [config],
+    data() {
+        return {
+            titleText: '',
+            showPopModel: false,
+            data: {},
+            show: false,
+            loading: true,
+            activatedRow:{},
+            showResearchStatus:false,
+            formData: {
+                productCode: 'TX23423',
+                productType: '积木',
+                brand: '森宝',
+                isPacking: 'true',
+                productName: '地方撒快乐'
+            },
+            columns: [
+                {
+                    title: '调研编号',
+                    key: 'researchNum',
+                    render: (h, params) => {
+                        return h("span", {// 创建的标签名
+                        // 执行的一些列样式或者事件等操作
+                        style: {
+                            display: "inline-block",
+                            color: "#2d8cf0"
+                        },
+                        on:{
+                            click:()=>{// 这里给了他一个打印事件，下面有展示图
+                                this.goDetail(params.row.id)    
+                            }
+                        }
+                        },params.row.researchNum);//  展示的内容
+                    }
+                },
+                {
+                    title: '调研平台',
+                    key: 'researchPlatform',
+                },
+                {
+                    title: '调研链接',
+                    key: 'researchUrl',
+                },
+                {
+                    title: '创建时间',
+                    key: 'createTime',
+                },
+                {
+                    title: '创建者',
+                    key: 'creater',
+                },
+            ],
+            data: [
+                {
+                    id:'fds',
+                    researchNum: 'DY000001',
+                    createTime: "2020-11-06",
+                    creater:"王五",
+                    researchPlatform:"亚马逊",
+                    researchUrl:"www.amazon.cn"
+                },
+                {
+                    id:'cxvxc',
+                    researchNum: 'DY000002',
+                    createTime: "2020-11-06",
+                    creater:"王五",
+                    researchPlatform:"亚马逊",
+                    researchUrl:"www.amazon.cn"
+                },
+                {
+                    id:'czxcxvxc',
+                    researchNum: 'DY000003',
+                    createTime: "2020-11-06",
+                    creater:"王五",
+                    researchPlatform:"亚马逊",
+                    researchUrl:"www.amazon.cn"
+                },
+            ],
+        }
+    },
+    watch: {
+        showModel: {
+            handler(val) {
+                this.show = val
+            }
+        },
+    },
+    methods: {
+        ok(){
+            this.showResearch(false)
+        },
+        cancel(){
+            this.$emit('show-research-model', false);
+            this.showResearch(false);
+            this.handleClearCurrentRow();
+            this.showResearchStatus = false;
+        },
+        changePage(){},
+        handleSubmit(){},
+        sureDeleteConfirm () {
+            this.$Modal.confirm({
+                title: '温馨提示',
+                content: '数据删除后将无法恢复！',
+                onCancel: () => {
+                    this.$Message.info('取消');
+                },
+                onOk: () => {
+                    this.deleteData();
+                    this.$Message.info({
+                        content: '删除成功',
+                        duration: 2
+                    });
+                    this.showResearchStatus = false;
+                },
+            });
+        },
+        onCurrentChange(currentRow,oldCurrentRow){
+            this.activatedRow = currentRow;  
+            this.showResearch(true);     
+        },
+        deleteData(){
+            if(this.activatedRow.id){
+                for(var j=0;j<this.data.length;j++){
+                    if(this.activatedRow.id==this.data[j].id){
+                        this.data.splice(j, 1);   
+                    }
+                }
+            } 
+        },
+        showResearch(flag){
+            this.showResearchStatus = flag;
+        },
+        showPop(flag) {
+            this.titleText = '添加调研';
+            this.showPopModel = flag;
+        },
+        save(){
+
+        },
+        clearFormData(){
+            
+        },
+        handleClearCurrentRow () {
+            this.$refs.selection.clearCurrentRow();
+        }
+    },
+    created(){
+        setTimeout(() => {
+            this.loading = false;
+        }, 1000);
+    }
+}
+</script>
+<style lang="less" scoped>
+.top {
+    // flex: 1;
+    background-color: #f5fffa;
+    border: 1px solid #dcdee2;
+    border-color: #e8eaec;
+    transition: all 0.2s ease-in-out;
+    padding: 10px 10px 10px 20px;
+
+    .top-box {
+        width: 100%;
+        height: auto;
+        display: flex;
+        display: -webkit-flex;
+        justify-content: space-between;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .item {
+            margin-right: 10px;
+            line-height: 38px;
+            margin-top: 10px;
+            // width: 33.3333%;
+            height: 38px;
+        }
+    }
+}
+
+.content {
+    margin: 10px;
+
+    .content-box {
+        display: flex;
+
+        .content-item {
+            display: inline-block;
+            overflow: hidden;
+            position: relative;
+            margin-right: 10px;
+        }
+    }
+}
+
+.top-title {
+    background: linear-gradient(to top, #d2effd, #ffffff);
+    border: 1px solid #dcdee2;
+    border-color: #e8eaec;
+    transition: all 0.2s ease-in-out;
+    text-align: left;
+    padding: 10px 20px;
+}
+.research-container {
+    .head {
+        height: 30px;
+
+        .select-type {
+            float: left;
+        }
+    }
+
+    .filter {
+        height: 24px;
+        margin: 10px 0;
+
+        .filter-button {
+            float: left;
+        }
+
+        .filter-search {
+            float: right;
+            display: flex;
+        }
+    }
+}
+</style>
+
+
