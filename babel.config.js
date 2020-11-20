@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 18:00:24
+ * @LastEditTime: 2020-11-20 09:33:05
  */
 const plugins = [];
 if(['production', 'prod'].includes(process.env.NODE_ENV)) {  
@@ -12,7 +12,10 @@ if(['production', 'prod'].includes(process.env.NODE_ENV)) {
 }
 
 module.exports = {
-  presets: [["@vue/app",{"useBuiltIns": "entry"}]],
+  presets: [
+    "@vue/babel-preset-app",
+    // ["@vue/app",{"useBuiltIns": "entry"}]
+  ],
   plugins: plugins
 };
 

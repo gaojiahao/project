@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 16:32:37
+ * @LastEditTime: 2020-11-20 11:44:21
  */
 const { endianness } = require("os");
 const path = require("path");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require("terser-webpack-plugin");
 const loader = require("sass-loader");
 const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
 const productionGzipExtensions = ["js", "css"];
@@ -69,10 +69,6 @@ module.exports = {
       // 为生产环境修改配置...
       config.mode = "production";
       config.plugins.push(compress);
-      config.optimization.splitChunks({
-        chunks: 'all'
-      });
-      config.optimization.minimize(true);
     } else {
       // 为开发环境修改配置...
       config.mode = "development";
@@ -83,11 +79,6 @@ module.exports = {
         threads: 5 // 线程数取决于你电脑性能的好坏，好的电脑建议开更多线程
       })
     );
-    // config.plugins.push(compress);
-    //   config.optimization.splitChunks({
-    //     chunks: 'all'
-    //   });
-    // config.optimization.minimize(true);
     Object.assign(config, {
       // 开发生产共同配置
       resolve: {
@@ -106,41 +97,25 @@ module.exports = {
           "@utils": path.resolve(__dirname, "./src/utils")
         } // 别名配置
       },
-      // optimization: {
-      //   minimizer: [
-      //     new UglifyJsPlugin({
-      //       uglifyOptions: {
-      //         output: { // 删除注释
-      //           comments: false
-      //         },
-      //         //生产环境自动删除console
-      //         compress: {
-      //           //warnings: false, // 若打包错误，则注释这行
-      //           drop_debugger: true,  //清除 debugger 语句
-      //           drop_console: true,   //清除console语句
-      //           pure_funcs: ['console.log']
-      //         }
-      //       },
-      //       sourceMap: false,
-      //       parallel: true,
-      //       cache: true
-      //     })
-      //   ]
-      // },
-      // plugins: [
-      //   new CompressionWebpackPlugin({
-      //     filename: "[path].gz[query]",
-      //     algorithm: 'gzip', 
-      //     threshold: 10240,
-      //     test: new RegExp(
-      //       '\\.(' +
-      //       ['js'].join('|') +
-      //       ')$'
-      //     ),
-      //     minRatio: 0.8,
-      //     deleteOriginalAssets: false
-      //   })
-      // ] 
+      optimization: {
+        minimize: true,
+        minimizer: [
+          new TerserPlugin({
+            parallel: true,
+            exclude: /node_modules/,
+            terserOptions: {
+              ecma: undefined,
+              warnings: false,
+              parse: {},
+              compress: {
+                drop_console: true,
+                drop_debugger: false,
+                pure_funcs: ['console.log'], // 移除console
+              },
+            },
+          }
+        )],
+      },
     });
   },
   productionSourceMap: false, // 生产环境是否生成 sourceMap 文件
