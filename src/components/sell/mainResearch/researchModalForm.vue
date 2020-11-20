@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-14 12:35:36
+ * @LastEditTime: 2020-11-20 16:10:17
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="1300">
@@ -363,15 +363,5 @@ export default {
 
 >>>.ivu-form {
     display: flex;
-}
-
->>>.ivu-form-item-error-tip {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    line-height: 1;
-    padding-top: 9px;
-    color: #ed4014;
-    padding-left: 9px;
 }
 </style>

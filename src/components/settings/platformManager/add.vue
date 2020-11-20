@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 11:55:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-02 15:19:35
+ * @LastEditTime: 2020-11-20 16:10:47
 -->
 <template>
 <div class="base-platfrom-add">
@@ -136,18 +136,7 @@ export default {
     }
 }
 </script>
-
-<style scoped>
->>>.ivu-form-item-error-tip {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    line-height: 1;
-    padding-top: 9px;
-    color: #ed4014;
-    padding-left: 9px;
-}
-</style><style lang="less" scoped>
+<style lang="less" scoped>
 .base-platfrom-add {
     width: 100%;
 

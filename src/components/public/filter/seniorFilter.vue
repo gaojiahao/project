@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 14:09:49
+ * @LastEditTime: 2020-11-20 16:09:57
 -->
 <template>
 <Modal v-model="show" title="高级筛选" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -146,14 +146,3 @@ export default {
 }
 </script>
 
-<style scoped>
->>>.ivu-form-item-error-tip {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    line-height: 1;
-    padding-top: 9px;
-    color: #ed4014;
-    padding-left: 9px;
-}
-</style>

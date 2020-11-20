@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 14:24:47
+ * @LastEditTime: 2020-11-20 15:42:59
 -->
 <template>
 <div id="app" v-title data-title="跨境电商ERP">
@@ -44,9 +44,8 @@ export default {
         }
     },
     mounted(){
-        let top = (document.getElementById("app").offsetHeight)/3;
         this.$Message.config({
-            top: top,
+            top: 300,
             duration: 2
         });
     }

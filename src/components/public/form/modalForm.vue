@@ -190,14 +190,3 @@ export default {
 }
 </script>
 
-<style scoped>
->>>.ivu-form-item-error-tip {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    line-height: 1;
-    padding-top: 9px;
-    color: #ed4014;
-    padding-left: 9px;
-}
-</style>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-12 19:54:00
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 20:50:44
+ * @LastEditTime: 2020-11-20 16:09:49
 -->
 <style>
     .ivu-table th.demo-table-info-column{
@@ -721,16 +721,6 @@ export default {
 >>>.ivu-input {
     color: unset;
 }
->>>.ivu-form-item-error-tip {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    line-height: 1;
-    padding-top: 9px;
-    color: #ed4014;
-    padding-left: 9px;
-}
-
 >>>.ivu-form-item-content {
     display: flex;
 }

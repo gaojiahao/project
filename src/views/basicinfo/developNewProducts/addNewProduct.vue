@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 12:04:57
+ * @LastEditTime: 2020-11-20 15:48:32
 -->
 <template>
 <div>
@@ -28,10 +28,12 @@
             <div class="top">
                 <XForm :formValidate="formValidate.otherInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.otherInfo.field" @save="saveOtherInfo" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
-                        <div style="width:100%">
-                            <Button type="primary" @click="saveOtherInfo" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                        </div>
+                        <FormItem>
+                            <div style="width:100%">
+                                <Button type="primary" @click="saveOtherInfo" style="float: left;">保存</Button>
+                                <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                            </div>
+                        </FormItem>
                     </template>
                 </XForm>
             </div>
@@ -45,8 +47,10 @@
                 <XForm :formValidate="formValidate.purchase" :ruleValidate="ruleValidate" :formConfig="formConfig.purchase.field" @save="save" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
                         <div style="width:100%">
-                            <Button type="primary" @click="savePurchase" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                            <FormItem>
+                                <Button type="primary" @click="savePurchase" style="float: left;">保存</Button>
+                                <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                            </FormItem>
                         </div>
                     </template>
                 </XForm>
@@ -115,7 +119,8 @@ import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addN
 
 import {
     Tabs,
-    TabPane
+    TabPane,
+    FormItem
 } from "view-design";
 export default {
     name: 'addNewProduct',
@@ -123,6 +128,7 @@ export default {
         Tabs,
         TabPane,
         XForm,
+        FormItem,
         AddNewProductTable,
         AddNewProductTableUploadPic,
         AddNewProductTableUploadVideo,
@@ -190,7 +196,7 @@ export default {
     border-color: #e8eaec;
     transition: all 0.2s ease-in-out;
     text-align: left;
-    padding: 10px 20px;
+    padding: 5px;
 }
 
 .bottom {

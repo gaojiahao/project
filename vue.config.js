@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 12:19:42
+ * @LastEditTime: 2020-11-20 15:19:19
  */
 const os = require('os');
 const path = require("path");
@@ -70,6 +70,25 @@ module.exports = {
       // 为生产环境修改配置...
       config.mode = "production";
       config.plugins.push(compress);
+      config.optimization= {
+        minimize: true,
+        minimizer: [
+          new TerserPlugin({
+            parallel: true,
+            exclude: /node_modules/,
+            terserOptions: {
+              ecma: undefined,
+              warnings: false,
+              parse: {},
+              compress: {
+                drop_console: true,
+                drop_debugger: false,
+                pure_funcs: ['console.log'], // 移除console
+              },
+            },
+          }
+        )],
+      };
     } else {
       // 为开发环境修改配置...
       config.mode = "development";
@@ -100,25 +119,25 @@ module.exports = {
           "@utils": path.resolve(__dirname, "./src/utils")
         } // 别名配置
       },
-      optimization: {
-        minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            parallel: true,
-            exclude: /node_modules/,
-            terserOptions: {
-              ecma: undefined,
-              warnings: false,
-              parse: {},
-              compress: {
-                drop_console: true,
-                drop_debugger: false,
-                pure_funcs: ['console.log'], // 移除console
-              },
-            },
-          }
-        )],
-      },
+      // optimization: {
+      //   minimize: true,
+      //   minimizer: [
+      //     new TerserPlugin({
+      //       parallel: true,
+      //       exclude: /node_modules/,
+      //       terserOptions: {
+      //         ecma: undefined,
+      //         warnings: false,
+      //         parse: {},
+      //         compress: {
+      //           drop_console: true,
+      //           drop_debugger: false,
+      //           pure_funcs: ['console.log'], // 移除console
+      //         },
+      //       },
+      //     }
+      //   )],
+      // },
     });
   },
   productionSourceMap: false, // 生产环境是否生成 sourceMap 文件

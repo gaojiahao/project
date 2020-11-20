@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 10:36:55
+ * @LastEditTime: 2020-11-20 14:47:41
 -->
 <template>
-<div>
+<div class="size-content">
     <div class="list">
         <span style="margin-right:10px">长</span><Input v-model="list.long" placeholder="" style="width: 100px" @on-blur="handleInput" :disabled="disabled" /><span style="margin-left:10px">cm</span>
     </div>
@@ -66,10 +66,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.list {
+.size-content{
     display: inline-block;
-    overflow: hidden;
     position: relative;
-    margin-right: 4px;
+    vertical-align: middle;
+    line-height: normal;
+    .list {
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+        margin-right: 4px;
+    }
 }
 </style>

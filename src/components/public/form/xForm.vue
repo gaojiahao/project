@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 19:29:27
+ * @LastEditTime: 2020-11-20 16:08:59
 -->
 <template>
 <div class="content">
-    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
+    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120" label-colon>
         <template v-for="(item, index) in formValidate">
             <!--文本框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
@@ -51,13 +51,13 @@
                 <Size v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></Size>
             </FormItem>
         </template>
-        <FormItem>
-            <slot name='button'>
+        <slot name='button'>
+            <FormItem>
                 <div style="width:100%">
-                    <Button type="primary" @click="handleSubmit('formValidate')" style="    float: left;">保存</Button>
+                    <Button type="primary" @click="handleSubmit('formValidate')" style="float: left;">保存</Button>
                 </div>
-            </slot>
-        </FormItem>
+            </FormItem>
+        </slot>
     </Form>
 </div>
 </template>
@@ -199,18 +199,9 @@ export default {
 
 <style scoped>
 .content {
-    padding: 40px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
 }
 
->>>.ivu-form-item-error-tip {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    line-height: 1;
-    padding-top: 9px;
-    color: #ed4014;
-    padding-left: 9px;
-}
 
 >>>.ivu-form-item-content {
     display: flex;

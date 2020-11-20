@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 15:41:04
+ * @LastEditTime: 2020-11-20 16:10:09
 -->
 <template>
 <div class="content">
@@ -128,16 +128,6 @@ export default {
 <style scoped>
 .content {
     padding: 40px 10px 10px 10px;
-}
-
->>>.ivu-form-item-error-tip {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    line-height: 1;
-    padding-top: 9px;
-    color: #ed4014;
-    padding-left: 9px;
 }
 
 >>>.ivu-form-item-content {
