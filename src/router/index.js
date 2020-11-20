@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 16:13:01
+ * @LastEditTime: 2020-11-19 19:09:21
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -35,6 +35,7 @@ import BpmManager from "@views/settings/bpmManager/bpmManager";
 import Basicinfo from "@views/basicinfo/index";
 import DevelopNewProducts from "@views/basicinfo/developNewProducts/index";
 import DevelopNewProductsList from "@views/basicinfo/developNewProducts/developNewProductsList";
+import ResearchDevelopNewProducts from "@views/basicinfo/developNewProducts/researchDevelopNewProducts";
 import AddNewProduct from "@views/basicinfo/developNewProducts/addNewProduct";
 import ViewNewProduct from "@views/basicinfo/developNewProducts/viewNewProduct";
 import CustomerManager from "@views/basicinfo/customerManager";
@@ -268,6 +269,14 @@ const routes = [
                   title:'查看新品',
                 },
                 component: ViewNewProduct
+              },
+              {
+                path: 'researchDevelopNewProducts',
+                name: 'ResearchDevelopNewProducts',
+                meta:{ 
+                  title:'调研',
+                },
+                component: ResearchDevelopNewProducts
               },
             ]
           },

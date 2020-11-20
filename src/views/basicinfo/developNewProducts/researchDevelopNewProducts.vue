@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 15:24:29
+ * @LastEditTime: 2020-11-19 20:52:14
 -->
 <template>
-<Modal v-model="show" title="调研" @on-ok="ok" @on-cancel="cancel" fullscreen >
+<div>
     <div class="top-title">
         商品信息
     </div>
@@ -49,7 +49,7 @@
                 <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm">删除</Button>
             </div>
         </div>
-        <div  class="myTable">
+        <div class="myTable">
             <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-current-change="onCurrentChange">
             </Table>
             <div style="margin: 10px;overflow: hidden">
@@ -64,7 +64,7 @@
         
     </div>
     <ModalForm ref="form":titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showPopModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
-</Modal>
+</div>
 </template>
 
 <script>
@@ -79,12 +79,12 @@ import {
     Radio,
     InputNumber
 } from "view-design";
-import Research from "@views/basicinfo/developNewProducts/research";
+import Research from "@components/basicinfo/developNewProductList/research";
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/basicinfo/developNewProducts/researchConfig";
 
 export default {
-    name: 'ResearchModel',
+    name: 'ResearchDevelopNewProducts',
     components: {
         Table,
         Page,
@@ -268,6 +268,24 @@ export default {
     }
 }
 </script>
+<style scoped>
+>>>.ivu-input[disabled] {
+    background-color: #fff;
+    color:#515a6e;
+}
+>>>.ivu-table td {
+    height: 38px;
+}
+>>>.ivu-table-row-highlight td {
+    background-color: #B8D9FD;
+}
+>>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-hover td{
+    background-color: #B8D9FD;
+}
+>>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td{
+    background-color: #B8D9FD;
+}
+</style>
 <style lang="less" scoped>
 .top {
     // flex: 1;
@@ -275,7 +293,7 @@ export default {
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     transition: all 0.2s ease-in-out;
-    padding: 10px 10px 10px 20px;
+    padding: 5px;
 
     .top-box {
         width: 100%;
@@ -288,10 +306,8 @@ export default {
 
         .item {
             margin-right: 10px;
-            line-height: 38px;
-            margin-top: 10px;
-            // width: 33.3333%;
-            height: 38px;
+            line-height: 32px;
+            height: 32px;
         }
     }
 }
@@ -317,7 +333,7 @@ export default {
     border-color: #e8eaec;
     transition: all 0.2s ease-in-out;
     text-align: left;
-    padding: 10px 20px;
+    padding: 5px;
 }
 .research-container {
     .head {

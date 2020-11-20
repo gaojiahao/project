@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 16:56:06
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 18:01:46
+ * @LastEditTime: 2020-11-20 09:10:27
 -->
 <template>
 <div class="break-container">
@@ -45,7 +45,6 @@ export default {
     },
     watch:{
         $route(to,from){
-            debugger
             console.log(from.meta.title,from.path);
             console.log(to.meta.title,to.path);
         }

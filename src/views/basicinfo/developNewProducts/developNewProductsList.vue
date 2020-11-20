@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 15:59:46
+ * @LastEditTime: 2020-11-19 20:54:38
 -->
 <template>
 <div class="storeManager-container">
@@ -25,7 +25,7 @@
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="info" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
-                <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel(true)">调研</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel()">调研</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -37,7 +37,6 @@
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
-    <ResearchModel :showModel='showResearh' @show-research-model="showResearchModel"></ResearchModel>
 </div>
 </template>
 
@@ -53,7 +52,6 @@ import {
 } from "view-design";
 import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
 import list from "@mixins/list";
-import ResearchModel from "@components/basicinfo/developNewProductList/researchModel"
 
 export default {
     name: "DevelopNewProductsList",
@@ -65,7 +63,6 @@ export default {
         Select,
         Option,
         DatePicker,
-        ResearchModel
     },
     mixins: [config,list],
     data() {
@@ -188,7 +185,7 @@ export default {
                     title: '操作',
                     slot: 'action',
                     align: 'center',
-                    width: 200
+                    width: 150
                 }
             ],
             data: [
@@ -333,7 +330,7 @@ export default {
             this.$router.push({name:'ViewNewProduct',query: {id:id}});
         },
         showResearchModel(flag){
-            this.showResearh = flag;    
+            this.$router.push({name:'ResearchDevelopNewProducts'}); 
         }
         
     },

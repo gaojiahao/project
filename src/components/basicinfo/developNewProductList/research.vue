@@ -4,8 +4,16 @@
  * @Author: gaojiahao
  * @Date: 2020-11-12 19:54:00
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 15:42:13
+ * @LastEditTime: 2020-11-19 20:50:44
 -->
+<style>
+    .ivu-table th.demo-table-info-column{
+        background-color: #C0C0C0 !important;
+    }
+    .ivu-table td.demo-table-info-column{
+        background-color: #C0C0C0 !important;
+    }
+</style>
 <template>
 <div>
     <div class="content">
@@ -337,6 +345,7 @@ export default {
                     title: '价格差',
                     key: 'priceDifference',
                     width:100,
+                    className: 'demo-table-info-column',
                     renderHeader:(h,params)=>{
                         return h('div',[
                             h('div','价格差'),
@@ -348,7 +357,7 @@ export default {
                         // 执行的一些列样式或者事件等操作
                         style: {
                             display: "inline-block",
-                            color: params.row.sellPrice - params.row.referencePrice > 0  ? "#19be6b": "#ed4014"
+                            color: params.row.sellPrice - params.row.referencePrice > 0  ? "#ed4014":"#19be6b"
                         },
                         },params.row.sellPrice - params.row.referencePrice);
                     }
@@ -357,11 +366,12 @@ export default {
                     title: '利润差',
                     key: 'profitDifference',
                     width:100,
+                    className: 'demo-table-info-column',
                     render: (h, params) => {
                         return h('span', {
                             style: {
                                 display: "inline-block",
-                                color: params.row.profitMargin - params.row.referenceProfit > 0  ? "#19be6b": "#ed4014"
+                                color: params.row.profitMargin - params.row.referenceProfit > 0  ? "#ed4014":"#19be6b"
                             },
                         }, [params.row.profitMargin - params.row.referenceProfit,
                             h('span', {
@@ -652,7 +662,7 @@ export default {
 }
 
 .content {
-    margin: 10px;
+    margin: 10px 0;
     display: flex;
     justify-content: space-between;
     .content-box {
@@ -681,6 +691,10 @@ export default {
     flex-direction: row;
 }
 </style><style scoped>
+>>>.ivu-table td {
+    height: 38px;
+}
+
 >>>.ivu-table td.red-color {
     color: #ed4014;
 }
@@ -704,11 +718,9 @@ export default {
 >>>.ivu-table th.blue-color {
     color: #5cadff;
 }
-
 >>>.ivu-input {
     color: unset;
 }
-
 >>>.ivu-form-item-error-tip {
     position: absolute;
     top: 100%;
