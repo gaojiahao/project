@@ -4,15 +4,16 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 11:44:21
+ * @LastEditTime: 2020-11-20 12:19:42
  */
-const { endianness } = require("os");
+const os = require('os');
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const loader = require("sass-loader");
 const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
 const productionGzipExtensions = ["js", "css"];
 const Happypack = require('happypack');
+const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length });
 let proxyConfig = require("./config/proxyConfig");
 
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
@@ -76,7 +77,9 @@ module.exports = {
     config.plugins.push(
       new Happypack({
         loaders: ['babel-loader', 'vue-loader', 'iview-loader','vue-router', 'vuex',],
-        threads: 5 // 线程数取决于你电脑性能的好坏，好的电脑建议开更多线程
+        //threads: 5, // 线程数取决于你电脑性能的好坏，好的电脑建议开更多线程
+        threadPool: happyThreadPool,
+        verbose: true,
       })
     );
     Object.assign(config, {
@@ -121,7 +124,7 @@ module.exports = {
   productionSourceMap: false, // 生产环境是否生成 sourceMap 文件
   // css相关配置
   css: {
-    extract: true, // 是否使用css分离插件 ExtractTextPlugin
+    extract: IS_PROD ? true:false, // 是否使用css分离插件 ExtractTextPlugin
     sourceMap: false, // 开启 CSS source maps?
     // css预设器配置项
     loaderOptions: {
