@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 15:14:47
+ * @LastEditTime: 2020-11-20 16:45:50
  */
 export default {
     data() {
@@ -208,7 +208,7 @@ export default {
             comment:'发的说法是的'
           },
           property:{
-            color:'发生',
+            color:'001',
             packaging:'反攻倒算',
             isHavePackage:'个梵蒂冈是',
             isHaveElect:'范德萨'

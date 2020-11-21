@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:08:59
+ * @LastEditTime: 2020-11-20 16:31:24
 -->
 <template>
 <div class="content">
@@ -201,8 +201,6 @@ export default {
 .content {
     padding: 10px 10px 10px 10px;
 }
-
-
 >>>.ivu-form-item-content {
     display: flex;
 }

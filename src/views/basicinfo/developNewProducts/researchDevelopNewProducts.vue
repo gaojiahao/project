@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 20:52:14
+ * @LastEditTime: 2020-11-20 16:30:54
 -->
 <template>
 <div>
@@ -268,24 +268,6 @@ export default {
     }
 }
 </script>
-<style scoped>
->>>.ivu-input[disabled] {
-    background-color: #fff;
-    color:#515a6e;
-}
->>>.ivu-table td {
-    height: 38px;
-}
->>>.ivu-table-row-highlight td {
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-hover td{
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td{
-    background-color: #B8D9FD;
-}
-</style>
 <style lang="less" scoped>
 .top {
     // flex: 1;

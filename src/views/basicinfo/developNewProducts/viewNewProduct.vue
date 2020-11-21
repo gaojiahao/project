@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 15:42:13
+ * @LastEditTime: 2020-11-20 16:39:41
 -->
 <template>
 <div>
     <Tabs type="card" :animated="false">
         <TabPane label="基本信息">
-            <div class="bottom-title">
+            <div class="top-title">
                 基本信息
             </div>
             <div class="top">
@@ -22,7 +22,7 @@
                     </template>
                 </ViewForm>
             </div>
-            <div class="bottom-title">
+            <div class="top-title">
                 其他信息
             </div>
             <div class="top">
@@ -36,7 +36,7 @@
         </TabPane>
         <TabPane label="销售信息">
             <AddNewProductTable></AddNewProductTable>
-            <div class="bottom-title">
+            <div class="top-title">
                 采购信息
             </div>
             <div class="top">
@@ -49,7 +49,7 @@
             </div>
         </TabPane>
         <TabPane label="制作文件">
-            <div class="bottom-title">
+            <div class="top-title">
                 文件上传
             </div>
             <div class="top" style="flex:display;padding:20px;flex-direction:column;display:flex">
@@ -61,7 +61,7 @@
             </div>
         </TabPane>
         <TabPane label="属性">
-            <div class="bottom-title">
+            <div class="top-title">
                 属性
             </div>
             <div class="top">
@@ -74,7 +74,7 @@
             </div>
         </TabPane>
         <TabPane label="详细描述">
-            <div class="bottom-title">
+            <div class="top-title">
                 属性
             </div>
             <div class="top">
@@ -149,13 +149,13 @@ export default {
     margin-bottom: 10px;
 }
 
-.bottom-title {
+.top-title {
     background: linear-gradient(to top, #d2effd, #ffffff);
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     transition: all 0.2s ease-in-out;
     text-align: left;
-    padding: 10px 20px;
+    padding: 5px;
 }
 
 .bottom {

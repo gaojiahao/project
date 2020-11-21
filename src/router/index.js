@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 19:09:21
+ * @LastEditTime: 2020-11-20 17:47:52
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -61,6 +61,11 @@ import ReferenceComparison from "@views/sell/mainResearch/researchResult/referen
 import SelectionManager from "@views/sell/selectionManager/index";
 import SelectionManagerList from "@views/sell/selectionManager/selectionManagerList";
 import SelectionResultList from "@views/sell/selectionManager/selectionResultList";
+//审核管理
+import Examine from "@views/examine/index";
+import AppointStoreExamine from "@views/examine/appointStoreExamine/index";
+import AppointStoreExamineList from "@views/examine/appointStoreExamine/appointStoreExamineList";
+import ProductAppointStore from "@views/examine/appointStoreExamine/productAppointStore";
 
 Vue.use(VueRouter);
 
@@ -481,6 +486,44 @@ const routes = [
           }
         ]
       },
+      {
+        path: 'examine',
+        name: 'examine',
+        meta:{ 
+          title:'审核管理',
+        },
+        component: Examine,
+        redirect:'examine/appointStoreExamine',
+        children:[
+          {
+            path: 'appointStoreExamine',
+            name: 'appointStoreExamine',
+            meta:{ 
+              title:'派店审核',
+            },
+            component: AppointStoreExamine,
+            redirect:'appointStoreExamine/appointStoreExamineList',
+            children:[
+              {
+                path: 'appointStoreExamineList',
+                name: 'appointStoreExamineList',
+                meta:{ 
+                  title:'派店审核',
+                },
+                component: AppointStoreExamineList,
+              },
+              {
+                path: 'productAppointStore',
+                name: 'productAppointStore',
+                meta:{ 
+                  title:'产品派店',
+                },
+                component: ProductAppointStore,
+              }
+            ]
+          }
+        ]
+      }
     ],
   },
   {

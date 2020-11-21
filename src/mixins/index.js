@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 16:07:25
+ * @LastEditTime: 2020-11-20 17:13:01
  */
 export default {
     data() {
@@ -189,6 +189,25 @@ export default {
               }
             ],
           },
+          'examine':{
+            name: '审核管理',
+            value: 'examine',
+            status: true,
+            children: [
+              {
+                name: '派店审核',
+                value: 'appointStoreExamine',
+                status: true,
+                children:[
+                  {
+                    name: '产品派店',
+                    value: 'productAppointStore',
+                    status: true,
+                  }  
+                ]
+              }
+            ]
+          }  
         }
       };
     },

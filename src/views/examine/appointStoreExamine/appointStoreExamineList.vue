@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 17:39:07
+ * @LastEditTime: 2020-11-20 18:42:18
 -->
 <template>
 <div class="storeManager-container">
@@ -21,8 +21,8 @@
     <div>
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goResearch(row)">查看调研</Button>
+                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)" v-if="row.status='未派'">审核</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goResearch(row)" v-else-if="row.status='已派'">查看</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -54,7 +54,7 @@ import ImageModel from "@components/public/model/imageModel";
 import config from "@views/basicinfo/productManager/productListConfig";
 
 export default {
-    name: "ProductList",
+    name: "AppointStoreExamineList",
     components: {
         Table,
         Page,
@@ -164,11 +164,12 @@ export default {
                         // 执行的一些列样式或者事件等操作
                         style: {
                             display: "inline-block",
-                            color: params.row.status=='已选' ? "#19be6b": "#ed4014"
+                            color: params.row.status=='已派' ? "#19be6b": "#ed4014"
                         },
                         },params.row.status);//  展示的内容
                     }
-                }, {
+                }, 
+                {
                     title: '创建时间',
                     key: 'createTime'
                 }, {
@@ -200,7 +201,7 @@ export default {
                 label: "普货",
                 packingMaterial: '顺丰袋45*45',
                 averageCost: '￥126.66',
-                status: "未选",
+                status: "已派",
                 createTime: "2020-11-06",
             }, {
                 img: "",
@@ -212,7 +213,7 @@ export default {
                 label: "普货",
                 packingMaterial: '顺丰袋45*45',
                 averageCost: '￥126.66',
-                status: "已选",
+                status: "未派",
                 createTime: "2020-11-06",
             }, {
                 img: "",
@@ -224,7 +225,7 @@ export default {
                 label: "普货",
                 packingMaterial: '顺丰袋45*45',
                 averageCost: '￥126.66',
-                status: "已选",
+                status: "已派",
                 createTime: "2020-11-06",
             }, {
                 img: "",
@@ -236,7 +237,7 @@ export default {
                 label: "普货",
                 packingMaterial: '顺丰袋45*45',
                 averageCost: '￥126.66',
-                status: "已选",
+                status: "已派",
                 createTime: "2020-11-06",
             }, {
                 img: "",
@@ -248,7 +249,7 @@ export default {
                 label: "普货",
                 packingMaterial: '顺丰袋45*45',
                 averageCost: '￥126.66',
-                status: "已选",
+                status: "已派",
                 createTime: "2020-11-06",
             }, {
                 img: "",
@@ -260,7 +261,7 @@ export default {
                 label: "普货",
                 packingMaterial: '顺丰袋45*45',
                 averageCost: '￥126.66',
-                status: "已选",
+                status: "已派",
                 createTime: "2020-11-06",
             }, {
                 img: "",
@@ -272,7 +273,7 @@ export default {
                 label: "普货",
                 packingMaterial: '顺丰袋45*45',
                 averageCost: '￥126.66',
-                status: "已选",
+                status: "已派",
                 createTime: "2020-11-06",
             }],
             filter: "large"

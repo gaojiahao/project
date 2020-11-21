@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 15:48:32
+ * @LastEditTime: 2020-11-20 16:29:20
 -->
 <template>
 <div>
@@ -75,10 +75,12 @@
             <div class="top">
                 <XForm :formValidate="formValidate.property" :ruleValidate="ruleValidate" :formConfig="formConfig.property.field" @save="save" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
-                        <div style="width:100%">
-                            <Button type="primary" @click="saveProperty" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                        </div>
+                        <FormItem>
+                            <div style="width:100%">
+                                <Button type="primary" @click="saveProperty" style="float: left;">保存</Button>
+                                <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                            </div>
+                        </FormItem>
                     </template>
                 </XForm>
             </div>
@@ -90,10 +92,12 @@
             <div class="top">
                 <XForm :formValidate="formValidate.detailInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.detailInfo.field" @save="save" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
-                        <div style="width:100%">
-                            <Button type="primary" @click="saveDetailInfo" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                        </div>
+                        <FormItem>
+                            <div style="width:100%">
+                                <Button type="primary" @click="saveDetailInfo" style="float: left;">保存</Button>
+                                <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                            </div>
+                        </FormItem>
                     </template>
                 </XForm>
             </div>

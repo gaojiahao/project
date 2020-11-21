@@ -54,6 +54,13 @@ export default {
             default: false
         }
     },
+    watch:{
+        value:{
+            handler(val){
+                this.uploadList = val;
+            }
+        }    
+    },
     data() {
         return {
             defaultList: [],
@@ -98,12 +105,15 @@ export default {
             return check;
         },
         handleInput(e) {
-            // this.uploadList.push(e)
+            this.uploadList.push(e)
             this.$emit('change', this.uploadList)
         }
     },
+    created(){
+        this.uploadList = this.value;    
+    },
     mounted() {
-        this.uploadList = this.$refs.upload.fileList;
+        // this.uploadList = this.$refs.upload.fileList;
     }
 }
 </script>

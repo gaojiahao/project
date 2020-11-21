@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:10:09
+ * @LastEditTime: 2020-11-20 19:49:02
 -->
 <template>
 <div class="content">
-    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
+    <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120" label-colon>
         <template v-for="(item, index) in formValidate">
             <!--文本框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
@@ -127,7 +127,7 @@ export default {
 
 <style scoped>
 .content {
-    padding: 40px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
 }
 
 >>>.ivu-form-item-content {

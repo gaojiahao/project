@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 12:00:09
+ * @LastEditTime: 2020-11-20 16:32:05
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -150,7 +150,6 @@ export default {
     }
 }
 </script>
-
 <style lang="less" scoped>
 .addNewProductTable-container {
     margin-top: 16px;
