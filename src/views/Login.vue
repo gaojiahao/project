@@ -245,6 +245,7 @@ export default {
          */
         changeType(type) {
             this.type = type;
+            this.initKeypress();
         },
         randomNum(min, max) {
             return Math.floor(Math.random() * (max - min) + min)
@@ -265,14 +266,8 @@ export default {
         },
         setIdentifyCode(value){
             this.identifyCode = value;
-        }
-    },
-    created() {
-        tokenService.clean();
-    },
-    mounted() {
-        //第一个输入框获取焦点
-        function initEl() {
+        },
+        initEl() {
             var controls = document.getElementsByTagName('input');
             for (var i = 0; i < controls.length; i++) {
                 if (i == 0 && controls[i].type == 'text') {
@@ -280,28 +275,36 @@ export default {
                     console.log(controls[i])
                 }
             }
-        }
-        window.onload = function () {
-            initEl();
-        }
-        var inputGroup = document.getElementsByTagName("input");
-        var inputGroupArr = Array.from(document.getElementsByTagName("input"));
-        var iGlength = inputGroupArr.length;
-        document.onkeypress = function (e) {
-            var e = event || e;
-            //console.log(inputGroupArr.indexOf(e.srcElement));
-            var idx = inputGroupArr.indexOf(e.srcElement);
-            //console.log(e, e.keyCode, e.srcElement, e.which);
-            if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
-                if (idx == iGlength - 1) { //表明已经是最后一个输入框
-                    document.getElementsByTagName("button")[0].focus();
-                } else {
-                    inputGroup[idx + 1].focus();
+        },
+        initKeypress(){
+            this.initEl();
+            var inputGroup = document.getElementsByTagName("input");
+            var inputGroupArr = Array.from(document.getElementsByTagName("input"));
+            var iGlength = inputGroupArr.length;
+            document.onkeypress = function (e) {
+                var e = event || e;
+                //console.log(inputGroupArr.indexOf(e.srcElement));
+                var idx = inputGroupArr.indexOf(e.srcElement);
+                //console.log(e, e.keyCode, e.srcElement, e.which);
+                if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
+                    if (idx == iGlength - 1) { //表明已经是最后一个输入框
+                        debugger
+                        var a = document.getElementsByTagName("button")[0];
+                        document.getElementsByTagName("button")[0].focus();
+                    } else {
+                        inputGroup[idx + 1].focus();
+                    }
+                    e.preventDefault();
                 }
-                e.preventDefault();
+                //console.log(e, e.keyCode, e.srcElement, e.which);
             }
-            //console.log(e, e.keyCode, e.srcElement, e.which);
         }
+    },
+    created() {
+        tokenService.clean();
+    },
+    mounted() {
+        this.initKeypress();
     }
 };
 </script>

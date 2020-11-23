@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 18:17:58
+ * @LastEditTime: 2020-11-21 11:27:14
  */
 export default {
     data() {
@@ -13,6 +13,7 @@ export default {
           productInfo:{
             field:{
             productCode:{
+              container:"productInfo",
               name:'商品编号',
               type:'text',
               disabled: false

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 11:38:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 15:31:37
+ * @LastEditTime: 2020-11-21 10:49:31
 -->
 <template>
     <div>
@@ -13,7 +13,7 @@
             v-model="value"
             icon="ios-search"
             placeholder="关键词"
-            style="width:300px;margin-top: -1px;margin-left: 5px;" @on-select="onSelect" clearable @on-clear="onClear">
+            style="width:300px;margin-top: -1px;" @on-select="onSelect" clearable @on-clear="onClear">
             <div class="demo-auto-complete-item">
                 <!--<div class="demo-auto-complete-group">
                     <span style="float:left;">{{ item.name }}:</span><span style="float:left;">{{ value }}</span>
