@@ -3,22 +3,22 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 18:10:49
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-24 10:47:01
 -->
 <template>
-<div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px">
+<div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
     <div class="ivu-input-wrapper" style="width: 200px; float: left;">
-        <input type="text" :placeholder="[isCheck ? '':placeholder]" class="ivu-input ">
+        <input type="text" :placeholder="[isCheck ? '':placeholder]" class="ivu-input " disabled :value="name">
     </div>
-    <Icon type="md-add-circle" style="color: green; font-size:24px;vertical-align: middle;" @click.native="showModel()" />
+    <Icon type="md-add-circle" style="color: green; font-size:24px;vertical-align: middle;" @click.native="showModel()" v-if="!disabled"/>
     <div class="ivu-form-item-error-tip" v-show="isCheck">请输入{{checkText}}</div>
     <Modal v-model="show" @on-ok="ok" @on-cancel="cancel" :fullscreen="fullscreen">
         <p slot="header" style="color:#999;">
             <span>{{titleText}}</span>
-            <Icon type="ios-expand" @click.native="fullModel()" />
+            <Icon type="ios-expand" @click.native="fullModel()" class="ivu-modal-full" />
         </p>
-        <Table border :columns="columns" :data="data" stripe style="margin-top:20px" highlight-row @on-current-change="onCurrentChange()">
+        <Table border :columns="columns" :data="data" stripe style="margin-top:20px" highlight-row @on-current-change="onCurrentChange">
             <template slot-scope="{ row }" slot="number">
                 <strong>{{ row.userName }}</strong>
             </template>
@@ -47,6 +47,22 @@ export default {
         Table,
         Page
     },
+    model: {
+        prop: 'value', // prop说:我要将value1作为该组件被使用(被父组件调用)时,v-model能取到的值
+        event: 'change' // event说:我emit(触发)change的时候，参数的值就是父组件v-model收到的值。
+    },
+    props:{
+        value: {
+            type: String,
+            default: ''
+        },
+        config: {
+            type: Object,
+            default () {
+                return {}
+            }
+        },
+    },
     data() {
         return {
             isCheck: false,
@@ -59,19 +75,15 @@ export default {
                     width: 80,
                     align: 'center'
                 },
-                {
-                    title: '用户名称',
-                    key: 'userName'
-                },
-                {
-                    title: '用户ID',
-                    key: 'userId'
-                },
             ],
-            data: this.getData(),
+            data: [],   //this.getData() 数据应该从数据源url获取
             show: false,
-            titleText: '',
+            titleText: '选择',
             fullscreen: false,
+            hidden: false,
+            disabled:false,
+            name:'',
+            selectItem:{},
         }
     },
     methods: {
@@ -88,9 +100,17 @@ export default {
             }
             return data;
         },
-        ok() {},
+        ok() {
+            //this.value = this.selectItem[this.config.valueField];
+            this.name = this.selectItem[this.config.displayField];
+            this.$emit('change', this.selectItem[this.config.valueField])
+        },
+        clear(){
+            this.value = '';
+            this.name = '';
+        },
         cancel() {
-
+            this.clear();
         },
         changePage() {
             this.data = this.getData();
@@ -99,10 +119,18 @@ export default {
             this.fullscreen = this.fullscreen ? false : true;
         },
         onCurrentChange(currentRow, oldCurrentRow) {
-            console.log(currentRow)
+            this.selectItem = currentRow;  
         }
-    }
-
+    },
+    created(){
+        this.hidden = this.config.hidden;
+        this.disabled = this.config.disabled;
+        this.config.proertyContext['dataSourceCols'].forEach(col => {
+            this.columns.push(col);
+        });
+        this.data = this.config.dataSource.data;
+        this.titleText = this.titleText+'-'+this.config.name;
+    },
 }
 </script>
 
@@ -115,6 +143,13 @@ export default {
             }
         }
     }
+}
+.ivu-modal-full {
+    z-index: 1;
+    font-size: 14px;
+    float: right;
+    margin-right: 20px;
+    margin-top: 4px;
 }
 </style><style scoped>
 >>>.ivu-table th,

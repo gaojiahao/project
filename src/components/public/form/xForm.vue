@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:31:24
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-24 09:48:02
 -->
 <template>
 <div class="content">
@@ -50,6 +50,9 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='size'">
                 <Size v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></Size>
             </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selector'">
+                <XSelect v-model="formValidate[index]" :config="formConfig[index]"></XSelect>
+            </FormItem>
         </template>
         <slot name='button'>
             <FormItem>
@@ -75,7 +78,8 @@ import {
 } from "view-design";
 import UploadImg from '@components/public/upload/uploadImg';
 import Texts from '@components/public/input/texts';
-import Size from '@components/public/input/size'
+import Size from '@components/public/input/size';
+import XSelect from '@components/public/xSelect/xSelect'
 export default {
     name: 'XForm',
     components: {
@@ -89,7 +93,8 @@ export default {
         InputNumber,
         UploadImg,
         Texts,
-        Size
+        Size,
+        XSelect
     },
     props: {
         titleText: {
