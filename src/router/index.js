@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 16:14:43
+ * @LastEditTime: 2020-11-24 19:56:24
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -72,6 +72,10 @@ import TortExamine from "@views/examine/tortExamine/index";
 import TortExamineList from "@views/examine/tortExamine/tortExamineList";
 import AddTortExamine from "@views/examine/tortExamine/addTortExamine";
 import ViewTortExamine from "@views/examine/tortExamine/viewTortExamine";
+import SelectionExamine from "@views/examine/selectionExamine/index";
+import SelectionExamineList from "@views/examine/selectionExamine/selectionExamineList";
+import AddSelectionExamine from "@views/examine/selectionExamine/addSelectionExamine";
+import ViewSelectionExamine from "@views/examine/selectionExamine/viewSelectionExamine";
 //制图管理
 import Charting from "@views/charting/index";
 import ChartingDelegation from "@views/charting/chartingDelegation";
@@ -602,6 +606,41 @@ const routes = [
                   title: "查看调研"
                 },
               }
+            ]
+          },
+          {
+            path: 'selectionExamine',
+            name: 'selectionExamine',
+            meta:{ 
+              title:'选品审核',
+            },
+            component: SelectionExamine,
+            redirect:'selectionExamine/selectionExamineList',
+            children:[
+              {
+                path: 'selectionExamineList',
+                name: 'selectionExamineList',
+                meta:{ 
+                  title:'选品审核列表',
+                },
+                component: SelectionExamineList,
+              },
+              {
+                path: 'addSelectionExamine',
+                name: 'addSelectionExamine',
+                meta:{ 
+                  title:'添加选品审核',
+                },
+                component: AddSelectionExamine,
+              },
+              {
+                path: 'viewSelectionExamine',
+                name: 'viewSelectionExamine',
+                meta:{ 
+                  title:'查看选品审核',
+                },
+                component: ViewSelectionExamine,
+              },
             ]
           }
         ]

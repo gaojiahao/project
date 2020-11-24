@@ -116,7 +116,6 @@ export default {
     },
     methods: {
         setUserAuthority(userId) {
-            debugger
             this.titleText = '正在编辑' + this.userId + "的权限";
             this.userId = this.list[userId].roleName;
             this.modal1 = true;

@@ -288,7 +288,6 @@ export default {
                 //console.log(e, e.keyCode, e.srcElement, e.which);
                 if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
                     if (idx == iGlength - 1) { //表明已经是最后一个输入框
-                        debugger
                         var a = document.getElementsByTagName("button")[0];
                         document.getElementsByTagName("button")[0].focus();
                     } else {

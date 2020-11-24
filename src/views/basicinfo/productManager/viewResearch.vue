@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-23 16:48:02
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-23 19:52:37
+ * @LastEditTime: 2020-11-24 20:02:49
 -->
 <template>
 <div class="viewResearch">
@@ -282,7 +282,6 @@ export default {
                                 },
                             },
                             this.logisticsModeList.map((item) =>{
-                                debugger
                                 return h('Option', {
                                     props: {
                                         value: item.value,

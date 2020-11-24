@@ -147,7 +147,6 @@ export default {
                 type: null,
                 info: null,
                 open: (type, info) => {
-                    debugger
                     const conf = this.drawerConf
                     conf.visible = true
                     conf.type = type
@@ -269,7 +268,6 @@ export default {
                 [{
                         label: '保存',
                         selected: (graph, coordinate) => {
-                            debugger
                             console.log(JSON.stringify(graph.toJSON(), null, 2))
                         }
                     },

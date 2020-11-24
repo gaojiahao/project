@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-23 16:01:55
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-24 20:02:42
 -->
 <style lang="less" scoped>
 .ivu-checkbox-group-item {
@@ -73,7 +73,6 @@ export default {
     },
     methods: {
         handleCheckAll () {
-            debugger
             if (this.indeterminate) {
                 this.checkAll = false;
             } else {

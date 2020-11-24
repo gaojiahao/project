@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 15:28:40
+ * @LastEditTime: 2020-11-24 19:41:40
  */
 export default {
     data() {
@@ -55,14 +55,26 @@ export default {
               ]
             }
           },
+          reason:{
+            name:'原因',
+            type:'select',
+            dataSource:{
+              data:[
+                { name:'不够大卖',value:'001'},
+                { name:'调研之后没有利润',value:'002'},
+                { name:'其他',value:'003'},
+              ]
+            }
+          },
           opinion:{
-            name:'侵权审核意见',
+            name:'备注',
             type:'textarea',
           },
         },
         formValidate2: {
           url:'',
           examine:'',
+          reason:'',
           opinion:'',
         },
         ruleValidate2: {
