@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-23 17:19:20
+ * @LastEditTime: 2020-11-24 16:14:43
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -68,6 +68,10 @@ import Examine from "@views/examine/index";
 import AppointStoreExamine from "@views/examine/appointStoreExamine/index";
 import AppointStoreExamineList from "@views/examine/appointStoreExamine/appointStoreExamineList";
 import ProductAppointStore from "@views/examine/appointStoreExamine/productAppointStore";
+import TortExamine from "@views/examine/tortExamine/index";
+import TortExamineList from "@views/examine/tortExamine/tortExamineList";
+import AddTortExamine from "@views/examine/tortExamine/addTortExamine";
+import ViewTortExamine from "@views/examine/tortExamine/viewTortExamine";
 //制图管理
 import Charting from "@views/charting/index";
 import ChartingDelegation from "@views/charting/chartingDelegation";
@@ -546,6 +550,57 @@ const routes = [
                   title:'产品派店',
                 },
                 component: ProductAppointStore,
+              }
+            ]
+          },
+          {
+            path: 'tortExamine',
+            name: 'tortExamine',
+            meta:{ 
+              title:'侵权审核',
+            },
+            component: TortExamine,
+            redirect:'tortExamine/tortExamineList',
+            children:[
+              {
+                path: 'tortExamineList',
+                name: 'tortExamineList',
+                meta:{ 
+                  title:'侵权审核列表',
+                },
+                component: TortExamineList,
+              },
+              {
+                path: 'addTortExamine',
+                name: 'addTortExamine',
+                meta:{ 
+                  title:'添加侵权审核',
+                },
+                component: AddTortExamine,
+              },
+              {
+                path: 'viewTortExamine',
+                name: 'viewTortExamine',
+                meta:{ 
+                  title:'查看侵权审核',
+                },
+                component: ViewTortExamine,
+              },
+              {
+                path: 'viewTortExamine',
+                name: 'viewTortExamine',
+                meta:{ 
+                  title:'查看侵权审核',
+                },
+                component: ViewTortExamine,
+              },
+              {
+                path:"viewResearch",
+                name:"viewResearch",
+                component: ViewResearch,
+                meta: {
+                  title: "查看调研"
+                },
               }
             ]
           }

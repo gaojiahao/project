@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-23 14:22:58
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-24 14:17:33
  */
 export default {
     data() {
@@ -232,6 +232,16 @@ export default {
                     status: true,
                   }  
                 ]
+              },
+              {
+                name: '侵权审核',
+                value: 'tortExamine',
+                status: true,
+              },
+              {
+                name: '选品审核',
+                value: 'selectionExamine',
+                status: true,
               }
             ]
           },
