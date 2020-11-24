@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 09:48:02
+ * @LastEditTime: 2020-11-24 11:05:07
 -->
 <template>
 <div class="content">
@@ -50,8 +50,13 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='size'">
                 <Size v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></Size>
             </FormItem>
-            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selector'">
-                <XSelect v-model="formValidate[index]" :config="formConfig[index]"></XSelect>
+            <!--单项选择器-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectorSingle'">
+                <SelectorSingle v-model="formValidate[index]" :config="formConfig[index]"></SelectorSingle>
+            </FormItem>
+            <!--多项选择器-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectorMulti'">
+                <SelectorMulti v-model="formValidate[index]" :config="formConfig[index]"></SelectorMulti>
             </FormItem>
         </template>
         <slot name='button'>
@@ -79,7 +84,8 @@ import {
 import UploadImg from '@components/public/upload/uploadImg';
 import Texts from '@components/public/input/texts';
 import Size from '@components/public/input/size';
-import XSelect from '@components/public/xSelect/xSelect'
+import SelectorSingle from '@components/public/xSelect/selectorSingle'
+import SelectorMulti from '@components/public/xSelect/selectorMulti'
 export default {
     name: 'XForm',
     components: {
@@ -94,7 +100,8 @@ export default {
         UploadImg,
         Texts,
         Size,
-        XSelect
+        SelectorSingle,
+        SelectorMulti
     },
     props: {
         titleText: {
