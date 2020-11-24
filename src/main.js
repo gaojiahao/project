@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 16:11:41
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-23 19:28:00
  */
 //引用插件
 import Vue from "vue";
@@ -13,7 +13,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import VueRouter from "vue-router";
-import { Message, Switch, Circle,Tree,Icon,Button,Span,Badge,Notice,Modal,Tag,Spin,Radio,Checkbox,Input } from "view-design";
+import { Message, Switch, Circle,Tree,Icon,Button,Span,Badge,Notice,Modal,Tag,Spin,Radio,Checkbox,Input,Select,Option} from "view-design";
 import "view-design/dist/styles/iview.css";
 import SuperFlow from 'vue-super-flow';
 import 'vue-super-flow/lib/index.css';
@@ -43,6 +43,8 @@ Vue.component("Tag", Tag);
 Vue.component("Radio", Radio);
 Vue.component("Checkbox", Checkbox);
 Vue.component("Input", Input);
+Vue.component("Select", Select);
+Vue.component("Option", Option);
 //组件挂载到vue $this上
 Vue.prototype.$Message = Message;
 Vue.prototype.$Notice = Notice;

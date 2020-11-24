@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-21 11:27:14
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-24 10:07:44
  */
 export default {
     data() {
@@ -123,7 +123,53 @@ export default {
               },
               url:{
                 name:'参考链接',
-                type:'text',
+                type:'selector',
+                disabled: false, //是否禁用
+                hidden: false,    //是否隐藏
+                dataSource: {
+                  // "data": {
+                  //   "hFields": [
+                  //     "userId",
+                  //     "mobile",
+                  //     "email",
+                  //     "entityId",
+                  //     "area",
+                  //     "area",
+                  //     "colId"
+                  //   ],
+                  //   "params": {},
+                  //   "url": "/H_roleplay-si/ds/listUsers"
+                  // },
+                  // "type": "remoteData"
+                  data:[
+                    {id:1,platform:'亚马逊',url:"www.baidu.com",comment:"无"},
+                    {id:2,platform:'ebay',url:"www.sogou.com",comment:"无1"},
+                    {id:3,platform:'京东',url:"www.sohu.com",comment:"无2"}
+                  ]
+                },
+                proertyContext: {
+                  "dataSourceCols": [
+                    {
+                      "title": "id",
+                      "key": "id"
+                    },
+                    {
+                      "title": "平台",
+                      "key": "platform"
+                    },
+                    {
+                      "title": "参考链接",
+                      "key": "url"
+                    },
+                    {
+                      "title": "备注",
+                      "key": "comment"
+                    },
+                  ]
+                },
+                valueField: "id",  //值字段
+                displayField: "url", //显示字段
+                selectionModel:"single",//选择模式 single 单选 mulit 多选
               },
               comment:{
                 name:'备注',

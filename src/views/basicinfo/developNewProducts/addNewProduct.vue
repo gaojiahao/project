@@ -8,8 +8,8 @@
 -->
 <template>
 <div>
-    <Tabs type="card" :animated="false">
-        <TabPane label="基本信息">
+    <Tabs type="card" :animated="false" :value="tabName">
+        <TabPane label="基本信息" name="basicInfo">
             <div class="top-title">
                 基本信息
             </div>
@@ -38,7 +38,7 @@
                 </XForm>
             </div>
         </TabPane>
-        <TabPane label="销售信息" :disabled="disabledSell">
+        <TabPane label="销售信息" name="sellInfo" :disabled="disabledSell">
             <AddNewProductTable></AddNewProductTable>
             <div class="top-title">
                 采购信息
@@ -56,7 +56,7 @@
                 </XForm>
             </div>
         </TabPane>
-        <TabPane label="制作文件" :disabled="disabledUpload">
+        <TabPane label="制作文件" name="uploadInfo" :disabled="disabledUpload">
             <div class="top-title">
                 文件上传
             </div>
@@ -68,7 +68,7 @@
                 <AddNewProductTableUploadMusic></AddNewProductTableUploadMusic>
             </div>
         </TabPane>
-        <TabPane label="属性" :disabled="disabledProperty">
+        <TabPane label="属性" name="propertyInfo" :disabled="disabledProperty">
             <div class="top-title">
                 属性
             </div>
@@ -85,7 +85,7 @@
                 </XForm>
             </div>
         </TabPane>
-        <TabPane label="详细描述" :disabled="disabledDetailInfo">
+        <TabPane label="详细描述" name="detailInfo" :disabled="disabledDetailInfo">
             <div class="top-title">
                 属性
             </div>
@@ -102,7 +102,7 @@
                 </XForm>
             </div>
         </TabPane>
-        <TabPane label="日志文件" :disabled="disabledLog">
+        <TabPane label="日志文件" name="logInfo" :disabled="disabledLog">
             <AddNewProductTableLog></AddNewProductTableLog>
         </TabPane>
         <Button @click="" size="small" slot="extra" type="warning">查看调研</Button>
@@ -148,6 +148,7 @@ export default {
             disabledProperty: true,
             disabledDetailInfo: true,
             disabledLog: true,
+            tabName:'basicInfo',
         }
     },
     methods: {
@@ -157,6 +158,7 @@ export default {
             if(this.formValidate.productInfo.productCode){
                 this.$Message.info({content:'温馨提示：保存成功'});
                 this.disabledSell = false;
+                this.tabName = 'sellInfo';
             } else {
                 this.$Message.info({content:'温馨提示：保存失败，已有类似商品！'});
 
@@ -166,14 +168,17 @@ export default {
             this.$Message.info({content:'温馨提示：保存成功'});
             this.disabledUpload = false;
             this.disabledProperty = false;
+            this.tabName = 'uploadInfo';
         },
         saveProperty(){
             this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledDetailInfo = false;    
+            this.disabledDetailInfo = false; 
+            this.tabName = 'detailInfo';   
         },
         saveDetailInfo(){
             this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledLog = false;        
+            this.disabledLog = false;    
+            this.tabName = 'logInfo';   
         }
     },
     created() {}

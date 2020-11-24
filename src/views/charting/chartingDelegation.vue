@@ -3,30 +3,26 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-23 20:07:00
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-11-23 16:10:07
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">添加商品</Button>
-            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight">删除</Button>
             <!--<Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>-->
         </div>
         <div class="filter-search">
             <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
             <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
             <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
-            <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
+            <CustomColumns :columns="columns" @change-coulmns="changeCoulmns"></CustomColumns>
         </div>
     </div>
     <div  class="myTable">
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
-                <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel()">调研</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="showPop(true)">委派制图</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -51,11 +47,11 @@ import {
     Option,
     DatePicker
 } from "view-design";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
+import config from "@views/charting/chartingDelegationCongfig";
 import list from "@mixins/list";
 
 export default {
-    name: "DevelopNewProductsList",
+    name: "ChartingDelegation",
     components: {
         Table,
         Page,
@@ -68,7 +64,7 @@ export default {
     mixins: [config,list],
     data() {
         return {
-            titleText: '',
+            titleText: '委派制图',
             titleText2: '',
             showModel: false,
             showModel2: false,
@@ -80,13 +76,13 @@ export default {
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
-                    color: "蓝色",
+                    color: "2010-11-23",
                     productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
+                    supplier: "2010-11-24",
+                    supplierNum: "是",
                     createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "接受",
+                    recommendingOfficer: '1',
+                    status: "未委派",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -96,13 +92,13 @@ export default {
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
-                    color: "蓝色",
+                    color: "2010-11-23",
                     productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
+                    supplier: "2010-11-24",
+                    supplierNum: "是",
                     createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "不接受",
+                    recommendingOfficer: '1',
+                    status: "未委派",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -112,13 +108,13 @@ export default {
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
-                    color: "蓝色",
+                    color: "2010-11-23",
                     productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
+                    supplier: "2010-11-24",
+                    supplierNum: "是",
                     createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "接受",
+                    recommendingOfficer: '1',
+                    status: "未委派",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -128,13 +124,13 @@ export default {
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
-                    color: "蓝色",
+                    color: "2010-11-23",
                     productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
+                    supplier: "2010-11-24",
+                    supplierNum: "是",
                     createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "接受",
+                    recommendingOfficer: '1',
+                    status: "未委派",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -144,13 +140,13 @@ export default {
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
-                    color: "蓝色",
+                    color: "2010-11-23",
                     productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
+                    supplier: "2010-11-24",
+                    supplierNum: "是",
                     createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "接受",
+                    recommendingOfficer: '1',
+                    status: "未委派",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -160,13 +156,13 @@ export default {
                     img: '',
                     type: '玩具',
                     sku: 'PD00026',
-                    color: "蓝色",
+                    color: "2010-11-23",
                     productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
+                    supplier: "2010-11-24",
+                    supplierNum: "是",
                     createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "接受",
+                    recommendingOfficer: '1',
+                    status: "未委派",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -179,12 +175,6 @@ export default {
 
         },
         showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '开发';
-            }
             this.showModel = flag;
         },
         showPop2(flag, row) {
@@ -221,8 +211,6 @@ export default {
         changeCoulmns(data){
             let datas = [];
             let columns = this.getTableColumn();
-            datas.push(columns[0]);
-            datas.push(columns[1]);
             data.forEach(col => {
                 for(var i=0;i<columns.length;i++){
                     if(col == columns[i].key){
@@ -290,27 +278,23 @@ export default {
                 }
             },
             {
-                title: '分类',
-                key: 'type'
-            },
-            {
                 title: 'SKU',
                 key: 'sku'
             },
             {
-                title: '颜色',
+                title: '委派完成日期',
                 key: 'color'
             },
             {
-                title: '厂商',
+                title: '实际完成日期',
                 key: 'supplier'
             },
             {
-                title: '厂商货号',
+                title: '是否逾期',
                 key: 'supplierNum'
             },
             {
-                title: '推荐人员',
+                title: '逾期天数',
                 key: 'recommendingOfficer',
             },
             {
@@ -350,11 +334,6 @@ export default {
             }
         ];
             return columns2;
-        },
-        checkALl(){
-            this.$nextTick(function () {
-                this.columns = this.getTableColumn();
-            })
         }
         
     },

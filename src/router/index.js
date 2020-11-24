@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 17:47:52
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-23 17:19:20
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -39,7 +39,9 @@ import ResearchDevelopNewProducts from "@views/basicinfo/developNewProducts/rese
 import AddNewProduct from "@views/basicinfo/developNewProducts/addNewProduct";
 import ViewNewProduct from "@views/basicinfo/developNewProducts/viewNewProduct";
 import CustomerManager from "@views/basicinfo/customerManager";
-import ProductManager from "@views/basicinfo/productManager/productList";
+import ProductManager from "@views/basicinfo/productManager/index";
+import ProductList from "@views/basicinfo/productManager/productList";
+import ViewResearch from "@views/basicinfo/productManager/viewResearch";
 import CustomerList from "@views/basicinfo/customerManager/customerList";
 import AddCustomer from "@views/basicinfo/customerManager/addCustomer";
 import ViewCustomer from "@views/basicinfo/customerManager/viewCustomer";
@@ -66,6 +68,12 @@ import Examine from "@views/examine/index";
 import AppointStoreExamine from "@views/examine/appointStoreExamine/index";
 import AppointStoreExamineList from "@views/examine/appointStoreExamine/appointStoreExamineList";
 import ProductAppointStore from "@views/examine/appointStoreExamine/productAppointStore";
+//制图管理
+import Charting from "@views/charting/index";
+import ChartingDelegation from "@views/charting/chartingDelegation";
+import ChartingManager from "@views/charting/chartingManager";
+import ChartingTimeExchange from "@views/charting/chartingTimeExchange";
+import ChartingRework from "@views/charting/chartingRework";
 
 Vue.use(VueRouter);
 
@@ -287,11 +295,30 @@ const routes = [
           },
           {
             path:"productManager",
-            name:"ProductManager",
+            name:"productManager",
             component: ProductManager,
             meta: {
               title: "产品管理"
             },
+            redirect:'productManager/productList',
+            children:[
+              {
+                path:"productList",
+                name:"productList",
+                component: ProductList,
+                meta: {
+                  title: "产品管理"
+                },
+              },
+              {
+                path:"viewResearch",
+                name:"viewResearch",
+                component: ViewResearch,
+                meta: {
+                  title: "查看调研"
+                },
+              }  
+            ]
           },
           {
             path: 'supplierManager',
@@ -522,6 +549,49 @@ const routes = [
               }
             ]
           }
+        ]
+      },
+      {
+        path: 'charting',
+        name: 'charting',
+        meta:{ 
+          title:'审核管理',
+        },
+        component: Charting,
+        redirect:'charting/chartingDelegation',
+        children:[
+          {
+            path: 'chartingDelegation',
+            name: 'chartingDelegation',
+            meta:{ 
+              title:'制图委派',
+            },
+            component: ChartingDelegation,
+          },
+          {
+            path: 'chartingTimeExchange',
+            name: 'chartingTimeExchange',
+            meta:{ 
+              title:'制图时间调换',
+            },
+            component: ChartingTimeExchange,
+          },
+          {
+            path: 'chartingRework',
+            name: 'chartingRework',
+            meta:{ 
+              title:'制图返工',
+            },
+            component: ChartingRework,
+          },
+          {
+            path: 'chartingManager',
+            name: 'chartingManager',
+            meta:{ 
+              title:'制图管理',
+            },
+            component: ChartingManager,
+          } 
         ]
       }
     ],

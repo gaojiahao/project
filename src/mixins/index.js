@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 17:13:01
+ * @LastEditTime: 2020-11-23 14:22:58
  */
 export default {
     data() {
@@ -189,6 +189,33 @@ export default {
               }
             ],
           },
+          'charting':{
+            name: '制图管理',
+            value: 'charting',
+            status: true,
+            children: [
+              {
+                name: '制图委派',
+                value: 'chartingDelegation',
+                status: true,
+              },
+              {
+                name: '制图时间调换',
+                value: 'chartingTimeExchange',
+                status: true,
+              },
+              {
+                name: '制图管理',
+                value: 'chartingManager',
+                status: true,
+              },
+              {
+                name: '制图返工',
+                value: 'chartingRework',
+                status: true,
+              },
+            ]
+          },
           'examine':{
             name: '审核管理',
             value: 'examine',
@@ -207,7 +234,7 @@ export default {
                 ]
               }
             ]
-          }  
+          },
         }
       };
     },

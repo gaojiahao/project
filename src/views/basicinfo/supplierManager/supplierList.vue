@@ -3,22 +3,23 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 16:56:18
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-23 20:10:50
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd">添加供应商</Button>
-            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit">编辑</Button>
-            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm">删除</Button>
+            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">添加供应商</Button>
+            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
+            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight">删除</Button>
             <!--<Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>-->
-            <Button size="small" type="success" icon="md-refresh" @click="refresh">刷新</Button>
         </div>
         <div class="filter-search">
-            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)">高级筛选</Button>
+            <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
             <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
+            <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
         </div>
     </div>
     <div>
@@ -67,74 +68,7 @@ export default {
         return {
             titleText: '',
             showModel: false,
-            columns: [{
-                    type: 'selection',
-                    width: 60,
-                    align: 'center'
-                },{
-                    type: 'index',
-                    width: 80,
-                    align: 'center',
-                    title: '序号'
-                }, {
-                    title: '供应商编号',
-                    key: 'storeName'
-                },
-                {
-                    title: '供应商名称',
-                    key: 'name',
-                    render: (h, params) => {
-                        return h("span", {// 创建的标签名
-                        // 执行的一些列样式或者事件等操作
-                        style: {
-                            display: "inline-block",
-                            color: "#2d8cf0"
-                        },
-                        on:{
-                            click:()=>{// 这里给了他一个打印事件，下面有展示图
-                                this.goDetail(params.row.id)    
-                            }
-                        }
-                        },params.row.name);//  展示的内容
-                    }
-                },
-                {
-                    title: '联系电话',
-                    key: 'storeCode'
-                },
-                {
-                    title: '联系人',
-                    key: 'account'
-                },
-                {
-                    title: '地址',
-                    key: 'LoginID'
-                },
-                {
-                    title: 'email',
-                    key: 'appKey'
-                },
-                {
-                    title: '状态',
-                    key: 'status',
-                    render: (h, params) => {
-                        return h("span", {// 创建的标签名
-                        // 执行的一些列样式或者事件等操作
-                        style: {
-                            display: "inline-block",
-                            color: params.row.status=='已审核' ? "#19be6b": "#ed4014"
-                        },
-                        },params.row.status);//  展示的内容
-                    }
-                }, {
-                    title: '创建时间',
-                    key: 'createTime'
-                }, {
-                    title: '操作',
-                    slot: 'action',
-                    align: 'center'
-                }
-            ],
+            columns: this.getTableColumn(),
             dataConfig: {
                 'filterList': [{
                     name: '待上架',
@@ -257,6 +191,96 @@ export default {
         goDetail(id){
             if(id)
             this.$router.push({name:'ViewSupplier',query: {id:id}});
+        },
+        changeCoulmns(data){
+            let datas = [];
+            let columns = this.getTableColumn();
+            datas.push(columns[0]);
+            datas.push(columns[1]);
+            data.forEach(col => {
+                for(var i=0;i<columns.length;i++){
+                    if(col == columns[i].key){
+                        datas.push(columns[i]);
+                    }
+                }
+            });
+            this.columns = datas;
+        },
+        checkALl(){
+            this.$nextTick(function () {
+                this.columns = this.getTableColumn();
+            })
+        },
+        getTableColumn(){
+            var columns = [{
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                },{
+                    type: 'index',
+                    width: 80,
+                    align: 'center',
+                    title: '序号'
+                }, {
+                    title: '供应商编号',
+                    key: 'storeName'
+                },
+                {
+                    title: '供应商名称',
+                    key: 'name',
+                    render: (h, params) => {
+                        return h("span", {// 创建的标签名
+                        // 执行的一些列样式或者事件等操作
+                        style: {
+                            display: "inline-block",
+                            color: "#2d8cf0"
+                        },
+                        on:{
+                            click:()=>{// 这里给了他一个打印事件，下面有展示图
+                                this.goDetail(params.row.id)    
+                            }
+                        }
+                        },params.row.name);//  展示的内容
+                    }
+                },
+                {
+                    title: '联系电话',
+                    key: 'storeCode'
+                },
+                {
+                    title: '联系人',
+                    key: 'account'
+                },
+                {
+                    title: '地址',
+                    key: 'LoginID'
+                },
+                {
+                    title: 'email',
+                    key: 'appKey'
+                },
+                {
+                    title: '状态',
+                    key: 'status',
+                    render: (h, params) => {
+                        return h("span", {// 创建的标签名
+                        // 执行的一些列样式或者事件等操作
+                        style: {
+                            display: "inline-block",
+                            color: params.row.status=='已审核' ? "#19be6b": "#ed4014"
+                        },
+                        },params.row.status);//  展示的内容
+                    }
+                }, {
+                    title: '创建时间',
+                    key: 'createTime'
+                }, {
+                    title: '操作',
+                    slot: 'action',
+                    align: 'center'
+                }
+            ];
+            return columns;
         }
     },
     created(){
@@ -298,11 +322,17 @@ export default {
 
         .filter-button {
             float: left;
+            .marginRight{
+                margin-right: 10px;
+            }
         }
 
         .filter-search {
             float: right;
             display: flex;
+            .marginRight{
+                margin-right: 10px;
+            }
         }
     }
 }

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-21 12:40:20
+ * @LastEditTime: 2020-11-23 16:01:55
 -->
 <style lang="less" scoped>
 .ivu-checkbox-group-item {
@@ -68,8 +68,12 @@ export default {
             data:[]
         }
     },
+    watch:{
+
+    },
     methods: {
         handleCheckAll () {
+            debugger
             if (this.indeterminate) {
                 this.checkAll = false;
             } else {
@@ -78,10 +82,11 @@ export default {
             this.indeterminate = false;
 
             if (this.checkAll) {
-                this.checkAllGroup = ['香蕉', '苹果', '西瓜'];
+                this.$emit('check-all');
             } else {
                 this.checkAllGroup = [];
             }
+            this.$emit('change-coulmns',this.checkAllGroup);
         },
         checkAllGroupChange (data) {
             if (data.length == this.data.length) {
@@ -95,11 +100,11 @@ export default {
                 this.checkAll = false;
             }
             this.$emit('change-coulmns',this.checkAllGroup);
-        }
-    },
-    created(){
-        let data = [];
-        this.columns.forEach(col => {
+        },
+        init(){
+            this.data = [];
+            this.checkAllGroup = [];
+            this.columns.forEach(col => {
                 if(col.key){
                     this.data.push({name:col.title,value:col.key});
                     this.checkAllGroup.push(col.key); 
@@ -107,8 +112,11 @@ export default {
                     this.indeterminate = false;
                 }
 
-            }
-        );
+            });
+        }
+    },
+    created(){
+        this.init();    
     }
     
 }

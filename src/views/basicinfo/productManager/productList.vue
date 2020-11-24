@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 17:39:07
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-23 17:20:19
 -->
 <template>
 <div class="storeManager-container">
@@ -298,7 +298,7 @@ export default {
 
         },
         goResearch(row){
-            this.$router.push({path:'/sell/mainResearch/researchResult/researchResultList',query: {id:row.id||123}})
+            this.$router.push({name:'viewResearch',query: {id:row.id||123}})
         },
         refresh() {
             this.loading = true;
