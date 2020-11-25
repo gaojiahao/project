@@ -1,5 +1,6 @@
 <template>
 <li class="ivu-menu-submenu" :class="[ opened&&activeMenu==item.value ? 'ivu-menu-opened':'']" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave" style="height:64px">
+    <!--<div class="ivu-menu-submenu-title" @click="clickMenu(item)">-->
     <div class="ivu-menu-submenu-title" @click="clickMenu(item)">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
         {{item.name}}

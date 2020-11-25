@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-23 17:20:19
+ * @LastEditTime: 2020-11-25 14:54:24
 -->
 <template>
 <div class="storeManager-container">
@@ -191,6 +191,7 @@ export default {
                 }]
             },
             data: [{
+                id:1,
                 img: "",
                 name: '积木',
                 code: 'XFDSFDF1',
@@ -203,6 +204,7 @@ export default {
                 status: "未选",
                 createTime: "2020-11-06",
             }, {
+                id:1,
                 img: "",
                 name: '积木',
                 code: 'XFDSFDF1',
@@ -215,6 +217,7 @@ export default {
                 status: "已选",
                 createTime: "2020-11-06",
             }, {
+                id:1,
                 img: "",
                 name: '积木',
                 code: 'XFDSFDF1',
@@ -227,6 +230,7 @@ export default {
                 status: "已选",
                 createTime: "2020-11-06",
             }, {
+                id:1,
                 img: "",
                 name: '积木',
                 code: 'XFDSFDF1',
@@ -239,6 +243,7 @@ export default {
                 status: "已选",
                 createTime: "2020-11-06",
             }, {
+                id:1,
                 img: "",
                 name: '积木',
                 code: 'XFDSFDF1',
@@ -251,6 +256,7 @@ export default {
                 status: "已选",
                 createTime: "2020-11-06",
             }, {
+                id:1,
                 img: "",
                 name: '积木',
                 code: 'XFDSFDF1',
@@ -263,6 +269,7 @@ export default {
                 status: "已选",
                 createTime: "2020-11-06",
             }, {
+                id:1,
                 img: "",
                 name: '积木',
                 code: 'XFDSFDF1',
@@ -310,6 +317,10 @@ export default {
             this.showFilterModel = flag;
         },
         setFilter() {},
+        goDetail(id){
+            if(id)
+            this.$router.push({name:'ViewNewProduct',query: {id:id}});
+        },
     },
     created(){
         setTimeout(() => {

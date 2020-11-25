@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 19:56:24
+ * @LastEditTime: 2020-11-25 15:24:51
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -76,6 +76,10 @@ import SelectionExamine from "@views/examine/selectionExamine/index";
 import SelectionExamineList from "@views/examine/selectionExamine/selectionExamineList";
 import AddSelectionExamine from "@views/examine/selectionExamine/addSelectionExamine";
 import ViewSelectionExamine from "@views/examine/selectionExamine/viewSelectionExamine";
+import MainResearchExamine from "@views/examine/mainResearchExamine/index";
+import MainResearchExamineList from "@views/examine/mainResearchExamine/mainResearchExamineList";
+import ChartingExamine from "@views/examine/chartingExamine/index";
+import ChartingExamineList from "@views/examine/chartingExamine/chartingExamineList";
 //制图管理
 import Charting from "@views/charting/index";
 import ChartingDelegation from "@views/charting/chartingDelegation";
@@ -101,7 +105,8 @@ const routes = [
         name: "index",
         component: Index,
         meta: {
-          title: "首页"
+          title: "首页",
+          group: "index",
         },
       },
       {
@@ -110,7 +115,8 @@ const routes = [
         component: Settings,
         redirect:'settings/platformManager',   //默认子路由
         meta: {
-          title: "系统设置"
+          title: "系统设置",
+          group: "platformManager",
         },
         children:[
           {
@@ -118,16 +124,18 @@ const routes = [
             name: "PlatformManager",
             component: PlatformManager,
             meta: {
-              title: "平台管理"
+              title: "平台管理",
+              group: "platformManager",
             },
           },
           {
             path: "storeManager",
-            name: "StoreManager",
+            name: "storeManager",
             component: StoreManager,
             redirect:'storeManager/storeList',   //默认子路由
             meta: {
-              title: "店铺管理"
+              title: "店铺管理",
+              group: "storeManager",
             },
             children:[
               {
@@ -135,7 +143,9 @@ const routes = [
                 name: "StoreList",
                 component: StoreList,
                 meta: {
-                  title: "店铺管理"
+                  title: "店铺管理",
+                  group: "storeManager",
+                  level: 1,
                 },
               },
               {
@@ -143,17 +153,20 @@ const routes = [
                 name: "AddStore",
                 component: AddStore,
                 meta: {
-                  title: "添加店铺"
+                  title: "添加店铺",
+                  group: "storeManager",
+                  level: 2,
                 },
               }
             ]
           },
           {
             path: "typeManager",
-            name: "TypeManager",
+            name: "typeManager",
             component: TypeManager,
             meta: {
-              title: "分类管理"
+              title: "分类管理",
+              group: "typeManager",
             },
           },
           {
@@ -161,7 +174,8 @@ const routes = [
             name: "propertyManager",
             component: PropertyManager,
             meta: {
-              title: "属性管理"
+              title: "属性管理",
+              group: "propertyManager",
             },
           },
           {
@@ -169,7 +183,8 @@ const routes = [
             name: "brandManager",
             component: BrandManager,
             meta: {
-              title: "品牌管理"
+              title: "品牌管理",
+              group: "brandManager",
             },
           },
           {
@@ -177,39 +192,44 @@ const routes = [
             name: "makePicManager",
             component: MakePicManager,
             meta: {
-              title: "制图管理"
+              title: "制图管理",
+              group: "makePicManager",
             },
           },
           {
             path: "menuManager",
-            name: "MenuManager",
+            name: "menuManager",
             component: MenuManager,
             meta: {
-              title: "菜单管理"
+              title: "菜单管理",
+              group: "menuManager",
             },
           },
           {
             path: "userManager",
-            name: "UserManager",
+            name: "userManager",
             component: UserManager,
             meta: {
-              title: "用户管理"
+              title: "用户管理",
+              group: "userManager",
             },
           },
           {
             path: "roleManager",
-            name: "RoleManager",
+            name: "roleManager",
             component: RoleManager,
             meta: {
-              title: "角色管理"
+              title: "角色管理",
+              group: "roleManager",
             },
           },
           {
             path: "bpm",
-            name: "Bpm",
+            name: "bpm",
             component: Bpm,
             meta: {
-              title: "流程管理"
+              title: "流程管理",
+              group: "bpm",
             },
             redirect:'bpm/bpmManager',
             children:[
@@ -218,6 +238,8 @@ const routes = [
                 name: 'BpmManager',
                 meta:{ 
                   title:'流程管理',
+                  group: "bpmManager",
+                  level: 1,
                 },
                 component: BpmManager
               },
@@ -226,6 +248,8 @@ const routes = [
                 name: 'SaveBpm',
                 meta:{ 
                   title:'新建流程',
+                  group: "saveBpm",
+                  level: 2,
                 },
                 component: SaveBpm
               },
@@ -234,6 +258,7 @@ const routes = [
                 name: 'SaveBpm2',
                 meta:{ 
                   title:'新建流程',
+                  group: "saveBpm2",
                 },
                 component: SaveBpm2
               },
@@ -242,6 +267,8 @@ const routes = [
                 name: 'UpdataBpm',
                 meta:{ 
                   title:'更新流程',
+                  group: "updataBpm",
+                  level: 2,
                 },
                 component: UpdataBpm
               },
@@ -255,7 +282,8 @@ const routes = [
         component: Basicinfo,
         redirect:'basicinfo/developNewProducts',   //默认子路由
         meta: {
-          title: "基础设置"
+          title: "基础设置",
+          group: "basicinfo",
         },
         children:[
           {
@@ -263,6 +291,7 @@ const routes = [
             name: 'DevelopNewProducts',
             meta:{ 
               title:'开发新品',
+              group: "developNewProducts",
             },
             component: DevelopNewProducts,
             redirect:'developNewProducts/developNewProductsList',
@@ -272,6 +301,8 @@ const routes = [
                 name: 'DevelopNewProductsList',
                 meta:{ 
                   title:'开发新品',
+                  group: "developNewProducts",
+                  level: 1,
                 },
                 component: DevelopNewProductsList
               },
@@ -280,6 +311,8 @@ const routes = [
                 name: 'AddNewProduct',
                 meta:{ 
                   title:'新建新品',
+                  group: "developNewProducts",
+                  level: 2,
                 },
                 component: AddNewProduct
               },
@@ -288,14 +321,18 @@ const routes = [
                 name: 'ViewNewProduct',
                 meta:{ 
                   title:'查看新品',
+                  group: "developNewProducts",
+                  level: 2,
                 },
-                component: ViewNewProduct
+                component: ViewNewProduct,
               },
               {
                 path: 'researchDevelopNewProducts',
                 name: 'ResearchDevelopNewProducts',
                 meta:{ 
                   title:'调研',
+                  group: "developNewProducts",
+                  level: 2,
                 },
                 component: ResearchDevelopNewProducts
               },
@@ -306,7 +343,8 @@ const routes = [
             name:"productManager",
             component: ProductManager,
             meta: {
-              title: "产品管理"
+              title: "产品管理",
+              group: "productManager",
             },
             redirect:'productManager/productList',
             children:[
@@ -315,15 +353,29 @@ const routes = [
                 name:"productList",
                 component: ProductList,
                 meta: {
-                  title: "产品管理"
+                  title: "产品管理",
+                  group: "productManager",
+                  level: 1,
                 },
+              },
+              {
+                path: 'viewNewProduct',
+                name: 'ViewNewProduct',
+                meta:{ 
+                  title:'查看产品',
+                  group: "productManager",
+                  level: 2,
+                },
+                component: ViewNewProduct,
               },
               {
                 path:"viewResearch",
                 name:"viewResearch",
                 component: ViewResearch,
                 meta: {
-                  title: "查看调研"
+                  title: "查看调研",
+                  group: "productManager",
+                  level: 2,
                 },
               }  
             ]
@@ -333,6 +385,7 @@ const routes = [
             name: 'SupplierManager',
             meta:{ 
               title:'供应商管理',
+              group: "supplierManager",
             },
             component: SupplierManager,
             redirect:'supplierManager/supplierList',
@@ -342,6 +395,8 @@ const routes = [
                 name: 'SupplierList',
                 meta:{ 
                   title:'供应商管理',
+                  group: "supplierManager",
+                  level: 1,
                 },
                 component: SupplierList,
               },
@@ -350,6 +405,8 @@ const routes = [
                 name: 'AddSupplier',
                 meta:{ 
                   title:'新增供应商',
+                  group: "supplierManager",
+                  level: 2,
                 },
                 component: AddSupplier,
               }, 
@@ -358,6 +415,8 @@ const routes = [
                 name: 'ViewSupplier',
                 meta:{ 
                   title:'查看供应商',
+                  group: "supplierManager",
+                  level: 2,
                 },
                 component: ViewSupplier,
               },
@@ -368,6 +427,7 @@ const routes = [
             name: 'CustomerManager',
             meta:{ 
               title:'客户管理',
+              group: "customerManager",
             },
             component: CustomerManager,
             redirect:'customerManager/customerList',
@@ -377,6 +437,8 @@ const routes = [
                 name: 'CustomerList',
                 meta:{ 
                   title:'客户管理',
+                  group: "customerList",
+                  level: 1,
                 },
                 component: CustomerList,
               },
@@ -385,6 +447,8 @@ const routes = [
                 name: 'AddCustomer',
                 meta:{ 
                   title:'新增客户',
+                  group: "addCustomer",
+                  level: 2,
                 },
                 component: AddCustomer,
               }, 
@@ -393,6 +457,8 @@ const routes = [
                 name: 'ViewCustomer',
                 meta:{ 
                   title:'查看客户',
+                  group: "viewCustomer",
+                  level: 2,
                 },
                 component: ViewCustomer,
               },
@@ -405,6 +471,7 @@ const routes = [
         name: 'sell',
         meta:{ 
           title:'销售管理',
+          group: "sell",
         },
         component: Sell,
         redirect:'sell/selectionManager',
@@ -415,6 +482,7 @@ const routes = [
             redirect:'selectionManager/selectionManagerList',
             meta:{ 
               title:'选品管理',
+              group: "selectionManager",
             },
             component: SelectionManager,
             children:[{
@@ -422,6 +490,7 @@ const routes = [
               name: 'SelectionManagerList',
               meta:{ 
                 title:'选品管理',
+                group: "selectionManager",
               },
               component:SelectionManagerList
              },
@@ -430,6 +499,7 @@ const routes = [
               name: 'SelectionResultList',
               meta:{ 
                 title:'选品结果',
+                group: "selectionResultList",
               },
               component:SelectionResultList
              }
@@ -441,6 +511,7 @@ const routes = [
             redirect:'sellManager/sellList',
             meta:{ 
               title:'销售推品列表',
+              group: "sellManager",
             },
             component: SellManager,
             children:[
@@ -449,6 +520,7 @@ const routes = [
                 name: 'sellList',
                 meta:{ 
                   title:'销售推品列表',
+                  group: "sellList",
                 },
                 component: SellList
               },
@@ -457,6 +529,7 @@ const routes = [
                 name: 'AddFinishProduct',
                 meta:{ 
                   title:'新建新品',
+                  group: "addFinishProduct",
                 },
                 component: AddFinishProduct
               },
@@ -467,6 +540,7 @@ const routes = [
             name: 'MainResearch',
             meta:{ 
               title:'主推调研',
+              group: "mainResearch",
             },
             component: MainResearch,
             redirect:'mainResearch/mainResearchList',
@@ -476,17 +550,18 @@ const routes = [
                 name: 'MainResearchList',
                 meta:{ 
                   title:'主推调研',
+                  group: "mainResearch",
+                  level: 1,
                 },
                 component: MainResearchList,
-                children:[
-                  
-                ]
               },
               {
                 path: 'research',
                 name: 'Research',
                 meta:{ 
                   title:'调研',
+                  group: "mainResearch",
+                  level: 2,
                 },
                 component: Research,
               },
@@ -495,6 +570,7 @@ const routes = [
                 name: 'ResearchResult',
                 meta:{ 
                   title:'调研结果',
+                  group: "mainResearch",
                 },
                 component: ResearchResult,
                 redirect:'researchResult/researchResultList',
@@ -504,6 +580,8 @@ const routes = [
                     name: 'ResearchResultList',
                     meta:{ 
                       title:'调研结果',
+                      group: "researchResult",
+                      level: 1,
                     },
                     component: ResearchResultList,
                   },
@@ -512,6 +590,8 @@ const routes = [
                     name: 'ReferenceComparison',
                     meta:{ 
                       title:'参考比价',
+                      group: "researchResult",
+                      level: 2,
                     },
                     component: ReferenceComparison,
                   },   
@@ -526,6 +606,7 @@ const routes = [
         name: 'examine',
         meta:{ 
           title:'审核管理',
+          group: 'examine',
         },
         component: Examine,
         redirect:'examine/appointStoreExamine',
@@ -535,6 +616,7 @@ const routes = [
             name: 'appointStoreExamine',
             meta:{ 
               title:'派店审核',
+              group: 'appointStoreExamine',
             },
             component: AppointStoreExamine,
             redirect:'appointStoreExamine/appointStoreExamineList',
@@ -544,6 +626,8 @@ const routes = [
                 name: 'appointStoreExamineList',
                 meta:{ 
                   title:'派店审核',
+                  group: 'appointStoreExamine',
+                  level: 1,
                 },
                 component: AppointStoreExamineList,
               },
@@ -552,6 +636,8 @@ const routes = [
                 name: 'productAppointStore',
                 meta:{ 
                   title:'产品派店',
+                  group: 'appointStoreExamine',
+                  level: 2,
                 },
                 component: ProductAppointStore,
               }
@@ -562,6 +648,7 @@ const routes = [
             name: 'tortExamine',
             meta:{ 
               title:'侵权审核',
+              group: 'tortExamine',
             },
             component: TortExamine,
             redirect:'tortExamine/tortExamineList',
@@ -571,6 +658,8 @@ const routes = [
                 name: 'tortExamineList',
                 meta:{ 
                   title:'侵权审核列表',
+                  group: 'tortExamine',
+                  level: 1,
                 },
                 component: TortExamineList,
               },
@@ -578,7 +667,9 @@ const routes = [
                 path: 'addTortExamine',
                 name: 'addTortExamine',
                 meta:{ 
-                  title:'添加侵权审核',
+                  title:'侵权审核',
+                  group: 'tortExamine',
+                  level: 2,
                 },
                 component: AddTortExamine,
               },
@@ -587,14 +678,8 @@ const routes = [
                 name: 'viewTortExamine',
                 meta:{ 
                   title:'查看侵权审核',
-                },
-                component: ViewTortExamine,
-              },
-              {
-                path: 'viewTortExamine',
-                name: 'viewTortExamine',
-                meta:{ 
-                  title:'查看侵权审核',
+                  group: 'tortExamine',
+                  level: 2,
                 },
                 component: ViewTortExamine,
               },
@@ -603,7 +688,9 @@ const routes = [
                 name:"viewResearch",
                 component: ViewResearch,
                 meta: {
-                  title: "查看调研"
+                  title: "查看调研",
+                  group: 'tortExamine',
+                  level: 2,
                 },
               }
             ]
@@ -613,6 +700,7 @@ const routes = [
             name: 'selectionExamine',
             meta:{ 
               title:'选品审核',
+              group: 'selectionExamine',
             },
             component: SelectionExamine,
             redirect:'selectionExamine/selectionExamineList',
@@ -622,6 +710,8 @@ const routes = [
                 name: 'selectionExamineList',
                 meta:{ 
                   title:'选品审核列表',
+                  group: 'selectionExamine',
+                  level: 1,
                 },
                 component: SelectionExamineList,
               },
@@ -629,7 +719,9 @@ const routes = [
                 path: 'addSelectionExamine',
                 name: 'addSelectionExamine',
                 meta:{ 
-                  title:'添加选品审核',
+                  title:'选品审核',
+                  group: 'selectionExamine',
+                  level: 2,
                 },
                 component: AddSelectionExamine,
               },
@@ -638,8 +730,52 @@ const routes = [
                 name: 'viewSelectionExamine',
                 meta:{ 
                   title:'查看选品审核',
+                  group: 'selectionExamine',
+                  level: 2,
                 },
                 component: ViewSelectionExamine,
+              },
+            ]
+          },
+          {
+            path: 'mainResearchExamine',
+            name: 'mainResearchExamine',
+            meta:{ 
+              title:'主推审核',
+              group: 'mainResearchExamine',
+            },
+            component: MainResearchExamine,
+            redirect:'mainResearchExamine/mainResearchExamineList',
+            children:[
+              {
+                path: 'mainResearchExamineList',
+                name: 'mainResearchExamineList',
+                meta:{ 
+                  title:'主推审核列表',
+                  group: 'mainResearchExamine',
+                },
+                component: MainResearchExamineList,
+              },
+            ]
+          },
+          {
+            path: 'chartingExamine',
+            name: 'chartingExamine',
+            meta:{ 
+              title:'制图审核',
+              group: 'chartingExamine',
+            },
+            component: ChartingExamine,
+            redirect:'chartingExamine/chartingExamineList',
+            children:[
+              {
+                path: 'chartingExamineList',
+                name: 'chartingExamineList',
+                meta:{ 
+                  title:'制图审核列表',
+                  group: 'chartingExamine',
+                },
+                component: ChartingExamineList,
               },
             ]
           }
@@ -649,7 +785,8 @@ const routes = [
         path: 'charting',
         name: 'charting',
         meta:{ 
-          title:'审核管理',
+          title:'制图管理',
+          group: 'charting',
         },
         component: Charting,
         redirect:'charting/chartingDelegation',
@@ -659,6 +796,7 @@ const routes = [
             name: 'chartingDelegation',
             meta:{ 
               title:'制图委派',
+              group: 'chartingDelegation',
             },
             component: ChartingDelegation,
           },
@@ -667,6 +805,7 @@ const routes = [
             name: 'chartingTimeExchange',
             meta:{ 
               title:'制图时间调换',
+              group: 'chartingTimeExchange',
             },
             component: ChartingTimeExchange,
           },
@@ -675,6 +814,7 @@ const routes = [
             name: 'chartingRework',
             meta:{ 
               title:'制图返工',
+              group: 'chartingRework',
             },
             component: ChartingRework,
           },
@@ -683,6 +823,7 @@ const routes = [
             name: 'chartingManager',
             meta:{ 
               title:'制图管理',
+              group: 'chartingManager',
             },
             component: ChartingManager,
           } 
@@ -737,7 +878,6 @@ router.beforeEach((to, from, next) => {
     // 对路由进行验证
     if (tokenService.getToken() != "" && to.name !== "Login") {
       // 已经登陆
-      console.log(to.name);
       next(); // 正常跳转到你设置好的页面
     } else {
       next({ path: "/login" });

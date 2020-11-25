@@ -4,16 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-25 15:25:14
+ * @LastEditTime: 2020-11-25 09:40:18
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
         <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">添加商品</Button>
-            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight">删除</Button>
-            <!--<Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>-->
+            
         </div>
         <div class="filter-search">
             <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
@@ -25,8 +22,8 @@
     <div  class="myTable">
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
-                <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel()">调研</Button>
+                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.status=='未审核'">主推审核</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="goViewTortExamine(row)" v-if="row.status=='已审核'">查看</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -35,7 +32,6 @@
             </div>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
 </div>
@@ -51,11 +47,11 @@ import {
     Option,
     DatePicker
 } from "view-design";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
+import config from "@views/examine/selectionExamine/productConfig";
 import list from "@mixins/list";
 
 export default {
-    name: "DevelopNewProductsList",
+    name: "MainResearchExamineList",
     components: {
         Table,
         Page,
@@ -86,7 +82,7 @@ export default {
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
+                    status: "未审核",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -102,7 +98,7 @@ export default {
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "不接受",
+                    status: "未审核",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -118,7 +114,8 @@ export default {
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
+                    status: "已审核",
+                    result:"不通过",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -134,7 +131,8 @@ export default {
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
+                    status: "已审核",
+                    result:"通过",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -150,7 +148,8 @@ export default {
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
+                    status: "已审核",
+                    result:"不通过",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -166,7 +165,8 @@ export default {
                     supplierNum: "0001",
                     createTime: "2020-11-06",
                     recommendingOfficer: '李四',
-                    status: "接受",
+                    status: "已审核",
+                    result:"强制委派",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -178,23 +178,11 @@ export default {
         clearFormData() {
 
         },
-        showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '开发';
-            }
-            this.showModel = flag;
+        goTortExamine(row) {
+            this.$router.push({name:'addSelectionExamine',query: {id:row.id}});    
         },
-        showPop2(flag, row) {
-            if (row && row.id) {
-                this.formValidate2['id'] = row.id;
-                this.titleText2 = '编辑';
-            } else {
-                this.titleText2 = '审核';
-            }
-            this.showModel2 = flag;
+        goViewTortExamine(row){
+            this.$router.push({name:'viewSelectionExamine',query: {id:row.id}});        
         },
         save() {
 
@@ -211,7 +199,7 @@ export default {
                 this.$router.push({name:'AddNewProduct',query: {id:this.activatedRow.id}});
             }
         },
-        goDetail(id){
+         goDetail(id){
             if(id)
             this.$router.push({name:'ViewNewProduct',query: {id:id}});
         },
@@ -314,14 +302,14 @@ export default {
                 key: 'recommendingOfficer',
             },
             {
-                title: '状态',
+                title: '审核状态',
                 key: 'status',
                 render: (h, params) => {
                     return h("span", {// 创建的标签名
                     // 执行的一些列样式或者事件等操作
                     style: {
                         display: "inline-block",
-                        color: params.row.status=='接受' ? "#19be6b": "#ed4014"
+                        color: params.row.status=='已审核' ? "#19be6b": "#ed4014"
                     },
                     },params.row.status);//  展示的内容
                 }
@@ -341,6 +329,19 @@ export default {
             {
                 title: '修改者',
                 key: 'modifyer',
+            },
+            {
+                title: '审核结果',
+                key: 'result',
+                render: (h, params) => {
+                    return h("span", {// 创建的标签名
+                    // 执行的一些列样式或者事件等操作
+                    style: {
+                        display: "inline-block",
+                        color: params.row.result=='通过' ? "#19be6b": "#ed4014"
+                    },
+                    },params.row.result);//  展示的内容
+                }
             },
             {
                 title: '操作',

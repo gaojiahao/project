@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 15:36:03
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-25 12:05:44
 -->
 <template>
 <div class="layout">
@@ -32,7 +32,7 @@
             <div :class="[ leftMenu&&leftMenu.oneLevel.name!='index'&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length ? (isCollapsed ? 'marginRight' : 'marginLeft') : 'nomargin']" class="content">
                 <div class="content-panel">
                     <!-- 面包屑导航条 -->
-                    <BreadcrumbNav v-if="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length"></BreadcrumbNav>
+                    <BreadcrumbNav v-if="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" ref="breadcrumbNav"></BreadcrumbNav>
                     <!-- 内容模块 -->
                     <transition>
                         <keep-alive>
@@ -96,6 +96,17 @@ export default {
     mixins: [
         Index,
     ],
+    watch:{
+        $route(to,from){
+            console.log(from.meta.title,from.path);
+            console.log(to.meta.title,to.path);
+            var flag = false;
+            if(to.meta.group!=from.meta.group){
+                flag = true;
+            }
+            this.$refs.breadcrumbNav&&this.$refs.breadcrumbNav.setMenu(to,from,flag);
+        }
+    },
     data() {
         return {
             isCollapsed: false,

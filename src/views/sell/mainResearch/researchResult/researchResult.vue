@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 11:20:14
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-25 15:07:38
 -->
 <template>
 <div>
@@ -16,10 +16,12 @@
             <div class="top">
                 <XForm :formValidate="formValidate.productInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.productInfo.field" @save="save" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
-                        <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                        </div>
+                        <FormItem>
+                            <div style="width:100%">
+                                <Button type="primary" @click="save" style="float: left;">保存</Button>
+                                <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                            </div>
+                        </FormItem>
                     </template>
                 </XForm>
             </div>
@@ -120,7 +122,8 @@ import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addN
 
 import {
     Tabs,
-    TabPane
+    TabPane,
+    FormItem
 } from "view-design";
 export default {
     name: 'ResearchResult',
@@ -133,7 +136,8 @@ export default {
         AddNewProductTableUploadVideo,
         AddNewProductTableUpload3D,
         AddNewProductTableUploadMusic,
-        AddNewProductTableLog
+        AddNewProductTableLog,
+        FormItem
     },
     data() {
         return {

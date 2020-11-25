@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 14:17:33
+ * @LastEditTime: 2020-11-25 14:13:23
  */
 export default {
     data() {
@@ -89,18 +89,18 @@ export default {
                 value: 'bpm',
                 status: true,
                 children: [
-                  {
-                    name: '新建流程',
-                    value: 'saveBpm',
-                    status: true,
-                    children: [],
-                  },
-                  {
-                    name: '更新流程',
-                    value: 'updataBpm',
-                    status: false,
-                    children: [],
-                  }
+                  // {
+                  //   name: '新建流程',
+                  //   value: 'saveBpm',
+                  //   status: true,
+                  //   children: [],
+                  // },
+                  // {
+                  //   name: '更新流程',
+                  //   value: 'updataBpm',
+                  //   status: false,
+                  //   children: [],
+                  // }
                 ],
               },
             ],
@@ -241,6 +241,16 @@ export default {
               {
                 name: '选品审核',
                 value: 'selectionExamine',
+                status: true,
+              },
+              {
+                name: '主推审核',
+                value: 'mainResearchExamine',
+                status: true,
+              },
+              {
+                name: '制图审核',
+                value: 'chartingExamine',
                 status: true,
               }
             ]
