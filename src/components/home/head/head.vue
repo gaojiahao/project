@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 14:18:08
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-25 17:17:40
 -->
 <template>
 <div class="head">
@@ -138,22 +138,20 @@ export default {
     z-index: 3;
     transition: all 0.2s ease-in-out;
     color: #fff;
+    height: 54px;
 
     img {
         width: 30px;
     }
 }
-
 .active {
     color: white;
 }
-
 .title {
     color: #fff;
     font-size: 24px;
     padding: 0;
 }
-
 .right-item {
     float: right;
     padding: 0 20px;
@@ -167,21 +165,16 @@ export default {
         width: 30px;
     }
 }
-
 .right-title {
     font-size: 12px;
 }
-
 .head {
-
     .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-dark.ivu-menu-horizontal .ivu-menu-submenu .active {
         color: white;
     }
-
     .ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item {
         font-size: 12px !important;
     }
-
 }
 </style><style scoped>
 >>>.ivu-menu-item-group-title {
@@ -191,9 +184,12 @@ export default {
     font-size: 14px;
     color: #515a6e;
 }
-
 >>>.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item {
     padding: 7px 16px 8px;
     font-size: 12px !important;
+}
+>>>.ivu-menu-horizontal {
+    height: 54px;
+    line-height: 54px;
 }
 </style>

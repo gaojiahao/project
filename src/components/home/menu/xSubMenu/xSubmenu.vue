@@ -8,7 +8,7 @@
     </div>
     <collapse-transition v-if="mode === 'vertical'">
         <ul class="ivu-menu" v-show="opendedChild||opendedChildCom" v-for="(data,k) in item.children" :key="k">
-            <li class="ivu-menu-item" style="padding-left: 43px; background: #dcdee2;" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.status">{{data.name}}
+            <li class="ivu-menu-item ivu-menu-box" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.status">{{data.name}}
             </li>
         </ul>
     </collapse-transition>
@@ -126,7 +126,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+
 .ivu-menu-opened {
     color: #FFFFFF;
     background: #447ED9;
@@ -136,22 +137,28 @@ export default {
 .ivu-menu-text {
     display: inline-block;
     overflow: hidden;
-    width: 69px;
     text-overflow: ellipsis;
     white-space: nowrap;
     vertical-align: bottom;
     transition: width 0.2s ease 0.2s;
 }
+.ivu-menu-box{
+    background: rgb(220, 222, 226);
+    text-align: left;
+}
+.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item {
+    padding: 14px 14px 14px 40px;
+}
 </style>
 <style scoped>
-.ivu-menu-submenu-title /deep/ {
+>>> .ivu-menu-vertical .ivu-menu-item, .ivu-menu-vertical .ivu-menu-submenu-title  {
     padding: 14px 14px;
     position: relative;
     cursor: pointer;
     z-index: 1;
     transition: all 0.2s ease-in-out;
+    text-align: left;
 }
-
 .ivu-icon /deep/ {
     vertical-align: middle;
     font-size: 16px;
@@ -165,17 +172,17 @@ export default {
 }
 
 .ivu-menu-submenu-title-icon-up {
-    position: absolute;
+    /*flex: ;position: absolute;
     top: 50%;
     right: 10px;
-    transform: translateY(-50%) rotate(180deg);
+    transform: translateY(-50%) rotate(180deg);*/
 }
 
 .ivu-menu-submenu-title-icon-down {
-    position: absolute;
+    /*position: absolute;
     top: 50%;
     right: 10px;
-    transform: translateY(-50%);
+    transform: translateY(-50%);*/
 }
 .ivu-menu-submenu-color {
     background: #DEE7F4;    

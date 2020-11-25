@@ -4,14 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-25 12:05:44
+ * @LastEditTime: 2020-11-25 20:13:59
 -->
 <template>
 <div class="layout">
     <Layout>
         <!-- 顶部菜单 -->
         <Header class="header">
-
             <Head :menuList="menuList"></Head>
         </Header>
         <Layout class="container">
@@ -19,7 +18,7 @@
             <Sider ref="side1" hide-trigger breakpoint="md" class="container-sider" v-model="isCollapsed" collapsible :collapsed-width="78" v-if="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" :width="150">
                 <Menu active-name="typeManager" :theme="theme1" width="auto" :open-names="['1']" :class="menuitemClasses">
                     <div class="title-menu">
-                        <Icon type="ios-apps" :style="{verticalAlign: '-0.05em'}" @click.native="collapsedSider" style="margin-right:8px" />
+                        <Icon type="ios-apps" :style="{verticalAlign: '-0.05em'}" @click.native="collapsedSider" />
                         <span v-show="!isCollapsed">{{leftMenu&&leftMenu.oneLevel.name}}</span>
                     </div>
                     <template v-for="(item,index) in leftMenu&&leftMenu.oneLevel.children">
@@ -162,5 +161,9 @@ export default {
     top: 50%;
     right: 10px;
     transform: translateY(-50%);
+}
+>>>.ivu-layout-header {
+    height: 54px;
+    line-height: 54px;
 }
 </style>

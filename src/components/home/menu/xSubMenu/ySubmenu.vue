@@ -1,5 +1,5 @@
 <template>
-<li class="ivu-menu-submenu" :class="[ opened&&activeMenu==item.value ? 'ivu-menu-opened':'']" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave" style="height:64px">
+<li class="ivu-menu-submenu ivu-menu-submenu-height" :class="[ opened&&activeMenu==item.value ? 'ivu-menu-opened':'']" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave">
     <!--<div class="ivu-menu-submenu-title" @click="clickMenu(item)">-->
     <div class="ivu-menu-submenu-title" @click="clickMenu(item)">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
@@ -179,5 +179,10 @@ export default {
 
 .ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item /deep/ {
     color: #2b85e4;
+}
+</style>
+<style lang="less" scoped>
+.ivu-menu-submenu-height{
+    height: 54px;
 }
 </style>
