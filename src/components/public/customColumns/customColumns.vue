@@ -4,14 +4,8 @@
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 20:02:42
+ * @LastEditTime: 2020-11-26 15:13:34
 -->
-<style lang="less" scoped>
-.ivu-checkbox-group-item {
-    float: left;
-    margin-left: 5px;
-}
-</style>
 <template>
     <div>
         <Dropdown style="margin-left: 20px">
@@ -65,7 +59,8 @@ export default {
             indeterminate: true,
             checkAll: true,
             checkAllGroup: [],
-            data:[]
+            data:[],
+            defaultCheckAllGroup:[]
         }
     },
     watch:{
@@ -79,9 +74,13 @@ export default {
                 this.checkAll = !this.checkAll;
             }
             this.indeterminate = false;
-
             if (this.checkAll) {
-                this.$emit('check-all');
+                this.defaultCheckAllGroup.forEach(col => {
+                    if(col.key){
+                        this.checkAllGroup.push(col.key);
+                    }
+
+                });
             } else {
                 this.checkAllGroup = [];
             }
@@ -103,7 +102,8 @@ export default {
         init(){
             this.data = [];
             this.checkAllGroup = [];
-            this.columns.forEach(col => {
+            this.defaultCheckAllGroup = this.columns
+            this.defaultCheckAllGroup.forEach(col => {
                 if(col.key){
                     this.data.push({name:col.title,value:col.key});
                     this.checkAllGroup.push(col.key); 
@@ -121,5 +121,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-
+.ivu-checkbox-group-item {
+    float: left;
+    margin-left: 5px;
+}
 </style>
