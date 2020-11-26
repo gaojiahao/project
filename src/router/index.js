@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-25 15:24:51
+ * @LastEditTime: 2020-11-26 09:35:25
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -358,16 +358,16 @@ const routes = [
                   level: 1,
                 },
               },
-              {
-                path: 'viewNewProduct',
-                name: 'ViewNewProduct',
-                meta:{ 
-                  title:'查看产品',
-                  group: "productManager",
-                  level: 2,
-                },
-                component: ViewNewProduct,
-              },
+              // {
+              //   path: 'viewNewProduct',
+              //   name: 'ViewNewProduct',
+              //   meta:{ 
+              //     title:'查看产品',
+              //     group: "productManager",
+              //     level: 2,
+              //   },
+              //   component: ViewNewProduct,
+              // },
               {
                 path:"viewResearch",
                 name:"viewResearch",
@@ -683,16 +683,16 @@ const routes = [
                 },
                 component: ViewTortExamine,
               },
-              {
-                path:"viewResearch",
-                name:"viewResearch",
-                component: ViewResearch,
-                meta: {
-                  title: "查看调研",
-                  group: 'tortExamine',
-                  level: 2,
-                },
-              }
+              // {
+              //   path:"viewResearch",
+              //   name:"viewResearch",
+              //   component: ViewResearch,
+              //   meta: {
+              //     title: "查看调研",
+              //     group: 'tortExamine',
+              //     level: 2,
+              //   },
+              // }
             ]
           },
           {

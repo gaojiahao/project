@@ -32,9 +32,10 @@ let tokenService = {
       let timestamp = token.timestamp;
       let timeCalc = new Date() - timestamp;
       if (timeCalc > (2 * 3600 * 1000)) {
+        this.clean();
         return ''
-      } else if (timeCalc > (12 * 3600 * 1000)) { // 设置12小时过期时间
-        return ''
+      // } else if (timeCalc > (12 * 3600 * 1000)) { // 设置12小时过期时间
+      //   return ''
       }
       return token["token"];
     } else {

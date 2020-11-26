@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-25 20:13:59
+ * @LastEditTime: 2020-11-26 09:57:42
 -->
 <template>
 <div class="layout">
@@ -97,8 +97,6 @@ export default {
     ],
     watch:{
         $route(to,from){
-            console.log(from.meta.title,from.path);
-            console.log(to.meta.title,to.path);
             var flag = false;
             if(to.meta.group!=from.meta.group){
                 flag = true;

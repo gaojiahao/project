@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-25 17:17:40
+ * @LastEditTime: 2020-11-26 09:57:22
 -->
 <template>
 <div class="head">
@@ -117,6 +117,7 @@ export default {
             localStorage.removeItem(XZX_TOKEN_KEY);
             localStorage.clear();
             localStorage.clear();
+            this.$store.commit('clearMenuRouter');
             this.$router.push('/login');
         }
     },

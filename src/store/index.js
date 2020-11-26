@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-10 10:07:55
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-26 09:58:30
  */
 import Vue from "vue";
 import Vuex from "vuex";
@@ -24,6 +24,9 @@ export default new Vuex.Store({
         var storage = window.sessionStorage;
         storage.setItem("activeMenu", JSON.stringify(data));
       } //防止刷新路由没了
+    },
+    clearMenuRouter(state){
+      state.menuRouter = {};
     }
   },
   actions: {},
