@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-25 15:25:14
+ * @LastEditTime: 2020-11-26 16:06:15
 -->
 <template>
 <div class="storeManager-container">
@@ -12,8 +12,8 @@
         <div class="filter-button">
             <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">添加商品</Button>
             <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight">删除</Button>
-            <!--<Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>-->
+            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+            <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
         </div>
         <div class="filter-search">
             <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
@@ -25,7 +25,6 @@
     <div  class="myTable">
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel()">调研</Button>
             </template>
         </Table>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-26 09:35:25
+ * @LastEditTime: 2020-11-26 15:57:22
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -325,6 +325,16 @@ const routes = [
                   level: 2,
                 },
                 component: ViewNewProduct,
+              },
+              {
+                path:"viewResearch",
+                name:"viewResearch",
+                component: ViewResearch,
+                meta: {
+                  title: "查看调研",
+                  group: "developNewProducts",
+                  level: 3,
+                },
               },
               {
                 path: 'researchDevelopNewProducts',

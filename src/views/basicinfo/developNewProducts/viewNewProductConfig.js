@@ -3,13 +3,14 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:45:50
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-26 15:45:56
  */
 export default {
     data() {
       return {
         formConfig:{
+          id:'fds',
           productInfo:{
             field:{
             productCode:{

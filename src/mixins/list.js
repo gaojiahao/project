@@ -76,7 +76,7 @@ export default {
         onCurrentChange(currentRow,oldCurrentRow){
             this.activatedRow = currentRow;    
         },
-        sureDeleteConfirm () {
+        sureDeleteConfirm (flag) {
             this.$Modal.confirm({
                 title: '温馨提示',
                 content: '数据删除后将无法恢复！',
@@ -84,7 +84,8 @@ export default {
                     this.$Message.info('取消');
                 },
                 onOk: () => {
-                    this.deleteData();
+                    debugger
+                    flag ? this.deletesData() : this.deleteData();
                     this.$Message.info({
                         content: '删除成功',
                         duration: 2

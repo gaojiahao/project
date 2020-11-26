@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 16:32:47
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-26 14:54:05
 -->
 <template>
 <div>
@@ -15,12 +15,12 @@
             </div>
         </div>
         <div style="width:100%">
-            <div v-for="item in uploadList" class="left demo-upload">
+            <div v-for="(item,index) in uploadList" class="left demo-upload">
                 <div class="demo-upload-list">
                     <template v-if="item.status === 'finished'">
                         <img :src="item.url">
                         <div class="demo-upload-list-cover">
-                            <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                            <Icon type="ios-eye-outline" @click.native="handleView(item.name,index)"></Icon>
                             <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
                         </div>
                     </template>
@@ -35,9 +35,13 @@
                     <Icon type="ios-camera" size="30"></Icon>
                 </div>
             </Upload>
-            <Modal :title="imgName" v-model="visible" fullscreen footer-hide>
+            <Modal :title="uploadList&&uploadList[indexPic]&&uploadList[indexPic].name" v-model="visible" fullscreen>
                 <!--<img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">-->
-                <img :src="'https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843'" v-if="visible" style="width: 100%">
+                <img :src="uploadList[indexPic].url" v-if="visible" style="width: 100%">
+                <div slot="footer">
+                    <Button type="primary" size="small" @click="prePic">上一张</Button>
+                    <Button type="primary" size="small" @click="nextPic">下一张</Button>
+                </div>
             </Modal>
         </div>
     </div>
@@ -76,12 +80,14 @@ export default {
             imgName: '',
             visible: false,
             uploadList: [],
+            indexPic: 0,
         }
     },
     methods: {
-        handleView(name) {
+        handleView(name,index) {
             this.imgName = name;
             this.visible = true;
+            this.indexPic = index;
         },
         handleRemove(file) {
             const fileList = this.$refs.upload.fileList;
@@ -116,6 +122,18 @@ export default {
         handleInput(e) {
             // this.uploadList.push(e)
             this.$emit('change', this.uploadList)
+        },
+        prePic(){
+            this.indexPic = (this.indexPic - 1) > -1 ? this.indexPic - 1 : 0;
+            if(this.indexPic ==0 ){
+                this.$Message.info({content:'温馨提示：已到第一张！'});         
+            }
+        },
+        nextPic(){
+            this.indexPic = (this.indexPic + 1) < this.uploadList.length-1 ? this.indexPic + 1 : this.uploadList.length-1; 
+            if(this.indexPic == this.uploadList.length-1 ){
+                this.$Message.info({content:'温馨提示：已到最一张！'});         
+            }      
         }
     },
     mounted() {

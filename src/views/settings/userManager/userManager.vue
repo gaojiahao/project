@@ -29,7 +29,7 @@
     </Table>
     <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
-            <Page :total="100" :current="1" @on-change="changePage"></Page>
+            <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
         </div>
     </div>
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>

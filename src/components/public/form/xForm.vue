@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 11:05:07
+ * @LastEditTime: 2020-11-26 11:03:58
 -->
 <template>
 <div class="content">
@@ -12,7 +12,7 @@
         <template v-for="(item, index) in formValidate">
             <!--文本框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
-                <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
+               <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <!--数值控件-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='number'">

@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 15:42:59
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-26 14:12:25
 -->
 <template>
 <div id="app" v-title data-title="跨境电商ERP">
@@ -38,7 +38,6 @@ export default {
     },
     created() {
         var token = tokenService.getToken(true);
-        console.log(token);
         if (token) {
             this.logginStatus = true;
         }

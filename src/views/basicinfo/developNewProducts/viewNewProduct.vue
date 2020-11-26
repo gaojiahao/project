@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:39:41
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-26 15:46:09
 -->
 <template>
 <div>
@@ -14,13 +14,13 @@
                 基本信息
             </div>
             <div class="top">
-                <ViewForm :formValidate="formValidate.productInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.productInfo.field">
+                <XForm :formValidate="formValidate.productInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.productInfo.field">
                     <template slot="button">
                         <div style="width:100%">
                             
                         </div>
                     </template>
-                </ViewForm>
+                </XForm>
             </div>
             <div class="top-title">
                 其他信息
@@ -89,7 +89,7 @@
         <TabPane label="日志文件">
             <AddNewProductTableLog></AddNewProductTableLog>
         </TabPane>
-        <Button @click="" size="small" slot="extra" type="warning">查看调研</Button>
+        <Button @click="goResearch" size="small" slot="extra" type="warning">查看调研</Button>
     </Tabs>
     
 </div>
@@ -97,6 +97,7 @@
 
 <script>
 import ViewForm from "@components/public/form/viewForm";
+import XForm from "@components/public/form/xForm";
 import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
@@ -115,6 +116,7 @@ export default {
         Tabs,
         TabPane,
         ViewForm,
+        XForm,
         AddNewProductTable,
         AddNewProductTableUploadPic,
         AddNewProductTableUploadVideo,
@@ -129,7 +131,9 @@ export default {
         }
     },
     methods: {
-
+        goResearch(){
+            this.$router.push({name:'viewResearch',query: {id:this.formConfig.id||123}})
+        },
     },
     created() {}
 }

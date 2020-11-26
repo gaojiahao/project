@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 16:56:06
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-25 12:25:54
+ * @LastEditTime: 2020-11-26 11:14:58
 -->
 <template>
 <div class="break-container">
-    <Breadcrumb :style="{ margin: '16px 0', float: 'left' }">
+    <Breadcrumb :style="{ margin: '16px 0', float: 'left', height: '20px',lineHeight: '20px' }">
         <BreadcrumbItem v-if="leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.name">{{leftMenu.oneLevel.name}}</BreadcrumbItem>
         <template v-for="(item,index) in data">
             <BreadcrumbItem  @click.native="goMenu2(item.path)">
