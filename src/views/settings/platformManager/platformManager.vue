@@ -3,14 +3,14 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:17:00
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-26 18:08:00
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <PlatformManagerList :list="listData" @select-item="selectItem" @add="add"></PlatformManagerList>
+            <PlatformManagerList :list="listData" @select-item="selectItem" @add="add" :loading="listLoading"></PlatformManagerList>
         </div>
         <div class="right">
             <div class="right-top">
@@ -63,6 +63,7 @@ export default {
             listData: [],
             selectPBind: {},
             selectSBind: {},
+            listLoading: true,
         }
     },
     methods: {
@@ -71,6 +72,7 @@ export default {
                 getEcommercePlatformList().then(res => {
                     this.$nextTick(() => {
                         this.listData = res.data.items;
+                        this.listLoading = false;
                     });
                 });
             });
@@ -142,7 +144,6 @@ export default {
         width: 100%;
 
         .left {
-            margin: 10px 10px;
             width: 350px;
             background-color: #f5fffa;
             height: 750px;
@@ -155,7 +156,7 @@ export default {
             flex: 1;
 
             .right-top {
-                margin: 10px 10px;
+                margin: 0px 10px;
                 background-color: #f5fffa;
                 border: 1px solid #dcdee2;
                 border-color: #e8eaec;
