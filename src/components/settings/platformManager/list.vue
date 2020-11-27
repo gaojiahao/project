@@ -90,30 +90,15 @@ export default {
             this.$emit('select-item', index);
         },
         add() {
-            this.$emit('add');
+            this.$emit('show-add');
         }
     },
     created() {}
 }
 </script>
-
 <style lang="less" scoped>
-.demo-spin-icon-load{
-        animation: ani-demo-spin 1s linear infinite;
-    }
-@keyframes ani-demo-spin {
-    from { transform: rotate(0deg);}
-    50%  { transform: rotate(180deg);}
-    to   { transform: rotate(360deg);}
-}
-.demo-spin-col{
-    height: 100px;
-    position: relative;
-    border: 1px solid #eee;
-}
 .base-platfrom-list {
     width: 100%;
-
     .head {
         width: 100%;
         height: 40px;
@@ -130,7 +115,6 @@ export default {
             margin-right: 10px;
         }
     }
-
     .content {
         overflow-y: scroll;
         height: 710px;
@@ -140,8 +124,21 @@ export default {
             background-color: #f8f8f9;
         }
     }
-}
-.ivu-list-item{
-    padding: 3px 0;
+    .demo-spin-icon-load{
+        animation: ani-demo-spin 1s linear infinite;
+    }
+    @keyframes ani-demo-spin {
+        from { transform: rotate(0deg);}
+        50%  { transform: rotate(180deg);}
+        to   { transform: rotate(360deg);}
+    }
+    .demo-spin-col{
+        height: 100px;
+        position: relative;
+        border: 1px solid #eee;
+    }
+    .ivu-list-item{
+        padding: 3px 0;
+    }
 }
 </style>>

@@ -3,13 +3,16 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 19:07:46
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-27 16:15:41
 -->
 <template>
 <div class="content">
     <div class="head">
         <span class="text">系统类目</span>
+    </div>
+    <div style="margin:5px">
+        <Input search clearable placeholder="Enter something..." />
     </div>
     <Tree :data="data" show-checkbox @on-check-change="checkChange" check-strictly></Tree>
 </div>
@@ -111,20 +114,24 @@ export default {
     }
 }
 </script>
-
+<style scoped>
+>>>.ivu-tree-children li {
+    float: left;
+}
+</style>
 <style lang="less" scoped>
 .content {
     flex: 1;
-    margin: 0 10px;
+    margin: 0 10px 0 0;
     background-color: #f5fffa;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
 
     .head {
         width: 100%;
-        height: 40px;
+        height: 30px;
         background: linear-gradient(to top, #d2effd, #ffffff);
-        line-height: 40px;
+        line-height: 30px;
     }
 }
 </style>

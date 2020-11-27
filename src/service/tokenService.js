@@ -13,7 +13,6 @@ let tokenService = {
     storage.removeItem(XZX_TOKEN_KEY);
     sessionStorage.clear();
     localStorage.clear();
-    this.$store.commit('clearMenuRouter');
   },
   // 设置token
   setToken(data) {

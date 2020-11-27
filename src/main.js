@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-23 19:28:00
+ * @LastEditTime: 2020-11-27 11:36:08
  */
 //引用插件
 import Vue from "vue";
@@ -23,6 +23,7 @@ import AudioPlayer from '@liripeng/vue-audio-player'
 import '@liripeng/vue-audio-player/lib/vue-audio-player.css'
 //引用自定义组件
 import Loading from "@plugins/loading/pageLoad/loading";
+import FromLoading from "@components/public/loading/loading.js";
 import '@less/common';
 
 Vue.config.productionTip = false;
@@ -56,7 +57,7 @@ Vue.use(Loading);
 Vue.use(SuperFlow);
 Vue.use(VideoPlayer);
 Vue.use(AudioPlayer);
-
+Vue.use(FromLoading);
 new Vue({
   router,
   store,
