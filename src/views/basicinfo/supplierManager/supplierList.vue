@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-23 20:10:50
+ * @LastEditTime: 2020-11-26 17:27:33
 -->
 <template>
 <div class="storeManager-container">
@@ -14,6 +14,7 @@
             <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
             <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight">删除</Button>
             <!--<Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>-->
+            <Checkbox v-model="isAlibaba">1688供应商</Checkbox>
         </div>
         <div class="filter-search">
             <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
@@ -47,7 +48,8 @@ import {
     Radio,
     Select,
     Option,
-    DatePicker
+    DatePicker,
+    Checkbox
 } from "view-design";
 import config from "@views/basicinfo/supplierManager/supplierListConfig";
 import list from "@mixins/list";
@@ -62,6 +64,7 @@ export default {
         Select,
         Option,
         DatePicker,
+        Checkbox
     },
     mixins: [config,list],
     data() {
@@ -81,85 +84,9 @@ export default {
                     value: 'all',
                 }]
             },
-            data: [{
-                id:'fds',
-                storeName: 'TOU16231321',
-                name: '海辉玩具厂',
-                storeCode: '18218413144',
-                account: "李四",
-                LoginID: "龙华新区",
-                appKey: "131@qq.com",
-                appSecret: "fdsfsdf",
-                status: "已审核",
-                createTime: "2020-11-06",
-            }, {
-                id:1,
-                storeName: 'TOU16231321',
-                name: '海辉玩具厂',
-                storeCode: '18218413144',
-                account: "李四",
-                LoginID: "龙华新区",
-                appKey: "131@qq.com",
-                appSecret: "fdsfsdf",
-                status: "已审核",
-                createTime: "2020-11-06",
-            }, {
-                id:2,
-                storeName: 'TOU16231321',
-                name: '海辉玩具厂',
-                storeCode: '18218413144',
-                account: "李四",
-                LoginID: "龙华新区",
-                appKey: "131@qq.com",
-                appSecret: "fdsfsdf",
-                status: "已审核",
-                createTime: "2020-11-06",
-            }, {
-                id:3,
-                storeName: 'TOU16231321',
-                name: '海辉玩具厂',
-                storeCode: '18218413144',
-                account: "李四",
-                LoginID: "龙华新区",
-                appKey: "131@qq.com",
-                appSecret: "fdsfsdf",
-                status: "已审核",
-                createTime: "2020-11-06",
-            }, {
-                id:4,
-                storeName: 'TOU16231321',
-                name: '海辉玩具厂',
-                storeCode: '18218413144',
-                account: "李四",
-                LoginID: "龙华新区",
-                appKey: "131@qq.com",
-                appSecret: "fdsfsdf",
-                status: "未审核",
-                createTime: "2020-11-06",
-            }, {
-                id:5,
-                storeName: 'TOU16231321',
-                name: '海辉玩具厂',
-                storeCode: '18218413144',
-                account: "李四",
-                LoginID: "龙华新区",
-                appKey: "131@qq.com",
-                appSecret: "fdsfsdf",
-                status: "已审核",
-                createTime: "2020-11-06",
-            }, {
-                id:6,
-                storeName: 'TOU16231321',
-                name: '海辉玩具厂',
-                storeCode: '18218413144',
-                account: "李四",
-                LoginID: "龙华新区",
-                appKey: "131@qq.com",
-                appSecret: "fdsfsdf",
-                status: "已审核",
-                createTime: "2020-11-06",
-            }, ],
-            filter: "large"
+            data: this.getData(),
+            filter: "large",
+            isAlibaba:false
         }
     },
     methods: {
@@ -281,6 +208,93 @@ export default {
                 }
             ];
             return columns;
+        },
+        getData(){
+            var data = [{
+                id:'fds',
+                storeName: 'TOU16231321',
+                name: '海辉玩具厂',
+                storeCode: '18218413144',
+                account: "李四",
+                LoginID: "龙华新区",
+                appKey: "131@qq.com",
+                appSecret: "fdsfsdf",
+                status: "已审核",
+                createTime: "2020-11-06",
+                isAlibaba:true,
+            }, {
+                id:1,
+                storeName: 'TOU16231321',
+                name: '海辉玩具厂',
+                storeCode: '18218413144',
+                account: "李四",
+                LoginID: "龙华新区",
+                appKey: "131@qq.com",
+                appSecret: "fdsfsdf",
+                status: "已审核",
+                createTime: "2020-11-06",
+                isAlibaba:true,
+            }, {
+                id:2,
+                storeName: 'TOU16231321',
+                name: '海辉玩具厂',
+                storeCode: '18218413144',
+                account: "李四",
+                LoginID: "龙华新区",
+                appKey: "131@qq.com",
+                appSecret: "fdsfsdf",
+                status: "已审核",
+                createTime: "2020-11-06",
+                isAlibaba:true, 
+            }, {
+                id:3,
+                storeName: 'TOU16231321',
+                name: '海辉玩具厂',
+                storeCode: '18218413144',
+                account: "李四",
+                LoginID: "龙华新区",
+                appKey: "131@qq.com",
+                appSecret: "fdsfsdf",
+                status: "已审核",
+                createTime: "2020-11-06",
+            }, {
+                id:4,
+                storeName: 'TOU16231321',
+                name: '海辉玩具厂',
+                storeCode: '18218413144',
+                account: "李四",
+                LoginID: "龙华新区",
+                appKey: "131@qq.com",
+                appSecret: "fdsfsdf",
+                status: "未审核",
+                createTime: "2020-11-06",
+            }, {
+                id:5,
+                storeName: 'TOU16231321',
+                name: '海辉玩具厂',
+                storeCode: '18218413144',
+                account: "李四",
+                LoginID: "龙华新区",
+                appKey: "131@qq.com",
+                appSecret: "fdsfsdf",
+                status: "已审核",
+                createTime: "2020-11-06",
+            }, {
+                id:6,
+                storeName: 'TOU16231321',
+                name: '海辉玩具厂',
+                storeCode: '18218413144',
+                account: "李四",
+                LoginID: "龙华新区",
+                appKey: "131@qq.com",
+                appSecret: "fdsfsdf",
+                status: "已审核",
+                createTime: "2020-11-06",
+            }, ]
+            if(this.isAlibaba){
+
+            }
+            return data;
         }
     },
     created(){
