@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-26 16:06:15
+ * @LastEditTime: 2020-11-27 16:35:45
 -->
 <template>
 <div class="storeManager-container">
@@ -22,7 +22,7 @@
             <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
         </div>
     </div>
-    <div  class="myTable">
+    <div class="myTable">
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel()">调研</Button>

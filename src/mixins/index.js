@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-25 14:13:23
+ * @LastEditTime: 2020-11-27 16:28:25
  */
 export default {
     data() {
@@ -33,14 +33,6 @@ export default {
                 value: 'storeManager',
                 status: true,
                 auth: false,
-                children: [
-                    {
-                        name: '添加店铺',
-                        value: 'addStore',
-                        status: true,
-                        auth: false,    
-                    }
-                ]
               },
               {
                 name: '分类管理',

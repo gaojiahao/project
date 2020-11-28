@@ -12,7 +12,7 @@
         <span class="text">系统类目</span>
     </div>
     <div style="margin:5px">
-        <Input search clearable placeholder="Enter something..." />
+        <Input search clearable placeholder="" />
     </div>
     <Tree :data="data" show-checkbox @on-check-change="checkChange" check-strictly></Tree>
 </div>

@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:56:29
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-27 20:46:26
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -17,6 +17,11 @@
                 </i-switch>
             </template>
         </Table>
+        <div style="margin: 10px;overflow: hidden">
+            <div style="float: right;">
+                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+            </div>
+        </div>
     </TabPane>
     <TabPane label="制作文件">
         <div style="width:100%;height:38px;margin-top:10px">
@@ -49,7 +54,8 @@ import {
     Table,
     Button,
     RadioGroup,
-    Radio
+    Radio,
+    Page
 } from "view-design";
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/settings/typeManager/typeManagerConfig";
@@ -62,7 +68,8 @@ export default {
         Button,
         RadioGroup,
         Radio,
-        ModalForm
+        ModalForm,
+        Page
     },
     mixins: [config],
     computed: {
@@ -192,6 +199,9 @@ export default {
             }
             this.showModel = flag;
         },
+        changePage(){
+            
+        }
     }
 }
 </script>

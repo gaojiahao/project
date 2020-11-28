@@ -3,21 +3,29 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:20:48
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-28 09:47:38
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <TypeManagerList :list="list" @select-item="selectItem"></TypeManagerList>
+            <TypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" ></TypeManagerList>
         </div>
         <div class="right">
-            <div class="right-top">
-                <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
+            <div class="item" v-show="isShowAdd">
+                <div class="top">
+                    <Divider orientation="left" size="small">新建分类</Divider>
+                    <div class="top_tabale">
+                        <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
+                    </div>
+                </div>
             </div>
-            <div class="right-bottom">
-                <TypeManagerTab></TypeManagerTab>
+            <div class="item"  v-show="isShowBind">
+                <div class="top">
+                    <Divider orientation="left" size="small">分类属性</Divider>
+                    <TypeManagerTab></TypeManagerTab>
+                </div>
             </div>
         </div>
     </div>
@@ -25,6 +33,9 @@
 </template>
 
 <script>
+import {
+    Divider
+} from "view-design";
 import TypeManagerList from "@components/settings/typeManager/typeManagerList";
 import TypeManagerTab from "@components/settings/typeManager/typeManagerTab";
 import config from "@views/settings/typeManager/typeManagerConfig";
@@ -40,13 +51,17 @@ export default {
     components: {
         TypeManagerList,
         XForm,
-        TypeManagerTab
+        TypeManagerTab,
+        Divider
     },
     data() {
         return {
             list: [],
             selectPBind: {},
             selectSBind: {},
+            isShowAdd: false,
+            isShowBind:false,
+            listLoading: true,
         }
     },
     watch: {
@@ -69,14 +84,21 @@ export default {
         save() {
             var params = this.formValidate;
             if (!this.formValidate.id) {
+                this.$FromLoading.show();
                 return new Promise((resolve, reject) => {
                     addEcommercePlatform(params).then(res => {
                         if (res.status == 200) {
+                            setTimeout(() => {
+                                this.$FromLoading.hide();
+                            }, 500);
                             this.$Message.info('温馨提示：成功');
                             this.getEcommercePlatformList();
                             this.$refs['form'].$refs['formValidate'].resetFields();
                             this.$refs['form'].initEL('input');
                         } else if (res.status == 403) {
+                            setTimeout(() => {
+                                this.$FromLoading.hide();
+                            }, 500);
                             this.$Message.error({
                                 background: true,
                                 content: res.message
@@ -94,9 +116,7 @@ export default {
 
         },
         selectItem(index) {
-            console.log(index)
-            //this.$refs['form'].$refs['formValidate'].resetFields();
-            this.formValidate = this.list[index];
+            this.isShowBind = true;
         },
         selectPlatformBind(data) {
             this.selectPBind = data;
@@ -111,10 +131,19 @@ export default {
                     this.$refs.selectSystemBind.removeSelect();
                 }, 1000);
             }
-        }
+        },
+        showAdd() {
+            this.isShowAdd = this.isShowAdd ? false:true;
+        },
+        clearFormData() {
+            this.showAdd();
+        },
     },
     created() {
         this.getEcommercePlatformList();
+        setTimeout(() => {
+            this.listLoading = false;
+        }, 500);
     }
 }
 </script>
@@ -127,9 +156,7 @@ export default {
         flex-wrap: nowrap;
         justify-content: flex-start;
         width: 100%;
-
         .left {
-            margin: 10px 10px;
             width: 350px;
             background-color: #f5fffa;
             height: 750px;
@@ -137,27 +164,37 @@ export default {
             border-color: #e8eaec;
             transition: all 0.2s ease-in-out;
         }
-
         .right {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-
-            .right-top {
+            .top {
                 flex: 1;
-                margin: 10px 10px;
-                background-color: #f5fffa;
-                border: 1px solid #dcdee2;
-                border-color: #e8eaec;
                 transition: all 0.2s ease-in-out;
+                margin: 0 0 10px 10px;
+                .top_tabale{
+                    background-color: #f5fffa;
+                    border: 1px solid #dcdee2;
+                    border-color: #e8eaec;    
+                }
+                .top_tabale_white{
+                    border: 1px solid #dcdee2;
+                    border-top:0;
+                    border-color: #e8eaec;    
+                }
             }
-
             .right-bottom {
                 flex: 1;
                 margin: 10px 10px;
                 transition: all 0.2s ease-in-out;
             }
         }
+    }
+    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-center, 
+    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-left, 
+    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-right
+    {
+        margin: 8px 0 0 0;
+        font-weight: 600;
+        color: #515a6e;
     }
 }
 </style>

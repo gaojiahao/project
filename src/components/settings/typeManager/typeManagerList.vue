@@ -6,17 +6,23 @@
             <span class="text">当前分类</span>
         </div>
         <div class="right">
-            <Button type="primary" icon="md-add" size="small">新建分类
+            <Button type="primary" icon="md-add" size="small" @click.native="add">新建分类
             </Button>
         </div>
     </div>
     <div class="content">
         <!--<Scroll :on-reach-bottom="handleReachBottom">-->
-        <template v-if="list.length">
-            <Tree :data="data"></Tree>
-        </template>
+        <Spin fix v-if="loading">
+            <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
+            <div>Loading</div>
+        </Spin>
         <template v-else>
-            暂无数据
+            <template v-if="list.length">
+                <Tree :data="data" @on-select-change="onSelectChange"></Tree>
+            </template>
+            <template v-else>
+                暂无数据
+            </template>
         </template>
         <!--</Scroll>-->
     </div>
@@ -31,7 +37,8 @@ import {
     Scroll,
     List,
     ListItem,
-    Tag
+    Tag,
+    Spin
 } from "view-design";
 import {
     getEcommercePlatformList
@@ -44,7 +51,8 @@ export default {
         Scroll,
         List,
         ListItem,
-        Tag
+        Tag,
+        Spin
     },
     props: {
         list: {
@@ -53,6 +61,10 @@ export default {
                 return []
             }
         },
+        loading:{
+            type:Boolean,
+            default: true
+        }
     },
     data() {
         return {
@@ -94,9 +106,16 @@ export default {
         }
     },
     methods: {
-
+        add() {
+            this.$emit('show-add');
+        },
+        onSelectChange(index){
+            this.$emit('select-item', index);
+        }
     },
-    created() {}
+    created() {
+        
+    }
 }
 </script>
 
@@ -124,14 +143,29 @@ export default {
             margin-right: 10px;
         }
     }
-
     .content {
         overflow-y: scroll;
         height: 710px;
-
+        position: relative;
         .active {
             color: #2d8cf0;
         }
+    }
+    .demo-spin-icon-load{
+        animation: ani-demo-spin 1s linear infinite;
+    }
+    @keyframes ani-demo-spin {
+        from { transform: rotate(0deg);}
+        50%  { transform: rotate(180deg);}
+        to   { transform: rotate(360deg);}
+    }
+    .demo-spin-col{
+        height: 100px;
+        position: relative;
+        border: 1px solid #eee;
+    }
+    .ivu-list-item{
+        padding: 3px 0;
     }
 }
 </style>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 16:16:02
+ * @LastEditTime: 2020-11-27 16:24:28
 -->
 <template>
 <div class="content">
@@ -12,7 +12,7 @@
         <span class="text">平台类目</span>
     </div>
     <div style="margin:5px">
-        <Input search clearable placeholder="Enter something..." />
+        <Input search clearable placeholder="" />
     </div>
     <Tree ref="tree" :data="data" show-checkbox @on-check-change="checkChange" check-strictly expand-node></Tree>
 </div>

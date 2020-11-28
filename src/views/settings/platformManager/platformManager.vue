@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 16:02:02
+ * @LastEditTime: 2020-11-27 20:23:46
 -->
 <template>
 <div class="platformManager-container">
@@ -172,7 +172,6 @@ export default {
         flex-wrap: nowrap;
         justify-content: flex-start;
         width: 100%;
-
         .left {
             width: 350px;
             background-color: #f5fffa;
@@ -181,7 +180,6 @@ export default {
             border-color: #e8eaec;
             transition: all 0.2s ease-in-out;
         }
-
         .right {
             flex: 1;
             .top {
