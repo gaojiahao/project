@@ -3,11 +3,11 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 20:59:34
+ * @LastEditors: gaojiahao
+ * @LastEditTime: 2020-11-28 12:28:58
 -->
 <template>
-<Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
+<Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
         <template v-for="(item, index) in formValidate">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
@@ -163,10 +163,14 @@ export default {
         initClick() {
             this.initEL('input');
             var inputGroup = this.$el.getElementsByTagName("input");
+            for(var i=0;i<inputGroup.length;i++){
+                console.log(inputGroup[i].value)
+            }
             var inputGroupArr = Array.from(this.$el.getElementsByTagName("input"));
             var buttonGroup = this.$el.getElementsByTagName("button")[0];
             var iGlength = inputGroupArr.length;
-            document.onkeypress = function (e) {
+            var model_box = document.getElementsByClassName("model_box")[0];
+            model_box.onkeypress = function (e) {
                 var e = event || e;
                 console.log(inputGroupArr.indexOf(e.srcElement));
                 var idx = inputGroupArr.indexOf(e.srcElement);

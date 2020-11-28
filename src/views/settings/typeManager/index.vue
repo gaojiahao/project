@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-28 09:47:38
+ * @LastEditTime: 2020-11-28 10:49:47
 -->
 <template>
 <div class="platformManager-container">
@@ -17,7 +17,16 @@
                 <div class="top">
                     <Divider orientation="left" size="small">新建分类</Divider>
                     <div class="top_tabale">
-                        <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
+                        <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                            <template slot="button">
+                                <FormItem>
+                                    <div style="width:100%">
+                                        <Button type="primary" @click="save" style="float: left;">保存</Button>
+                                        <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                    </div>
+                                </FormItem>
+                            </template>
+                        </XForm>
                     </div>
                 </div>
             </div>
@@ -34,7 +43,8 @@
 
 <script>
 import {
-    Divider
+    Divider,
+    FormItem
 } from "view-design";
 import TypeManagerList from "@components/settings/typeManager/typeManagerList";
 import TypeManagerTab from "@components/settings/typeManager/typeManagerTab";
@@ -52,7 +62,8 @@ export default {
         TypeManagerList,
         XForm,
         TypeManagerTab,
-        Divider
+        Divider,
+        FormItem
     },
     data() {
         return {
@@ -95,7 +106,7 @@ export default {
                             this.getEcommercePlatformList();
                             this.$refs['form'].$refs['formValidate'].resetFields();
                             this.$refs['form'].initEL('input');
-                        } else if (res.status == 403) {
+                        } else {
                             setTimeout(() => {
                                 this.$FromLoading.hide();
                             }, 500);
@@ -104,6 +115,14 @@ export default {
                                 content: res.message
                             });
                         }
+                    }).catch(err => {
+                        setTimeout(() => {
+                            this.$FromLoading.hide();
+                        }, 500);
+                        this.$Message.error({
+                            background: true,
+                            content: err.message
+                        });
                     });
                 });
             } else {
