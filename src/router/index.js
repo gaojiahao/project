@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-26 15:57:22
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-11-30 10:46:44
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -31,6 +31,7 @@ import SaveBpm from "@views/settings/bpmManager/saveBpm";
 import SaveBpm2 from "@views/settings/bpmManager/saveBpm2";
 import UpdataBpm from "@views/settings/bpmManager/updataBpm";
 import BpmManager from "@views/settings/bpmManager/bpmManager";
+import AddBpm from "@views/settings/bpmManager/addBpm";
 //基础设置
 import Basicinfo from "@views/basicinfo/index";
 import DevelopNewProducts from "@views/basicinfo/developNewProducts/index";
@@ -271,6 +272,16 @@ const routes = [
                   level: 2,
                 },
                 component: UpdataBpm
+              },
+              {
+                path: 'addBpm',
+                name: 'addBpm',
+                meta:{ 
+                  title:'新建流程',
+                  group: "AddBpm",
+                  level: 2,
+                },
+                component: AddBpm
               },
             ]
           },

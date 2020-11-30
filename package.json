@@ -39,6 +39,8 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.13.1",
     "babel-plugin-transform-remove-console": "^6.9.4",
+    "bpmn-js": "^7.4.1",
+    "bpmn-js-properties-panel": "^0.37.5",
     "compression-webpack-plugin": "^6.1.1",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.1.3",
