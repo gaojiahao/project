@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-30 17:08:20
+ * @LastEditTime: 2020-12-01 10:13:13
  */
 //引用插件
 import Vue from "vue";
@@ -15,7 +15,6 @@ import store from "./store";
 import VueRouter from "vue-router";
 import { Message, Switch, Circle,Tree,Icon,Button,Span,Badge,Notice,Modal,Tag,Spin,Radio,Checkbox,Input,Select,Option} from "view-design";
 import "view-design/dist/styles/iview.css";
-import SuperFlow from 'vue-super-flow';
 import 'vue-super-flow/lib/index.css';
 import VideoPlayer from 'vue-video-player';
 import 'video.js/dist/video-js.css';
@@ -55,7 +54,6 @@ Vue.prototype.$Spin = Spin;
 /**plugin */
 Vue.use(VueRouter);
 Vue.use(Loading);
-Vue.use(SuperFlow);
 Vue.use(VideoPlayer);
 Vue.use(AudioPlayer);
 Vue.use(FromLoading);

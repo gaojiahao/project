@@ -5,6 +5,7 @@
 -->
 <template>
 <div>
+    <!--顶部操作按钮-->
     <div style="height:48px">
         <div style="float:left">
             <Button type="info">临时保存</Button>
@@ -13,6 +14,7 @@
         </div>
     </div>
     <div class="super-flow-base-demo">
+        <!--左侧菜单-->
         <div class="node-container">
             <span class="node-item" v-for="item in nodeItemList" @mousedown="evt => nodeItemMouseDown(evt, item.value)">
                 {{item.label}}
@@ -21,8 +23,9 @@
                 保存
             </span>
         </div>
+        <!--画布-->
         <div class="flow-container" ref="flowContainer">
-            <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc">
+            <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc" @node-mousedown="nodeMousedown">
                 <template v-slot:node="{meta}">
                     <div :class="`flow-node flow-node-${meta.prop}`">
                         <header>
@@ -34,77 +37,8 @@
                     </div>
                 </template>
             </super-flow>
+            <flow-node-form ref="nodeForm" :visible="visible"></flow-node-form> 
         </div>
-        <Modal :title="drawerConf.title" v-model="drawerConf.visible" @on-ok="ok" @on-cancel="cancel" width="500px">
-            <Form v-show="drawerConf.type === drawerType.node" ref="nodeSetting" :model="nodeSetting" label-position="right" :label-width="100">
-                <FormItem label="节点名称" prop="name">
-                    <Input v-model="nodeSetting.name" placeholder="请输入节点名称" :style="{width:'200px'}">
-                    </Input>
-                </FormItem>
-                <FormItem label="条件" prop="desc">
-                    <Input v-model="nodeSetting.desc" placeholder="请输入条件" :style="{width:'200px'}">
-                    </Input>
-                </FormItem>
-                <FormItem label="参与角色" prop="name">
-                    <Select :style="{width:'200px'}" clearable filterable>
-                        <Option value="001">总经理</Option>
-                        <Option value="002">开发主管</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="参与者" prop="name">
-                    <Select :style="{width:'200px'}" clearable filterable>
-                        <Option value="true">李四</Option>
-                        <Option value="false">王五</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="开启通知" prop="message">
-                    <RadioGroup>
-                        <Radio label="true">
-                            是
-                        </Radio>
-                        <Radio label="false">
-                            否
-                        </Radio>
-                    </RadioGroup>
-                </FormItem>
-            </Form>
-            <Form v-show="drawerConf.type === drawerType.link" ref="linkSetting" :model="linkSetting" label-position="right" :label-width="100">
-                <FormItem label="条件" prop="desc">
-                    <Input v-model="nodeSetting.desc" placeholder="请输入条件" :style="{width:'200px'}">
-                    </Input>
-                </FormItem>
-                <FormItem label="参与角色" prop="name">
-                    <Select :style="{width:'200px'}" clearable filterable>
-                        <Option value="001">总经理</Option>
-                        <Option value="002">开发主管</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="参与者" prop="name">
-                    <Select :style="{width:'200px'}" clearable filterable>
-                        <Option value="true">李四</Option>
-                        <Option value="false">王五</Option>
-                    </Select>
-                </FormItem>
-                <FormItem label="开启通知" prop="message">
-                    <RadioGroup>
-                        <Radio label="true">
-                            是
-                        </Radio>
-                        <Radio label="false">
-                            否
-                        </Radio>
-                    </RadioGroup>
-                </FormItem>
-                <FormItem label="连线描述" prop="desc">
-                    <Input v-model="linkSetting.desc" placeholder="请输入连线描述" :style="{width:'200px'}">
-                    </Input>
-                </FormItem>
-            </Form>
-            <div slot="footer">
-                <Button type="error" size="large" @click="drawerConf.cancel">取 消</Button>
-                <Button type="primary" size="large" @click="settingSubmit">确 定</Button>
-            </div>
-        </Modal>
     </div>
 </div>
 </template>
@@ -128,6 +62,8 @@ import {
     Col,
     Button
 } from "view-design";
+import SuperFlow from '@components/settings/bpmManager/vue-super-flow';
+import FlowNodeForm from '@components/settings/bpmManager/vue-super-flow/lib/node_form';
 
 import list from './nodeList'
 export default {
@@ -145,6 +81,8 @@ export default {
         ColorPicker,
         Col,
         Button,
+        FlowNodeForm,
+        SuperFlow
     },
     mixins: [list],
     data() {
@@ -214,6 +152,7 @@ export default {
                                     width: 100,
                                     height: 80,
                                     coordinate: coordinate,
+                                    type: 'start',
                                     meta: {
                                         prop: 'start',
                                         name: '开始节点'
@@ -230,6 +169,7 @@ export default {
                                 width: 160,
                                 height: 80,
                                 coordinate: coordinate,
+                                type: 'condition',
                                 meta: {
                                     prop: 'condition',
                                     name: '条件节点'
@@ -245,6 +185,7 @@ export default {
                                 width: 160,
                                 height: 80,
                                 coordinate: coordinate,
+                                type: 'approval',
                                 meta: {
                                     prop: 'approval',
                                     name: '审批节点'
@@ -260,6 +201,7 @@ export default {
                                 width: 160,
                                 height: 80,
                                 coordinate: coordinate,
+                                type: 'cc',
                                 meta: {
                                     prop: 'cc',
                                     name: '抄送节点'
@@ -277,6 +219,7 @@ export default {
                                 width: 80,
                                 height: 50,
                                 coordinate: coordinate,
+                                type: 'end',
                                 meta: {
                                     prop: 'end',
                                     name: '结束节点'
@@ -378,6 +321,7 @@ export default {
                     }
                 },
             ],
+            visible:false,
         }
     },
     watch: {
@@ -451,12 +395,6 @@ export default {
             }
             conf.visible = false
         },
-        ok() {},
-        cancel() {},
-        selectItem(index) {
-            this.index = index;
-        },
-        add() {},
         save() {
             console.log(JSON.stringify(this.$refs.superFlow.graph.toJSON(), null, 2))
         },
@@ -480,7 +418,6 @@ export default {
 
             }
         },
-
         docMouseup({
             clientX,
             clientY
@@ -511,6 +448,7 @@ export default {
                     )
 
                     // 添加节点
+                    debugger
                     this.$refs.superFlow.addNode({
                         coordinate,
                         ...conf.info
@@ -558,6 +496,11 @@ export default {
 
             this.$el.appendChild(this.dragConf.ele)
         },
+        //拖动节点放下后
+        nodeMousedown(data){
+            console.log(data);
+            this.visible = true;
+        }
     },
     mounted(){
         //监听鼠标的拖动
@@ -590,6 +533,7 @@ export default {
         float: left;
         height: 100%;
         overflow: hidden;
+        position: relative;
     }
     .super-flow__node {
         .flow-node {
