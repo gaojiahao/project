@@ -1,8 +1,3 @@
-<!--
- * User: CHT
- * Date: 2020/5/27
- * Time: 9:52
--->
 <template>
 <div>
     <!--顶部操作按钮-->
@@ -38,6 +33,76 @@
                 </template>
             </super-flow>
             <flow-node-form ref="nodeForm" :visible="visible"></flow-node-form> 
+            <!--<Modal :title="drawerConf.title" v-model="drawerConf.visible" @on-ok="" @on-cancel="" width="500px">
+                <Form v-show="drawerConf.type === drawerType.node" ref="nodeSetting" :model="nodeSetting" label-position="right" :label-width="100">
+                    <FormItem label="节点名称" prop="name">
+                        <Input v-model="nodeSetting.name" placeholder="请输入节点名称" :style="{width:'200px'}">
+                        </Input>
+                    </FormItem>
+                    <FormItem label="条件" prop="desc">
+                        <Input v-model="nodeSetting.desc" placeholder="请输入条件" :style="{width:'200px'}">
+                        </Input>
+                    </FormItem>
+                    <FormItem label="参与角色" prop="name">
+                        <Select :style="{width:'200px'}" clearable filterable>
+                            <Option value="001">总经理</Option>
+                            <Option value="002">开发主管</Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem label="参与者" prop="name">
+                        <Select :style="{width:'200px'}" clearable filterable>
+                            <Option value="true">李四</Option>
+                            <Option value="false">王五</Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem label="开启通知" prop="message">
+                        <RadioGroup>
+                            <Radio label="true">
+                                是
+                            </Radio>
+                            <Radio label="false">
+                                否
+                            </Radio>
+                        </RadioGroup>
+                    </FormItem>
+                </Form>
+                <Form v-show="drawerConf.type === drawerType.link" ref="linkSetting" :model="linkSetting" label-position="right" :label-width="100">
+                    <FormItem label="条件" prop="desc">
+                        <Input v-model="nodeSetting.desc" placeholder="请输入条件" :style="{width:'200px'}">
+                        </Input>
+                    </FormItem>
+                    <FormItem label="参与角色" prop="name">
+                        <Select :style="{width:'200px'}" clearable filterable>
+                            <Option value="001">总经理</Option>
+                            <Option value="002">开发主管</Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem label="参与者" prop="name">
+                        <Select :style="{width:'200px'}" clearable filterable>
+                            <Option value="true">李四</Option>
+                            <Option value="false">王五</Option>
+                        </Select>
+                    </FormItem>
+                    <FormItem label="开启通知" prop="message">
+                        <RadioGroup>
+                            <Radio label="true">
+                                是
+                            </Radio>
+                            <Radio label="false">
+                                否
+                            </Radio>
+                        </RadioGroup>
+                    </FormItem>
+                    <FormItem label="连线描述" prop="desc">
+                        <Input v-model="linkSetting.desc" placeholder="请输入连线描述" :style="{width:'200px'}">
+                        </Input>
+                    </FormItem>
+                </Form>
+                <div slot="footer">
+                    <Button type="error" size="large" @click="drawerConf.cancel">取 消</Button>
+                    <Button type="primary" size="large" @click="settingSubmit">确 定</Button>
+                </div>
+            </Modal>-->
         </div>
     </div>
 </div>
@@ -120,11 +185,11 @@ export default {
             },
             linkSetting: {
                 desc: ''
-            },
+            }, //线配置
             nodeSetting: {
                 name: '',
                 desc: ''
-            },
+            }, //节点配置
             dragConf: {
                 isDown: false,
                 isMove: false,
@@ -135,9 +200,10 @@ export default {
                 ele: null,
                 info: null
             },
-            origin: [681, 465],
-            nodeList: [],
-            linkList: [],
+            origin: [681, 465], //流程图初始化的点
+            nodeList: [],       //节点列表
+            linkList: [],       //线列表
+            //鼠标右键快捷菜单
             graphMenuList: [
                 [{
                         label: '开始节点',
@@ -242,6 +308,7 @@ export default {
                     }
                 ]
             ],
+            //节点右键菜单列表
             nodeMenuList: [
                 [{
                     label: '删除',
@@ -260,6 +327,7 @@ export default {
                     }
                 }]
             ],
+            //线右键菜单列表
             linkMenuList: [
                 [{
                     label: '删除',
@@ -277,6 +345,7 @@ export default {
                 }]
             ],
             index: 0,
+            //左侧菜单模块
             nodeItemList: [{
                     label: '开始',
                     value: {
@@ -321,7 +390,7 @@ export default {
                     }
                 },
             ],
-            visible:false,
+            visible:false, //是否显示右侧表单
         }
     },
     watch: {
@@ -330,7 +399,7 @@ export default {
                 this.nodeList = this.list[val].nodeList;
                 this.linkList = this.list[val].linkList;
             }
-        }
+        },
     },
     created() {
         var data = this.$route.query;
@@ -378,6 +447,7 @@ export default {
         linkDesc(link) {
             return link.meta ? link.meta.desc : ''
         },
+        //保存节点数据
         settingSubmit() {
             const conf = this.drawerConf
             if (this.drawerConf.type === drawerType.node) {
@@ -395,15 +465,16 @@ export default {
             }
             conf.visible = false
         },
+        //保存工作流数据
         save() {
             console.log(JSON.stringify(this.$refs.superFlow.graph.toJSON(), null, 2))
         },
+        //暂时没用
         docMousemove({
             clientX,
             clientY
         }) {
             const conf = this.dragConf
-
             if (conf.isMove) {
 
                 conf.ele.style.top = clientY - conf.offsetTop + 'px'
@@ -418,6 +489,7 @@ export default {
 
             }
         },
+        //拖动模块生成节点
         docMouseup({
             clientX,
             clientY
@@ -464,6 +536,7 @@ export default {
                 conf.ele = null
             }
         },
+        //暂时没用
         nodeItemMouseDown(evt, info) {
             const {
                 clientX,
