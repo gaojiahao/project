@@ -13,19 +13,28 @@
         </div>
     </div>
     <div class="super-flow-base-demo">
-        <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc">
-            <template v-slot:node="{meta}">
-                <div :class="`flow-node flow-node-${meta.prop}`">
-                    <header>
-                        {{meta.name}}
-                    </header>
-                    <section>
-                        {{meta.desc}}
-                    </section>
-                </div>
-            </template>
-        </super-flow>
-
+        <div class="node-container">
+            <span class="node-item" v-for="item in nodeItemList" @mousedown="evt => nodeItemMouseDown(evt, item.value)">
+                {{item.label}}
+            </span>
+            <span class="node-item">
+                保存
+            </span>
+        </div>
+        <div class="flow-container" ref="flowContainer">
+            <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc">
+                <template v-slot:node="{meta}">
+                    <div :class="`flow-node flow-node-${meta.prop}`">
+                        <header>
+                            {{meta.name}}
+                        </header>
+                        <section>
+                            {{meta.desc}}
+                        </section>
+                    </div>
+                </template>
+            </super-flow>
+        </div>
         <Modal :title="drawerConf.title" v-model="drawerConf.visible" @on-ok="ok" @on-cancel="cancel" width="500px">
             <Form v-show="drawerConf.type === drawerType.node" ref="nodeSetting" :model="nodeSetting" label-position="right" :label-width="100">
                 <FormItem label="节点名称" prop="name">
@@ -178,6 +187,16 @@ export default {
                 name: '',
                 desc: ''
             },
+            dragConf: {
+                isDown: false,
+                isMove: false,
+                offsetTop: 0,
+                offsetLeft: 0,
+                clientX: 0,
+                clientY: 0,
+                ele: null,
+                info: null
+            },
             origin: [681, 465],
             nodeList: [],
             linkList: [],
@@ -188,6 +207,7 @@ export default {
                             return !!graph.nodeList.find(node => node.meta.prop === 'start')
                         },
                         selected: (graph, coordinate) => {
+                            debugger
                             const start = graph.nodeList.find(node => node.meta.prop === 'start')
                             if (!start) {
                                 graph.addNode({
@@ -314,6 +334,50 @@ export default {
                 }]
             ],
             index: 0,
+            nodeItemList: [{
+                    label: '开始',
+                    value: {
+                        width: 100,
+                        height: 80,
+                        meta: {
+                            prop: 'start',
+                            name: '开始'
+                        },
+                    }
+                }, {
+                    label: '审批节点',
+                    value: {
+                        width: 160,
+                        height: 80,
+                        meta: {
+                            prop: 'approval',
+                            name: '审批节点'
+                        }
+                    }
+                },
+                {
+                    label: '条件节点',
+                    value: {
+                        width: 160,
+                        height: 80,
+                        meta: {
+                            prop: 'condition',
+                            name: '条件节点'
+                        },
+                    }
+                },
+                {
+                    label: '结束',
+                    value: {
+                        width: 100,
+                        height: 80,
+                        meta: {
+                            prop: 'end',
+                            name: '结束'
+                        }
+                    }
+                },
+            ],
         }
     },
     watch: {
@@ -395,7 +459,114 @@ export default {
         add() {},
         save() {
             console.log(JSON.stringify(this.$refs.superFlow.graph.toJSON(), null, 2))
-        }
+        },
+        docMousemove({
+            clientX,
+            clientY
+        }) {
+            const conf = this.dragConf
+
+            if (conf.isMove) {
+
+                conf.ele.style.top = clientY - conf.offsetTop + 'px'
+                conf.ele.style.left = clientX - conf.offsetLeft + 'px'
+
+            } else if (conf.isDown) {
+
+                // 鼠标移动量大于 5 时 移动状态生效
+                conf.isMove =
+                    Math.abs(clientX - conf.clientX) > 5 ||
+                    Math.abs(clientY - conf.clientY) > 5
+
+            }
+        },
+
+        docMouseup({
+            clientX,
+            clientY
+        }) {
+            const conf = this.dragConf
+            conf.isDown = false
+
+            if (conf.isMove) {
+                const {
+                    top,
+                    right,
+                    bottom,
+                    left
+                } = this.$refs.flowContainer.getBoundingClientRect()
+
+                // 判断鼠标是否进入 flow container
+                if (
+                    clientX > left &&
+                    clientX < right &&
+                    clientY > top &&
+                    clientY < bottom
+                ) {
+
+                    // 获取拖动元素左上角相对 super flow 区域原点坐标
+                    const coordinate = this.$refs.superFlow.getMouseCoordinate(
+                        clientX - conf.offsetLeft,
+                        clientY - conf.offsetTop
+                    )
+
+                    // 添加节点
+                    this.$refs.superFlow.addNode({
+                        coordinate,
+                        ...conf.info
+                    })
+
+                }
+
+                conf.isMove = false
+            }
+
+            if (conf.ele) {
+                conf.ele.remove()
+                conf.ele = null
+            }
+        },
+        nodeItemMouseDown(evt, info) {
+            const {
+                clientX,
+                clientY,
+                currentTarget
+            } = evt
+
+            const {
+                top,
+                left
+            } = evt.currentTarget.getBoundingClientRect()
+
+            const conf = this.dragConf
+            const ele = currentTarget.cloneNode(true)
+
+            Object.assign(this.dragConf, {
+                offsetLeft: clientX - left,
+                offsetTop: clientY - top,
+                clientX: clientX,
+                clientY: clientY,
+                info,
+                ele,
+                isDown: true
+            })
+
+            ele.style.position = 'fixed'
+            ele.style.margin = '0'
+            ele.style.top = clientY - conf.offsetTop + 'px'
+            ele.style.left = clientX - conf.offsetLeft + 'px'
+
+            this.$el.appendChild(this.dragConf.ele)
+        },
+    },
+    mounted(){
+        //监听鼠标的拖动
+        document.addEventListener('mousemove', this.docMousemove)
+        document.addEventListener('mouseup', this.docMouseup)
+        this.$once('hook:beforeDestroy', () => {
+            document.removeEventListener('mousemove', this.docMousemove)
+            document.removeEventListener('mouseup', this.docMouseup)
+        })
     }
 }
 </script>
@@ -407,7 +578,19 @@ export default {
     margin: 0 auto;
     background: linear-gradient(90deg, rgba(200, 0, 0, 0.15) 10%, rgba(0, 0, 0, 0) 10%), linear-gradient(rgba(200, 0, 0, 0.15) 10%, rgba(0, 0, 0, 0) 10%);
     background-size: 10px 10px;
-
+    >.node-container {
+        width: 200px;
+        float: left;
+        height: 100%;
+        text-align: center;
+        background-color: #FFFFFF;
+    }
+    >.flow-container {
+        width: calc(100% - 200px);
+        float: left;
+        height: 100%;
+        overflow: hidden;
+    }
     .super-flow__node {
         .flow-node {
             >header {

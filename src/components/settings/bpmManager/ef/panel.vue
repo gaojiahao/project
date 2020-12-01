@@ -1,32 +1,30 @@
 <template>
-    <div v-if="easyFlowVisible" style="height: calc(100vh);" id="container">
-        <Row>
+    <div v-if="easyFlowVisible" style="height: calc(100vh);">
+        <el-row>
             <!--顶部工具菜单-->
-            <Col span="24">
+            <el-col :span="24">
                 <div class="ef-tooltar">
-                    <div style="float: left;">
-                        <span type="primary" :underline="false">{{data.name}}</span>
-                        <Divider type="vertical"></Divider>
-                        <Button type="primary" icon="ios-trash-outline" size="small" @click="deleteElement" :disabled="!this.activeElement.type">删除</Button>
-                        <Divider type="vertical"></Divider>
-                        <Button type="primary" icon="ios-cloud-download-outline" size="small" @click="downloadData">下载</Button>
-                        <Divider type="vertical"></Divider>
-                        <Button type="primary" icon="ios-add" size="small" @click="zoomAdd">放大</Button>
-                        <Divider type="vertical"></Divider>
-                        <Button type="primary" icon="ios-remove" size="small" @click="zoomSub">缩小</Button>
-                    </div>
+                    <el-link type="primary" :underline="false">{{data.name}}</el-link>
+                    <el-divider direction="vertical"></el-divider>
+                    <el-button type="text" icon="el-icon-delete" size="large" @click="deleteElement" :disabled="!this.activeElement.type"></el-button>
+                    <el-divider direction="vertical"></el-divider>
+                    <el-button type="text" icon="el-icon-download" size="large" @click="downloadData"></el-button>
+                    <el-divider direction="vertical"></el-divider>
+                    <el-button type="text" icon="el-icon-plus" size="large" @click="zoomAdd"></el-button>
+                    <el-divider direction="vertical"></el-divider>
+                    <el-button type="text" icon="el-icon-minus" size="large" @click="zoomSub"></el-button>
                     <div style="float: right;margin-right: 5px">
-                        <Button type="info" @click="dataInfo" size="small">流程信息</Button>
-                        <Button type="primary" plain round @click="dataReloadA" icon="ios-add" size="small">切换流程A</Button>
-                        <Button type="primary" plain round @click="dataReloadB" icon="ios-add" size="small">切换流程B</Button>
-                        <Button type="primary" plain round @click="dataReloadC" icon="ios-add" size="small">切换流程C</Button>
-                        <Button type="primary" plain round @click="dataReloadD" icon="ios-add" size="small">自定义样式</Button>
-                        <Button type="primary" plain round @click="dataReloadE" icon="ios-add" size="small">力导图</Button>
-                        <Button type="info" plain round icon="el-icon-document" @click="openHelp" size="small">帮助</Button>
+                        <el-button type="info" plain round icon="el-icon-document" @click="dataInfo" size="mini">流程信息</el-button>
+                        <el-button type="primary" plain round @click="dataReloadA" icon="el-icon-refresh" size="mini">切换流程A</el-button>
+                        <el-button type="primary" plain round @click="dataReloadB" icon="el-icon-refresh" size="mini">切换流程B</el-button>
+                        <el-button type="primary" plain round @click="dataReloadC" icon="el-icon-refresh" size="mini">切换流程C</el-button>
+                        <el-button type="primary" plain round @click="dataReloadD" icon="el-icon-refresh" size="mini">自定义样式</el-button>
+                        <el-button type="primary" plain round @click="dataReloadE" icon="el-icon-refresh" size="mini">力导图</el-button>
+                        <el-button type="info" plain round icon="el-icon-document" @click="openHelp" size="mini">帮助</el-button>
                     </div>
                 </div>
-            </Col>
-        </Row>
+            </el-col>
+        </el-row>
         <div style="display: flex;height: calc(100% - 47px);">
             <div style="width: 230px;border-right: 1px solid #dce3e8;">
                 <node-menu @addNode="addNode" ref="nodeMenu"></node-menu>
@@ -60,29 +58,23 @@
 </template>
 
 <script>
-    import {
-    Row,
-    Col,
-    Divider,
-    Button,
-    } from "view-design";
     import draggable from 'vuedraggable'
     // import { jsPlumb } from 'jsplumb'
     // 使用修改后的jsplumb
-    import '@components/settings/bpmManager/ef/jsplumb'
-    import { easyFlowMixin } from '@components/settings/bpmManager/ef/mixins'
-    import flowNode from '@components/settings/bpmManager/ef/node'
-    import nodeMenu from '@components/settings/bpmManager/ef/node_menu'
-    import FlowInfo from '@components/settings/bpmManager/ef/info'
-    import FlowHelp from '@components/settings/bpmManager/ef/help'
-    import FlowNodeForm from '@components/settings/bpmManager/ef/node_form'
+    import './jsplumb'
+    import { easyFlowMixin } from '@/components/ef/mixins'
+    import flowNode from '@/components/ef/node'
+    import nodeMenu from '@/components/ef/node_menu'
+    import FlowInfo from '@/components/ef/info'
+    import FlowHelp from '@/components/ef/help'
+    import FlowNodeForm from './node_form'
     import lodash from 'lodash'
-    import { getDataA } from '@components/settings/bpmManager/ef/data_A.js'
-    import { getDataB } from '@components/settings/bpmManager/ef/data_B'
-    import { getDataC } from '@components/settings/bpmManager/ef/data_C'
-    import { getDataD } from '@components/settings/bpmManager/ef/data_D'
-    import { getDataE } from '@components/settings/bpmManager/ef/data_E'
-    import { ForceDirected } from '@components/settings/bpmManager/ef/force-directed'
+    import { getDataA } from './data_A'
+    import { getDataB } from './data_B'
+    import { getDataC } from './data_C'
+    import { getDataD } from './data_D'
+    import { getDataE } from './data_E'
+    import { ForceDirected } from './force-directed'
 
     export default {
         data() {
@@ -97,9 +89,7 @@
                 loadEasyFlowFinish: false,
                 flowHelpVisible: false,
                 // 数据
-                data: {
-                    nodeList:[],
-                },
+                data: {},
                 // 激活的元素、可能是节点、可能是连线
                 activeElement: {
                     // 可选值 node 、line
@@ -116,18 +106,7 @@
         // 一些基础配置移动该文件中
         mixins: [easyFlowMixin],
         components: {
-            draggable, flowNode, nodeMenu, FlowInfo, FlowNodeForm, FlowHelp,Row,
-            Col,
-            Divider,
-            Button,
-        },
-        watch:{
-            data:{
-                handler(val){
-                    console.log(val)
-
-                }
-            }
+            draggable, flowNode, nodeMenu, FlowInfo, FlowNodeForm, FlowHelp
         },
         directives: {
             'flowDrag': {
@@ -167,28 +146,10 @@
             }
         },
         mounted() {
-            this.jsPlumb = jsPlumb.getInstance(
-                {
-                    Container:"container",   //选择器id
-                    EndpointStyle: { radius: 4, fill: "#acd"},  //端点样式
-                    PaintStyle: { stroke: '#fafafa',strokeWidth:3},// 绘画样式，默认8px线宽  #456
-                    HoverPaintStyle: { stroke: '#1E90FF' }, // 默认悬停样式  默认为null
-                    EndpointHoverStyle: { fill: '#F00', radius:6 }, // 端点悬停样式
-                    ConnectionOverlays:[                 //连线上的默认样式  这里是箭头
-                    ["Arrow",{
-                        location:1,
-                        paintStyle: {
-                        stroke: '#00688B',
-                        fill: '#00688B',
-                        }
-                    }]
-                    ],
-                    Connector:["Straight",{gap:1}]   //要使用的默认连接器的类型：折线，流程等
-                }
-            )
+            this.jsPlumb = jsPlumb.getInstance()
             this.$nextTick(() => {
                 // 默认加载流程A的数据、在这里可以根据具体的业务返回符合流程数据格式的数据即可
-                //this.dataReload(getDataB()) 初始化数据
+                this.dataReload(getDataB())
             })
         },
         methods: {
@@ -244,18 +205,18 @@
                         let from = evt.sourceId
                         let to = evt.targetId
                         if (from === to) {
-                            this.$Message.error('节点不支持连接自己')
+                            this.$message.error('节点不支持连接自己')
                             return false
                         }
                         if (this.hasLine(from, to)) {
-                            this.$Message.error('该关系已存在,不允许重复创建')
+                            this.$message.error('该关系已存在,不允许重复创建')
                             return false
                         }
                         if (this.hashOppositeLine(from, to)) {
-                            this.$Message.error('不支持两个节点之间连线回环');
+                            this.$message.error('不支持两个节点之间连线回环');
                             return false
                         }
-                        this.$Message.success('连接成功')
+                        this.$message.success('连接成功')
                         return true
                     })
 
@@ -263,7 +224,7 @@
                     this.jsPlumb.bind("beforeDetach", (evt) => {
                         console.log('beforeDetach', evt)
                     })
-                    this.jsPlumb.setContainer(this.$refs.efContainer);
+                    this.jsPlumb.setContainer(this.$refs.efContainer)
                 })
             },
             // 加载流程图
@@ -329,20 +290,18 @@
                 if (this.activeElement.type === 'node') {
                     this.deleteNode(this.activeElement.nodeId)
                 } else if (this.activeElement.type === 'line') {
-                    this.$Modal.confirm({
-                        title: '提示',
-                        content: '<p>确定删除所点击的线吗?',
-                        onOk: () => {
-                            var conn = this.jsPlumb.getConnections({
-                                source: this.activeElement.sourceId,
-                                target: this.activeElement.targetId
-                            })[0]
-                            this.jsPlumb.deleteConnection(conn)
-                        },
-                        onCancel: () => {
-                            this.$Message.info('Clicked cancel');
-                        }
-                    });
+                    this.$confirm('确定删除所点击的线吗?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(() => {
+                        var conn = this.jsPlumb.getConnections({
+                            source: this.activeElement.sourceId,
+                            target: this.activeElement.targetId
+                        })[0]
+                        this.jsPlumb.deleteConnection(conn)
+                    }).catch(() => {
+                    })
                 }
             },
             // 删除线
@@ -381,7 +340,7 @@
                 var left = screenX, top = screenY
                 // 计算是否拖入到容器中
                 if (left < containerRect.x || left > containerRect.width + containerRect.x || top < containerRect.y || containerRect.y > containerRect.y + containerRect.height) {
-                    this.$Message.info("请把节点拖入到画布中")
+                    this.$message.error("请把节点拖入到画布中")
                     return
                 }
                 left = left - containerRect.x + efContainer.scrollLeft
@@ -396,22 +355,18 @@
                 var index = 1
                 while (index < 10000) {
                     var repeat = false
-                    if(this.data&&this.data.nodeList&&this.data.nodeList.length){
-                        for (var i = 0; i < this.data.nodeList.length; i++) {
-                            let node = this.data.nodeList[i]
-                            if (node.name === nodeName) {
-                                nodeName = origName + index
-                                repeat = true
-                            }
+                    for (var i = 0; i < this.data.nodeList.length; i++) {
+                        let node = this.data.nodeList[i]
+                        if (node.name === nodeName) {
+                            nodeName = origName + index
+                            repeat = true
                         }
-                        if (repeat) {
-                            index++
-                            continue
-                        }
-                        break
-                    } else {
-                        break    
                     }
+                    if (repeat) {
+                        index++
+                        continue
+                    }
+                    break
                 }
                 var node = {
                     id: nodeId,
@@ -420,14 +375,13 @@
                     left: left + 'px',
                     top: top + 'px',
                     ico: nodeMenu.ico,
-                    state: 'success',
+                    state: 'success'
                 }
                 /**
                  * 这里可以进行业务判断、是否能够添加该节点
                  */
                 this.data.nodeList.push(node)
                 this.$nextTick(function () {
-                    this.jsPlumb.addEndpoint(nodeId, {anchor:[ [ 0.2, 0, 0, -1 ],  [ 1, 0.2, 1, 0 ], "Top", "Bottom" ]})
                     this.jsPlumb.makeSource(nodeId, this.jsplumbSourceOptions)
                     this.jsPlumb.makeTarget(nodeId, this.jsplumbTargetOptions)
                     this.jsPlumb.draggable(nodeId, {
@@ -444,29 +398,28 @@
              * @param nodeId 被删除节点的ID
              */
             deleteNode(nodeId) {
-                this.$Modal.confirm({
-                    title: '提示',
-                    content: '<p>确定要删除节点</p>',
-                    onOk: () => {
-                        /**
-                        * 这里需要进行业务判断，是否可以删除
-                        */
-                        this.data.nodeList = this.data.nodeList.filter(function (node) {
-                            if (node.id === nodeId) {
-                                // 伪删除，将节点隐藏，否则会导致位置错位
-                                // node.show = false
-                                return false
-                            }
-                            return true
-                        })
-                        this.$nextTick(function () {
-                            this.jsPlumb.removeAllEndpoints(nodeId);
-                        })
-                    },
-                    onCancel: () => {
-                        this.$Message.info('Clicked cancel');
-                    }
-                });
+                this.$confirm('确定要删除节点' + nodeId + '?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    closeOnClickModal: false
+                }).then(() => {
+                    /**
+                     * 这里需要进行业务判断，是否可以删除
+                     */
+                    this.data.nodeList = this.data.nodeList.filter(function (node) {
+                        if (node.id === nodeId) {
+                            // 伪删除，将节点隐藏，否则会导致位置错位
+                            // node.show = false
+                            return false
+                        }
+                        return true
+                    })
+                    this.$nextTick(function () {
+                        this.jsPlumb.removeAllEndpoints(nodeId);
+                    })
+                }).catch(() => {
+                })
                 return true
             },
             clickNode(nodeId) {
@@ -543,7 +496,10 @@
                 let tempData = lodash.cloneDeep(dataE)
                 let data = ForceDirected(tempData)
                 this.dataReload(data)
-                this.$Message.warning('力导图每次产生的布局是不一样的');
+                this.$message({
+                    message: '力导图每次产生的布局是不一样的',
+                    type: 'warning'
+                });
             },
             zoomAdd() {
                 if (this.zoom >= 1) {
@@ -563,22 +519,21 @@
             },
             // 下载数据
             downloadData() {
-                this.$Modal.confirm({
-                    title: '提示',
-                    content: '<p>确定要下载该流程数据吗？</p>',
-                    onOk: () => {
-                        var datastr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.data, null, '\t'));
-                        var downloadAnchorNode = document.createElement('a');
-                        downloadAnchorNode.setAttribute("href", datastr);
-                        downloadAnchorNode.setAttribute("download", 'data.json');
-                        downloadAnchorNode.click();
-                        downloadAnchorNode.remove();
-                        this.$Message.success("正在下载中,请稍后...");
-                    },
-                    onCancel: () => {
-                        this.$Message.info('温馨提示：您取消了下载');
-                    }
-                });
+                this.$confirm('确定要下载该流程数据吗？', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    closeOnClickModal: false
+                }).then(() => {
+                    var datastr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.data, null, '\t'));
+                    var downloadAnchorNode = document.createElement('a')
+                    downloadAnchorNode.setAttribute("href", datastr);
+                    downloadAnchorNode.setAttribute("download", 'data.json')
+                    downloadAnchorNode.click();
+                    downloadAnchorNode.remove();
+                    this.$message.success("正在下载中,请稍后...")
+                }).catch(() => {
+                })
             },
             openHelp() {
                 this.flowHelpVisible = true
@@ -588,9 +543,4 @@
             }
         }
     }
-</script>\
-<style lang="less" scoped>
-#container{
-    position: relative;
-}
-</style>
+</script>

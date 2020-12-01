@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 11:36:08
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-11-30 17:08:20
  */
 //引用插件
 import Vue from "vue";
@@ -25,6 +25,7 @@ import '@liripeng/vue-audio-player/lib/vue-audio-player.css'
 import Loading from "@plugins/loading/pageLoad/loading";
 import FromLoading from "@components/public/loading/loading.js";
 import '@less/common';
+import '@components/settings/bpmManager/ef/index.css'
 
 Vue.config.productionTip = false;
 Vue.directive("title", {
