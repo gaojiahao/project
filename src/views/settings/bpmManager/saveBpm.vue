@@ -20,7 +20,7 @@
         </div>
         <!--画布-->
         <div class="flow-container" ref="flowContainer">
-            <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc" @node-mousedown="nodeMousedown">
+            <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc" @node-mousedown="nodeMousedown" @line-mousedown="lineMousedown">
                 <template v-slot:node="{meta}">
                     <div :class="`flow-node flow-node-${meta.prop}`">
                         <header>
@@ -32,7 +32,7 @@
                     </div>
                 </template>
             </super-flow>
-            <flow-node-form ref="nodeForm" :visible="visible"></flow-node-form> 
+            <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form> 
             <!--<Modal :title="drawerConf.title" v-model="drawerConf.visible" @on-ok="" @on-cancel="" width="500px">
                 <Form v-show="drawerConf.type === drawerType.node" ref="nodeSetting" :model="nodeSetting" label-position="right" :label-width="100">
                     <FormItem label="节点名称" prop="name">
@@ -127,7 +127,7 @@ import {
     Col,
     Button
 } from "view-design";
-import SuperFlow from '@components/settings/bpmManager/vue-super-flow';
+import SuperFlow from '@components/settings/bpmManager/vue-super-flow/lib';
 import FlowNodeForm from '@components/settings/bpmManager/vue-super-flow/lib/node_form';
 
 import list from './nodeList'
@@ -211,7 +211,6 @@ export default {
                             return !!graph.nodeList.find(node => node.meta.prop === 'start')
                         },
                         selected: (graph, coordinate) => {
-                            debugger
                             const start = graph.nodeList.find(node => node.meta.prop === 'start')
                             if (!start) {
                                 graph.addNode({
@@ -353,7 +352,8 @@ export default {
                         height: 80,
                         meta: {
                             prop: 'start',
-                            name: '开始'
+                            name: '开始',
+                            data: {}
                         },
                     }
                 }, {
@@ -520,7 +520,6 @@ export default {
                     )
 
                     // 添加节点
-                    debugger
                     this.$refs.superFlow.addNode({
                         coordinate,
                         ...conf.info
@@ -573,7 +572,27 @@ export default {
         nodeMousedown(data){
             console.log(data);
             this.visible = true;
-        }
+            this.selectNode(data);
+        },
+        selectNode(data){
+            this.$nextTick(() => {
+                this.nodeSetting = {
+                    ...data
+                };
+            })
+        },
+        lineMousedown(data){
+            console.log(data);
+            this.visible = true;
+            this.selectLine(data);
+        },
+        selectLine(data){
+            this.$nextTick(() => {
+                this.nodeSetting = {
+                    ...data
+                };
+            })
+        },
     },
     mounted(){
         //监听鼠标的拖动

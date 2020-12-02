@@ -255,6 +255,9 @@
 						contextmenu: function(t) {
 							t.preventDefault(),
 							t.stopPropagation()
+						},
+						click:function (e) {
+							console.log(this.graph.mouseonLink);	
 						}
 					}
 				})], 2)
@@ -738,7 +741,7 @@
 					c = e.endAt,
 					h = void 0 === c ? [0, 0] : c,
 					d = e.meta,
-					f = void 0 === d ? null: d;
+					f = void 0 === d ? {name:'线',prop:'line'}: d;
 					this.key = x("link"),
 					this.id = r,
 					this.graph = n,
@@ -1247,6 +1250,7 @@
 						blur: t.close
 					}
 				},
+				//线的右键
 				[t._l(t.list, (function(e) {
 					return [t._l(e, (function(e) {
 						return n("li", {
@@ -1446,8 +1450,8 @@
 					}
 				},
 				methods: {
+					//拖动节点后生成
 					nodeMousedown: function(t) {
-						debugger
 						this.graph.toLastNode(this.index),
 						this.$emit("node-mousedown", this.node, M(t));
 					},
@@ -1474,12 +1478,20 @@
 			Ht = Yt,
 			Ut = (n("2470"), Tt(Ht, Ft, Xt, !1, null, null, null)),
 			Wt = Ut.exports,
+			//线render函数
 			Jt = function() {
 				var t = this,
 				e = t.$createElement,
 				n = t._self._c || e;
 				return n("canvas", {
-					staticClass: "super-flow__line"
+					staticClass: "super-flow__line",
+					on: {
+						click: function(n) {
+							var line = t.graph.mouseonLink
+							console.log(line);
+							t.$emit("line-mousedown",line);
+						}
+					}
 				})
 			},
 			zt = [];
@@ -1750,6 +1762,9 @@
 						var e = t.evt;
 						return this.inPath = this.isPointInStroke(e),
 						this.inPath
+					},
+					clickLine: function(t){
+						
 					}
 				},
 				watch: {
@@ -2234,7 +2249,8 @@
 						this.temEdgeConf.link.end = null
 					},
 					nodeMouseup: function() {
-						this.graph.addLink(this.temEdgeConf.link)
+						var t = this.graph.addLink(this.temEdgeConf.link)
+						this.$emit("line-mousedown",t);
 					},
 					nodeContextmenu: function(t, e) {
 						var n = this.initMenu(this.nodeMenu, e);
