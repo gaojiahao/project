@@ -104,7 +104,11 @@ export default {
                         40,
                         0
                       ],
-                      "meta": null
+                      "meta": {
+                        "prop": "line",
+                        "name": "线",
+                        "desc": "同意"
+                        }
                     },
                     {
                       "id": "linkviVioHMiNQFiyq8A",
@@ -118,7 +122,11 @@ export default {
                         80,
                         0
                       ],
-                      "meta": null
+                      "meta": {
+                        "prop": "line",
+                        "name": "线",
+                        "desc": "不同意"
+                        }
                     },
                     {
                       "id": "linkzlJGGV2kIPB3U2fj",
@@ -132,7 +140,11 @@ export default {
                         80,
                         0
                       ],
-                      "meta": null
+                      "meta":  {
+                        "prop": "line",
+                        "name": "线",
+                        "desc": "不同意"
+                        }
                     },
                     {
                       "id": "linkVblJtL0pOs7Fx2wV",
@@ -146,9 +158,11 @@ export default {
                         80,
                         0
                       ],
-                      "meta": {
-                        "desc": "同意"
-                      }
+                      "meta":  {
+                        "prop": "line",
+                        "name": "线",
+                        "desc": "不同意"
+                        }
                     },
                     {
                       "id": "link1QbaGM1SB2GGbvkS",
@@ -162,7 +176,11 @@ export default {
                         0,
                         40
                       ],
-                      "meta": null
+                      "meta":  {
+                        "prop": "line",
+                        "name": "线",
+                        "desc": "不同意"
+                        }
                     },
                     {
                       "id": "linktCt6KsQwciCRpWCe",
@@ -176,9 +194,11 @@ export default {
                         80,
                         0
                       ],
-                      "meta": {
+                      "meta":  {
+                        "prop": "line",
+                        "name": "线",
                         "desc": "不同意"
-                      }
+                        }
                     }
                 ]
             },

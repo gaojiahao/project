@@ -21,19 +21,19 @@
         <!--画布-->
         <div class="flow-container" ref="flowContainer">
             <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc" @node-mousedown="nodeMousedown" @line-mousedown="lineMousedown">
-                <template v-slot:node="{meta}">
-                    <div :class="`flow-node flow-node-${meta.prop}`">
+                <template v-slot:node="{data}">
+                    <div :class="`flow-node flow-node-${data.prop}`">
                         <header>
-                            {{meta.name}}
+                            {{data.name}}
                         </header>
                         <section>
-                            {{meta.desc}}
+                            {{data.desc}}
                         </section>
                     </div>
                 </template>
             </super-flow>
-            <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form> 
-            <!--<Modal :title="drawerConf.title" v-model="drawerConf.visible" @on-ok="" @on-cancel="" width="500px">
+            <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting" @save="settingSubmit"></flow-node-form> 
+            <Modal :title="drawerConf.title" v-model="drawerConf.visible" @on-ok="" @on-cancel="" width="500px">
                 <Form v-show="drawerConf.type === drawerType.node" ref="nodeSetting" :model="nodeSetting" label-position="right" :label-width="100">
                     <FormItem label="节点名称" prop="name">
                         <Input v-model="nodeSetting.name" placeholder="请输入节点名称" :style="{width:'200px'}">
@@ -102,7 +102,7 @@
                     <Button type="error" size="large" @click="drawerConf.cancel">取 消</Button>
                     <Button type="primary" size="large" @click="settingSubmit">确 定</Button>
                 </div>
-            </Modal>-->
+            </Modal>
         </div>
     </div>
 </div>
@@ -166,12 +166,12 @@ export default {
                     if (conf.type === drawerType.node) {
                         conf.title = '节点'
                         if (this.$refs.nodeSetting) this.$refs.nodeSetting.resetFields()
-                        this.$set(this.nodeSetting, 'name', info.meta.name)
-                        this.$set(this.nodeSetting, 'desc', info.meta.desc)
+                        this.$set(this.nodeSetting, 'name', info.data.name)
+                        this.$set(this.nodeSetting, 'desc', info.data.desc)
                     } else {
                         conf.title = '连线'
                         if (this.$refs.linkSetting) this.$refs.linkSetting.resetFields()
-                        this.$set(this.linkSetting, 'desc', info.meta ? info.meta.desc : '')
+                        this.$set(this.linkSetting, 'desc', info.data ? info.data.desc : '')
                     }
                 },
                 cancel: () => {
@@ -208,17 +208,17 @@ export default {
                 [{
                         label: '开始节点',
                         disable(graph) {
-                            return !!graph.nodeList.find(node => node.meta.prop === 'start')
+                            return !!graph.nodeList.find(node => node.data.prop === 'start')
                         },
                         selected: (graph, coordinate) => {
-                            const start = graph.nodeList.find(node => node.meta.prop === 'start')
+                            const start = graph.nodeList.find(node => node.data.prop === 'start')
                             if (!start) {
                                 graph.addNode({
                                     width: 100,
                                     height: 80,
                                     coordinate: coordinate,
                                     type: 'start',
-                                    meta: {
+                                    data: {
                                         prop: 'start',
                                         name: '开始节点'
                                     }
@@ -235,7 +235,7 @@ export default {
                                 height: 80,
                                 coordinate: coordinate,
                                 type: 'condition',
-                                meta: {
+                                data: {
                                     prop: 'condition',
                                     name: '条件节点'
                                 }
@@ -251,7 +251,7 @@ export default {
                                 height: 80,
                                 coordinate: coordinate,
                                 type: 'approval',
-                                meta: {
+                                data: {
                                     prop: 'approval',
                                     name: '审批节点'
                                 }
@@ -267,7 +267,7 @@ export default {
                                 height: 80,
                                 coordinate: coordinate,
                                 type: 'cc',
-                                meta: {
+                                data: {
                                     prop: 'cc',
                                     name: '抄送节点'
                                 }
@@ -277,7 +277,7 @@ export default {
                     {
                         label: '结束节点',
                         disable(graph) {
-                            return !!graph.nodeList.find(point => point.meta.prop === 'end')
+                            return !!graph.nodeList.find(point => point.data.prop === 'end')
                         },
                         selected: (graph, coordinate) => {
                             graph.addNode({
@@ -285,7 +285,7 @@ export default {
                                 height: 50,
                                 coordinate: coordinate,
                                 type: 'end',
-                                meta: {
+                                data: {
                                     prop: 'end',
                                     name: '结束节点'
                                 }
@@ -313,7 +313,7 @@ export default {
                     label: '删除',
                     disable: false,
                     hidden(node) {
-                        return node.meta.prop === 'start'
+                        return node.data.prop === 'start'
                     },
                     selected(node, coordinate) {
                         node.remove()
@@ -350,10 +350,9 @@ export default {
                     value: {
                         width: 100,
                         height: 80,
-                        meta: {
+                        data: {
                             prop: 'start',
                             name: '开始',
-                            data: {}
                         },
                     }
                 }, {
@@ -361,7 +360,7 @@ export default {
                     value: {
                         width: 160,
                         height: 80,
-                        meta: {
+                        data: {
                             prop: 'approval',
                             name: '审批节点'
                         }
@@ -372,7 +371,7 @@ export default {
                     value: {
                         width: 160,
                         height: 80,
-                        meta: {
+                        data: {
                             prop: 'condition',
                             name: '条件节点'
                         },
@@ -383,7 +382,7 @@ export default {
                     value: {
                         width: 100,
                         height: 80,
-                        meta: {
+                        data: {
                             prop: 'end',
                             name: '结束'
                         }
@@ -414,8 +413,8 @@ export default {
     },
     methods: {
         enterIntercept(formNode, toNode, graph) {
-            const formType = formNode.meta.prop
-            switch (toNode.meta.prop) {
+            const formType = formNode.data.prop
+            switch (toNode.data.prop) {
                 case 'start':
                     return false
                 case 'approval':
@@ -442,28 +441,36 @@ export default {
             }
         },
         outputIntercept(node, graph) {
-            return !(node.meta.prop === 'end')
+            return !(node.data.prop === 'end')
         },
         linkDesc(link) {
-            return link.meta ? link.meta.desc : ''
+            return link.data ? link.data.desc : ''
         },
         //保存节点数据
-        settingSubmit() {
+        settingSubmit(data) {
+            console.log(data);
             const conf = this.drawerConf
             if (this.drawerConf.type === drawerType.node) {
-                if (!conf.info.meta) conf.info.meta = {}
+                if (!conf.info.data) conf.info.data = {}
                 Object.keys(this.nodeSetting).forEach(key => {
-                    this.$set(conf.info.meta, key, this.nodeSetting[key])
+                    this.$set(conf.info.data, key, this.nodeSetting[key])
                 })
                 this.$refs.nodeSetting.resetFields()
             } else {
-                if (!conf.info.meta) conf.info.meta = {}
+                if (!conf.info.data) conf.info.data = {}
                 Object.keys(this.linkSetting).forEach(key => {
-                    this.$set(conf.info.meta, key, this.linkSetting[key])
+                    this.$set(conf.info.data, key, this.linkSetting[key])
                 })
                 this.$refs.linkSetting.resetFields()
             }
             conf.visible = false
+            // var item = {
+            //     ...data
+            // }
+            // for(var key in item){
+            //     console.log(key)
+            //     this.$set(this.nodeSetting, key, item[key]);
+            // }
         },
         //保存工作流数据
         save() {

@@ -205,9 +205,9 @@
 						scopedSlots: t._u([{
 							key: "default",
 							fn: function(e) {
-								var n = e.meta;
+								var n = e.data;
 								return [t._t("node", null, {
-									meta: n
+									data: n
 								})]
 							}
 						}], null, !0)
@@ -255,9 +255,6 @@
 						contextmenu: function(t) {
 							t.preventDefault(),
 							t.stopPropagation()
-						},
-						click:function (e) {
-							console.log(this.graph.mouseonLink);	
 						}
 					}
 				})], 2)
@@ -534,13 +531,13 @@
 					u = void 0 === a ? 100 : a,
 					l = e.coordinate,
 					c = void 0 === l ? [0, 0] : l,
-					h = e.meta,
+					h = e.data,
 					d = void 0 === h ? null: h;
 					this.key = x("node"),
 					this.graph = n,
 					this.id = r,
 					this.coordinate = z(c),
-					this.meta = d,
+					this.data = d,
 					this.width = s,
 					this.height = u
 				}
@@ -613,7 +610,7 @@
 							width: this.width,
 							height: this.height,
 							coordinate: z(this.coordinate),
-							meta: this.meta
+							data: this.data
 						}
 					}
 				},
@@ -740,13 +737,13 @@
 					l = void 0 === u ? [0, 0] : u,
 					c = e.endAt,
 					h = void 0 === c ? [0, 0] : c,
-					d = e.meta,
+					d = e.data,
 					f = void 0 === d ? {name:'线',prop:'line'}: d;
 					this.key = x("link"),
 					this.id = r,
 					this.graph = n,
 					this.start = o,
-					this.meta = f,
+					this.data = f,
 					this.end = a,
 					this.startDirection = J[W.top],
 					this.endDirection = J[W.top],
@@ -844,7 +841,7 @@
 							endId: this.end.id,
 							startAt: this.startAt,
 							endAt: this.endAt,
-							meta: this.meta
+							data: this.data
 						}
 					}
 				},
@@ -1080,7 +1077,7 @@
 							u = void 0 === a ? [0, 0] : a,
 							l = t.endAt,
 							c = void 0 === l ? [0, 0] : l,
-							h = t.meta,
+							h = t.data,
 							d = void 0 === h ? null: h,
 							f = e.pointMap(),
 							p = f[r],
@@ -1088,7 +1085,7 @@
 							p && m && n.push(e.createLink({
 								start: p,
 								end: m,
-								meta: d,
+								data: d,
 								startAt: u,
 								endAt: c
 							}))
@@ -1392,7 +1389,7 @@
 					}
 				},
 				[t._t("default", null, {
-					meta: t.node.meta
+					data: t.node.data
 				}), t._l(t.direction, (function(e, i) {
 					return n("div", {
 						directives: [{
@@ -1487,9 +1484,7 @@
 					staticClass: "super-flow__line",
 					on: {
 						click: function(n) {
-							var line = t.graph.mouseonLink
-							console.log(line);
-							t.$emit("line-mousedown",line);
+							t.clickLine();
 						}
 					}
 				})
@@ -1763,8 +1758,10 @@
 						return this.inPath = this.isPointInStroke(e),
 						this.inPath
 					},
-					clickLine: function(t){
-						
+					//点击线触发父级的回显线的方法
+					clickLine: function(){
+						var line = this.graph.mouseonLink
+						this.$parent.$emit("line-mousedown",line);
 					}
 				},
 				watch: {
@@ -1774,7 +1771,7 @@
 					inPath: function() {
 						this.initLine()
 					},
-					"link.meta": {
+					"link.data": {
 						deep: !0,
 						handler: function() {
 							this.draw()

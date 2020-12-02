@@ -256,16 +256,7 @@
                 this.$emit('setLineLabel', this.line.from, this.line.to, this.line.label)
             },
             save() {
-                this.data.nodeList.filter((node) => {
-                    if (node.id === this.node.id) {
-                        node.name = this.node.name
-                        node.left = this.node.left
-                        node.top = this.node.top
-                        node.ico = this.node.ico
-                        node.state = this.node.state
-                        this.$emit('repaintEverything')
-                    }
-                })
+                this.$emit('save',this.node);
             }
         },
         created(){
