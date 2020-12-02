@@ -11,7 +11,7 @@
     <div class="super-flow-base-demo">
         <!--左侧菜单-->
         <div class="node-container">
-            <span class="node-item" v-for="item in nodeItemList" @mousedown="evt => nodeItemMouseDown(evt, item.value)">
+            <span class="node-item" v-for="item in nodeItemList" @mousedown="evt => nodeItemMouseDown(evt, item)">
                 {{item.label}}
             </span>
             <span class="node-item">
@@ -32,8 +32,8 @@
                     </div>
                 </template>
             </super-flow>
-            <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting" @save="settingSubmit"></flow-node-form> 
-            <Modal :title="drawerConf.title" v-model="drawerConf.visible" @on-ok="" @on-cancel="" width="500px">
+            <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form> 
+            <!--<Modal :title="drawerConf.title" v-model="drawerConf.visible" @on-ok="" @on-cancel="" width="500px">
                 <Form v-show="drawerConf.type === drawerType.node" ref="nodeSetting" :model="nodeSetting" label-position="right" :label-width="100">
                     <FormItem label="节点名称" prop="name">
                         <Input v-model="nodeSetting.name" placeholder="请输入节点名称" :style="{width:'200px'}">
@@ -102,7 +102,7 @@
                     <Button type="error" size="large" @click="drawerConf.cancel">取 消</Button>
                     <Button type="primary" size="large" @click="settingSubmit">确 定</Button>
                 </div>
-            </Modal>
+            </Modal>-->
         </div>
     </div>
 </div>
@@ -390,6 +390,7 @@ export default {
                 },
             ],
             visible:false, //是否显示右侧表单
+            selectModel:'',
         }
     },
     watch: {
@@ -464,13 +465,6 @@ export default {
                 this.$refs.linkSetting.resetFields()
             }
             conf.visible = false
-            // var item = {
-            //     ...data
-            // }
-            // for(var key in item){
-            //     console.log(key)
-            //     this.$set(this.nodeSetting, key, item[key]);
-            // }
         },
         //保存工作流数据
         save() {
@@ -526,10 +520,58 @@ export default {
                         clientY - conf.offsetTop
                     )
 
-                    // 添加节点
+                    var item = {};
+                    var nodeItemList= [{
+                        label: '开始',
+                        value: {
+                            width: 100,
+                            height: 80,
+                            data: {
+                                prop: 'start',
+                                name: '开始',
+                            },
+                        }
+                    }, {
+                        label: '审批节点',
+                        value: {
+                            width: 160,
+                            height: 80,
+                            data: {
+                                prop: 'approval',
+                                name: '审批节点'
+                            }
+                        }
+                    },
+                    {
+                        label: '条件节点',
+                        value: {
+                            width: 160,
+                            height: 80,
+                            data: {
+                                prop: 'condition',
+                                name: '条件节点'
+                            },
+                        }
+                    },
+                    {
+                        label: '结束',
+                        value: {
+                            width: 100,
+                            height: 80,
+                            data: {
+                                prop: 'end',
+                                name: '结束'
+                            }
+                        }
+                    },];
+                    for(var i=0;i<nodeItemList.length;i++){
+                        if(this.selectModel == nodeItemList[i]['label']){
+                            item = nodeItemList[i]['value'];
+                        }    
+                    }
                     this.$refs.superFlow.addNode({
-                        coordinate,
-                        ...conf.info
+                        ...item,
+                        coordinate: coordinate,  
                     })
 
                 }
@@ -542,8 +584,10 @@ export default {
                 conf.ele = null
             }
         },
-        //暂时没用
+        //点击左侧菜单瞬间生成配置
         nodeItemMouseDown(evt, info) {
+            console.log(info.label)
+            this.selectModel = info.label;
             const {
                 clientX,
                 clientY,
@@ -563,7 +607,7 @@ export default {
                 offsetTop: clientY - top,
                 clientX: clientX,
                 clientY: clientY,
-                info,
+                // info,
                 ele,
                 isDown: true
             })

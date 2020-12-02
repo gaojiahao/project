@@ -6,15 +6,15 @@
             </div>
             <div class="ef-node-form-body">
                 <!--开始节点-->
-                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.prop === 'start'">
+                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.data&&node.data.prop === 'start'">
                     <FormItem label="ID">
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.prop" disabled ></Input >
+                        <Input  v-model="node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.name"></Input >
+                        <Input  v-model="node.data.name"></Input >
                     </FormItem>
                     <FormItem>
                         <Button size="small">重置</Button>
@@ -22,15 +22,15 @@
                     </FormItem>
                 </Form>
                 <!--结束节点-->
-                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.prop === 'end'">
+                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.data&&node.data.prop === 'end'">
                     <FormItem label="ID">
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.prop" disabled ></Input >
+                        <Input  v-model="node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.name"></Input >
+                        <Input  v-model="node.data.name"></Input >
                     </FormItem>
                     <FormItem>
                         <Button size="small">重置</Button>
@@ -38,18 +38,18 @@
                     </FormItem>
                 </Form>
                 <!--任务节点-->
-                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.prop === 'approval'">
+                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.data&&node.data.prop === 'approval'">
                     <FormItem label="ID">
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.prop" disabled ></Input >
+                        <Input  v-model="node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.name"></Input >
+                        <Input  v-model="node.data.name"></Input >
                     </FormItem>
                     <FormItem label="参与角色">
-                        <Select v-model="node.roles" placeholder="请选择">
+                        <Select v-model="node.data.roles" placeholder="请选择">
                             <Option
                                     v-for="item in roleList"
                                     :key="item.value"
@@ -58,7 +58,7 @@
                         </Select>
                     </FormItem>
                     <FormItem label="视图">
-                        <Select v-model="node.view" placeholder="请选择">
+                        <Select v-model="node.data.view" placeholder="请选择">
                             <Option
                                     v-for="item in viewList"
                                     :key="item.value"
@@ -67,13 +67,13 @@
                         </Select>
                     </FormItem>
                     <FormItem label="是否开启通知">
-                        <RadioGroup v-model="node.message">
+                        <RadioGroup v-model="node.data.message">
                             <Radio label="1" key="1">是</Radio>
                             <Radio label="0" key="0">否</Radio>
                         </RadioGroup>
                     </FormItem>
                     <FormItem label="操作按钮">
-                        <CheckboxGroup v-model="node.actions">
+                        <CheckboxGroup v-model="node.data.actions">
                             <template v-for="(item,index) in actionList">
                                 <Checkbox :label="item.value">{{item.name}}</Checkbox>
                             </template>
@@ -85,18 +85,18 @@
                     </FormItem>
                 </Form>
                 <!--条件节点-->
-                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.prop === 'condition'">
+                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.data&&node.data.prop === 'condition'">
                     <FormItem label="ID">
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.prop" disabled ></Input >
+                        <Input  v-model="node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.name"></Input >
+                        <Input  v-model="node.data.name"></Input >
                     </FormItem>
                     <FormItem label="条件">
-                        <Input  v-model="node.condition"></Input >
+                        <Input  v-model="node.data.condition"></Input >
                     </FormItem>
                     <FormItem>
                         <Button size="small">重置</Button>
@@ -104,18 +104,18 @@
                     </FormItem>
                 </Form>
                 <!--线节点-->
-                <Form :model="line" ref="dataForm" :label-width="80" v-show="node.prop === 'line'">
+                <Form :model="line" ref="dataForm" :label-width="80" v-show="node.data&&node.data.prop === 'line'">
                     <FormItem label="ID">
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.prop" disabled ></Input >
+                        <Input  v-model="node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.name"></Input >
+                        <Input  v-model="node.data.name"></Input >
                     </FormItem>
                     <FormItem label="条件">
-                        <Input  v-model="node.condition"></Input >
+                        <Input  v-model="node.data.condition"></Input >
                     </FormItem>
                     <FormItem>
                         <Button size="small">重置</Button>
@@ -226,35 +226,12 @@
             nodeSetting:{
                 handler(val){
                     this.node = {
-                        id: this.nodeSetting.id,
-                        ...this.nodeSetting.meta,
+                        ...this.nodeSetting,
                     };
                 }
             },
         },
         methods: {
-            /**
-             * 表单修改，这里可以根据传入的ID进行业务信息获取
-             * @param data
-             * @param id
-             */
-            nodeInit(data, id) {
-                this.type = 'node'
-                this.data = data
-                data.nodeList.filter((node) => {
-                    if (node.id === id) {
-                        this.node = cloneDeep(node)
-                    }
-                })
-            },
-            lineInit(line) {
-                this.type = 'line'
-                this.line = line
-            },
-            // 修改连线
-            saveLine() {
-                this.$emit('setLineLabel', this.line.from, this.line.to, this.line.label)
-            },
             save() {
                 this.$emit('save',this.node);
             }
