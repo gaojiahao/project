@@ -1,109 +1,70 @@
 <template>
 <div>
     <!--顶部操作按钮-->
-    <div style="height:48px">
+    <div style="height:48px;line-height: 48px;">
         <div style="float:left">
-            <Button type="info">临时保存</Button>
-            <Button type="success">表单设置</Button>
-            <Button type="warning" @click.native="save">保存流程图</Button>
+            <Button size="small" type="info">临时保存</Button>
+            <Button size="small" type="success">表单设置</Button>
+            <Button size="small" @click.native="zoomAdd">放大</Button>
+            <Button size="small" @click.native="zoomSub">缩小</Button>
+            <Button size="small" type="warning" @click.native="save">保存流程图</Button>
         </div>
     </div>
     <div class="super-flow-base-demo">
         <!--左侧菜单-->
         <div class="node-container">
-            <span class="node-item" v-for="item in nodeItemList" @mousedown="evt => nodeItemMouseDown(evt, item)">
-                {{item.label}}
-            </span>
-            <span class="node-item">
-                保存
-            </span>
+            <template v-for="item in nodeItemList">
+                <!--<span class="node-item" @mousedown="evt => nodeItemMouseDown(evt, item)">
+                    {{item.label}}
+                </span>-->
+                <div class="item" @mousedown="evt => nodeItemMouseDown(evt, item)" v-if="item.key=='start'">
+                    <div class="start">
+                        {{item.label}}
+                    </div>
+                </div>
+                <div class="item" @mousedown="evt => nodeItemMouseDown(evt, item)" v-if="item.key=='task'">
+                    <div class="task">
+                        {{item.label}}
+                    </div>
+                </div>
+                <div class="item" @mousedown="evt => nodeItemMouseDown(evt, item)" v-if="item.key=='condition'">
+                    <div class="condition">
+                        <div class="text">{{item.label}}</div>
+                        <div class="top"></div>
+                        <div class="bottom"></div>
+                    </div>
+                </div>
+                <div class="item" @mousedown="evt => nodeItemMouseDown(evt, item)" v-else-if="item.key=='end'">
+                    <div class="end">
+                        {{item.label}}
+                    </div>
+                </div>
+            </template>
         </div>
         <!--画布-->
-        <div class="flow-container" ref="flowContainer">
+        <!--<div class="flow-container" ref="flowContainer">-->
             <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc" @node-mousedown="nodeMousedown" @line-mousedown="lineMousedown">
                 <template v-slot:node="{data}">
                     <div :class="`flow-node flow-node-${data.prop}`">
-                        <header>
+                        <template v-if="data.prop=='condition'">
+                            <div class="text">{{data.name}}</div>
+                            <div class="top"></div>
+                            <div class="bottom"></div>   
+                        </template>
+                        <template v-else>
+                            {{data.name}}
+                        </template>
+                        <!--<header>
                             {{data.name}}
                         </header>
                         <section>
                             {{data.desc}}
-                        </section>
+                        </section>-->
                     </div>
                 </template>
             </super-flow>
-            <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form> 
-            <!--<Modal :title="drawerConf.title" v-model="drawerConf.visible" @on-ok="" @on-cancel="" width="500px">
-                <Form v-show="drawerConf.type === drawerType.node" ref="nodeSetting" :model="nodeSetting" label-position="right" :label-width="100">
-                    <FormItem label="节点名称" prop="name">
-                        <Input v-model="nodeSetting.name" placeholder="请输入节点名称" :style="{width:'200px'}">
-                        </Input>
-                    </FormItem>
-                    <FormItem label="条件" prop="desc">
-                        <Input v-model="nodeSetting.desc" placeholder="请输入条件" :style="{width:'200px'}">
-                        </Input>
-                    </FormItem>
-                    <FormItem label="参与角色" prop="name">
-                        <Select :style="{width:'200px'}" clearable filterable>
-                            <Option value="001">总经理</Option>
-                            <Option value="002">开发主管</Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem label="参与者" prop="name">
-                        <Select :style="{width:'200px'}" clearable filterable>
-                            <Option value="true">李四</Option>
-                            <Option value="false">王五</Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem label="开启通知" prop="message">
-                        <RadioGroup>
-                            <Radio label="true">
-                                是
-                            </Radio>
-                            <Radio label="false">
-                                否
-                            </Radio>
-                        </RadioGroup>
-                    </FormItem>
-                </Form>
-                <Form v-show="drawerConf.type === drawerType.link" ref="linkSetting" :model="linkSetting" label-position="right" :label-width="100">
-                    <FormItem label="条件" prop="desc">
-                        <Input v-model="nodeSetting.desc" placeholder="请输入条件" :style="{width:'200px'}">
-                        </Input>
-                    </FormItem>
-                    <FormItem label="参与角色" prop="name">
-                        <Select :style="{width:'200px'}" clearable filterable>
-                            <Option value="001">总经理</Option>
-                            <Option value="002">开发主管</Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem label="参与者" prop="name">
-                        <Select :style="{width:'200px'}" clearable filterable>
-                            <Option value="true">李四</Option>
-                            <Option value="false">王五</Option>
-                        </Select>
-                    </FormItem>
-                    <FormItem label="开启通知" prop="message">
-                        <RadioGroup>
-                            <Radio label="true">
-                                是
-                            </Radio>
-                            <Radio label="false">
-                                否
-                            </Radio>
-                        </RadioGroup>
-                    </FormItem>
-                    <FormItem label="连线描述" prop="desc">
-                        <Input v-model="linkSetting.desc" placeholder="请输入连线描述" :style="{width:'200px'}">
-                        </Input>
-                    </FormItem>
-                </Form>
-                <div slot="footer">
-                    <Button type="error" size="large" @click="drawerConf.cancel">取 消</Button>
-                    <Button type="primary" size="large" @click="settingSubmit">确 定</Button>
-                </div>
-            </Modal>-->
-        </div>
+        <!--</div>-->
+        <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form>
     </div>
 </div>
 </template>
@@ -128,6 +89,7 @@ import {
     Button
 } from "view-design";
 import SuperFlow from '@components/settings/bpmManager/vue-super-flow/lib';
+import '@components/settings/bpmManager/vue-super-flow/lib/index.css';
 import FlowNodeForm from '@components/settings/bpmManager/vue-super-flow/lib/node_form';
 
 import list from './nodeList'
@@ -206,7 +168,7 @@ export default {
             //鼠标右键快捷菜单
             graphMenuList: [
                 [{
-                        label: '开始节点',
+                        label: '开始',
                         disable(graph) {
                             return !!graph.nodeList.find(node => node.data.prop === 'start')
                         },
@@ -220,14 +182,14 @@ export default {
                                     type: 'start',
                                     data: {
                                         prop: 'start',
-                                        name: '开始节点'
+                                        name: '开始'
                                     }
                                 })
                             }
                         }
                     },
                     {
-                        label: '条件节点',
+                        label: '条件',
                         disable: false,
                         selected: (graph, coordinate) => {
                             graph.addNode({
@@ -237,29 +199,29 @@ export default {
                                 type: 'condition',
                                 data: {
                                     prop: 'condition',
-                                    name: '条件节点'
+                                    name: '条件'
                                 }
                             })
                         }
                     },
                     {
-                        label: '审批节点',
+                        label: '审批',
                         disable: false,
                         selected: (graph, coordinate) => {
                             graph.addNode({
                                 width: 160,
                                 height: 80,
                                 coordinate: coordinate,
-                                type: 'approval',
+                                type: 'task',
                                 data: {
-                                    prop: 'approval',
-                                    name: '审批节点'
+                                    prop: 'task',
+                                    name: '审批'
                                 }
                             })
                         }
                     },
                     {
-                        label: '抄送节点',
+                        label: '抄送',
                         disable: false,
                         selected: (graph, coordinate) => {
                             graph.addNode({
@@ -269,13 +231,13 @@ export default {
                                 type: 'cc',
                                 data: {
                                     prop: 'cc',
-                                    name: '抄送节点'
+                                    name: '抄送'
                                 }
                             })
                         }
                     },
                     {
-                        label: '结束节点',
+                        label: '结束',
                         disable(graph) {
                             return !!graph.nodeList.find(point => point.data.prop === 'end')
                         },
@@ -287,7 +249,7 @@ export default {
                                 type: 'end',
                                 data: {
                                     prop: 'end',
-                                    name: '结束节点'
+                                    name: '结束'
                                 }
                             })
                         }
@@ -346,6 +308,7 @@ export default {
             index: 0,
             //左侧菜单模块
             nodeItemList: [{
+                    key: 'start',
                     label: '开始',
                     value: {
                         width: 100,
@@ -356,32 +319,35 @@ export default {
                         },
                     }
                 }, {
-                    label: '审批节点',
+                    key: 'task',
+                    label: '任务',
                     value: {
                         width: 160,
                         height: 80,
                         data: {
-                            prop: 'approval',
-                            name: '审批节点'
+                            prop: 'task',
+                            name: '任务'
                         }
                     }
                 },
                 {
-                    label: '条件节点',
+                    key: 'condition',
+                    label: '条件',
                     value: {
                         width: 160,
                         height: 80,
                         data: {
                             prop: 'condition',
-                            name: '条件节点'
+                            name: '条件'
                         },
                     }
                 },
                 {
+                    key: 'end',
                     label: '结束',
                     value: {
-                        width: 100,
-                        height: 80,
+                        width: 80,
+                        height: 50,
                         data: {
                             prop: 'end',
                             name: '结束'
@@ -391,6 +357,7 @@ export default {
             ],
             visible:false, //是否显示右侧表单
             selectModel:'',
+            zoom: 0.5
         }
     },
     watch: {
@@ -401,40 +368,29 @@ export default {
             }
         },
     },
-    created() {
-        var data = this.$route.query;
-        if (data.id) {
-            for (var i = 0; i < this.list.length; i++) {
-                if (this.list[i].id == data.id) {
-                    this.nodeList = this.list[i].nodeList;
-                    this.linkList = this.list[i].linkList;
-                }
-            }
-        }
-    },
     methods: {
         enterIntercept(formNode, toNode, graph) {
             const formType = formNode.data.prop
             switch (toNode.data.prop) {
                 case 'start':
                     return false
-                case 'approval':
+                case 'task':
                     return [
                         'start',
-                        'approval',
+                        'task',
                         'condition',
                         'cc'
                     ].includes(formType)
                 case 'condition':
                     return [
                         'start',
-                        'approval',
+                        'task',
                         'condition',
                         'cc'
                     ].includes(formType)
                 case 'end':
                     return [
-                        'approval',
+                        'task',
                         'cc'
                     ].includes(formType)
                 default:
@@ -444,8 +400,9 @@ export default {
         outputIntercept(node, graph) {
             return !(node.data.prop === 'end')
         },
+        //线的名称
         linkDesc(link) {
-            return link.data ? link.data.desc : ''
+            return link.data ? link.data.name : ''
         },
         //保存节点数据
         settingSubmit(data) {
@@ -480,6 +437,7 @@ export default {
 
                 conf.ele.style.top = clientY - conf.offsetTop + 'px'
                 conf.ele.style.left = clientX - conf.offsetLeft + 'px'
+                console.log(conf);
 
             } else if (conf.isDown) {
 
@@ -499,12 +457,13 @@ export default {
             conf.isDown = false
 
             if (conf.isMove) {
+                var aa =document.getElementsByClassName('super-flow')[0];
                 const {
                     top,
                     right,
                     bottom,
                     left
-                } = this.$refs.flowContainer.getBoundingClientRect()
+                } = document.getElementsByClassName('super-flow')[0].getBoundingClientRect();
 
                 // 判断鼠标是否进入 flow container
                 if (
@@ -524,40 +483,40 @@ export default {
                     var nodeItemList= [{
                         label: '开始',
                         value: {
-                            width: 100,
-                            height: 80,
+                            width: 40,
+                            height: 40,
                             data: {
                                 prop: 'start',
                                 name: '开始',
                             },
                         }
                     }, {
-                        label: '审批节点',
+                        label: '任务',
                         value: {
-                            width: 160,
-                            height: 80,
+                            width: 120,
+                            height: 50,
                             data: {
-                                prop: 'approval',
-                                name: '审批节点'
+                                prop: 'task',
+                                name: '任务'
                             }
                         }
                     },
                     {
-                        label: '条件节点',
+                        label: '条件',
                         value: {
-                            width: 160,
-                            height: 80,
+                            width: 140,
+                            height: 60,
                             data: {
                                 prop: 'condition',
-                                name: '条件节点'
+                                name: '条件'
                             },
                         }
                     },
                     {
                         label: '结束',
                         value: {
-                            width: 100,
-                            height: 80,
+                            width: 40,
+                            height: 40,
                             data: {
                                 prop: 'end',
                                 name: '结束'
@@ -593,7 +552,6 @@ export default {
                 clientY,
                 currentTarget
             } = evt
-
             const {
                 top,
                 left
@@ -616,6 +574,12 @@ export default {
             ele.style.margin = '0'
             ele.style.top = clientY - conf.offsetTop + 'px'
             ele.style.left = clientX - conf.offsetLeft + 'px'
+
+            console.log("clientY",clientY)
+            console.log("clientX",clientX)
+            console.log("conf.offsetTop",conf.offsetTop)
+            console.log("conf.offsetLeft",conf.offsetLeft)
+            console.log("ele",this.dragConf.ele)
 
             this.$el.appendChild(this.dragConf.ele)
         },
@@ -644,6 +608,31 @@ export default {
                 };
             })
         },
+        zoomAdd() {
+            if (this.zoom > 0.9) {
+                return
+            }
+            this.zoom = this.zoom + 0.1
+            this.$refs.superFlow.$el.style.transform = `scale(${this.zoom})`
+        },
+        zoomSub() {
+            if (this.zoom <= 0) {
+                return
+            }
+            this.zoom = this.zoom - 0.1
+            this.$refs.superFlow.$el.style.transform = `scale(${this.zoom})`
+        },
+    },
+    created() {
+        var data = this.$route.query;
+        if (data.id) {
+            for (var i = 0; i < this.list.length; i++) {
+                if (this.list[i].id == data.id) {
+                    this.nodeList = this.list[i].nodeList;
+                    this.linkList = this.list[i].linkList;
+                }
+            }
+        }
     },
     mounted(){
         //监听鼠标的拖动
@@ -652,31 +641,107 @@ export default {
         this.$once('hook:beforeDestroy', () => {
             document.removeEventListener('mousemove', this.docMousemove)
             document.removeEventListener('mouseup', this.docMouseup)
-        })
+        });
     }
 }
 </script>
 
 <style lang="less" scoped>
+.item{
+    width: 140px;
+    height: 30px;
+    margin: 10px 0;
+    user-select: none;
+    cursor: pointer;
+    z-index: 6;
+    .start{
+        font-size: 12px;
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+        cursor: pointer;
+        text-align: center;
+        z-index: 6;
+        border-radius: 50%;
+        background:#19be6b;
+        color:#fff;
+    }
+    .task{
+        font-size: 12px;
+        display: inline-block;
+        height: 30px;
+        width: 100px;
+        line-height: 30px;
+        cursor: pointer;
+        text-align: center;
+        z-index: 6;
+        border-radius: 5%;
+        background:#2db7f5;
+        color:#fff;    
+    }
+    .condition{
+        width: 100px;
+        font-size: 12px;
+        display: inline-block;
+        height: 30px;
+        color:#fff; 
+        z-index: 6; 
+        .top{
+            width: 0;
+            height: 0;
+            border-bottom: 15px solid #ff9900;
+            border-left: 50px solid rgba(151, 151, 151, 0);
+            border-right: 50px solid rgba(151, 151, 151, 0);
+        }
+        .bottom{
+            width: 0;
+            height: 0;
+            border-top: 15px solid #ff9900;
+            border-left: 50px solid rgba(151, 151, 151, 0);
+            border-right: 50px solid rgba(151, 151, 151, 0);    
+        }
+        .text{
+            width: 100px;
+            text-align: center;
+            margin-top: 5px;
+            float: left;
+        }
+    }
+    .end{
+        font-size: 12px;
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        line-height: 30px;
+        cursor: pointer;
+        text-align: center;
+        z-index: 6;
+        border-radius: 50%;
+        background:#BC1D16;
+        color:#fff;    
+    }
+}
 .super-flow-base-demo {
     width: 100%;
-    height: 800px;
+    height: calc(100vh);
     margin: 0 auto;
     background: linear-gradient(90deg, rgba(200, 0, 0, 0.15) 10%, rgba(0, 0, 0, 0) 10%), linear-gradient(rgba(200, 0, 0, 0.15) 10%, rgba(0, 0, 0, 0) 10%);
     background-size: 10px 10px;
+    position: relative;
+    display: flex;
     >.node-container {
-        width: 200px;
+        width: 140px;
         float: left;
-        height: 100%;
+        height: 200px;
         text-align: center;
-        background-color: #FFFFFF;
+        background-color: rgba(151, 151, 151, 0.3);
     }
     >.flow-container {
-        width: calc(100% - 200px);
-        float: left;
-        height: 100%;
-        overflow: hidden;
+        cursor: auto;
         position: relative;
+        overflow: scroll;
+        flex: 1;
     }
     .super-flow__node {
         .flow-node {
@@ -697,20 +762,58 @@ export default {
             }
 
             &.flow-node-start {
+                text-align: center;
+                border-radius: 50%;
+                background:#19be6b;
+                color: #fff;
+                line-height: 40px;
+                height: 40px;
+                width: 40px;
                 >header {
-                    background-color: #55abfc;
+                    background-color: #19be6b;
                 }
             }
 
             &.flow-node-condition {
+                width: 140px;
+                font-size: 12px;
+                display: inline-block;
+                height: 60px;
+                color: #fff;
+                .top{
+                    width: 0;
+                    height: 0;
+                    border-bottom: 30px solid #ff9900;
+                    border-left: 70px solid rgba(151, 151, 151, 0);
+                    border-right: 70px solid rgba(151, 151, 151, 0);
+                }
+                .bottom{
+                    width: 0;
+                    height: 0;
+                    border-top: 30px solid #ff9900;
+                    border-left: 70px solid rgba(151, 151, 151, 0);
+                    border-right: 70px solid rgba(151, 151, 151, 0);    
+                }
+                .text{
+                    width: 140px;
+                    text-align: center;
+                    margin-top: 20px;
+                    float: left;
+                }
                 >header {
-                    background-color: #BC1D16;
+                    background-color: #ff9900;
                 }
             }
 
-            &.flow-node-approval {
+            &.flow-node-task {
+                text-align: center;
+                background:#2db7f5;
+                color: #fff;
+                height: 50px;
+                width: 120px;
+                line-height: 50px;
                 >header {
-                    background-color: rgba(188, 181, 58, 0.76);
+                    background-color: #2db7f5;
                 }
             }
 
@@ -721,10 +824,17 @@ export default {
             }
 
             &.flow-node-end {
+                text-align: center;
+                border-radius: 50%;
+                background:#BC1D16;
+                color: #fff;
+                line-height: 40px;
+                height: 40px;
+                width: 40px;
                 >header {
                     height: 50px;
                     line-height: 50px;
-                    background-color: rgb(0, 0, 0);
+                    background-color: #BC1D16;
                 }
             }
         }

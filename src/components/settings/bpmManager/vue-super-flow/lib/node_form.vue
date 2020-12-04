@@ -11,10 +11,10 @@
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.data.prop" disabled ></Input >
+                        <Input  v-model="node.data&&node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.data.name"></Input >
+                        <Input  v-model="node.data&&node.data.name"></Input >
                     </FormItem>
                     <FormItem>
                         <Button size="small">重置</Button>
@@ -27,10 +27,10 @@
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.data.prop" disabled ></Input >
+                        <Input  v-model="node.data&&node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.data.name"></Input >
+                        <Input  v-model="node.data&&node.data.name"></Input >
                     </FormItem>
                     <FormItem>
                         <Button size="small">重置</Button>
@@ -38,18 +38,18 @@
                     </FormItem>
                 </Form>
                 <!--任务节点-->
-                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.data&&node.data.prop === 'approval'">
+                <Form :model="node" ref="dataForm" :label-width="80" v-show="node.data&&node.data.prop === 'task'">
                     <FormItem label="ID">
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.data.prop" disabled ></Input >
+                        <Input  v-model="node.data&&node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.data.name"></Input >
+                        <Input  v-model="node.data&&node.data.name"></Input >
                     </FormItem>
                     <FormItem label="参与角色">
-                        <Select v-model="node.data.roles" placeholder="请选择">
+                        <Select v-model="node.data&&node.data.roles" placeholder="请选择">
                             <Option
                                     v-for="item in roleList"
                                     :key="item.value"
@@ -58,7 +58,7 @@
                         </Select>
                     </FormItem>
                     <FormItem label="视图">
-                        <Select v-model="node.data.view" placeholder="请选择">
+                        <Select v-model="node.data&&node.data.view" placeholder="请选择">
                             <Option
                                     v-for="item in viewList"
                                     :key="item.value"
@@ -67,13 +67,13 @@
                         </Select>
                     </FormItem>
                     <FormItem label="是否开启通知">
-                        <RadioGroup v-model="node.data.message">
+                        <RadioGroup v-model="node.data&&node.data.message">
                             <Radio label="1" key="1">是</Radio>
                             <Radio label="0" key="0">否</Radio>
                         </RadioGroup>
                     </FormItem>
                     <FormItem label="操作按钮">
-                        <CheckboxGroup v-model="node.data.actions">
+                        <CheckboxGroup v-model="node.data&&node.data.actions">
                             <template v-for="(item,index) in actionList">
                                 <Checkbox :label="item.value">{{item.name}}</Checkbox>
                             </template>
@@ -90,13 +90,13 @@
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.data.prop" disabled ></Input >
+                        <Input  v-model="node.data&&node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.data.name"></Input >
+                        <Input  v-model="node.data&&node.data.name"></Input >
                     </FormItem>
                     <FormItem label="条件">
-                        <Input  v-model="node.data.condition"></Input >
+                        <Input  v-model="node.data&&node.data.condition"></Input >
                     </FormItem>
                     <FormItem>
                         <Button size="small">重置</Button>
@@ -109,13 +109,13 @@
                         <Input  v-model="node.id" disabled ></Input >
                     </FormItem>
                     <FormItem label="类型">
-                        <Input  v-model="node.data.prop" disabled ></Input >
+                        <Input  v-model="node.data&&node.data.prop" disabled ></Input >
                     </FormItem>
                     <FormItem label="名称">
-                        <Input  v-model="node.data.name"></Input >
+                        <Input  v-model="node.data&&node.data.name"></Input >
                     </FormItem>
                     <FormItem label="条件">
-                        <Input  v-model="node.data.condition"></Input >
+                        <Input  v-model="node.data&&node.data.condition"></Input >
                     </FormItem>
                     <FormItem>
                         <Button size="small">重置</Button>
@@ -245,13 +245,9 @@
 <style lang="less" scoped>
     .form-container{
         width: 300px;
-        top:0;
-        right: 0;
-        float: right;
-        height: 100%;
+        border-left: 1px solid rgb(220, 227, 232);
         text-align: center;
         background-color: #FFFFFF; 
-        position: absolute;
         .ef-node-form-body{
             padding: 10px 10px 0 0;
         }

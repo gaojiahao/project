@@ -400,6 +400,159 @@ export default {
                     }
                 ]
             },
+            {
+                id:'123',
+                name:'侵权审核',
+                value:'qqsh',
+                "origin": [
+                    681,
+                    465
+                  ],
+                  "nodeList": [
+                    {
+                      "id": "node9xjqXpp6qLd5tE9d",
+                      "width": 80,
+                      "height": 50,
+                      "coordinate": [
+                        -501.5,
+                        255
+                      ],
+                      "data": {
+                        "prop": "end",
+                        "name": "结束"
+                      }
+                    },
+                    {
+                      "id": "nodeyGJE4iE4O1iFJtE7",
+                      "width": 160,
+                      "height": 80,
+                      "coordinate": [
+                        -445.5,
+                        139
+                      ],
+                      "data": {
+                        "prop": "approval",
+                        "name": "审批节点"
+                      }
+                    },
+                    {
+                      "id": "node13eOeZ7OsqmvE070",
+                      "width": 100,
+                      "height": 80,
+                      "coordinate": [
+                        -357.5,
+                        -339
+                      ],
+                      "data": {
+                        "prop": "start",
+                        "name": "开始"
+                      }
+                    },
+                    {
+                      "id": "nodechVM2VeAAOZc2QU5",
+                      "width": 160,
+                      "height": 80,
+                      "coordinate": [
+                        -229.5,
+                        -34
+                      ],
+                      "data": {
+                        "prop": "condition",
+                        "name": "条件节点"
+                      }
+                    },
+                    {
+                      "id": "nodeOCKtyTfy1r2p0CZ6",
+                      "width": 160,
+                      "height": 80,
+                      "coordinate": [
+                        -472.5,
+                        -133
+                      ],
+                      "data": {
+                        "prop": "approval",
+                        "name": "审批节点",
+                        "roles": "001",
+                        "view": "002",
+                        "actions": [
+                          "agree",
+                          "stop"
+                        ],
+                        "message": "1"
+                      }
+                    }
+                  ],
+                  "linkList": [
+                    {
+                      "id": "linkIFrM8NKwWypGNMdj",
+                      "startId": "nodeOCKtyTfy1r2p0CZ6",
+                      "endId": "nodechVM2VeAAOZc2QU5",
+                      "startAt": [
+                        160,
+                        40
+                      ],
+                      "endAt": [
+                        80,
+                        0
+                      ],
+                      "data": {
+                        "name": "线",
+                        "prop": "line"
+                      }
+                    },
+                    {
+                      "id": "linkeZz3PCHWNHfvc1uX",
+                      "startId": "nodechVM2VeAAOZc2QU5",
+                      "endId": "nodeyGJE4iE4O1iFJtE7",
+                      "startAt": [
+                        80,
+                        80
+                      ],
+                      "endAt": [
+                        80,
+                        0
+                      ],
+                      "data": {
+                        "name": "线",
+                        "prop": "line"
+                      }
+                    },
+                    {
+                      "id": "linkH0FJ6PKlIAeNLbnz",
+                      "startId": "nodeyGJE4iE4O1iFJtE7",
+                      "endId": "node9xjqXpp6qLd5tE9d",
+                      "startAt": [
+                        80,
+                        80
+                      ],
+                      "endAt": [
+                        40,
+                        0
+                      ],
+                      "data": {
+                        "name": "线",
+                        "prop": "line"
+                      }
+                    },
+                    {
+                      "id": "linkCUeWXECkL3i0egxC",
+                      "startId": "node13eOeZ7OsqmvE070",
+                      "endId": "nodeOCKtyTfy1r2p0CZ6",
+                      "startAt": [
+                        50,
+                        80
+                      ],
+                      "endAt": [
+                        80,
+                        0
+                      ],
+                      "data": {
+                        "name": "线",
+                        "prop": "line"
+                      }
+                    }
+                  ]
+            }   
         ]
       }
     }

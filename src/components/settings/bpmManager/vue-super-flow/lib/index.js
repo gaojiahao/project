@@ -144,6 +144,7 @@
 				return n("div", {
 					ref: "flow-canvas",
 					staticClass: "super-flow",
+					directives: [{ name: "super-flow", rawName: "v-superFlow" }],
 					on: {
 						contextmenu: function(e) {
 							return e.preventDefault(),
@@ -183,6 +184,7 @@
 					}
 				}) : t._e(), t._l(t.graph.nodeList, (function(e, i) {
 					return n("graph-node", {
+						ref:'node',
 						key: e.key,
 						attrs: {
 							index: i,
@@ -257,6 +259,16 @@
 							t.stopPropagation()
 						}
 					}
+				}),n('div', {
+					ref:'point',
+					style:{
+						position:'absolute',
+						top: '2000px',
+						left: '2000px',
+						width: '1px',
+						height: '1px',
+					},
+					value: '&nbsp;'
 				})], 2)
 			},
 			a = [];
@@ -639,7 +651,8 @@
 					},
 					set: function(t) {
 						t = Math.floor(t),
-						this._width = t > 50 ? t: 50,
+						// this._width = t > 50 ? t: 50,
+						this._width = t,
 						this.angle()
 					}
 				},
@@ -1376,6 +1389,12 @@
 					},
 					on: {
 						mousedown: function(e) {
+							e = e || window.event;  
+							if(e.stopPropagation) { //W3C阻止冒泡方法  
+								e.stopPropagation();  
+							} else {  
+								e.cancelBubble = true; //IE阻止冒泡方法  
+							}  
 							return ! e.type.indexOf("key") && t._k(e.keyCode, "left", 37, e.key, ["Left", "ArrowLeft"]) || "button" in e && 0 !== e.button ? null: t.nodeMousedown(e)
 						},
 						mouseenter: t.nodeMouseenter,
@@ -2130,6 +2149,43 @@
 						t.graph.initNode(t.nodeList),
 						t.graph.initLink(t.linkList)
 					}))
+				},
+				directives: {
+					'superFlow': {
+						bind(el, binding, vnode, oldNode) {
+							if (!binding) {
+								return
+							}
+							el.onmousedown = (e) => {
+								if (e.button == 2) {
+									// 右键不管
+									return
+								}
+								//  鼠标按下，计算当前原始距离可视区的高度
+								let disX = e.clientX
+								let disY = e.clientY
+								el.style.cursor = 'move'
+								
+								document.onmousemove = function (e) {
+									// 移动时禁止默认事件
+									e.preventDefault()
+									const left = e.clientX - disX
+									disX = e.clientX
+									el.scrollLeft += -left
+		
+									const top = e.clientY - disY
+									disY = e.clientY
+									el.scrollTop += -top
+								}
+		
+								document.onmouseup = function (e) {
+									el.style.cursor = 'auto'
+									document.onmousemove = null
+									document.onmouseup = null
+								}
+							}
+						}
+					}
 				},
 				methods: {
 					initMenu: function(t, e) {
