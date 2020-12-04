@@ -4,14 +4,8 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:33:45
+ * @LastEditTime: 2020-12-04 16:04:28
 -->
 <template>
 <router-view></router-view>
 </template>
-
-<script>
-export default {
-    name: 'sell'
-}
-</script>

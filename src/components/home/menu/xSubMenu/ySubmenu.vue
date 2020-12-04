@@ -23,7 +23,6 @@
 
 <script>
 import {
-    Icon,
     Drop
 } from "view-design";
 import CollapseTransition from './js/collapse-transition';
@@ -41,7 +40,6 @@ export default {
     name: 'YSubmenu',
     mixins: [Emitter, mixin],
     components: {
-        Icon,
         Drop,
         CollapseTransition
     },

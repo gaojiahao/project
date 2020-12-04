@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 20:23:46
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 15:33:48
 -->
 <template>
 <div class="platformManager-container">
@@ -46,12 +46,6 @@
 </template>
 
 <script>
-import {
-    Tree,
-    Card,
-    Divider,
-    FormItem
-} from "view-design";
 import PlatformManagerList from "@components/settings/platformManager/list";
 import SystemCategoryBind from "@components/settings/platformManager/systemCategoryBind";
 import PlatformCategoryBind from "@components/settings/platformManager/platformCategoryBind";
@@ -68,15 +62,12 @@ export default {
     name: "platformManager",
     mixins: [config],
     components: {
-        Card,
         PlatformManagerList,
         CategoryBind,
         XForm,
         SystemCategoryBind,
         PlatformCategoryBind,
         NowCategoryBind,
-        Divider,
-        FormItem,
     },
     data() {
         return {

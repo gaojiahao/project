@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:16:34
+ * @LastEditTime: 2020-12-04 15:53:39
 -->
 <template>
 <div>
@@ -34,12 +34,6 @@
 </template>
 
 <script>
-import {
-    Table,
-    Button,
-    Input,
-    Modal
-} from "view-design";
 import ModalForm from "@components/public/form/modalForm"
 import AddChildMenu from "@components/settings/menuManager/addChildMenu"
 import config from '@views/settings/menuManager/menuManagerConfig'
@@ -51,10 +45,6 @@ import {
 export default {
     name: 'MenuManager',
     components: {
-        Table,
-        Button,
-        Input,
-        Modal,
         ModalForm,
         AddChildMenu
     },

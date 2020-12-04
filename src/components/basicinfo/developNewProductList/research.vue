@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-12 19:54:00
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:09:49
+ * @LastEditTime: 2020-12-04 16:23:14
 -->
 <style>
     .ivu-table th.demo-table-info-column{
@@ -56,26 +56,8 @@
 </template>
 
 <script>
-import {
-    Input,
-    Select,
-    Option,
-    RadioGroup,
-    Radio,
-    Table,
-    Page
-} from "view-design";
 export default {
     name: 'Research',
-    components: {
-        Input,
-        Select,
-        Option,
-        RadioGroup,
-        Radio,
-        Table,
-        Page
-    },
     data() {
         return {
             inputData: {

@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 20:46:26
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 15:48:59
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -51,11 +51,6 @@
 import {
     Tabs,
     TabPane,
-    Table,
-    Button,
-    RadioGroup,
-    Radio,
-    Page
 } from "view-design";
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/settings/typeManager/typeManagerConfig";
@@ -64,12 +59,7 @@ export default {
     components: {
         Tabs,
         TabPane,
-        Table,
-        Button,
-        RadioGroup,
-        Radio,
-        ModalForm,
-        Page
+        ModalForm
     },
     mixins: [config],
     computed: {

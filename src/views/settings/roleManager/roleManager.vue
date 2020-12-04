@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:18:31
+ * @LastEditTime: 2020-12-04 15:54:12
 -->
 <template>
 <div>
@@ -39,24 +39,12 @@
 </template>
 
 <script>
-import {
-    Table,
-    Button,
-    Page,
-    Input,
-    Modal
-} from "view-design";
 import XTreeAdd from "@components/public/tree/xTreeAdd"
 import ModalForm from "@components/public/form/modalForm"
 import config from '@views/settings/roleManager/roleManagerConfig.js'
 export default {
     name: 'RoleManager',
     components: {
-        Table,
-        Button,
-        Page,
-        Input,
-        Modal,
         XTreeAdd,
         ModalForm
     },

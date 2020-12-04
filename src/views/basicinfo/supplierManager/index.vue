@@ -4,18 +4,8 @@
  * @Author: gaojiahao
  * @Date: 2020-11-12 11:55:54
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 12:02:35
+ * @LastEditTime: 2020-12-04 16:02:45
 -->
 <template>
 <router-view></router-view>
 </template>
-
-<script>
-export default {
-
-}
-</script>
-
-<style lang="less" scoped>
-
-</style>

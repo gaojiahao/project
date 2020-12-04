@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:09:57
+ * @LastEditTime: 2020-12-04 16:25:04
 -->
 <template>
 <Modal v-model="show" title="高级筛选" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -41,30 +41,8 @@
 </template>
 
 <script>
-import {
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Option,
-    Modal,
-    RadioGroup,
-    Radio,
-    DatePicker
-} from "view-design";
 export default {
     name: 'SeniorFilter',
-    components: {
-        Form,
-        FormItem,
-        Input,
-        Select,
-        Option,
-        Modal,
-        RadioGroup,
-        Radio,
-        DatePicker
-    },
     props: {
         formConfig: {
             type: Object,

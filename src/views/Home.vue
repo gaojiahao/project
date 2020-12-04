@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-26 09:57:42
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 15:30:56
 -->
 <template>
 <div class="layout">
@@ -52,10 +52,8 @@ import {
     Content,
     Menu,
     MenuItem,
-    Icon,
     Submenu,
     MenuGroup,
-    RadioGroup,
     Sider,
     Breadcrumb,
     BreadcrumbItem,
@@ -63,9 +61,6 @@ import {
 } from "view-design";
 import Head from "@/components/home/head/head";
 import BreadcrumbNav from "@/components/home/menu/breadCrumbNav";
-import TestForm from "@components/basicinfo/testForm";
-import TestTree from "@components/basicinfo/testTree";
-import Test from "@components/basicinfo/test";
 import Index from "@mixins/index";
 import tokenService from "@service/tokenService";
 import XSubmenu from "@/components/home/menu/xSubMenu/xSubmenu";
@@ -78,17 +73,12 @@ export default {
         Header,
         Menu,
         MenuItem,
-        Icon,
         Submenu,
         MenuGroup,
-        RadioGroup,
         Sider,
         Breadcrumb,
         BreadcrumbItem,
         Card,
-        TestForm,
-        TestTree,
-        Test,
         BreadcrumbNav,
         XSubmenu
     },

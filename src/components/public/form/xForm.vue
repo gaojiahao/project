@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 11:29:10
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 16:25:56
 -->
 <template>
 <div class="content">
@@ -72,13 +72,6 @@
 
 <script>
 import {
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Option,
-    RadioGroup,
-    Radio,
     InputNumber
 } from "view-design";
 import UploadImg from '@components/public/upload/uploadImg';
@@ -89,13 +82,6 @@ import SelectorMulti from '@components/public/xSelect/selectorMulti'
 export default {
     name: 'XForm',
     components: {
-        Form,
-        FormItem,
-        Input,
-        Select,
-        Option,
-        RadioGroup,
-        Radio,
         InputNumber,
         UploadImg,
         Texts,

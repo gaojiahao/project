@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-27 19:14:50
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-02 09:25:50
+ * @LastEditTime: 2020-12-04 16:09:00
 -->
 <template>
 <div class="message">
@@ -46,7 +46,6 @@ import {
     List,
     ListItem,
     ListItemMeta,
-    Tag,
     Scroll
 } from "view-design";
 export default {
@@ -57,7 +56,6 @@ export default {
         List,
         ListItem,
         ListItemMeta,
-        Tag,
         Scroll
     },
     props: {

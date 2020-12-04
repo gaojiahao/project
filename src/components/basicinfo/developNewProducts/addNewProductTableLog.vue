@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:57:51
+ * @LastEditTime: 2020-12-04 15:55:54
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -25,28 +25,12 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    DatePicker
-} from "view-design";
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/basicinfo/productManager/productListConfig";
 
 export default {
     name: "AddNewProductTableLog",
     components: {
-        Table,
-        Page,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        DatePicker,
         ModalForm,
     },
     mixins: [config],

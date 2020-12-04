@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-16 10:54:38
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 14:36:13
+ * @LastEditTime: 2020-12-04 16:06:17
 -->
 <template>
 <div>
@@ -57,13 +57,6 @@
 
 <script>
 import {
-    Input,
-    Select,
-    Option,
-    RadioGroup,
-    Radio,
-    Table,
-    Page,
     Tabs,
     TabPane
 } from "view-design";
@@ -72,13 +65,6 @@ import HistroyPriceComparison from "@components/sell/researchResult/histroyPrice
 export default {
     name: 'ReferenceComparison',
     components: {
-        Input,
-        Select,
-        Option,
-        RadioGroup,
-        Radio,
-        Table,
-        Page,
         Tabs,
         TabPane,
         ResearchResultLog,

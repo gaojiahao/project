@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 17:13:05
+ * @LastEditTime: 2020-12-04 16:05:16
 -->
 <template>
 <div class="storeManager-container">
@@ -36,15 +36,6 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    DatePicker
-} from "view-design";
 import ModalForm from "@components/public/form/modalForm";
 import SeniorFilter from "@components/public/filter/seniorFilter";
 import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
@@ -54,13 +45,6 @@ import config from "@views/sell/selectionManager/selectionResultListConfig";
 export default {
     name: "SelectionResultList",
     components: {
-        Table,
-        Page,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        DatePicker,
         ModalForm,
         SeniorFilter,
         AutoCompleteSearch,

@@ -74,20 +74,6 @@ const drawerType = {
     node: 0,
     link: 1
 }
-import {
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Option,
-    Modal,
-    RadioGroup,
-    Radio,
-    Row,
-    ColorPicker,
-    Col,
-    Button
-} from "view-design";
 import SuperFlow from '@components/settings/bpmManager/vue-super-flow/lib';
 import '@components/settings/bpmManager/vue-super-flow/lib/index.css';
 import FlowNodeForm from '@components/settings/bpmManager/vue-super-flow/lib/node_form';
@@ -96,18 +82,6 @@ import list from './nodeList'
 export default {
     name: 'SaveBpm',
     components: {
-        Form,
-        FormItem,
-        Input,
-        Select,
-        Option,
-        Modal,
-        RadioGroup,
-        Radio,
-        Row,
-        ColorPicker,
-        Col,
-        Button,
         FlowNodeForm,
         SuperFlow
     },

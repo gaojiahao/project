@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 17:33:21
+ * @LastEditTime: 2020-12-04 15:42:20
 -->
 <template>
 <div class="content">
@@ -13,14 +13,8 @@
 </template>
 
 <script>
-import {
-
-} from "view-design";
 export default {
     name: 'CategoryBind',
-    components: {
-
-    },
     data() {
         return {
             data: [{

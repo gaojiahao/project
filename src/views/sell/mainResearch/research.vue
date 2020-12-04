@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-12 19:54:00
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 16:40:26
+ * @LastEditTime: 2020-12-04 16:05:46
 -->
 <template>
 <div>
@@ -79,26 +79,8 @@
 </template>
 
 <script>
-import {
-    Input,
-    Select,
-    Option,
-    RadioGroup,
-    Radio,
-    Table,
-    Page
-} from "view-design";
 export default {
     name: 'Research',
-    components: {
-        Input,
-        Select,
-        Option,
-        RadioGroup,
-        Radio,
-        Table,
-        Page
-    },
     data() {
         return {
             formData: {

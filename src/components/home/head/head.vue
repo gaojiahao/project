@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-26 09:57:22
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 16:23:36
 -->
 <template>
 <div class="head">
@@ -43,11 +43,8 @@
 import {
     Menu,
     MenuItem,
-    Icon,
     Submenu,
     MenuGroup,
-    RadioGroup,
-    Radio,
     Dropdown,
     DropdownMenu,
     DropdownItem
@@ -68,11 +65,8 @@ export default {
     components: {
         Menu,
         MenuItem,
-        Icon,
         Submenu,
         MenuGroup,
-        RadioGroup,
-        Radio,
         YSubmenu,
         Dropdown,
         DropdownMenu,

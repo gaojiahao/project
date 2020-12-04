@@ -43,10 +43,6 @@ d<!--
 </template>
 
 <script>
-import {
-    Button,
-    Input,
-} from "view-design";
 import SIdentify from '@components/public/sIdentify/sIdentify'
 import tokenService from "@service/tokenService";
 import {
@@ -57,8 +53,6 @@ import {
 export default {
     name: "Login",
     components: {
-        Button,
-        Input,
         SIdentify
     },
     data() {

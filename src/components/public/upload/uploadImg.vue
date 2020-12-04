@@ -27,16 +27,12 @@
 <script>
 import {
     Upload,
-    Modal,
     Progress,
-    Icon
 } from "view-design";
 export default {
     components: {
         Upload,
-        Modal,
         Progress,
-        Icon
     },
     model: {
         prop: 'value', // prop说:我要将value1作为该组件被使用(被父组件调用)时,v-model能取到的值

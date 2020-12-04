@@ -133,12 +133,6 @@
     import {
     Row,
     Col,
-    Divider,
-    Button,
-    FormItem,
-    Form,
-    RadioGroup,
-    CheckboxGroup
     } from "view-design";
     import { cloneDeep } from 'lodash'
 
@@ -214,13 +208,6 @@
                     }
                 ]
             }
-        },
-        components: {
-            Button,
-            FormItem,
-            Form,
-            RadioGroup,
-            CheckboxGroup
         },
         watch:{
             nodeSetting:{

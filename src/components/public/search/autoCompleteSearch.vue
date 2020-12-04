@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 11:38:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-21 10:49:31
+ * @LastEditTime: 2020-12-04 16:27:11
 -->
 <template>
     <div>
@@ -28,12 +28,10 @@
 <script>
 import {
     AutoComplete,
-    Option
 } from "view-design";
 export default {
     components:{
         AutoComplete,
-        Option 
     },
     props: {
         filtersConfig: {

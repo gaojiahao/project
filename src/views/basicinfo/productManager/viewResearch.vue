@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-23 16:48:02
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 20:02:49
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 16:02:12
 -->
 <template>
 <div class="viewResearch">
@@ -75,29 +75,8 @@
 </div>
 </template>
 <script>
-import {
-    Table,
-    Page,
-    Input,
-    Select,
-    Option,
-    Modal,
-    RadioGroup,
-    Radio,
-    InputNumber
-} from "view-design";
 export default {
     name:"ViewResearch",
-    components: {
-        Table,
-        Page,
-        Input,
-        Select,
-        Option,
-        Modal,
-        RadioGroup,
-        Radio,
-    },
     data() {
         return {
             loading:true,

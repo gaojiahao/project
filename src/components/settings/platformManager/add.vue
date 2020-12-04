@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 11:55:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:10:47
+ * @LastEditTime: 2020-12-04 15:41:59
 -->
 <template>
 <div class="base-platfrom-add">
@@ -42,22 +42,10 @@
 </template>
 
 <script>
-import {
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Option,
-} from "view-design";
 import XSelect from '@components/public/xSelect/xSelect'
 export default {
     name: 'Add',
     components: {
-        Form,
-        FormItem,
-        Input,
-        Select,
-        Option,
         XSelect
     },
     data() {

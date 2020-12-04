@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: Gabriel.gaojiahao
  * @Date: 2019-03-25 10:56:56
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 11:49:26
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 16:26:19
  -->
 <template>
   <div v-show="show">
@@ -16,10 +16,6 @@
 </template>
 
 <script>
-import {
-    Spin,
-    Icon
-} from "view-design";
 export default {
   name: "FromLoading",
   data() {
@@ -27,7 +23,6 @@ export default {
       show: false
     };
   },
-  components: { Spin,Icon }
 };
 </script>
 <style scoped>

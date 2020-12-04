@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-12 17:48:17
+ * @LastEditTime: 2020-12-04 15:56:34
 -->
 <template>
 <div>
@@ -48,14 +48,12 @@ import {
     Upload,
     Modal,
     Progress,
-    Icon
 } from "view-design";
 export default {
     components: {
         Upload,
         Modal,
         Progress,
-        Icon
     },
     model: {
         prop: 'value', // prop说:我要将value1作为该组件被使用(被父组件调用)时,v-model能取到的值

@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-26 15:27:27
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 15:55:13
 -->
 <template>
 <div>
@@ -126,8 +126,6 @@ import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addN
 import {
     Tabs,
     TabPane,
-    FormItem,
-    Divider
 } from "view-design";
 export default {
     name: 'addNewProduct',
@@ -135,8 +133,6 @@ export default {
         Tabs,
         TabPane,
         XForm,
-        FormItem,
-        Divider,
         AddNewProductTable,
         AddNewProductTableUploadPic,
         AddNewProductTableUploadVideo,

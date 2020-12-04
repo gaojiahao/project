@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-28 10:36:16
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-30 09:57:55
+ * @LastEditTime: 2020-12-04 16:28:23
 -->
 <template>
 <!--<div style="background:#eee;padding: 20px">
@@ -16,14 +16,8 @@
 </template>
 
 <script>
-import {
-    Card
-} from "view-design";
 export default {
     name: 'errorHandler',
-    components: {
-        Card
-    },
     methods: {
         handleSpinCustom() {
             this.$Spin.show({

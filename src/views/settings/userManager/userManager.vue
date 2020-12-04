@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:21:18
+ * @LastEditTime: 2020-12-04 15:54:29
 -->
 <template>
 <div>
@@ -37,13 +37,6 @@
 </template>
 
 <script>
-import {
-    Table,
-    Button,
-    Page,
-    Input,
-    Modal
-} from "view-design";
 import ModalForm from "@components/public/form/modalForm"
 import config from '@views/settings/userManager/userManagerConfig.js'
 import {
@@ -53,11 +46,6 @@ import {
 export default {
     name: 'UserManager',
     components: {
-        Table,
-        Button,
-        Page,
-        Input,
-        Modal,
         ModalForm
     },
     computed: {

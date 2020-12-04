@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 19:22:29
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 15:29:02
+ * @LastEditTime: 2020-12-04 16:10:36
 -->
 <template>
 <div>
@@ -40,32 +40,8 @@
 </template>
 
 <script>
-import {
-    Table,
-    Divider,
-    Tag,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    Button,
-    Page,
-    Card
-} from "view-design";
 export default {
     name: 'XTable',
-    components: {
-        Table,
-        Divider,
-        Tag,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        Button,
-        Page,
-        Card
-    },
     data() {
         return {
             columns1: [{

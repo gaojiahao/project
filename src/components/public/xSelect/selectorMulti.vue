@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 11:35:35
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 16:28:00
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
@@ -33,20 +33,8 @@
 </template>
 
 <script>
-import {
-    Icon,
-    Modal,
-    Table,
-    Page
-} from "view-design";
 export default {
     name: 'XSelect',
-    components: {
-        Icon,
-        Modal,
-        Table,
-        Page
-    },
     model: {
         prop: 'value', // prop说:我要将value1作为该组件被使用(被父组件调用)时,v-model能取到的值
         event: 'change' // event说:我emit(触发)change的时候，参数的值就是父组件v-model收到的值。

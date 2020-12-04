@@ -4,8 +4,16 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 12:24:35
+ * @LastEditTime: 2020-12-04 15:03:24
  */
 module.exports = {
-  presets: ["@vue/cli-plugin-babel/preset"]
+  presets: ["@vue/cli-plugin-babel/preset"],
+  plugins:[
+    ["import",{
+        "libraryName": "iview",
+        "libraryDirectory": "src/components",
+        "style": true
+      }
+    ]
+  ]
 };

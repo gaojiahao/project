@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-26 15:13:34
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 16:24:48
 -->
 <template>
     <div>
@@ -34,8 +34,6 @@ import {
     Dropdown,
     DropdownMenu,
     DropdownItem,
-    Checkbox,
-    CheckboxGroup
 } from "view-design";
 export default {
     name:"CustomColumns",
@@ -43,8 +41,6 @@ export default {
         Dropdown,
         DropdownMenu,
         DropdownItem,
-        Checkbox,
-        CheckboxGroup
     },
     props:{
         columns: {

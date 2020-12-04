@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-25 09:46:17
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 16:14:03
 -->
 <template>
 <div class="storeManager-container">
@@ -38,29 +38,11 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    DatePicker
-} from "view-design";
 import config from "@views/examine/selectionExamine/productConfig";
 import list from "@mixins/list";
 
 export default {
     name: "ChartingExamineList",
-    components: {
-        Table,
-        Page,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        DatePicker,
-    },
     mixins: [config,list],
     data() {
         return {

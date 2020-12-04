@@ -4,21 +4,15 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 20:35:54
+ * @LastEditTime: 2020-12-04 16:27:31
 -->
 <template>
 <Tree :data="data5" show-checkbox multiple @on-check-change="selectChangeAll"></Tree>
 </template>
 
 <script>
-import {
-
-} from "view-design";
 export default {
     name: 'XTreeAdd',
-    components: {
-
-    },
     data() {
         return {
             data5: [{

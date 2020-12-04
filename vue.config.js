@@ -4,14 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 15:19:19
+ * @LastEditTime: 2020-12-04 17:55:46
  */
 const os = require('os');
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
 const loader = require("sass-loader");
 const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
-const productionGzipExtensions = ["js", "css"];
 const Happypack = require('happypack');
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length });
 let proxyConfig = require("./config/proxyConfig");
@@ -54,6 +53,24 @@ module.exports = {
       .loader("iview-loader")
       .options({ prefix: false })
       .end();
+      config.module
+      .rule('js')
+      .test(/\.js$/)
+        .include
+        .add(path.resolve('src'))
+        .end()
+      .use('cache-loader', 'babel-loader')
+      .loader('cache-loader', 'babel-loader')
+      .end()
+      // config.module
+      // .rule("js")
+      // .exclude
+      //   .add('/node_modules/')
+      //   .end()
+      // .test(/\.js$/)
+      // .use(['babel-loader', 'vue-loader', 'iview-loader','vue-router', 'vuex'])
+      // .loader(['babel-loader', 'vue-loader', 'iview-loader','vue-router', 'vuex'])
+      // .end();
       //分割代码
     //压缩图片
     // config.module
@@ -69,38 +86,38 @@ module.exports = {
     if (process.env.NODE_ENV === "production") {
       // 为生产环境修改配置...
       config.mode = "production";
-      config.plugins.push(compress);
-      config.optimization= {
-        minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            parallel: true,
-            exclude: /node_modules/,
-            terserOptions: {
-              ecma: undefined,
-              warnings: false,
-              parse: {},
-              compress: {
-                drop_console: true,
-                drop_debugger: false,
-                pure_funcs: ['console.log'], // 移除console
-              },
-            },
-          }
-        )],
-      };
+      // config.plugins.push(compress);
+      // config.optimization= {
+      //   minimize: true,
+      //   minimizer: [
+      //     new TerserPlugin({
+      //       parallel: true,
+      //       exclude: /node_modules/,
+      //       terserOptions: {
+      //         ecma: undefined,
+      //         warnings: false,
+      //         parse: {},
+      //         compress: {
+      //           drop_console: true,
+      //           drop_debugger: false,
+      //           pure_funcs: ['console.log'], // 移除console
+      //         },
+      //       },
+      //     }
+      //   )],
+      // };
     } else {
       // 为开发环境修改配置...
       config.mode = "development";
     }
-    config.plugins.push(
-      new Happypack({
-        loaders: ['babel-loader', 'vue-loader', 'iview-loader','vue-router', 'vuex',],
-        //threads: 5, // 线程数取决于你电脑性能的好坏，好的电脑建议开更多线程
-        threadPool: happyThreadPool,
-        verbose: true,
-      })
-    );
+    // config.plugins.push(
+    //   new Happypack({
+    //     loaders: ['babel-loader'],
+    //     //threads: 5, // 线程数取决于你电脑性能的好坏，好的电脑建议开更多线程
+    //     threadPool: happyThreadPool,
+    //     verbose: true,
+    //   })
+    // );
     Object.assign(config, {
       // 开发生产共同配置
       resolve: {

@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 16:35:35
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 16:17:17
 -->
 <template>
 <div>
@@ -136,9 +136,6 @@ import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addN
 import {
     Tabs,
     TabPane,
-    FormItem,
-    RadioGroup,
-    Radio
 } from "view-design";
 export default {
     name: 'addTortExamine',
@@ -153,9 +150,6 @@ export default {
         AddNewProductTableUpload3D,
         AddNewProductTableUploadMusic,
         AddNewProductTableLog,
-        FormItem,
-        RadioGroup,
-        Radio
     },
     mixins: [config,config2],
     data(){

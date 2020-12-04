@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-28 12:28:58
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 16:25:21
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -51,32 +51,8 @@
 </template>
 
 <script>
-import {
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Option,
-    Modal,
-    RadioGroup,
-    Radio,
-    InputNumber,
-    DatePicker
-} from "view-design";
 export default {
     name: 'ModalForm',
-    components: {
-        Form,
-        FormItem,
-        Input,
-        Select,
-        Option,
-        Modal,
-        RadioGroup,
-        Radio,
-        InputNumber,
-        DatePicker
-    },
     props: {
         titleText: {
             type: String,

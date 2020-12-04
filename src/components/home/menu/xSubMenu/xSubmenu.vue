@@ -17,7 +17,6 @@
 
 <script>
 import {
-    Icon,
     Drop
 } from "view-design";
 import CollapseTransition from './js/collapse-transition';
@@ -35,7 +34,6 @@ export default {
     name: 'XSubmenu',
     mixins: [Emitter, mixin],
     components: {
-        Icon,
         Drop,
         CollapseTransition
     },

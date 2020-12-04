@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 18:18:44
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 14:51:15
+ * @LastEditTime: 2020-12-04 16:27:00
 -->
 <template>
     <Modal :title="srcData.imgName" v-model="show"  @on-cancel="cancel" fullscreen footer-hide>      
@@ -12,14 +12,8 @@
     </Modal>
 </template>
 <script>
-import {
-    Modal,
-} from "view-design";
 export default {
     name: 'ImageModel',
-    components: {
-        Modal
-    },
     props:{
         srcData: {
             type: Object,

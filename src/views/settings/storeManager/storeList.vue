@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 20:15:32
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 15:36:25
 -->
 <template>
 <div class="storeManager-container">
@@ -45,15 +45,6 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    DatePicker
-} from "view-design";
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/settings/storeManager/storeManagerConfig";
 import list from "@mixins/list";
@@ -61,13 +52,6 @@ import list from "@mixins/list";
 export default {
     name: "StoreList",
     components: {
-        Table,
-        Page,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        DatePicker,
         ModalForm,
     },
     mixins: [config,list],

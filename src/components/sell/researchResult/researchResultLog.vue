@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-16 14:32:03
+ * @LastEditTime: 2020-12-04 16:29:00
 -->
 <template>
 <div class="researchResultLog-container">
@@ -21,28 +21,10 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    DatePicker
-} from "view-design";
 import config from "@views/basicinfo/productManager/productListConfig";
 
 export default {
     name: "ResearchResultLog",
-    components: {
-        Table,
-        Page,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        DatePicker,
-    },
     mixins: [config],
     data() {
         return {

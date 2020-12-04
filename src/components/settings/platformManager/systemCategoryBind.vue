@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 16:15:41
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 15:43:31
 -->
 <template>
 <div class="content">
@@ -19,14 +19,8 @@
 </template>
 
 <script>
-import {
-
-} from "view-design";
 export default {
     name: 'SystemCategoryBind',
-    components: {
-
-    },
     data() {
         return {
             data: [{

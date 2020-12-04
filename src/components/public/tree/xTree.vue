@@ -3,14 +3,8 @@
 </template>
 
 <script>
-import {
-
-} from "view-design";
 export default {
     name: 'XTree',
-    components: {
-
-    },
     data() {
         return {
             data5: [{

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 20:59:17
+ * @LastEditTime: 2020-12-04 16:18:44
 -->
 <template>
 <div>
@@ -79,8 +79,6 @@ import config from "@views/examine/appointStoreExamine/productAppointStoreConfig
 import {
     Tabs,
     TabPane,
-    FormItem,
-    Table
 } from "view-design";
 export default {
     name: 'ProductAppointStore',
@@ -88,9 +86,7 @@ export default {
         Tabs,
         TabPane,
         ViewForm,
-        FormItem,
         XForm,
-        Table
     },
     mixins: [config],
     data(){

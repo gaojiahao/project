@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:10:17
+ * @LastEditTime: 2020-12-04 16:28:44
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="1300">
@@ -46,32 +46,8 @@
 </template>
 
 <script>
-import {
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Option,
-    Modal,
-    RadioGroup,
-    Radio,
-    Table,
-    Page
-} from "view-design";
 export default {
     name: 'ResearchModalForm',
-    components: {
-        Form,
-        FormItem,
-        Input,
-        Select,
-        Option,
-        Modal,
-        RadioGroup,
-        Radio,
-        Table,
-        Page
-    },
     props: {
         titleText: {
             type: String,

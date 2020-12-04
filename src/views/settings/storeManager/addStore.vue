@@ -3,12 +3,11 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-28 10:09:11
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 15:39:34
 -->
 <template>
 <div class="add_store">
-
     <div class="top">
         <div class="top_tabale">
             <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
@@ -27,9 +26,6 @@
 </template>
 
 <script>
-import {
-    Divider
-} from "view-design";
 import XForm from "@components/public/form/xForm";
 import config from "@views/settings/storeManager/addStoreConfig";
 import PlatformCategoryBind from "@components/settings/platformManager/platformCategoryBind";
@@ -41,7 +37,6 @@ export default {
         XForm,
         PlatformCategoryBind,
         NowCategoryBind,
-        Divider
     },
     data() {
         return {

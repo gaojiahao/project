@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:36:24
+ * @LastEditTime: 2020-12-04 16:05:32
 -->
 <template>
 <div class="storeManager-container">
@@ -43,28 +43,12 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    DatePicker
-} from "view-design";
 import ResearchModalForm from "@components/sell/mainResearch/researchModalForm";
 import config from "@views/sell/mainResearch/researchConfig";
 
 export default {
     name: "MainResearchList",
     components: {
-        Table,
-        Page,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        DatePicker,
         ResearchModalForm,
     },
     mixins: [config],

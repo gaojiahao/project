@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:10:27
+ * @LastEditTime: 2020-12-04 16:29:09
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -36,28 +36,8 @@
 </template>
 
 <script>
-import {
-    Form,
-    FormItem,
-    Input,
-    Select,
-    Option,
-    Modal,
-    RadioGroup,
-    Radio
-} from "view-design";
 export default {
     name: 'ModalForm',
-    components: {
-        Form,
-        FormItem,
-        Input,
-        Select,
-        Option,
-        Modal,
-        RadioGroup,
-        Radio
-    },
     props: {
         titleText: {
             type: String,

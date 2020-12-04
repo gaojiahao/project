@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 17:12:39
+ * @LastEditTime: 2020-12-04 16:03:50
 -->
 <template>
 <div class="storeManager-container">
@@ -39,29 +39,11 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    DatePicker
-} from "view-design";
 import config from "@views/basicinfo/supplierManager/supplierListConfig";
 import list from "@mixins/list";
 
 export default {
     name: "CustomerList",
-    components: {
-        Table,
-        Page,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        DatePicker,
-    },
     mixins: [config,list],
     data() {
         return {

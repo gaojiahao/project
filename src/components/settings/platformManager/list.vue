@@ -38,13 +38,9 @@
 
 <script>
 import {
-    Icon,
-    Button,
     Scroll,
     List,
     ListItem,
-    Tag,
-    Spin
 } from "view-design";
 import {
     getEcommercePlatformList
@@ -52,13 +48,9 @@ import {
 export default {
     name: 'PlatformManagerList',
     components: {
-        Icon,
-        Button,
         Scroll,
         List,
         ListItem,
-        Tag,
-        Spin
     },
     props: {
         list: {

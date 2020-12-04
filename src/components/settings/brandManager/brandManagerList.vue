@@ -32,12 +32,9 @@
 
 <script>
 import {
-    Icon,
-    Button,
     Scroll,
     List,
     ListItem,
-    Tag
 } from "view-design";
 import {
     getEcommercePlatformList
@@ -45,12 +42,9 @@ import {
 export default {
     name: 'BrandManagerList',
     components: {
-        Icon,
-        Button,
         Scroll,
         List,
         ListItem,
-        Tag
     },
     props: {
         list: {

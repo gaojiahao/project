@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 18:42:18
+ * @LastEditTime: 2020-12-04 16:11:35
 -->
 <template>
 <div class="storeManager-container">
@@ -38,15 +38,6 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    DatePicker
-} from "view-design";
 import ModalForm from "@components/public/form/modalForm";
 import SeniorFilter from "@components/public/filter/seniorFilter";
 import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
@@ -56,13 +47,6 @@ import config from "@views/basicinfo/productManager/productListConfig";
 export default {
     name: "AppointStoreExamineList",
     components: {
-        Table,
-        Page,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        DatePicker,
         ModalForm,
         SeniorFilter,
         AutoCompleteSearch,

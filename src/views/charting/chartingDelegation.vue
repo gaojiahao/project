@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-23 16:10:07
+ * @LastEditTime: 2020-12-04 16:19:53
 -->
 <template>
 <div class="storeManager-container">
@@ -38,29 +38,11 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    RadioGroup,
-    Radio,
-    Select,
-    Option,
-    DatePicker
-} from "view-design";
 import config from "@views/charting/chartingDelegationCongfig";
 import list from "@mixins/list";
 
 export default {
     name: "ChartingDelegation",
-    components: {
-        Table,
-        Page,
-        RadioGroup,
-        Radio,
-        Select,
-        Option,
-        DatePicker,
-    },
     mixins: [config,list],
     data() {
         return {

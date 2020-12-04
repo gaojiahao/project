@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 16:30:54
+ * @LastEditTime: 2020-12-04 15:59:07
 -->
 <template>
 <div>
@@ -68,17 +68,6 @@
 </template>
 
 <script>
-import {
-    Table,
-    Page,
-    Input,
-    Select,
-    Option,
-    Modal,
-    RadioGroup,
-    Radio,
-    InputNumber
-} from "view-design";
 import Research from "@components/basicinfo/developNewProductList/research";
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/basicinfo/developNewProducts/researchConfig";
@@ -86,15 +75,6 @@ import config from "@views/basicinfo/developNewProducts/researchConfig";
 export default {
     name: 'ResearchDevelopNewProducts',
     components: {
-        Table,
-        Page,
-        Input,
-        Select,
-        Option,
-        Modal,
-        RadioGroup,
-        Radio,
-        InputNumber,
         Research,
         ModalForm
     },

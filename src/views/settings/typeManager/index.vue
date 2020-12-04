@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-28 10:49:47
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 15:40:02
 -->
 <template>
 <div class="platformManager-container">
@@ -42,10 +42,6 @@
 </template>
 
 <script>
-import {
-    Divider,
-    FormItem
-} from "view-design";
 import TypeManagerList from "@components/settings/typeManager/typeManagerList";
 import TypeManagerTab from "@components/settings/typeManager/typeManagerTab";
 import config from "@views/settings/typeManager/typeManagerConfig";
@@ -62,8 +58,6 @@ export default {
         TypeManagerList,
         XForm,
         TypeManagerTab,
-        Divider,
-        FormItem
     },
     data() {
         return {

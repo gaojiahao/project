@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-28 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 11:39:05
+ * @LastEditTime: 2020-12-04 16:10:20
 -->
 <template>
 <div style="display:flex;">
@@ -22,10 +22,6 @@
 </template>
 
 <script>
-import {
-    Card,
-    Divider
-} from "view-design";
 export default {
     name: 'Quick',
     props: {
@@ -36,16 +32,6 @@ export default {
             }
         },
     },
-    computed: {
-
-    },
-    components: {
-        Card,
-        Divider
-    },
-    methods: {
-
-    }
 }
 </script>
 
