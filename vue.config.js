@@ -4,12 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-05 10:54:27
+ * @LastEditTime: 2020-12-05 12:07:43
  */
 const os = require('os');
 const path = require("path");
 const TerserPlugin = require("terser-webpack-plugin");
-const loader = require("sass-loader");
 const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
 const Happypack = require('happypack');
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length });
@@ -35,7 +34,7 @@ module.exports = {
       .use("iview")
       .loader("iview-loader")
       .options({ prefix: false })
-      .end();
+      .end()
       // config.module
       // .rule("js")
       // .exclude
@@ -141,14 +140,13 @@ module.exports = {
     Object.assign(config, {
       // 开发生产共同配置
       resolve: {
-        extensions: [".js", ".json", ".vue", ".scss", ".css", ".less"],
+        extensions: [".js", ".json", ".vue", ".css", ".less"],
         alias: {
           "@": path.resolve(__dirname, "./src"),
           "@assets": path.resolve(__dirname, "./src/assets"),
           "@components": path.resolve(__dirname, "./src/components"),
           "@service": path.resolve(__dirname, "./src/service"),
           "@views": path.resolve(__dirname, "./src/views"),
-          "@scss": path.resolve(__dirname, "./src/scss"),
           "@css": path.resolve(__dirname, "./src/css"),
           "@plugins": path.resolve(__dirname, "./src/plugins"),
           "@less": path.resolve(__dirname, "./src/less"),
@@ -184,9 +182,6 @@ module.exports = {
     sourceMap: false, // 开启 CSS source maps?
     // css预设器配置项
     loaderOptions: {
-      scss: {
-        prependData: `@import "@scss/base.scss";`
-      },
       less: {
         javascriptEnabled: true
       }

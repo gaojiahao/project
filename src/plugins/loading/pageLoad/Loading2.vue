@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: Gabriel.gaojiahao
  * @Date: 2019-03-25 10:56:56
- * @LastEditors: Gabriel.gaojiahao
- * @LastEditTime: 2019-12-11 17:06:41
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-05 11:04:59
  -->
 <template>
   <div class="loadding" v-show="show">
@@ -26,7 +26,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="less">
 .loadding {
   //加载动画
   top: 0;
@@ -37,13 +37,5 @@ export default {
   position: absolute;
   z-index: 9999;
   background: rgba(0, 0, 0, 0.1);
-  .vux-spinner {
-    top: 50%;
-    left: 50%;
-    @include loading_fill_color();
-    @include loading_stroke_color();
-    position: absolute;
-    transform: translate(-50%, -50%);
-  }
 }
 </style>

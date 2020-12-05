@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:30:56
+ * @LastEditTime: 2020-12-05 12:06:33
 -->
 <template>
 <div class="layout">
@@ -140,8 +140,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-@import "@scss/home/home";
+<style lang="less" scoped>
+@import "~@less/home/home.less";
 </style>
 <style scoped>
 .ivu-menu-vertical /deep/ .ivu-menu-submenu-title-icon {

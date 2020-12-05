@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:23:36
+ * @LastEditTime: 2020-12-05 11:03:39
 -->
 <template>
 <div class="head">
@@ -124,7 +124,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .item {
     float: left;
     padding: 0 20px;

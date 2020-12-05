@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: Gabriel.gaojiahao
  * @Date: 2019-03-25 10:56:56
- * @LastEditors: Gabriel.gaojiahao
- * @LastEditTime: 2019-12-12 10:16:01
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-05 11:03:55
  -->
 <template>
   <div class="loading-container" v-show="show">
@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 %center {
   position: absolute;
   top: 50%;

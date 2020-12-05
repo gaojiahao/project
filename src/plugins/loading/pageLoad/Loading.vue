@@ -4,7 +4,7 @@
  * @Author: Gabriel.gaojiahao
  * @Date: 2019-03-25 10:56:56
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-21 09:29:15
+ * @LastEditTime: 2020-12-05 11:04:07
  -->
 <template>
   <div class="loadding" v-show="show">
@@ -32,7 +32,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .loadding {
   //加载动画
   top: 0;

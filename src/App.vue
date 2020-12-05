@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-28 10:14:38
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-05 11:03:25
 -->
 <template>
 <div id="app" v-title data-title="跨境电商ERP">
@@ -93,7 +93,7 @@ export default {
     font-size: 24px;
 }
 </style>
-<style lang="scss">
+<style lang="less">
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

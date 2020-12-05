@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-21 16:56:06
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-26 17:50:22
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-05 11:03:47
 -->
 <template>
 <div class="break-container">
@@ -94,7 +94,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .break-container {
     width: 100%;
     display: inline-block;
