@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 16:28:25
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-04 19:03:41
  */
 export default {
     data() {
@@ -75,6 +75,11 @@ export default {
                 value: 'roleManager',
                 status: true,
                 auth: false,    
+              },
+              {
+                name: '模块管理',
+                value: 'moduleManager',
+                status: true,
               },
               {
                 name: '流程管理',

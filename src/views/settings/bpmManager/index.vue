@@ -4,11 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 19:59:03
+ * @LastEditTime: 2020-12-04 19:14:11
 -->
 <template>
 <router-view></router-view>
-</div>
 </template>
 
 <script>

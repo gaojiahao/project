@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:25:21
+ * @LastEditTime: 2020-12-04 19:52:46
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -34,6 +34,14 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
                 <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker> 
             </FormItem>
+            <!--单项选择器-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectorSingle'">
+                <SelectorSingle v-model="formValidate[index]" :config="formConfig[index]"></SelectorSingle>
+            </FormItem>
+            <!--多项选择器-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectorMulti'">
+                <SelectorMulti v-model="formValidate[index]" :config="formConfig[index]"></SelectorMulti>
+            </FormItem>
         </template>
         <!--<FormItem label="平台负责人1:" prop="chargeUserId">
             <Select v-model="formValidate.chargeUserId" :style="{width:'200px',float: 'left'}" clearable multiple filterable>
@@ -51,8 +59,14 @@
 </template>
 
 <script>
+import SelectorSingle from '@components/public/xSelect/selectorSingle'
+import SelectorMulti from '@components/public/xSelect/selectorMulti'
 export default {
     name: 'ModalForm',
+    components: {
+        SelectorSingle,
+        SelectorMulti
+    },
     props: {
         titleText: {
             type: String,
