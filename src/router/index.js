@@ -4,97 +4,18 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 14:22:09
+ * @LastEditTime: 2020-12-05 10:37:58
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Index from "@views/home/index";
-import Login from "@views/Login.vue";
-import Home from "@views/Home.vue";
 import tokenService from "@service/tokenService";
-import errorHandler from '@components/public/errorHandler';
-//系统设置
-import Settings from "@views/settings/index";
-import TypeManager from "@views/settings/typeManager/index";
-import PropertyManager from "@views/settings/propertyManager/index";
-import BrandManager from "@views/settings/brandManager/index";
-import PlatformManager from "@views/settings/platformManager/platformManager";
-import StoreManager from "@views/settings/storeManager";
-import StoreList from "@views/settings/storeManager/storeList";
-import AddStore from "@views/settings/storeManager/addStore";
-import MenuManager from "@views/settings/menuManager/menuManager";
-import RoleManager from "@views/settings/roleManager/roleManager";
-import UserManager from "@views/settings/userManager/userManager";
-import MakePicManager from "@views/settings/makePicManager/index";
-import Bpm from "@views/settings/bpmManager/index";
-import SaveBpm from "@views/settings/bpmManager/saveBpm";
-import SaveBpm2 from "@views/settings/bpmManager/saveBpm2";
-import UpdataBpm from "@views/settings/bpmManager/updataBpm";
-import BpmManager from "@views/settings/bpmManager/bpmManager";
-// import AddBpm from "@views/settings/bpmManager/addBpm";
-//基础设置
-import Basicinfo from "@views/basicinfo/index";
-import DevelopNewProducts from "@views/basicinfo/developNewProducts/index";
-import DevelopNewProductsList from "@views/basicinfo/developNewProducts/developNewProductsList";
-import ResearchDevelopNewProducts from "@views/basicinfo/developNewProducts/researchDevelopNewProducts";
-import AddNewProduct from "@views/basicinfo/developNewProducts/addNewProduct";
-import ViewNewProduct from "@views/basicinfo/developNewProducts/viewNewProduct";
-import CustomerManager from "@views/basicinfo/customerManager";
-import ProductManager from "@views/basicinfo/productManager/index";
-import ProductList from "@views/basicinfo/productManager/productList";
-import ViewResearch from "@views/basicinfo/productManager/viewResearch";
-import CustomerList from "@views/basicinfo/customerManager/customerList";
-import AddCustomer from "@views/basicinfo/customerManager/addCustomer";
-import ViewCustomer from "@views/basicinfo/customerManager/viewCustomer";
-import SupplierManager from "@views/basicinfo/supplierManager";
-import SupplierList from "@views/basicinfo/supplierManager/supplierList";
-import AddSupplier from "@views/basicinfo/supplierManager/addSupplier";
-import ViewSupplier from "@views/basicinfo/supplierManager/viewSupplier";
-//销售管理
-import Sell from "@views/sell/index";
-import SellManager from "@views/sell/sellManager/index";
-import SellList from "@views/sell/sellManager/sellList";
-import AddFinishProduct from "@views/sell/sellManager/addFinishProduct";
-import MainResearch from "@views/sell/mainResearch";
-import MainResearchList from "@views/sell/mainResearch/mainResearchList";
-import ResearchResult from "@views/sell/mainResearch/researchResult/index";
-import ResearchResultList from "@views/sell/mainResearch/researchResult/researchResult";
-import Research from "@views/sell/mainResearch/research";
-import ReferenceComparison from "@views/sell/mainResearch/researchResult/referenceComparison";
-import SelectionManager from "@views/sell/selectionManager/index";
-import SelectionManagerList from "@views/sell/selectionManager/selectionManagerList";
-import SelectionResultList from "@views/sell/selectionManager/selectionResultList";
-//审核管理
-import Examine from "@views/examine/index";
-import AppointStoreExamine from "@views/examine/appointStoreExamine/index";
-import AppointStoreExamineList from "@views/examine/appointStoreExamine/appointStoreExamineList";
-import ProductAppointStore from "@views/examine/appointStoreExamine/productAppointStore";
-import TortExamine from "@views/examine/tortExamine/index";
-import TortExamineList from "@views/examine/tortExamine/tortExamineList";
-import AddTortExamine from "@views/examine/tortExamine/addTortExamine";
-import ViewTortExamine from "@views/examine/tortExamine/viewTortExamine";
-import SelectionExamine from "@views/examine/selectionExamine/index";
-import SelectionExamineList from "@views/examine/selectionExamine/selectionExamineList";
-import AddSelectionExamine from "@views/examine/selectionExamine/addSelectionExamine";
-import ViewSelectionExamine from "@views/examine/selectionExamine/viewSelectionExamine";
-import MainResearchExamine from "@views/examine/mainResearchExamine/index";
-import MainResearchExamineList from "@views/examine/mainResearchExamine/mainResearchExamineList";
-import ChartingExamine from "@views/examine/chartingExamine/index";
-import ChartingExamineList from "@views/examine/chartingExamine/chartingExamineList";
-//制图管理
-import Charting from "@views/charting/index";
-import ChartingDelegation from "@views/charting/chartingDelegation";
-import ChartingManager from "@views/charting/chartingManager";
-import ChartingTimeExchange from "@views/charting/chartingTimeExchange";
-import ChartingRework from "@views/charting/chartingRework";
-
 Vue.use(VueRouter);
 
 const routes = [
   { 
     path: '/', 
     name: "Home",
-    component: Home,
+    component: resolve=>(require(["@views/Home"],resolve)),
     redirect:'index',   //默认子路由
     meta: {
       title: "小竹熊",
@@ -104,7 +25,7 @@ const routes = [
       {
         path: "index",
         name: "index",
-        component: Index,
+        component: resolve=>(require(["@views/home/index"],resolve)),
         meta: {
           title: "首页",
           group: "index",
@@ -113,7 +34,7 @@ const routes = [
       {
         path: "settings",
         name: "settings",
-        component: Settings,
+        component: resolve=>(require(["@views/settings/index"],resolve)),
         redirect:'settings/platformManager',   //默认子路由
         meta: {
           title: "系统设置",
@@ -122,8 +43,8 @@ const routes = [
         children:[
           {
             path: "platformManager",
-            name: "PlatformManager",
-            component: PlatformManager,
+            name: "platformManager",
+            component: resolve=>(require(["@views/settings/platformManager/platformManager"],resolve)),
             meta: {
               title: "平台管理",
               group: "platformManager",
@@ -132,7 +53,7 @@ const routes = [
           {
             path: "storeManager",
             name: "storeManager",
-            component: StoreManager,
+            component: resolve=>(require(["@views/settings/storeManager"],resolve)),
             redirect:'storeManager/storeList',   //默认子路由
             meta: {
               title: "店铺管理",
@@ -142,7 +63,7 @@ const routes = [
               {
                 path: "storeList",
                 name: "StoreList",
-                component: StoreList,
+                component: resolve=>(require(["@views/settings/storeManager/storeList"],resolve)),
                 meta: {
                   title: "店铺管理",
                   group: "storeManager",
@@ -152,7 +73,7 @@ const routes = [
               {
                 path: "addStore",
                 name: "AddStore",
-                component: AddStore,
+                component: resolve=>(require(["@views/settings/storeManager/addStore"],resolve)),
                 meta: {
                   title: "添加店铺",
                   group: "storeManager",
@@ -164,7 +85,7 @@ const routes = [
           {
             path: "typeManager",
             name: "typeManager",
-            component: TypeManager,
+            component: resolve=>(require(["@views/settings/typeManager/index"],resolve)),
             meta: {
               title: "分类管理",
               group: "typeManager",
@@ -173,7 +94,7 @@ const routes = [
           {
             path: "propertyManager",
             name: "propertyManager",
-            component: PropertyManager,
+            component: resolve=>(require(["@views/settings/propertyManager/index"],resolve)),
             meta: {
               title: "属性管理",
               group: "propertyManager",
@@ -182,7 +103,7 @@ const routes = [
           {
             path: "brandManager",
             name: "brandManager",
-            component: BrandManager,
+            component: resolve=>(require(["@views/settings/brandManager/index"],resolve)),
             meta: {
               title: "品牌管理",
               group: "brandManager",
@@ -191,7 +112,7 @@ const routes = [
           {
             path: "makePicManager",
             name: "makePicManager",
-            component: MakePicManager,
+            component: resolve=>(require(["@views/settings/makePicManager/index"],resolve)),
             meta: {
               title: "制图管理",
               group: "makePicManager",
@@ -200,7 +121,7 @@ const routes = [
           {
             path: "menuManager",
             name: "menuManager",
-            component: MenuManager,
+            component: resolve=>(require(["@views/settings/menuManager/menuManager"],resolve)),
             meta: {
               title: "菜单管理",
               group: "menuManager",
@@ -209,7 +130,7 @@ const routes = [
           {
             path: "userManager",
             name: "userManager",
-            component: UserManager,
+            component: resolve=>(require(["@views/settings/userManager/userManager"],resolve)),
             meta: {
               title: "用户管理",
               group: "userManager",
@@ -218,16 +139,48 @@ const routes = [
           {
             path: "roleManager",
             name: "roleManager",
-            component: RoleManager,
+            component: resolve=>(require(["@views/settings/roleManager/roleManager"],resolve)),
             meta: {
               title: "角色管理",
               group: "roleManager",
             },
           },
           {
+            path:"moduleManager",
+            name:"moduleManager",
+            component: resolve=>(require(["@views/settings/moduleManager/index"],resolve)),
+            meta:{
+              title: "模块管理",
+              group: "moduleManager"
+            },
+            redirect:'moduleManager/moduleManagerList',
+            children:[
+              {
+                path:"moduleManagerList",
+                name:"moduleManagerList",
+                component: resolve=>(require(["@views/settings/moduleManager/moduleManagerList"],resolve)),
+                meta:{
+                  title: "模块管理",
+                  group: "moduleManager",
+                  level: 1,
+                },  
+              },
+              {
+                path:"addModule",
+                name:"addModule",
+                component: resolve=>(require(["@views/settings/moduleManager/addModule"],resolve)),
+                meta:{
+                  title: "新增模块",
+                  group: "moduleManager",
+                  level: 2,
+                },  
+              }
+            ]
+          },
+          {
             path: "bpm",
             name: "bpm",
-            component: Bpm,
+            component: resolve=>(require(["@views/settings/bpmManager/index"],resolve)),
             meta: {
               title: "流程管理",
               group: "bpm",
@@ -242,7 +195,7 @@ const routes = [
                   group: "bpmManager",
                   level: 1,
                 },
-                component: BpmManager
+                component: resolve=>(require(["@views/settings/bpmManager/bpmManager"],resolve)),
               },
               {
                 path: 'saveBpm',
@@ -252,7 +205,7 @@ const routes = [
                   group: "saveBpm",
                   level: 2,
                 },
-                component: SaveBpm
+                component: resolve=>(require(["@views/settings/bpmManager/saveBpm"],resolve)),
               },
               {
                 path: 'saveBpm2',
@@ -261,7 +214,7 @@ const routes = [
                   title:'新建流程',
                   group: "saveBpm2",
                 },
-                component: SaveBpm2
+                component: resolve=>(require(["@views/settings/bpmManager/saveBpm2"],resolve)),
               },
               {
                 path: 'updataBpm',
@@ -271,7 +224,7 @@ const routes = [
                   group: "updataBpm",
                   level: 2,
                 },
-                component: UpdataBpm
+                component: resolve=>(require(["@views/settings/bpmManager/updataBpm"],resolve)),
               },
               // {
               //   path: 'addBpm',
@@ -290,7 +243,7 @@ const routes = [
       {
         path: "basicinfo",
         name: "basicinfo",
-        component: Basicinfo,
+        component: resolve=>(require(["@views/basicinfo/index"],resolve)),
         redirect:'basicinfo/developNewProducts',   //默认子路由
         meta: {
           title: "基础设置",
@@ -304,7 +257,7 @@ const routes = [
               title:'开发新品',
               group: "developNewProducts",
             },
-            component: DevelopNewProducts,
+            component: resolve=>(require(["@views/basicinfo/developNewProducts/index"],resolve)),
             redirect:'developNewProducts/developNewProductsList',
             children:[
               {
@@ -315,7 +268,7 @@ const routes = [
                   group: "developNewProducts",
                   level: 1,
                 },
-                component: DevelopNewProductsList
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/developNewProductsList"],resolve)),
               },
               {
                 path: 'addNewProduct',
@@ -325,7 +278,7 @@ const routes = [
                   group: "developNewProducts",
                   level: 2,
                 },
-                component: AddNewProduct
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/addNewProduct"],resolve)),
               },
               {
                 path: 'viewNewProduct',
@@ -335,12 +288,12 @@ const routes = [
                   group: "developNewProducts",
                   level: 2,
                 },
-                component: ViewNewProduct,
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/viewNewProduct"],resolve)),
               },
               {
                 path:"viewResearch",
                 name:"viewResearch",
-                component: ViewResearch,
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/viewResearch"],resolve)),
                 meta: {
                   title: "查看调研",
                   group: "developNewProducts",
@@ -355,14 +308,14 @@ const routes = [
                   group: "developNewProducts",
                   level: 2,
                 },
-                component: ResearchDevelopNewProducts
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/researchDevelopNewProducts"],resolve)),
               },
             ]
           },
           {
             path:"productManager",
             name:"productManager",
-            component: ProductManager,
+            component: resolve=>(require(["@views/basicinfo/productManager/index"],resolve)),
             meta: {
               title: "产品管理",
               group: "productManager",
@@ -372,7 +325,7 @@ const routes = [
               {
                 path:"productList",
                 name:"productList",
-                component: ProductList,
+                component: resolve=>(require(["@views/basicinfo/productManager/productList"],resolve)),
                 meta: {
                   title: "产品管理",
                   group: "productManager",
@@ -392,7 +345,7 @@ const routes = [
               {
                 path:"viewResearch",
                 name:"viewResearch",
-                component: ViewResearch,
+                component: resolve=>(require(["@views/basicinfo/productManager/viewResearch"],resolve)),
                 meta: {
                   title: "查看调研",
                   group: "productManager",
@@ -408,7 +361,7 @@ const routes = [
               title:'供应商管理',
               group: "supplierManager",
             },
-            component: SupplierManager,
+            component: resolve=>(require(["@views/basicinfo/supplierManager/index"],resolve)),
             redirect:'supplierManager/supplierList',
             children:[
               {
@@ -419,7 +372,7 @@ const routes = [
                   group: "supplierManager",
                   level: 1,
                 },
-                component: SupplierList,
+                component: resolve=>(require(["@views/basicinfo/supplierManager/supplierList"],resolve)),
               },
               {
                 path: 'addSupplier',
@@ -429,7 +382,7 @@ const routes = [
                   group: "supplierManager",
                   level: 2,
                 },
-                component: AddSupplier,
+                component: resolve=>(require(["@views/basicinfo/supplierManager/addSupplier"],resolve)),
               }, 
               {
                 path: 'viewSupplier',
@@ -439,7 +392,7 @@ const routes = [
                   group: "supplierManager",
                   level: 2,
                 },
-                component: ViewSupplier,
+                component: resolve=>(require(["@views/basicinfo/supplierManager/viewSupplier"],resolve)),
               },
             ]
           },
@@ -450,7 +403,7 @@ const routes = [
               title:'客户管理',
               group: "customerManager",
             },
-            component: CustomerManager,
+            component: resolve=>(require(["@views/basicinfo/customerManager/index"],resolve)),
             redirect:'customerManager/customerList',
             children:[
               {
@@ -461,7 +414,7 @@ const routes = [
                   group: "customerList",
                   level: 1,
                 },
-                component: CustomerList,
+                component: resolve=>(require(["@views/basicinfo/customerManager/customerList"],resolve)),
               },
               {
                 path: 'addCustomer',
@@ -471,7 +424,7 @@ const routes = [
                   group: "addCustomer",
                   level: 2,
                 },
-                component: AddCustomer,
+                component: resolve=>(require(["@views/basicinfo/customerManager/addCustomer"],resolve)),
               }, 
               {
                 path: 'viewCustomer',
@@ -481,7 +434,7 @@ const routes = [
                   group: "viewCustomer",
                   level: 2,
                 },
-                component: ViewCustomer,
+                component: resolve=>(require(["@views/basicinfo/customerManager/viewCustomer"],resolve)),
               },
             ]
           },
@@ -494,7 +447,7 @@ const routes = [
           title:'销售管理',
           group: "sell",
         },
-        component: Sell,
+        component: resolve=>(require(["@views/sell/index"],resolve)),
         redirect:'sell/selectionManager',
         children:[
           {
@@ -505,7 +458,7 @@ const routes = [
               title:'选品管理',
               group: "selectionManager",
             },
-            component: SelectionManager,
+            component: resolve=>(require(["@views/sell/selectionManager/index"],resolve)),
             children:[{
               path: 'selectionManagerList',
               name: 'SelectionManagerList',
@@ -513,7 +466,7 @@ const routes = [
                 title:'选品管理',
                 group: "selectionManager",
               },
-              component:SelectionManagerList
+              component: resolve=>(require(["@views/sell/selectionManager/selectionManagerList"],resolve)),
              },
              {
               path: 'selectionResultList',
@@ -522,7 +475,7 @@ const routes = [
                 title:'选品结果',
                 group: "selectionResultList",
               },
-              component:SelectionResultList
+              component: resolve=>(require(["@views/sell/selectionManager/selectionResultList"],resolve)),
              }
             ]
           },
@@ -534,7 +487,7 @@ const routes = [
               title:'销售推品列表',
               group: "sellManager",
             },
-            component: SellManager,
+            component: resolve=>(require(["@views/sell/sellManager/index"],resolve)),
             children:[
               {
                 path: 'sellList',
@@ -543,7 +496,7 @@ const routes = [
                   title:'销售推品列表',
                   group: "sellList",
                 },
-                component: SellList
+                component: resolve=>(require(["@views/sell/sellManager/sellList"],resolve)),
               },
               {
                 path: 'addFinishProduct',
@@ -552,7 +505,7 @@ const routes = [
                   title:'新建新品',
                   group: "addFinishProduct",
                 },
-                component: AddFinishProduct
+                component: resolve=>(require(["@views/sell/sellManager/addFinishProduct"],resolve)),
               },
             ]
           },
@@ -563,7 +516,7 @@ const routes = [
               title:'主推调研',
               group: "mainResearch",
             },
-            component: MainResearch,
+            component: resolve=>(require(["@views/sell/mainResearch"],resolve)),
             redirect:'mainResearch/mainResearchList',
             children:[
               {
@@ -574,7 +527,7 @@ const routes = [
                   group: "mainResearch",
                   level: 1,
                 },
-                component: MainResearchList,
+                component: resolve=>(require(["@views/sell/mainResearch/mainResearchList"],resolve)),
               },
               {
                 path: 'research',
@@ -584,7 +537,7 @@ const routes = [
                   group: "mainResearch",
                   level: 2,
                 },
-                component: Research,
+                component: resolve=>(require(["@views/sell/mainResearch/research"],resolve)),
               },
               {
                 path: 'researchResult',
@@ -593,7 +546,7 @@ const routes = [
                   title:'调研结果',
                   group: "mainResearch",
                 },
-                component: ResearchResult,
+                component: resolve=>(require(["@views/sell/mainResearch/researchResult/index"],resolve)),
                 redirect:'researchResult/researchResultList',
                 children:[
                   {
@@ -604,7 +557,7 @@ const routes = [
                       group: "researchResult",
                       level: 1,
                     },
-                    component: ResearchResultList,
+                    component: resolve=>(require(["@views/sell/mainResearch/researchResult/researchResult"],resolve)),
                   },
                   {
                     path: 'referenceComparison',
@@ -614,7 +567,7 @@ const routes = [
                       group: "researchResult",
                       level: 2,
                     },
-                    component: ReferenceComparison,
+                    component: resolve=>(require(["@views/sell/mainResearch/researchResult/referenceComparison"],resolve)),
                   },   
                 ]
               } 
@@ -629,7 +582,7 @@ const routes = [
           title:'审核管理',
           group: 'examine',
         },
-        component: Examine,
+        component: resolve=>(require(["@views/examine/index"],resolve)),
         redirect:'examine/appointStoreExamine',
         children:[
           {
@@ -639,7 +592,7 @@ const routes = [
               title:'派店审核',
               group: 'appointStoreExamine',
             },
-            component: AppointStoreExamine,
+            component: resolve=>(require(["@views/examine/appointStoreExamine/index"],resolve)),
             redirect:'appointStoreExamine/appointStoreExamineList',
             children:[
               {
@@ -650,7 +603,7 @@ const routes = [
                   group: 'appointStoreExamine',
                   level: 1,
                 },
-                component: AppointStoreExamineList,
+                component: resolve=>(require(["@views/examine/appointStoreExamine/appointStoreExamineList"],resolve)),
               },
               {
                 path: 'productAppointStore',
@@ -660,7 +613,7 @@ const routes = [
                   group: 'appointStoreExamine',
                   level: 2,
                 },
-                component: ProductAppointStore,
+                component: resolve=>(require(["@views/examine/appointStoreExamine/productAppointStore"],resolve)),
               }
             ]
           },
@@ -671,7 +624,7 @@ const routes = [
               title:'侵权审核',
               group: 'tortExamine',
             },
-            component: TortExamine,
+            component: resolve=>(require(["@views/examine/tortExamine/index"],resolve)),
             redirect:'tortExamine/tortExamineList',
             children:[
               {
@@ -682,7 +635,7 @@ const routes = [
                   group: 'tortExamine',
                   level: 1,
                 },
-                component: TortExamineList,
+                component: resolve=>(require(["@views/examine/tortExamine/tortExamineList"],resolve)),
               },
               {
                 path: 'addTortExamine',
@@ -692,7 +645,7 @@ const routes = [
                   group: 'tortExamine',
                   level: 2,
                 },
-                component: AddTortExamine,
+                component: resolve=>(require(["@views/examine/tortExamine/addTortExamine"],resolve)),
               },
               {
                 path: 'viewTortExamine',
@@ -702,7 +655,7 @@ const routes = [
                   group: 'tortExamine',
                   level: 2,
                 },
-                component: ViewTortExamine,
+                component: resolve=>(require(["@views/examine/tortExamine/viewTortExamine"],resolve)),
               },
               // {
               //   path:"viewResearch",
@@ -723,7 +676,7 @@ const routes = [
               title:'选品审核',
               group: 'selectionExamine',
             },
-            component: SelectionExamine,
+            component: resolve=>(require(["@views/examine/selectionExamine/index"],resolve)),
             redirect:'selectionExamine/selectionExamineList',
             children:[
               {
@@ -734,7 +687,7 @@ const routes = [
                   group: 'selectionExamine',
                   level: 1,
                 },
-                component: SelectionExamineList,
+                component: resolve=>(require(["@views/examine/selectionExamine/selectionExamineList"],resolve)),
               },
               {
                 path: 'addSelectionExamine',
@@ -744,7 +697,7 @@ const routes = [
                   group: 'selectionExamine',
                   level: 2,
                 },
-                component: AddSelectionExamine,
+                component: resolve=>(require(["@views/examine/selectionExamine/addSelectionExamine"],resolve)),
               },
               {
                 path: 'viewSelectionExamine',
@@ -754,7 +707,7 @@ const routes = [
                   group: 'selectionExamine',
                   level: 2,
                 },
-                component: ViewSelectionExamine,
+                component: resolve=>(require(["@views/examine/selectionExamine/viewSelectionExamine"],resolve)),
               },
             ]
           },
@@ -765,7 +718,7 @@ const routes = [
               title:'主推审核',
               group: 'mainResearchExamine',
             },
-            component: MainResearchExamine,
+            component: resolve=>(require(["@views/examine/mainResearchExamine/index"],resolve)),
             redirect:'mainResearchExamine/mainResearchExamineList',
             children:[
               {
@@ -775,7 +728,7 @@ const routes = [
                   title:'主推审核列表',
                   group: 'mainResearchExamine',
                 },
-                component: MainResearchExamineList,
+                component: resolve=>(require(["@views/examine/mainResearchExamine/mainResearchExamineList"],resolve)),
               },
             ]
           },
@@ -786,7 +739,7 @@ const routes = [
               title:'制图审核',
               group: 'chartingExamine',
             },
-            component: ChartingExamine,
+            component: resolve=>(require(["@views/examine/chartingExamine/index"],resolve)),
             redirect:'chartingExamine/chartingExamineList',
             children:[
               {
@@ -796,7 +749,7 @@ const routes = [
                   title:'制图审核列表',
                   group: 'chartingExamine',
                 },
-                component: ChartingExamineList,
+                component: resolve=>(require(["@views/examine/chartingExamine/chartingExamineList"],resolve)),
               },
             ]
           }
@@ -809,7 +762,7 @@ const routes = [
           title:'制图管理',
           group: 'charting',
         },
-        component: Charting,
+        component: resolve=>(require(["@views/charting/index"],resolve)),
         redirect:'charting/chartingDelegation',
         children:[
           {
@@ -819,7 +772,7 @@ const routes = [
               title:'制图委派',
               group: 'chartingDelegation',
             },
-            component: ChartingDelegation,
+            component: resolve=>(require(["@views/charting/chartingDelegation"],resolve)),
           },
           {
             path: 'chartingTimeExchange',
@@ -828,7 +781,7 @@ const routes = [
               title:'制图时间调换',
               group: 'chartingTimeExchange',
             },
-            component: ChartingTimeExchange,
+            component: resolve=>(require(["@views/charting/chartingTimeExchange"],resolve)),
           },
           {
             path: 'chartingRework',
@@ -837,7 +790,7 @@ const routes = [
               title:'制图返工',
               group: 'chartingRework',
             },
-            component: ChartingRework,
+            component: resolve=>(require(["@views/charting/chartingRework"],resolve)),
           },
           {
             path: 'chartingManager',
@@ -846,7 +799,7 @@ const routes = [
               title:'制图管理',
               group: 'chartingManager',
             },
-            component: ChartingManager,
+            component: resolve=>(require(["@views/charting/chartingManager"],resolve)),
           } 
         ]
       }
@@ -855,7 +808,7 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: resolve=>(require(["@views/Login"],resolve)),
     meta: {
       title: "登录"
     }
@@ -863,7 +816,7 @@ const routes = [
   {
     path: "*",
     name: "/errorHandler",
-    component: errorHandler,
+    component: resolve=>(require(['@components/public/errorHandler'],resolve)),
     meta: {
       title: "页面出错"
     }

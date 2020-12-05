@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 17:55:46
+ * @LastEditTime: 2020-12-05 10:54:27
  */
 const os = require('os');
 const path = require("path");
@@ -13,27 +13,10 @@ const loader = require("sass-loader");
 const IS_PROD = ["production", "prod"].includes(process.env.NODE_ENV);
 const Happypack = require('happypack');
 const happyThreadPool = Happypack.ThreadPool({ size: os.cpus().length });
+const CompressionWebpackPlugin = require('compression-webpack-plugin');
 let proxyConfig = require("./config/proxyConfig");
-
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
-
 const publicPath = "Rose";
-const compress = new CompressionWebpackPlugin(
-  {
-    filename: info => {
-      return `${info.path}.gz${info.query}`
-    },
-    algorithm: 'gzip', 
-    threshold: 10240,
-    test: new RegExp(
-      '\\.(' +
-      ['js'].join('|') +
-      ')$'
-    ),
-    minRatio: 0.8,
-    deleteOriginalAssets: false
-  }
- )
+
 module.exports = {
   publicPath: `/${publicPath}`, // 基本路径`/${publicPath}`
   outputDir: "dist", // 输出文件目录
@@ -53,15 +36,6 @@ module.exports = {
       .loader("iview-loader")
       .options({ prefix: false })
       .end();
-      config.module
-      .rule('js')
-      .test(/\.js$/)
-        .include
-        .add(path.resolve('src'))
-        .end()
-      .use('cache-loader', 'babel-loader')
-      .loader('cache-loader', 'babel-loader')
-      .end()
       // config.module
       // .rule("js")
       // .exclude
@@ -86,38 +60,84 @@ module.exports = {
     if (process.env.NODE_ENV === "production") {
       // 为生产环境修改配置...
       config.mode = "production";
-      // config.plugins.push(compress);
-      // config.optimization= {
-      //   minimize: true,
-      //   minimizer: [
-      //     new TerserPlugin({
-      //       parallel: true,
-      //       exclude: /node_modules/,
-      //       terserOptions: {
-      //         ecma: undefined,
-      //         warnings: false,
-      //         parse: {},
-      //         compress: {
-      //           drop_console: true,
-      //           drop_debugger: false,
-      //           pure_funcs: ['console.log'], // 移除console
-      //         },
-      //       },
-      //     }
-      //   )],
-      // };
+      config.optimization= {
+        minimize: true,
+        minimizer: [
+          new TerserPlugin({
+            parallel: true,
+            exclude: /node_modules/,
+            terserOptions: {
+              ecma: undefined,
+              warnings: false,
+              parse: {},
+              compress: {
+                drop_console: true,
+                drop_debugger: false,
+                pure_funcs: ['console.log'], // 移除console
+              },
+            },
+          }
+        )],
+      };
+      //gzip压缩
+      const productionGzipExtensions = ['html', 'js', 'css']
+      config.plugins.push(
+          new CompressionWebpackPlugin({
+              filename: '[path].gz[query]',
+              algorithm: 'gzip',
+              test: new RegExp(
+                  '\\.(' + productionGzipExtensions.join('|') + ')$'
+              ),
+              threshold: 10240, // 只有大小大于该值的资源会被处理 10240
+              minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
+              deleteOriginalAssets: false // 删除原文件
+          })
+      );
+      config.optimization = {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    chunks: 'all',
+                    test: /node_modules/,
+                    name: 'vendor',
+                    minChunks: 1,
+                    maxInitialRequests: 5,
+                    minSize: 0,
+                    priority: 100
+                },
+                common: {
+                    chunks: 'all',
+                    test: /[\\/]src[\\/]js[\\/]/,
+                    name: 'common',
+                    minChunks: 2,
+                    maxInitialRequests: 5,
+                    minSize: 0,
+                    priority: 60
+                },
+                styles: {
+                    name: 'styles',
+                    test: /\.(sa|sc|c)ss$/,
+                    chunks: 'all',
+                    enforce: true
+                },
+                runtimeChunk: {
+                    name: 'manifest'
+                }
+            }
+        }
+      }
     } else {
       // 为开发环境修改配置...
       config.mode = "development";
+      config.plugins.push(
+        new Happypack({
+          loaders: ['babel-loader'],
+          //threads: 5, // 线程数取决于你电脑性能的好坏，好的电脑建议开更多线程
+          threadPool: happyThreadPool,
+          verbose: true,
+        })
+      );
     }
-    // config.plugins.push(
-    //   new Happypack({
-    //     loaders: ['babel-loader'],
-    //     //threads: 5, // 线程数取决于你电脑性能的好坏，好的电脑建议开更多线程
-    //     threadPool: happyThreadPool,
-    //     verbose: true,
-    //   })
-    // );
     Object.assign(config, {
       // 开发生产共同配置
       resolve: {
@@ -190,14 +210,6 @@ module.exports = {
         changOrigin: true, //允许跨域
         pathRewrite: {
           "^/api": "/api" //请求的时候使用这个api就可以
-        }
-      },
-      "/posts": {
-        target: "http://jsonplaceholder.typicode.com", //这里后台的地址模拟的;应该填写你们真实的后台接口
-        //ws: true,
-        changOrigin: true, //允许跨域
-        pathRewrite: {
-          "^/posts": "/posts" //请求的时候使用这个api就可以
         }
       }
     }
