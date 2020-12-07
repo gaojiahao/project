@@ -1,5 +1,4 @@
 <template>
-<!--<li class="ivu-menu-submenu" :class="[ opened&&(activeMenu==parentItem.oneLevel.value) ? 'ivu-menu-opened':'']">-->
 <li class="ivu-menu-submenu" :class="[ activeMenu ? 'ivu-menu-opened':'ivu-menu-submenu-color']">
     <div class="ivu-menu-submenu-title" @click="clickMenu(parentItem&&parentItem.oneLevel,item)" v-if="item&&item.status">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
@@ -125,7 +124,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .ivu-menu-opened {
     color: #FFFFFF;
     background: #447ED9;
@@ -155,7 +153,10 @@ export default {
     cursor: pointer;
     z-index: 1;
     transition: all 0.2s ease-in-out;
-    text-align: left;
+    text-align: center;
+}
+.ivu-menu-submenu-title > i, .ivu-menu-submenu-title span > i {
+    margin-right: 0;
 }
 .ivu-icon /deep/ {
     vertical-align: middle;
