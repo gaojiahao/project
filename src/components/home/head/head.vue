@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-05 11:03:39
+ * @LastEditTime: 2020-12-07 09:22:55
 -->
 <template>
 <div class="head">
@@ -137,6 +137,7 @@ export default {
 
     img {
         width: 30px;
+        vertical-align: middle;
     }
 }
 .active {
@@ -158,6 +159,7 @@ export default {
 
     img {
         width: 30px;
+        vertical-align: middle;
     }
 }
 .right-title {

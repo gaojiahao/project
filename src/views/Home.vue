@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-05 12:06:33
+ * @LastEditTime: 2020-12-07 10:19:24
 -->
 <template>
 <div class="layout">
@@ -142,16 +142,18 @@ export default {
 
 <style lang="less" scoped>
 @import "~@less/home/home.less";
-</style>
-<style scoped>
-.ivu-menu-vertical /deep/ .ivu-menu-submenu-title-icon {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-}
->>>.ivu-layout-header {
-    height: 54px;
-    line-height: 54px;
-}
+.layout /deep/
+    .ivu-layout-header {
+        height: 54px;
+        line-height: 54px;
+        padding: 0;
+    }
+.layout /deep/
+    .ivu-menu-vertical /deep/ 
+    .ivu-menu-submenu-title-icon {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+    }
 </style>
