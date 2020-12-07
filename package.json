@@ -4,16 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "node --max_old_space_size=10240 node_modules/@vue/cli-service/bin/vue-cli-service.js serve",
-    "serve": "node --max_old_space_size=4096 vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "node --max_old_space_size=10240 vue-cli-service serve",
+    "build": "npx --max_old_space_size=10240 vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@liripeng/vue-audio-player": "^1.0.7",
     "core-js": "^3.6.5",
-    "cross-env": "^7.0.2",
     "flyio": "^0.6.14",
-    "increase-memory-limit": "^1.0.7",
     "less-loader": "^5.0.0",
     "lodash": "^4.17.20",
     "register-service-worker": "^1.7.1",
