@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-05 10:37:58
+ * @LastEditTime: 2020-12-07 17:49:22
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -173,6 +173,26 @@ const routes = [
                   title: "新增模块",
                   group: "moduleManager",
                   level: 2,
+                },  
+              },
+              {
+                path:"addFomConfig",
+                name:"addFomConfig",
+                component: resolve=>(require(["@views/settings/moduleManager/addFomConfig"],resolve)),
+                meta:{
+                  title: "表单视图",
+                  group: "moduleManager",
+                  level: 2,
+                },  
+              },
+              {
+                path:"setFomConfig",
+                name:"setFomConfig",
+                component: resolve=>(require(["@views/settings/moduleManager/setFomConfig"],resolve)),
+                meta:{
+                  title: "表单配置",
+                  group: "moduleManager",
+                  level: 3,
                 },  
               }
             ]

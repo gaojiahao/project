@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:28:00
+ * @LastEditTime: 2020-12-07 10:39:02
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
@@ -18,6 +18,9 @@
             <span>{{titleText}}</span>
             <Icon type="ios-expand" @click.native="fullModel()" class="ivu-modal-full" />
         </p>
+        <div style="">
+            <Input search enter-button placeholder="" size="small" style="width: 200px"/>
+        </div>
         <Table border ref="selection" :columns="columns" :data="data" stripe style="margin-top:20px" highlight-row @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel">
             <template slot-scope="{ row }" slot="number">
                 <strong>{{ row.userName }}</strong>

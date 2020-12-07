@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 20:10:30
+ * @LastEditTime: 2020-12-07 11:24:17
 -->
 <template>
 <div class="storeManager-container">
@@ -24,7 +24,8 @@
     <div>
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">表单视图</Button>
+                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="goConfig(row)">表单视图</Button>
+                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="goConfig(row)">列表视图</Button>
                 <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">关联流程</Button>
             </template>
         </Table>
@@ -167,7 +168,7 @@ export default {
                     title: '操作',
                     slot: 'action',
                     align: 'center',
-                    width: 300
+                    width: 310
                 }
             ];
             return columns;
@@ -200,10 +201,13 @@ export default {
 
             }
             return data;
+        },
+        goConfig(row){
+            this.$router.push({name:'addFomConfig',params: {id:row.id||'1',name:row.name}});
         }
     },
     created(){
-
+        
     }
 }
 </script>

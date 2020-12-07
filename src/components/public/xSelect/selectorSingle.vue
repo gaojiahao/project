@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:28:07
+ * @LastEditTime: 2020-12-07 10:38:47
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
-    <div class="ivu-input-wrapper" style="width: 200px; float: left;">
+    <div class="ivu-input-wrapper" style="width: 200px; float: left;line-height:32px">
         <input type="text" :placeholder="[isCheck ? '':placeholder]" class="ivu-input " disabled :value="name">
     </div>
     <Icon type="md-add-circle" style="color: green; font-size:24px;vertical-align: middle;" @click.native="showModel()" v-if="!disabled"/>
@@ -18,6 +18,9 @@
             <span>{{titleText}}</span>
             <Icon type="ios-expand" @click.native="fullModel()" class="ivu-modal-full" />
         </p>
+        <div style="">
+            <Input search enter-button placeholder="" size="small" style="width: 200px"/>
+        </div>
         <Table border :columns="columns" :data="data" stripe style="margin-top:20px" highlight-row @on-current-change="onCurrentChange">
             <template slot-scope="{ row }" slot="number">
                 <strong>{{ row.userName }}</strong>

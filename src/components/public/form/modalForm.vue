@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 19:52:46
+ * @LastEditTime: 2020-12-07 10:23:15
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -43,14 +43,6 @@
                 <SelectorMulti v-model="formValidate[index]" :config="formConfig[index]"></SelectorMulti>
             </FormItem>
         </template>
-        <!--<FormItem label="平台负责人1:" prop="chargeUserId">
-            <Select v-model="formValidate.chargeUserId" :style="{width:'200px',float: 'left'}" clearable multiple filterable>
-                <Option v-for="item in userList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-        </FormItem>
-        <FormItem label="平台负责人:" prop="chargeUserId">
-            <XSelect></XSelect>
-        </FormItem>-->
     </Form>
     <div slot="footer">
         <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
