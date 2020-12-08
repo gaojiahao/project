@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-07 10:23:15
+ * @LastEditTime: 2020-12-08 12:20:46
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -137,7 +137,7 @@ export default {
                 if (i == 0 && controls[i].type == 'text') { //第一个输入框获取焦点
                     setTimeout(() => {
                         controls[0].focus();
-                        console.log(controls[0]);
+                        // console.log(controls[0]);
                     }, 1000);
                 }
             }
@@ -145,20 +145,20 @@ export default {
         initClick() {
             this.initEL('input');
             var inputGroup = this.$el.getElementsByTagName("input");
-            for(var i=0;i<inputGroup.length;i++){
-                console.log(inputGroup[i].value)
-            }
+            // for(var i=0;i<inputGroup.length;i++){
+            //     console.log(inputGroup[i].value)
+            // }
             var inputGroupArr = Array.from(this.$el.getElementsByTagName("input"));
             var buttonGroup = this.$el.getElementsByTagName("button")[0];
             var iGlength = inputGroupArr.length;
             var model_box = document.getElementsByClassName("model_box")[0];
             model_box.onkeypress = function (e) {
                 var e = event || e;
-                console.log(inputGroupArr.indexOf(e.srcElement));
+                // console.log(inputGroupArr.indexOf(e.srcElement));
                 var idx = inputGroupArr.indexOf(e.srcElement);
-                console.log(e, e.keyCode, e.srcElement, e.which);
+                // console.log(e, e.keyCode, e.srcElement, e.which);
                 if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
-                    console.log(idx)
+                    // console.log(idx)
                     if (idx == iGlength - 1) { //表明已经是最后一个输入框
                         buttonGroup.focus();
                     } else {
@@ -166,7 +166,7 @@ export default {
                     }
                     e.preventDefault();
                 }
-                console.log(e, e.keyCode, e.srcElement, e.which);
+                // console.log(e, e.keyCode, e.srcElement, e.which);
             }
         }
     },

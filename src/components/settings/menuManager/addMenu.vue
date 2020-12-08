@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:44:04
+ * @LastEditTime: 2020-12-08 14:30:59
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -119,7 +119,6 @@ export default {
                 if (i == 0 && controls[i].type == 'text') { //第一个输入框获取焦点
                     setTimeout(() => {
                         controls[0].focus();
-                        console.log(controls[0]);
                     }, 1000);
                 }
             }
@@ -132,11 +131,9 @@ export default {
             var iGlength = inputGroupArr.length;
             document.onkeypress = function (e) {
                 var e = event || e;
-                console.log(inputGroupArr.indexOf(e.srcElement));
                 var idx = inputGroupArr.indexOf(e.srcElement);
-                console.log(e, e.keyCode, e.srcElement, e.which);
+
                 if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
-                    console.log(idx)
                     if (idx == iGlength - 1) { //表明已经是最后一个输入框
                         buttonGroup.focus();
                     } else {
@@ -144,7 +141,6 @@ export default {
                     }
                     e.preventDefault();
                 }
-                console.log(e, e.keyCode, e.srcElement, e.which);
             }
         }
     },
