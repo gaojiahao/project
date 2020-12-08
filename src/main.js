@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:16:43
+ * @LastEditTime: 2020-12-08 09:09:16
  */
 //引用插件
 import Vue from "vue";
@@ -54,6 +54,12 @@ Vue.use(Loading);
 Vue.use(VideoPlayer);
 Vue.use(AudioPlayer);
 Vue.use(FromLoading);
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 new Vue({
   router,
   store,
