@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-08 09:09:16
+ * @LastEditTime: 2020-12-09 09:25:07
  */
 //引用插件
 import Vue from "vue";
@@ -29,25 +29,6 @@ Vue.directive("title", {
     document.title = el.dataset.title;
   }
 });
-//按需引用注册组件
-// Vue.component("Tree", Tree);
-// Vue.component("Icon", Icon);
-// Vue.component("Button", Button);
-// Vue.component("Span", Span);
-// Vue.component("Badge", Badge);
-// Vue.component("i-switch", Switch);
-// Vue.component("i-circle", Circle);
-// Vue.component("Tag", Tag);
-// Vue.component("Radio", Radio);
-// Vue.component("Checkbox", Checkbox);
-// Vue.component("Input", Input);
-// Vue.component("Select", Select);
-// Vue.component("Option", Option);
-// //组件挂载到vue $this上
-// Vue.prototype.$Message = Message;
-// Vue.prototype.$Notice = Notice;
-// Vue.prototype.$Modal = Modal;
-// Vue.prototype.$Spin = Spin;
 /**plugin */
 Vue.use(VueRouter);
 Vue.use(Loading);

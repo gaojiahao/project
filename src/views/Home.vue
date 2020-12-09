@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-07 10:19:24
+ * @LastEditTime: 2020-12-09 09:24:24
 -->
 <template>
 <div class="layout">
@@ -127,6 +127,7 @@ export default {
         },
     },
     created() {
+        this.$loading.hide();
         var activeMenu = this.$store.state.menuRouter;
         if (activeMenu && activeMenu.oneLevel) {
             console.log('已经有菜单了', activeMenu);

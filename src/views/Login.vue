@@ -124,9 +124,7 @@ export default {
                 .then(data => {
                     var token = tokenService.getToken();
                     if (token) {
-                        this.$loading.hide();
-                        this.$router.replace("/index");
-                        this.reload();
+                        this.$router.push('index');
                     }
                 })
                 .catch(err => {
@@ -340,7 +338,7 @@ export default {
 
             .ivu-btn-primary {
                 width: 200px;
-                margin-bottom: 10px;
+                margin-bottom: 20px;
                 margin-top: 20px;
             }
         }
