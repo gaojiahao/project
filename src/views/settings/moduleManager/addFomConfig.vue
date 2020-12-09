@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-07 11:11:27
+ * @LastEditTime: 2020-12-09 14:36:39
 -->
 <template>
 <div>
@@ -16,6 +16,7 @@
             <div class="filter-button">
                 <Button size="small" type="primary" icon="ios-add" @click.native="showPop(true)">添加视图</Button>
                 <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm">删除</Button>
+                <Button size="small" @click="">复制视图</Button>
             </div>
         </div>
         <div class="myTable">

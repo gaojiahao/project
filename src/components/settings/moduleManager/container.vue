@@ -23,6 +23,9 @@
                     <ListItem>
                         <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==index ? 'active':'']" @click="select(index,item)">
                             <span>{{item.fieldName}}</span>&nbsp|&nbsp<span>{{item.fieldCode}}</span>
+                            <span style="float:right">
+                                <Icon type="md-close" @click.native="delField(index)" />
+                            </span>
                         </div>
                     </ListItem>
                 </List>
@@ -91,7 +94,11 @@ export default {
         },
         del(){
             this.$emit('del-container',this.config.containerCode);    
+        },
+        delField(index){
+            this.$delete(this.config.fields,index);    
         }
+
     },
     created() {}
 }

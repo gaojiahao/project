@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:01:33
+ * @LastEditTime: 2020-12-09 11:12:14
 -->
 <template>
 <div class="storeManager-container">
@@ -289,7 +289,7 @@ export default {
 
         },
         goResearch(row){
-            this.$router.push({name:'viewResearch',query: {id:row.id||123}})
+            this.$router.push({name:'viewProductListResearch',query: {id:row.id||123}})
         },
         refresh() {
             this.loading = true;
@@ -303,7 +303,7 @@ export default {
         setFilter() {},
         goDetail(id){
             if(id)
-            this.$router.push({name:'ViewNewProduct',query: {id:id}});
+            this.$router.push({name:'viewProductList',query: {id:id}});
         },
     },
     created(){
