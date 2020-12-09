@@ -18,12 +18,11 @@
             <div>Loading</div>
         </Spin>
         <template v-else>
-            <!--<Scroll :on-reach-bottom="handleReachBottom">-->
-            <template v-if="list.length">
+            <template v-if="config.fields.length">
                 <List :border="false" :split="false" v-for="(item,index) in config.fields" :key="index">
                     <ListItem>
-                        <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==index ? 'active':'']" @click="select(index)">
-                            <span>{{item.name}}</span>&nbsp|&nbsp<span>{{item.code}}</span>
+                        <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==index ? 'active':'']" @click="select(index,item)">
+                            <span>{{item.fieldName}}</span>&nbsp|&nbsp<span>{{item.fieldCode}}</span>
                         </div>
                     </ListItem>
                 </List>
@@ -32,7 +31,6 @@
                 暂无数据
             </template>
         </template>
-        <!--</Scroll>-->
     </div>
 </div>
 </template>
@@ -84,14 +82,14 @@ export default {
                 }, 1000);
             });
         },
-        select(index) {
+        select(index,item) {
             this.selectIndex = index;
-            this.$emit('select-item', index);
+            this.$emit('select-field', item);
         },
         add() {
-            this.$emit('show-add');
+            this.$emit('show-add',true,this.config);
         },
-        del(e){
+        del(){
             this.$emit('del-container',this.config.containerCode);    
         }
     },

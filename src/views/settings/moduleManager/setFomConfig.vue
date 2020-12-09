@@ -9,14 +9,15 @@
         <div class="content">
             <div class="left_panel">
                 <template  v-for="(config,index) in formData" >
-                    <Container :config="config" v-model="formData[index].config" :key="index" @click.native="clickContainer(config,index)" @del-container="delContainer"></Container>
+                    <Container :config="config" v-model="formData[index].config" :key="index" @click.native="clickContainer(config,index)" @del-container="delContainer" @show-add="showPop" @select-field="selectField"></Container>
                 </template>
             </div>
             <div class="right_panel">
                 <ContainerPanel :visible="visible" :data="containerSelect" ref="form" @set-container="setContainer"></ContainerPanel>
+                <ConfigPanel :visible="configVisible" :data="configSelect" ref="form" @set-config="setConfig"></ConfigPanel>
             </div>
         </div>
-        <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+        <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="modalForm"></ModalForm>
     </div>
 </template>
 
@@ -29,6 +30,7 @@ import {
 const container = ()=>import("@components/settings/moduleManager/container");
 const modalForm = ()=>import("@components/public/form/modalForm");
 const containerPanel = ()=>import("@components/settings/moduleManager/containerPanel");
+const configPanel = ()=>import("@components/settings/moduleManager/configPanel");
 
 import config from "@views/settings/moduleManager/setFomConfigs"
 import {
@@ -42,8 +44,9 @@ export default {
         List,
         ListItem,
         Container: container,
-        ModalForm: containerPanel,
-        ContainerPanel: containerPanel
+        ModalForm: modalForm,
+        ContainerPanel: containerPanel,
+        ConfigPanel: configPanel
     },
     props: {
         list: {
@@ -65,13 +68,19 @@ export default {
                 basinfo:{
                     containerCode: 'basinfo',
                     containerName:  '基本信息',
-                    fields:{}
+                    config:{
+                        hidden:"false"
+                    },
+                    fields:[]
                 }
             },
             titleText: '',
             showModel: false,
             visible:false,
+            configVisible: false,
             containerSelect:{},
+            configSelect:{},
+            configIndex:null,
         }
     },
     watch:{
@@ -93,7 +102,10 @@ export default {
             var basinfo = {
                 containerCode: 'container',
                 containerName:  '容器',
-                fields:{}
+                config:{
+                    hidden:"false"
+                },
+                fields:[]
             }
             for(var k in this.formData){
                 if(k==basinfo.containerCode){
@@ -105,8 +117,7 @@ export default {
             this.$set(this.formData,basinfo.containerCode,basinfo);
         },
         showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
+            if (row && row.containerCode) {
                 this.titleText = '编辑';
             } else {
                 this.titleText = '新建';
@@ -114,9 +125,17 @@ export default {
             this.showModel = flag;
         },
         save(data){
-            this.$set(this.formData,this.formValidate.containerCode,this.formValidate);
+            this.formData[this.index]['fields'].push(this.formValidate);
+            this.clearFormData();
         },
-        clearFormData(){},
+        clearFormData(){
+            this.formValidate = {
+                fieldCode:'',
+                fieldName: '',
+                type:'',
+                config:{}
+            };
+        },
         clickContainer(data,index){
             this.visible = true;
             this.containerSelect = data;
@@ -128,6 +147,13 @@ export default {
         },
         delContainer(containerCode){
             this.$delete(this.formData,containerCode);
+        },
+        selectField(data){
+            this.configVisible = true;
+            this.configSelect = data; 
+        },
+        setConfig(){
+
         }
     },
     created() {}

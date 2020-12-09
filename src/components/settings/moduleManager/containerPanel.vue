@@ -2,20 +2,26 @@
     <div class="form-container" v-if="visible">
         <div class="ef-node-form">
             <div class="ef-node-form-header">
-                编辑
+                容器配置
             </div>
             <div class="ef-node-form-body">
                 <!--开始节点-->
                 <Form :model="data" ref="formValidate" :label-width="80">
                     <FormItem label="容器编码">
-                        <Input  v-model="data.containerCode" @on-blur="change"></Input >
+                        <Input v-model="data.containerCode" @on-blur="change"></Input >
                     </FormItem>
                     <FormItem label="容器名称">
-                        <Input  v-model="data.containerName"></Input >
+                        <Input v-model="data.containerName"></Input >
                     </FormItem>
-                    <FormItem>
-                        <Button size="small">重置</Button>
-                        <Button type="primary" size="small" @click="save">保存</Button>
+                    <FormItem label="是否显示">
+                        <RadioGroup v-model="data.config.hidden">
+                            <Radio label="false" >
+                                是
+                            </Radio>
+                            <Radio label="true" >
+                                否
+                            </Radio>
+                        </RadioGroup>
                     </FormItem>
                 </Form>
             </div>
@@ -31,7 +37,7 @@
     } from "view-design";
 
     export default {
-        name:'ModulePanel',
+        name:'ContainerPanel',
         props:{
             visible: {
                 type: Boolean,
@@ -46,71 +52,11 @@
         },
         data() {
             return {
-                // node 或 line
-                type: 'node',
-                node: {},
-                line: {},
-                roleList: [{
-                    value: '000',
-                    name: '无'
-                },{
-                    value: '001',
-                    name: '销售组长'
-                }, {
-                    value: '002',
-                    name: '销售经理'
-                }, {
-                    value: '003',
-                    name: '销售主管'
-                },{
-                    value: '004',
-                    name: '总经理'
-                }],
-                viewList: [{
-                    value: '001',
-                    name: '提交视图'
-                }, {
-                    value: '002',
-                    name: '查看视图'
-                }, {
-                    value: '003',
-                    name: '修改视图'
-                },{
-                    value: '004',
-                    name: '审核视图'
-                }],
-                actionList:[
-                    {
-                        name: '同意',
-                        value: 'agree'
-                    },
-                    {
-                        name: '不同意',
-                        value: 'disagree'
-                    },
-                    {
-                        name: '撤回',
-                        value: 'revoke'
-                    },
-                    {
-                        name: '终止',
-                        value: 'stop'
-                    },
-                    {
-                        name: '转办',
-                        value: 'transfer'
-                    }
-                ]
+                
             }
         },
         watch:{
-            nodeSetting:{
-                handler(val){
-                    this.node = {
-                        ...this.nodeSetting,
-                    };
-                }
-            },
+
         },
         methods: {
             save() {
@@ -125,8 +71,16 @@
         }
     }
 </script>
-
+<style scoped>
+>>>.ivu-form-item-content {
+    text-align: left;
+}
+</style>
 <style lang="less" scoped>
+    .ef-node-form-header{
+        text-align: left;
+        padding: 5px 0 0 5px;
+    }
     .form-container{
         width: 300px;
         border: 1px solid rgb(220, 227, 232);
