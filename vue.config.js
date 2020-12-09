@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-05 12:33:04
+ * @LastEditTime: 2020-12-09 18:01:40
  */
 const os = require('os');
 const path = require("path");
@@ -17,7 +17,7 @@ let proxyConfig = require("./config/proxyConfig");
 const publicPath = "Rose";
 
 module.exports = {
-  publicPath: `/${publicPath}`, // 基本路径`/${publicPath}`
+  publicPath: process.env.VUE_APP_PUBLIC_PATH, // 基本路径`/${publicPath}`
   outputDir: "dist", // 输出文件目录
   lintOnSave: false, // eslint-loader 是否在保存的时候检查
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md

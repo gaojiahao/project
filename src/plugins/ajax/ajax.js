@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-05 10:08:14
+ * @LastEditTime: 2020-12-09 16:18:06
  */
 import Fly from "flyio/dist/npm/fly";
 // 请求地址引入
@@ -128,7 +128,7 @@ let Rxports = {
     return new Promise((resolve, reject) => {
       let params = {
         method: opts.type || opts.method || "GET",
-        baseURL: window.baseURL||'',
+        baseURL: window.baseURL||process.env.VUE_APP_API,
         url: ensureUrl(opts.url),
         headers: {
           "Content-Type": opts.contentType || "*/*"
@@ -181,7 +181,7 @@ let Rxports = {
   post(opts = {}) {
     return new Promise((resolve, reject) => {
       fly
-        .post(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || "" })
+        .post(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || process.env.VUE_APP_API })
         .then(res => resolve(res))
         .catch(err => {
           // 弹窗提醒
@@ -198,7 +198,7 @@ let Rxports = {
   put(opts = {}) {
     return new Promise((resolve, reject) => {
       fly
-        .put(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || "" })
+        .put(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || process.env.VUE_APP_API })
         .then(res => resolve(res.data))
         .catch(err => {
           Message.error({
@@ -222,7 +222,7 @@ let Rxports = {
   request: function(url, data) {
     var xmlhttp = new XMLHttpRequest(),
       params = parseParam(data),
-      baseUrl = window.baseURL || "",
+      baseUrl = window.baseURL || process.env.VUE_APP_API,
       token = tokenService.getToken(),
       rs;
 

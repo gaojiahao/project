@@ -86,13 +86,14 @@ let tokenService = {
     return new Promise((resolve, reject) => {
       let params = {
         method: "post",
-        baseURL: window.baseURL || "",
+        baseURL: process.env.VUE_APP_API,
         url: "/api/app/user/login",
         headers: {
           "Content-Type": "application/json"
         },
         data: userInfo
       };
+      console.log(params);
       fly
         .request(params, params.data)
         .then(res => {
@@ -116,7 +117,7 @@ let tokenService = {
     return new Promise((resolve, reject) => {
       let params = {
         method: "post",
-        baseURL: window.baseURL || "",
+        baseURL: process.env.VUE_APP_API,
         url: "/H_roleplay-si/sendVerification",
         headers: {
           "Content-Type": "application/json"
@@ -173,7 +174,7 @@ let tokenService = {
     return new Promise((resolve, reject) => {
       let params = {
         method: "post",
-        baseURL: window.baseURL || "",
+        baseURL: process.env.VUE_APP_API,
         url: "/api/app/user/emailRegister",
         headers: {
           "Content-Type": "application/json"
