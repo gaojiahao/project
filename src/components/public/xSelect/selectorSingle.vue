@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-07 10:38:47
+ * @LastEditTime: 2020-12-09 20:46:54
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
-    <div class="ivu-input-wrapper" style="width: 200px; float: left;line-height:32px">
+    <div class="ivu-input-wrapper box" style="">
         <input type="text" :placeholder="[isCheck ? '':placeholder]" class="ivu-input " disabled :value="name">
     </div>
-    <Icon type="md-add-circle" style="color: green; font-size:24px;vertical-align: middle;" @click.native="showModel()" v-if="!disabled"/>
+    <Icon type="md-add-circle" style="color: green; font-size:24px;vertical-align: middle; line-height:34px" @click.native="showModel()" v-if="!disabled"/>
     <div class="ivu-form-item-error-tip" v-show="isCheck">请输入{{checkText}}</div>
     <Modal v-model="show" @on-ok="ok" @on-cancel="cancel" :fullscreen="fullscreen">
         <p slot="header" style="color:#999;">
@@ -133,6 +133,9 @@ export default {
                 border: 1px solid #ed4014;
             }
         }
+    }
+    .box{
+        width: 200px; float: left;line-height:32px
     }
 }
 .ivu-modal-full {

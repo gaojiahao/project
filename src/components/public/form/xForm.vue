@@ -4,11 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:25:56
+ * @LastEditTime: 2020-12-10 09:42:05
 -->
 <template>
 <div class="content">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120" label-colon>
+        <slot name='other'>
+        </slot>
         <template v-for="(item, index) in formValidate">
             <!--文本框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
@@ -58,6 +60,10 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectorMulti'">
                 <SelectorMulti v-model="formValidate[index]" :config="formConfig[index]"></SelectorMulti>
             </FormItem>
+            <!--人员分配-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='distributionPeople'">
+                <DistributionPeople v-model="formValidate[index]" :config="formConfig[index]"></DistributionPeople>
+            </FormItem>
         </template>
         <slot name='button'>
             <FormItem>
@@ -77,8 +83,10 @@ import {
 import UploadImg from '@components/public/upload/uploadImg';
 import Texts from '@components/public/input/texts';
 import Size from '@components/public/input/size';
-import SelectorSingle from '@components/public/xSelect/selectorSingle'
-import SelectorMulti from '@components/public/xSelect/selectorMulti'
+import SelectorSingle from '@components/public/xSelect/selectorSingle';
+import SelectorMulti from '@components/public/xSelect/selectorMulti';
+const distributionPeople = ()=>import("@components/charting/distributionPeople");
+
 export default {
     name: 'XForm',
     components: {
@@ -87,7 +95,8 @@ export default {
         Texts,
         Size,
         SelectorSingle,
-        SelectorMulti
+        SelectorMulti,
+        DistributionPeople:distributionPeople
     },
     props: {
         titleText: {

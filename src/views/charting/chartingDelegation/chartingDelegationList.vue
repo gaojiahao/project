@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:19:53
+ * @LastEditTime: 2020-12-09 19:19:05
 -->
 <template>
 <div class="storeManager-container">
@@ -22,7 +22,7 @@
     <div  class="myTable">
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" style="margin-right: 5px" @click="showPop(true)">委派制图</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id)">委派制图</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -38,11 +38,11 @@
 </template>
 
 <script>
-import config from "@views/charting/chartingDelegationCongfig";
+import config from "@views/charting/chartingDelegation/chartingDelegationCongfig";
 import list from "@mixins/list";
 
 export default {
-    name: "ChartingDelegation",
+    name: "ChartingDelegationList",
     mixins: [config,list],
     data() {
         return {
@@ -185,7 +185,7 @@ export default {
         },
          goDetail(id){
             if(id)
-            this.$router.push({name:'ViewNewProduct',query: {id:id}});
+            this.$router.push({name:'viewChartingDelegation',query: {id:id}});
         },
         showResearchModel(flag){
             this.$router.push({name:'ResearchDevelopNewProducts'}); 
@@ -316,6 +316,9 @@ export default {
             }
         ];
             return columns2;
+        },
+        goCharting(id){
+            this.$router.push({name:'appoint',query: {id:id}});        
         }
         
     },

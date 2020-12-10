@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-08 14:14:21
+ * @LastEditTime: 2020-12-09 19:29:12
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -353,13 +353,23 @@ const routes = [
                 },
               },
               {
-                path:"viewResearch",
-                name:"viewResearch",
+                path:"viewProductList",
+                name:"viewProductList",
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/viewNewProduct"],resolve)),
+                meta: {
+                  title: "查看产品",
+                  group: "productManager",
+                  level: 2,
+                },
+              },
+              {
+                path:"viewProductListResearch",
+                name:"viewProductListResearch",
                 component: resolve=>(require(["@views/basicinfo/productManager/viewResearch"],resolve)),
                 meta: {
                   title: "查看调研",
                   group: "productManager",
-                  level: 2,
+                  level: 3,
                 },
               }  
             ]
@@ -772,7 +782,40 @@ const routes = [
               title:'制图委派',
               group: 'chartingDelegation',
             },
-            component: resolve=>(require(["@views/charting/chartingDelegation"],resolve)),
+            component: resolve=>(require(["@views/charting/chartingDelegation/index"],resolve)),
+            redirect:'chartingDelegation/chartingDelegationList',
+            children:[
+              {
+                path: 'chartingDelegationList',
+                name: 'chartingDelegationList',
+                meta:{ 
+                  title:'制图委派',
+                  group: 'chartingDelegation',
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/charting/chartingDelegation/chartingDelegationList"],resolve)),
+              },
+              {
+                path: 'viewChartingDelegation',
+                name: 'viewChartingDelegation',
+                meta:{ 
+                  title:'查看产品',
+                  group: 'chartingDelegation',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/viewNewProduct"],resolve)),
+              },
+              {
+                path: 'appoint',
+                name: 'appoint',
+                meta:{ 
+                  title:'委派',
+                  group: 'chartingDelegation',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/charting/chartingDelegation/appoint"],resolve)),
+              }
+            ]
           },
           {
             path: 'chartingTimeExchange',
@@ -799,7 +842,20 @@ const routes = [
               title:'制图管理',
               group: 'chartingManager',
             },
-            component: resolve=>(require(["@views/charting/chartingManager"],resolve)),
+            component: resolve=>(require(["@views/charting/chartingManager/index"],resolve)),
+            redirect:'chartingManager/chartingManagerList',
+            children:[
+              {
+                path: 'chartingManagerList',
+                name: 'chartingManagerList',
+                meta:{ 
+                  title:'制图管理',
+                  group: 'chartingManager',
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/charting/chartingManager/chartingManagerList"],resolve)),
+              },
+            ],
           } 
         ]
       }
