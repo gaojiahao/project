@@ -32,17 +32,24 @@
             </div>
         </Upload>
         <div style="width: 58px;height:58px;line-height: 58px;"  v-if="type=='img'">
-            <Button type="primary" size="small" @click="save" style="float: left; margin-left: 10px; margin-top: 17px">预览</Button>
+            <Button type="primary" size="small" @click="preview" style="float: left; margin-left: 10px; margin-top: 17px">预览</Button>
         </div>
         <!-- <Modal title="View Image" v-model="visible">
             <img :src="'https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843'" v-if="visible" style="width: 100%">
         </Modal> -->
-        <Modal :title="uploadList&&uploadList[indexPic]&&uploadList[indexPic].name" v-model="visible" fullscreen>
+        <Modal v-model="visible" :fullscreen="fullscreen">
+            <p slot="header" style="color:#999;">
+                <span>{{uploadList&&uploadList[indexPic]&&uploadList[indexPic].name}}</span>
+                <Icon type="ios-expand" @click.native="fullModel()" class="ivu-modal-full" />
+            </p>
             <img :src="uploadList[indexPic].url" v-if="visible" style="width: 100%">
             <div slot="footer">
                 <Button type="primary" size="small" @click="prePic">上一张</Button>
                 <Button type="primary" size="small" @click="nextPic">下一张</Button>
             </div>
+        </Modal>
+        <Modal v-model="visiblePreview" :fullscreen="fullscreen">
+            <HtmlEditor></HtmlEditor>
         </Modal>
     </div>
 </template>
@@ -52,10 +59,13 @@ import {
     Upload,
     Progress,
 } from "view-design";
+const htmlEditor = ()=>import("@components/public/htmlEditor/htmlEditor");
+
 export default {
     components: {
         Upload,
         Progress,
+        HtmlEditor:htmlEditor
     },
     model: {
         prop: 'value', // prop说:我要将value1作为该组件被使用(被父组件调用)时,v-model能取到的值
@@ -87,6 +97,8 @@ export default {
             format:[],
             typeName:'',
             maxSize: 0,
+            fullscreen: false,
+            visiblePreview: false,
         }
     },
     methods: {
@@ -138,6 +150,13 @@ export default {
             if(this.indexPic == this.uploadList.length-1 ){
                 this.$Message.info({content:'温馨提示：已到最一张！'});         
             }      
+        },
+        fullModel() {
+            this.fullscreen = this.fullscreen ? false : true;
+        },
+        save(){},
+        preview(){
+            this.visiblePreview = true;
         }
     },
     created(){
