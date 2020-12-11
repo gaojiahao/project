@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-08 12:20:46
+ * @LastEditTime: 2020-12-10 11:10:41
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -20,7 +20,7 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
                 <RadioGroup v-model="formValidate[index]">
                     <template v-for="(ditem,dIndex) in formConfig[index]['dataSource']['data']">
-                        <Radio :label="ditem.value" :key="ditem.value">
+                        <Radio :label="ditem.value" :key="ditem.value" :disabled="formConfig[index]['disabled']">
                             {{ditem.name}}
                         </Radio>
                     </template>
@@ -41,6 +41,13 @@
             <!--多项选择器-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectorMulti'">
                 <SelectorMulti v-model="formValidate[index]" :config="formConfig[index]"></SelectorMulti>
+            </FormItem>
+            <!--文本域-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='textarea'">
+                <Input v-model="formValidate[index]" type="textarea" :autosize="{minRows: 5,maxRows: 10}" :style="{width:'400px'}" :disabled="formConfig[index]['disabled']" />
+            </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTimes'">
+                <DatePicker v-model="formValidate[index]" @on-change="formValidate[index]=$event" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px" :disabled="formConfig[index]['disabled']"></DatePicker>
             </FormItem>
         </template>
     </Form>

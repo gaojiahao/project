@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-09 19:29:12
+ * @LastEditTime: 2020-12-10 11:17:52
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -854,6 +854,16 @@ const routes = [
                   level: 1,
                 },
                 component: resolve=>(require(["@views/charting/chartingManager/chartingManagerList"],resolve)),
+              },
+              {
+                path: 'uploadProgress',
+                name: 'uploadProgress',
+                meta:{ 
+                  title:'制作进度',
+                  group: 'chartingManager',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/charting/chartingManager/uploadProgress"],resolve)),
               },
             ],
           } 

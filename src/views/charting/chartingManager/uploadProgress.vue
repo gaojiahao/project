@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-10 19:06:32
+ * @LastEditTime: 2020-12-11 14:52:38
 -->
 <template>
 <div>
@@ -17,29 +17,31 @@
                     </div>
                 </template>
             </ViewForm>
-            <div class="ivu-form ivu-form-label-right" style="    padding: 10px 10px 10px 10px;">
-                <div class="ivu-form-item">
-                    <label class="ivu-form-item-label" style="width: 120px;">选品人员:</label> 
-                    <div class="ivu-form-item-content" style="margin-left: 120px;">
-                        <Table :columns="selectionPeopleColumns" :data="selectionPeopleData" :width="450">
-
-                        </Table>
-                        <span style="margin-left: 10px;"></span>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div class="top">
-        <Divider orientation="left" size="small">人员分配</Divider>
+        <Divider orientation="left" size="small">上传文件</Divider>
         <div class="top_tabale">
             <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form">
+                <FormItem v-for="(item,index) in data" :key="index" slot="other" style="flex-direction: column;">
+                    <div class="top_tabale_header">
+                        <div class="item"><Icon type="ios-browsers" />{{item.platform}}</div>
+                        <div class="item"><Icon type="ios-basket" />{{item.store}}</div>
+                        <div class="item"><Icon type="md-person" />{{item.people}}</div>
+                    </div>
+                    <div style="margin-bottom:10px;"><Upload type="img"></Upload></div> 
+                    <div style="margin-bottom:10px;"><Upload type="music"></Upload></div>
+                    <div style="margin-bottom:10px;"><Upload type="vdieo"></Upload></div>
+                    <div style="margin-bottom:10px;"><Upload type="threed"></Upload></div>
+                </FormItem>
+                <template slot="button">
                 <FormItem>
                     <div style="width:100%">
                         <Button type="primary" @click="save" style="float: left;">保存</Button>
                         <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
                     </div>
                 </FormItem>
+                </template>
             </XForm>
         </div>
     </div>
@@ -47,63 +49,44 @@
 </template>
 
 <script>
-import config from "@views/charting/chartingDelegation/productAppointStoreConfig";
+import config from "@views/charting/chartingManager/productAppointStoreConfig";
 const viewForm = ()=>import("@components/public/form/viewForm");
 const xForm = ()=>import("@components/public/form/xForm");
+const upload = ()=>import("@components/public/upload/upload");
 
 import {
     Tabs,
     TabPane,
 } from "view-design";
 export default {
-    name: 'Appoint',
+    name: 'UploadProgress',
     components: {
         Tabs,
         TabPane,
         ViewForm:viewForm,
         XForm:xForm,
+        Upload:upload
     },
     mixins: [config],
     data(){
         return{
-            selectionPeopleColumns: [
+            data:[
                 {
-                    title: '平台',
-                    key: 'title'
+                    platform: '速卖通',
+                    store: '玩具店铺1',
+                    people: '李四'
                 },
                 {
-                    title: '店铺名称',
-                    key: 'name'
+                    platform: '速卖通',
+                    store: '玩具店铺2',
+                    people: '李四'
                 },
                 {
-                    title: '销售人员',
-                    key: 'people'
-                },
-                {
-                    title: '需求文件',
-                    key: 'file'
+                    platform: '速卖通',
+                    store: '玩具店铺3',
+                    people: '李四'
                 }
-            ],
-            selectionPeopleData: [
-                {
-                    name: '玩具店铺1',
-                    title: "速卖通",
-                    people: '李四',
-                    file: '图片，视频'
-                },
-                {
-                    name: '玩具店铺2',
-                    title: "速卖通",
-                    people: '李四',
-                    file: '图片，视频'
-                },
-                {
-                    name: '玩具店铺3',
-                    title: "亚马逊",
-                    people: '李四',
-                    file: '图片，视频，3d'
-                },
-            ],
+            ]
         }
     },
     methods: {
@@ -113,7 +96,19 @@ export default {
     created() {}
 }
 </script>
-
+<style scoped>
+>>>.ivu-form-item-content {
+    flex-direction: column;
+}
+</style>
 <style lang="less" scoped>
 @import  "~@less/form.less";
+.top_tabale_header {
+    height: 30px;
+    line-height: 30px;
+    .item {
+        float: left;
+        margin-right: 10px;
+    }
+}
 </style>

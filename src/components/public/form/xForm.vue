@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-10 09:42:05
+ * @LastEditTime: 2020-12-10 11:11:37
 -->
 <template>
 <div class="content">
@@ -63,6 +63,9 @@
             <!--人员分配-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='distributionPeople'">
                 <DistributionPeople v-model="formValidate[index]" :config="formConfig[index]"></DistributionPeople>
+            </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='textarea'">
+                <DatePicker v-model="formValidate[index]" @on-change="formValidate[index]=$event" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px" :disabled="formConfig[index]['disabled']"></DatePicker>
             </FormItem>
         </template>
         <slot name='button'>
