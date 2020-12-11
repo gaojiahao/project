@@ -7,7 +7,7 @@
                         <img :src="item.url">
                         <div class="demo-upload-list-cover">
                             <Icon type="ios-eye-outline" @click.native="handleView(item.name,index)"></Icon>
-                            <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                            <Icon type="ios-trash-outline" @click.native="handleRemove(item)" v-if="!disabled"></Icon>
                         </div>
                     </div>
                     <div class="text">{{item.name}}</div>
@@ -85,7 +85,11 @@ export default {
         type:{
             type: String,
             default: ''
-        }
+        },
+        index:{
+            type:Number,
+            default: null
+        },
     },
     data() {
         return {
@@ -99,6 +103,13 @@ export default {
             maxSize: 0,
             fullscreen: false,
             visiblePreview: false,
+        }
+    },
+    watch:{
+        uploadList:{
+            handler(val){
+                this.$emit('set-data',this.type,this.uploadList);
+            }
         }
     },
     methods: {
@@ -177,10 +188,11 @@ export default {
             this.typeName = '3d';
             this.maxSize = 10240;
         }
+        this.uploadList = this.value;
     },
-    mounted() {
-        this.uploadList = this.$refs.upload.fileList;
-    }
+    // mounted() {
+    //     this.uploadList = this.$refs.upload.fileList;
+    // }
 }
 </script>
 

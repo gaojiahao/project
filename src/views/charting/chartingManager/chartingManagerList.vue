@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-10 11:18:24
+ * @LastEditTime: 2020-12-11 20:28:23
 -->
 <template>
 <div class="storeManager-container">
@@ -22,7 +22,7 @@
     <div  class="myTable">
         <Table :row-class-name="rowClassName" border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id)" v-if="row.status=='已完成'">查看</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goView(row.id)" v-if="row.status=='已完成'">查看</Button>
                 <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true)" v-else-if="row.status=='待确认'">确认</Button>
                 <Button type="success" size="small" style="margin-right: 5px" @click="goUpload(row.id)" v-else-if="row.status=='待制作'">上传</Button>
             </template>
@@ -331,6 +331,9 @@ export default {
         },
         goUpload(id){
             this.$router.push({name:'uploadProgress'});
+        },
+        goView(id){
+            this.$router.push({name:'viewUploadProgress'});
         }
     },
     created(){

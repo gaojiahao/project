@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-11 20:14:31
+ * @LastEditTime: 2020-12-11 20:29:30
 -->
 <template>
 <div>
@@ -28,10 +28,7 @@
                 </FormItem>
                 <template slot="button">
                     <FormItem>
-                        <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                        </div>
+                        
                     </FormItem>
                 </template>
             </XForm>
@@ -41,7 +38,7 @@
 </template>
 
 <script>
-import config from "@views/charting/chartingManager/productAppointStoreConfig";
+import config from "@views/charting/chartingManager/viewProductAppointStoreConfig";
 const viewForm = ()=>import("@components/public/form/viewForm");
 const xForm = ()=>import("@components/public/form/xForm");
 const multUpload = ()=>import("@components/charting/multUpload");
@@ -51,7 +48,7 @@ import {
     TabPane,
 } from "view-design";
 export default {
-    name: 'UploadProgress',
+    name: 'ViewUploadProgress',
     components: {
         Tabs,
         TabPane,
@@ -80,7 +77,7 @@ export default {
                 }
             ],
             config:{
-                disabled:false,
+                disabled:true,
             }
         }
     },

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-10 09:46:58
+ * @LastEditTime: 2020-12-11 17:26:06
 -->
 <template>
 <div class="size-content">
@@ -141,6 +141,7 @@ export default {
 
 <style lang="less" scoped>
 .size-content{
+    margin-top: 6px;
     display: inline-block;
     position: relative;
     vertical-align: middle;
