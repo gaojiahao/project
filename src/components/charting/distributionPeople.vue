@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 09:47:42
+ * @LastEditTime: 2020-12-14 20:45:08
 -->
 <template>
 <div class="size-content">
@@ -46,8 +46,10 @@ export default {
     },
     props: {
         value: {
-            type: String,
-            default: ''
+            type: Array,
+            default () {
+                return []
+            }
         },
         disabled: {
             type: Boolean,
@@ -121,8 +123,8 @@ export default {
             });
         },
         handleInput(data) {
-            var jsonData = JSON.stringify(data);
-            this.$emit('change', jsonData)
+            //var jsonData = JSON.stringify(data);
+            this.$emit('change', data)
         },
         del(index){
             this.$delete(this.data,index);

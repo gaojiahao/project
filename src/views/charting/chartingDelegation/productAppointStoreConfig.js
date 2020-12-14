@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-10 09:45:58
+ * @LastEditTime: 2020-12-14 20:37:20
  */
 export default {
     data() {
@@ -72,7 +72,7 @@ export default {
           }
         },
         formValidate2: {
-          data:"",
+          data:[],
           morePic:'',
           shenhe:''
         },

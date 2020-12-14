@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 19:10:17
+ * @LastEditTime: 2020-12-14 20:44:19
 -->
 <template>
 <div>
@@ -14,7 +14,7 @@
     <div class="top">
         <Divider orientation="left" size="small">基本信息</Divider>
         <div class="top_tabale">
-            <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+            <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig">
                 <template slot="button">
                     <div style="width:100%">   
                     </div>
@@ -37,7 +37,7 @@
     </div>
     <SiderPanel :show="show" @show-panel="showPanel">
         <div slot="info">
-            <AppointHistoryPanel></AppointHistoryPanel>        
+            <AppointHistoryPanel></AppointHistoryPanel>      
         </div>
     </SiderPanel>
 </div>
@@ -45,7 +45,6 @@
 
 <script>
 import config from "@views/charting/chartingDelegation/productAppointStoreConfig";
-import configHistory from "@views/charting/chartingManager/viewProductAppointStoreConfig";
 const viewForm = ()=>import("@components/public/form/viewForm");
 const xForm = ()=>import("@components/public/form/xForm");
 const siderPanel = ()=>import("@components/charting/siderPanel");
@@ -65,7 +64,7 @@ export default {
         SiderPanel:siderPanel,
         AppointHistoryPanel:appointHistoryPanel 
     },
-    mixins: [config,configHistory],
+    mixins: [config],
     data(){
         return{
             show:false,
