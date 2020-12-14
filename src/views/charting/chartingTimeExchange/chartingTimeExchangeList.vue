@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-12 12:24:50
+ * @LastEditTime: 2020-12-14 12:12:30
 -->
 <template>
 <div class="storeManager-container">
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div  class="myTable">
-        <Table :row-class-name="rowClassName" border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
+        <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="warning" size="small" style="margin-right: 5px" @click="goChangeTime(row.id)">调换</Button>
             </template>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 09:29:10
+ * @LastEditTime: 2020-12-14 14:54:25
 -->
 <template>
 <div>
@@ -27,7 +27,7 @@
                 </Table>
                 <div style="margin: 10px;overflow: hidden">
                     <div style="float: right;">
-                        <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                        <Page :total="100" :current="1" @on-change="changePage" show-elevator show-total></Page>
                     </div>
                 </div>
             </div>
@@ -60,13 +60,12 @@ export default {
                     title: '平台名称',
                     key: 'platform',
                     render: (h, params) => {
-                        return h("span", {// 创建的标签名
-                        // 执行的一些列样式或者事件等操作
+                        return h("span", {
                         style: {
                             display: "inline-block",
                             color: "#2d8cf0"
                         },
-                        },params.row.platform);//  展示的内容
+                        },params.row.platform);
                     }
                 },
                 {
@@ -83,7 +82,58 @@ export default {
                 },
                 {
                     title: '制作时间',
-                    key: 'chartingTime'
+                    key: 'chartingTime',
+                    render: (h, params) => {
+                        var _self = this;
+                        return h('div', {
+                            style: {
+                                display: 'flex',
+                            }
+                        }, [
+                            h('div',{
+                                style: {
+                                    display: !params.row.edit ? 'block':'none',
+                                    lineHeight: '32px'
+                                }
+                            }, params.row.chartingTime,),
+                            h('DatePicker', {
+                                props: {
+                                    value: params.row.chartingTime.split(" -- "),
+                                    format: "yyyy-MM-dd HH:mm",
+                                    type: "datetimerange",
+                                    transfer: true,
+                                    editable: false
+                                },
+                                style: {
+                                    display: params.row.edit ? 'block':'none'
+                                },
+                                on: {
+                                    'on-change': (event) => {
+                                        _self.data[params.index][params.column.key] = event.currentTarget.value;
+                                    },
+                                    'on-ok': (event) => {
+                                        _self.loading = true;
+                                        setTimeout(() => {
+                                            this.loading = false;
+                                            _self.data[params.index]['edit'] = _self.data[params.index]['edit'] ? false:true;
+                                        }, 1000);
+                                    }
+                                },
+                            }),
+                            h('div', {
+                                style: {
+                                    lineHeight: '32px',
+                                    marginLeft: '5px',
+                                    color:'#5cadff'
+                                },
+                                on: {
+                                    'click': (event) => {
+                                        _self.data[params.index]['edit'] = _self.data[params.index]['edit'] ? false:true;
+                                    }
+                                },
+                            }, !params.row.edit ? '编辑':'确认')
+                        ]);
+                    }
                 }
             ],
             data: [
@@ -93,6 +143,8 @@ export default {
                     store: "玩具店铺1",
                     type: 'psd',
                     people:"李四",
+                    chartingTime: "2020-12-14 00:00 -- 2020-12-16 00:00",
+                    edit:false
                 },
                 {
                     id:'fds',
@@ -100,6 +152,8 @@ export default {
                     store: "玩具店铺1",
                     type: '视频',
                     people:"李四",
+                    chartingTime: "2020-12-14 00:00 -- 2020-12-16 00:00",
+                    edit:false
                 },
                 {
                     id:'fds',
@@ -107,6 +161,8 @@ export default {
                     store: "玩具店铺1",
                     type: '3d建模',
                     people:"李四",
+                    chartingTime: "2020-12-14 00:00 -- 2020-12-16 00:00",
+                    edit:false
                 },
                 {
                     id:'fds',
@@ -114,6 +170,8 @@ export default {
                     store: "玩具店铺1",
                     type: 'psd',
                     people:"李四",
+                    chartingTime: "2020-12-14 00:00 -- 2020-12-16 00:00",
+                    edit:false
                 },
                 {
                     id:'fds',
@@ -121,6 +179,8 @@ export default {
                     store: "玩具店铺1",
                     type: 'psd',
                     people:"李四",
+                    chartingTime: "2020-12-14 00:00 -- 2020-12-16 00:00",
+                    edit:false
                 },
             ],
             loading: true,
