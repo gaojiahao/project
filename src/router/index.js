@@ -814,6 +814,16 @@ const routes = [
                   level: 2,
                 },
                 component: resolve=>(require(["@views/charting/chartingDelegation/appoint"],resolve)),
+              },
+              {
+                path: 'appointHistory',
+                name: 'appointHistory',
+                meta:{ 
+                  title:'委派',
+                  group: 'chartingDelegation',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/charting/chartingDelegation/appointHistory"],resolve)),
               }
             ]
           },

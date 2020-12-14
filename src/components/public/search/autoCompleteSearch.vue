@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 11:38:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:27:11
+ * @LastEditTime: 2020-12-14 16:32:35
 -->
 <template>
     <div>
@@ -113,5 +113,8 @@ export default {
     }
     >>>.ivu-select-item {
         display: flex;
+    }
+    >>>.ivu-input {
+        height: 26px;
     }
 </style>

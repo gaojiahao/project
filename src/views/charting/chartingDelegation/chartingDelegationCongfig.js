@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-21 11:27:14
+ * @LastEditTime: 2020-12-14 15:12:02
  */
 export default {
   data() {
@@ -114,6 +114,7 @@ export default {
             data:[
               {name:'未委派',value:'0'},
               {name:'已委派',value:'1'},
+              {name:'待返工',value:'2'},
               {name:'已逾期',value:'-1'},
               {name:'全部',value:'all'}
             ],

@@ -4,14 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-09 19:19:05
+ * @LastEditTime: 2020-12-14 16:54:08
 -->
 <template>
 <div class="storeManager-container">
     <div class="filter">
-        <div class="filter-button">
-            <!--<Button type="error" size="small" icon="ios-close" @click="deletesData">批量删除</Button>-->
-        </div>
         <div class="filter-search">
             <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
             <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -22,7 +19,7 @@
     <div  class="myTable">
         <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id)">委派制图</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id,row.status)">委派制图</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -31,7 +28,6 @@
             </div>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
 </div>
@@ -47,10 +43,6 @@ export default {
     data() {
         return {
             titleText: '委派制图',
-            titleText2: '',
-            showModel: false,
-            showModel2: false,
-            showResearh: false,
             columns: this.getTableColumn(),
             data: [
                 {
@@ -80,7 +72,7 @@ export default {
                     supplierNum: "是",
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
-                    status: "未委派",
+                    status: "已委派",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -112,7 +104,7 @@ export default {
                     supplierNum: "是",
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
-                    status: "未委派",
+                    status: "待返工",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -153,42 +145,12 @@ export default {
         }
     },
     methods: {
-        clearFormData() {
-
-        },
-        showPop(flag, row) {
-            this.showModel = flag;
-        },
-        showPop2(flag, row) {
-            if (row && row.id) {
-                this.formValidate2['id'] = row.id;
-                this.titleText2 = '编辑';
-            } else {
-                this.titleText2 = '审核';
-            }
-            this.showModel2 = flag;
-        },
-        save() {
-
-        },
         changePage() {
 
         },
-        clearFormData2() {},
-        goAdd(){
-            this.$router.push({name:'AddNewProduct'});
-        },
-        goEdit(){
-            if(this.activatedRow.id){
-                this.$router.push({name:'AddNewProduct',query: {id:this.activatedRow.id}});
-            }
-        },
-         goDetail(id){
+        goDetail(id){
             if(id)
             this.$router.push({name:'viewChartingDelegation',query: {id:id}});
-        },
-        showResearchModel(flag){
-            this.$router.push({name:'ResearchDevelopNewProducts'}); 
         },
         changeCoulmns(data){
             let datas = [];
@@ -245,18 +207,17 @@ export default {
                 title: '产品名称',
                 key: 'productName',
                 render: (h, params) => {
-                    return h("span", {// 创建的标签名
-                    // 执行的一些列样式或者事件等操作
+                    return h("span", {
                     style: {
                         display: "inline-block",
                         color: "#2d8cf0"
                     },
                     on:{
-                        click:()=>{// 这里给了他一个打印事件，下面有展示图
+                        click:()=>{
                             this.goDetail(params.row.id)    
                         }
                     }
-                    },params.row.productName);//  展示的内容
+                    },params.row.productName);
                 }
             },
             {
@@ -283,13 +244,12 @@ export default {
                 title: '状态',
                 key: 'status',
                 render: (h, params) => {
-                    return h("span", {// 创建的标签名
-                    // 执行的一些列样式或者事件等操作
+                    return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status=='接受' ? "#19be6b": "#ed4014"
+                        color: this.getColor(params.row.status),
                     },
-                    },params.row.status);//  展示的内容
+                    },params.row.status);
                 }
             },
             {
@@ -317,59 +277,31 @@ export default {
         ];
             return columns2;
         },
-        goCharting(id){
-            this.$router.push({name:'appoint',query: {id:id}});        
-        }
-        
+        goCharting(id,status){
+            if(status!='待返工'){
+                this.$router.push({name:'appoint',query: {id:id}});
+            } else {
+                this.$router.push({name:'appointHistory',query: {id:id}});    
+            }
+        },
+        getColor(value){
+            switch(value) {
+                case '已委派':
+                    return "#19be6b";
+                    break;
+                case '未委派':
+                    return "#ed4014";
+                    break;
+                default:
+                    return "#ff9900";
+            } 
+        },
     },
     created(){
 
     }
 }
 </script>
-<style scoped>
->>>.ivu-input {
-    height: 26px;
-}
->>>.ivu-btn-small span {
-    font-size: 12px;
-}
->>>.ivu-table-row-highlight td {
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-hover td{
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td{
-    background-color: #B8D9FD;
-}
-</style><style lang="less" scoped>
-.storeManager-container {
-    .head {
-        height: 30px;
-
-        .select-type {
-            float: left;
-        }
-    }
-
-    .filter {
-        height: 30px;
-
-        .filter-button {
-            float: left;
-            .marginRight{
-                margin-right: 10px;
-            }
-        }
-
-        .filter-search {
-            float: right;
-            display: flex;
-            .marginRight{
-                margin-right: 10px;
-            }
-        }
-    }
-}
+<style lang="less" scoped>
+@import "~@less/list/index";
 </style>
