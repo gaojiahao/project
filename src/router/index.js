@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-11 20:17:04
+ * @LastEditTime: 2020-12-14 09:14:24
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -824,7 +824,30 @@ const routes = [
               title:'制图时间调换',
               group: 'chartingTimeExchange',
             },
-            component: resolve=>(require(["@views/charting/chartingTimeExchange"],resolve)),
+            component: resolve=>(require(["@views/charting/chartingTimeExchange/index"],resolve)),
+            redirect:'chartingTimeExchange/chartingTimeExchangeList',
+            children:[
+              {
+                path: 'chartingTimeExchangeList',
+                name: 'chartingTimeExchangeList',
+                meta:{ 
+                  title:'制图时间调换',
+                  group: 'chartingTimeExchange',
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/charting/chartingTimeExchange/chartingTimeExchangeList"],resolve)),
+              },
+              {
+                path: 'changeTime',
+                name: 'changeTime',
+                meta:{ 
+                  title:'调换',
+                  group: 'chartingTimeExchange',
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/charting/chartingTimeExchange/changeTime"],resolve)),
+              },
+            ]
           },
           {
             path: 'chartingRework',

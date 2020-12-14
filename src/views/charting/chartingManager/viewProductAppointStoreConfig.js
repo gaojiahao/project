@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-11 20:30:12
+ * @LastEditTime: 2020-12-12 11:19:59
  */
 export default {
     data() {
@@ -40,7 +40,7 @@ export default {
         formConfig2:{
         },
         formValidate2: {
-          data:[{"img":[{"status":"finished","name":"添加自定义应用@2x.png","size":3082,"percentage":100,"uid":1607689719515,"showProgress":false,"response":{"id":101},"url":"https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843"}],"music":[],"vdieo":[],"threed":[]},{"img":[],"music":[],"vdieo":[],"threed":[]},{"img":[],"music":[],"vdieo":[],"threed":[]}],
+          data:{"img":[{"status":"finished","name":"新店入驻.png","size":783,"percentage":100,"uid":1607743148758,"showProgress":false,"response":{"id":101},"url":"https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843"}],"music":[],"vdieo":[],"threed":[]}
         },
         ruleValidate2: {
 

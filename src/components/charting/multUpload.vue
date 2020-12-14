@@ -4,19 +4,19 @@
  * @Author: gaojiahao
  * @Date: 2020-12-11 19:15:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-11 20:35:30
+ * @LastEditTime: 2020-12-12 11:46:48
 -->
 <template>
     <div>
-        <div class="top_tabale_header">
+        <!-- <div class="top_tabale_header">
             <div class="item"><Icon type="ios-browsers" />{{item.platform}}</div>
             <div class="item"><Icon type="ios-basket" />{{item.store}}</div>
             <div class="item"><Icon type="md-person" />{{item.people}}</div>
-        </div>
-        <div style="margin-bottom:10px;"><Upload type="img" @set-data="setData" :disabled="config.disabled" v-model="value.img"></Upload></div> 
-        <div style="margin-bottom:10px;"><Upload type="music" @set-data="setData" :disabled="config.disabled" v-model="value.music"></Upload></div>
-        <div style="margin-bottom:10px;"><Upload type="vdieo" @set-data="setData" :disabled="config.disabled" v-model="value.vdieo"></Upload></div>
-        <div style="margin-bottom:10px;"><Upload type="threed" @set-data="setData" :disabled="config.disabled" v-model="value.threed"></Upload></div>
+        </div> -->
+        <div style="margin-bottom:10px;"><Upload type="img" @set-data="setData" :disabled="config.disabled" v-model="data.img"></Upload></div> 
+        <div style="margin-bottom:10px;"><Upload type="music" @set-data="setData" :disabled="config.disabled" v-model="data.music"></Upload></div>
+        <div style="margin-bottom:10px;"><Upload type="vdieo" @set-data="setData" :disabled="config.disabled" v-model="data.vdieo"></Upload></div>
+        <div style="margin-bottom:10px;"><Upload type="threed" @set-data="setData" :disabled="config.disabled" v-model="data.threed"></Upload></div>
     </div>
 </template>
 <script>
@@ -34,12 +34,6 @@ export default {
                 return {}
             }
         },
-        item: {
-            type: Object,
-            default () {
-                return {}
-            }
-        },
         config: {
             type: Object,
             default () {
@@ -52,24 +46,23 @@ export default {
     },
     data(){
         return {
-            data:{}
+            data:{
+
+            }
         }
     },
     watch:{
-        data:{
-            handler(val){
-                this.changeData(val);
-            }
-        }
+        
     },
     methods:{
         setData(type,data){
             this.$set(this.data,type,data);
-        },
-        changeData(data) {
             this.$emit('change', this.data);
         },
-    }
+    },
+    created() {
+      this.data = this.value;  
+    },
 }
 </script>
 <style lang="less" scoped>

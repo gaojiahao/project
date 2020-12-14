@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-10 19:06:32
+ * @LastEditTime: 2020-12-12 09:42:57
 -->
 <template>
 <div>
@@ -17,17 +17,6 @@
                     </div>
                 </template>
             </ViewForm>
-            <div class="ivu-form ivu-form-label-right" style="    padding: 10px 10px 10px 10px;">
-                <div class="ivu-form-item">
-                    <label class="ivu-form-item-label" style="width: 120px;">选品人员:</label> 
-                    <div class="ivu-form-item-content" style="margin-left: 120px;">
-                        <Table :columns="selectionPeopleColumns" :data="selectionPeopleData" :width="450">
-
-                        </Table>
-                        <span style="margin-left: 10px;"></span>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div class="top">
@@ -66,51 +55,13 @@ export default {
     mixins: [config],
     data(){
         return{
-            selectionPeopleColumns: [
-                {
-                    title: '平台',
-                    key: 'title'
-                },
-                {
-                    title: '店铺名称',
-                    key: 'name'
-                },
-                {
-                    title: '销售人员',
-                    key: 'people'
-                },
-                {
-                    title: '需求文件',
-                    key: 'file'
-                }
-            ],
-            selectionPeopleData: [
-                {
-                    name: '玩具店铺1',
-                    title: "速卖通",
-                    people: '李四',
-                    file: '图片，视频'
-                },
-                {
-                    name: '玩具店铺2',
-                    title: "速卖通",
-                    people: '李四',
-                    file: '图片，视频'
-                },
-                {
-                    name: '玩具店铺3',
-                    title: "亚马逊",
-                    people: '李四',
-                    file: '图片，视频，3d'
-                },
-            ],
         }
     },
     methods: {
         clearFormData() {},
         save() {},
     },
-    created() {}
+    created(){ }
 }
 </script>
 

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-11 17:26:06
+ * @LastEditTime: 2020-12-14 09:47:42
 -->
 <template>
 <div class="size-content">
@@ -24,7 +24,7 @@
         </div>
         <div class="list">
             <span style="line-height:34px">时间：</span>
-            <DatePicker v-model="item.date" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px"></DatePicker>
+            <DatePicker v-model="item.date" @on-change="item.date=$event" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px"></DatePicker>
         </div>
         <div class="list">
             <Icon type="md-close" style="line-height:34px" @click.native="del(index)"/>
@@ -56,12 +56,6 @@ export default {
     },
     data() {
         return {
-            list: {
-                long: '',
-                wide: '',
-                high: '',
-                volume: '',
-            },
             typeList:[
                 {name:'psd',value:'psd'},
                 {name:'视频',value:'video'},
@@ -72,9 +66,9 @@ export default {
                 type:'selectorMulti',
                 dataSource: {
                     data:[
-                      {id:1,platform:'李四',url:"美工组",comment:"无"},
-                      {id:2,platform:'王五',url:"美工组",comment:"无1"},
-                      {id:3,platform:'马六',url:"美工组",comment:"无2"}
+                      {id:'1',platform:'李四',url:"美工组",comment:"无"},
+                      {id:'2',platform:'王五',url:"美工组",comment:"无1"},
+                      {id:'3',platform:'马六',url:"美工组",comment:"无2"}
                     ]
                   },
                   proertyContext: {
@@ -113,7 +107,9 @@ export default {
         data:{
             handler(val){
                 this.handleInput(val);
-            }
+            },
+            deep: true,
+            immediate: true
         }
     },
     methods: {

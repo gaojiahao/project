@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-11 19:02:55
+ * @LastEditTime: 2020-12-12 11:13:20
  */
 export default {
     data() {
@@ -38,9 +38,15 @@ export default {
 
         },
         formConfig2:{
+          id:{
+            name:'id',
+            type:'text',
+            hidden: true
+          },
         },
         formValidate2: {
-          data:[],
+          id:"",
+          data:{},
         },
         ruleValidate2: {
 

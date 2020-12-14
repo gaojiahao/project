@@ -106,11 +106,6 @@ export default {
         }
     },
     watch:{
-        uploadList:{
-            handler(val){
-                this.$emit('set-data',this.type,this.uploadList);
-            }
-        }
     },
     methods: {
         handleView(name,index) {
@@ -148,7 +143,9 @@ export default {
             return check;
         },
         handleInput(e) {
+            this.uploadList = this.$refs.upload.fileList;
             this.$emit('change', this.uploadList)
+            this.$emit('set-data',this.type,this.uploadList);
         },
         prePic(){
             this.indexPic = (this.indexPic - 1) > -1 ? this.indexPic - 1 : 0;
@@ -201,7 +198,7 @@ export default {
     display: flex;
     .demo-upload-box{
         width: 100px;
-        height: 110px;
+        // height: 110px;
         
         .demo-upload-list {
             width: 60px;
@@ -217,7 +214,7 @@ export default {
         }
         .text{
             font-size: 12px;
-            height: 30px;
+            // height: 30px;
             overflow: hidden;
             text-overflow: ellipsis;
             display: block;
