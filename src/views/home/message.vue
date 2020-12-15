@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-27 19:14:50
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:09:00
+ * @LastEditTime: 2020-12-15 14:46:51
 -->
 <template>
 <div class="message">
@@ -12,28 +12,44 @@
         <TabPane :label="label" name="name1">
             <Scroll :on-reach-bottom="handleReachBottom">
                 <List :border="false" :split="false" v-for="(item,index) in messageList" :key="index">
-                    <ListItem>
-                        <Tag color="gold" v-if="item.type=='wait'">待办</Tag>
-                        <Tag color="green" v-else-if="item.type=='warn'">提醒</Tag>
-                        <Tag color="red" v-else-if="item.type=='expect'">预期</Tag>
+                    <ListItem v-if="item.type=='wait'">
+                        <Tag color="gold">待办</Tag>
                         {{item.text}}
                     </ListItem>
                 </List>
             </Scroll>
         </TabPane>
         <TabPane label="提前提醒" name="name2">
-            <List :border="false" :split="false">
-                <ListItem>This is a piece of text.</ListItem>
-                <ListItem>This is a piece of text.</ListItem>
-                <ListItem>This is a piece of text.</ListItem>
-            </List>
+            <Scroll :on-reach-bottom="handleReachBottom">
+                <List :border="false" :split="false" v-for="(item,index) in messageList" :key="index">
+                    <ListItem v-if="item.type=='warn'">
+                        <Tag color="green">提醒</Tag>
+                        {{item.text}}
+                    </ListItem>
+                </List>
+            </Scroll>
         </TabPane>
-        <TabPane label="预期产品" name="name3">
-            <List :border="false" :split="false">
-                <ListItem>This is a piece of text.</ListItem>
-                <ListItem>This is a piece of text.</ListItem>
-                <ListItem>This is a piece of text.</ListItem>
-            </List>
+        <TabPane label="逾期产品" name="name3">
+            <Scroll :on-reach-bottom="handleReachBottom">
+                <List :border="false" :split="false" v-for="(item,index) in messageList" :key="index">
+                    <ListItem v-if="item.type=='expect'">
+                        <Tag color="red">逾期</Tag>
+                        {{item.text}}
+                    </ListItem>
+                </List>
+            </Scroll>
+        </TabPane>
+        <TabPane label="全部" name="name4">
+            <Scroll :on-reach-bottom="handleReachBottom">
+                <List :border="false" :split="false" v-for="(item,index) in messageList" :key="index">
+                    <ListItem>
+                        <Tag color="gold" v-if="item.type=='wait'">待办</Tag>
+                        <Tag color="green" v-else-if="item.type=='warn'">提醒</Tag>
+                        <Tag color="red" v-else-if="item.type=='expect'">逾期</Tag>
+                        {{item.text}}
+                    </ListItem>
+                </List>
+            </Scroll>
         </TabPane>
     </Tabs>
 </div>
@@ -73,7 +89,7 @@ export default {
                     h('span', '今日待办'),
                     h('Badge', {
                         props: {
-                            count: 3
+                            count: 4
                         }
                     })
                 ])
@@ -102,13 +118,11 @@ export default {
 <style scoped>
 .message {
     padding: 0 10px;
-    margin: 10px 0px 10px 10px;
-
     background-color: #ffffff;
     flex: 1;
     border: 1px solid #dfe0e6;
     border-radius: 6px;
-    /*height: 357px;*/
+    height: 399px;
 }
 
 >>>.ivu-badge-count {

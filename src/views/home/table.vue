@@ -4,14 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 19:22:29
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:10:36
+ * @LastEditTime: 2020-12-15 12:10:00
 -->
 <template>
 <div>
     <Card style="margin: 0px 10px 10px 0px;width:100%;background-color: #ffffff; flex:1;">
         <div style="width: 200px;text-align: left;">表格统计</div>
         <Divider />
-        <!--<Table border :columns="columns1" :data="data1" :row-class-name="rowClassName"></Table>-->
         <div style="width:100%; margin-bottom:15px;display:flex;margin-top: 15px;justify-content: space-between;">
             <div style="">
                 <RadioGroup v-model="buttonSize" type="button">
@@ -25,15 +24,17 @@
                 <Select v-model="model1" style="width:200px" placeholder="变量一">
                     <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
-                <Select v-model="model1" style="width:200px" placeholder="变量二">
+                <Select v-model="model2" style="width:200px" placeholder="变量二">
                     <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
                 <Button type="primary" icon="ios-search">搜索</Button>
             </div>
         </div>
         <Table border :columns="columns1" :data="data1" stripe></Table>
-        <div style="display: flex; margin:10px;">
-            <Page :total="100" show-total />
+        <div style="margin: 10px;overflow: hidden">
+            <div style="float: right;">
+                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+            </div>
         </div>
     </Card>
 </div>
@@ -127,59 +128,40 @@ export default {
             ],
             buttonSize: 'large',
             cityList: [{
-                    value: 'New York',
-                    label: 'New York'
+                    value: '遥控飞机',
+                    label: '遥控飞机'
                 },
                 {
-                    value: 'London',
-                    label: 'London'
+                    value: '遥控飞机',
+                    label: '遥控飞机'
                 },
                 {
-                    value: 'Sydney',
-                    label: 'Sydney'
+                    value: '遥控飞机',
+                    label: '遥控飞机'
                 },
                 {
-                    value: 'Ottawa',
-                    label: 'Ottawa'
+                    value: '遥控飞机',
+                    label: '遥控飞机'
                 },
                 {
-                    value: 'Paris',
-                    label: 'Paris'
+                    value: '遥控飞机',
+                    label: '遥控飞机'
                 },
                 {
-                    value: 'Canberra',
-                    label: 'Canberra'
+                    value: '遥控飞机',
+                    label: '遥控飞机'
                 }
             ],
-            model1: ''
+            model1: '',
+            model2: ''
         }
     },
     methods: {
-        rowClassName(row, index) {
-            if (index % 2 == 1) {
-                return 'demo-table-info-row';
-            }
-            return '';
-        }
+
     }
 }
 </script>
-
-<style scoped>
->>>.ivu-table>>>.demo-table-info-row>>>td {
-    background-color: #2db7f5;
-    color: #fff;
-}
-
-/deep/ .ivu-table /deep/ .demo-table-info-row td /deep/ {
-    background-color: #2db7f5;
-    color: #fff;
-}
-
-.ivu-card ivu-card-bordered .ivu-card-body {
-    padding: 0 16px;
-}
-</style><style lang="less" scoped>
+<style lang="less" scoped>
 .ivu-divider-horizontal {
     margin-top: 10px;
     margin-bottom: 10px;

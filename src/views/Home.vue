@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-09 09:24:24
+ * @LastEditTime: 2020-12-15 10:13:34
 -->
 <template>
 <div class="layout">
@@ -29,7 +29,7 @@
             </Sider>
             <!-- 右侧内容模块 -->
             <div :class="[ leftMenu&&leftMenu.oneLevel.name!='index'&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length ? (isCollapsed ? 'marginRight' : 'marginLeft') : 'nomargin']" class="content">
-                <div class="content-panel">
+                <div :class="leftMenu&&leftMenu.oneLevel.value=='index' ? 'index_panel':'content-panel'">
                     <!-- 面包屑导航条 -->
                     <BreadcrumbNav v-if="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" ref="breadcrumbNav"></BreadcrumbNav>
                     <!-- 内容模块 -->
@@ -57,18 +57,17 @@ import {
     Sider,
     Breadcrumb,
     BreadcrumbItem,
-    Card
 } from "view-design";
-import Head from "@/components/home/head/head";
-import BreadcrumbNav from "@/components/home/menu/breadCrumbNav";
+const head = ()=>import("@components/home/head/head");
+const breadcrumbNav = ()=>import("@components/home/menu/breadCrumbNav");
+const xSubmenu = ()=>import("@components/home/menu/xSubMenu/xSubmenu");
 import Index from "@mixins/index";
 import tokenService from "@service/tokenService";
-import XSubmenu from "@/components/home/menu/xSubMenu/xSubmenu";
 
 export default {
     name: "Home",
     components: {
-        Head,
+        Head:head,
         Layout,
         Header,
         Menu,
@@ -78,9 +77,8 @@ export default {
         Sider,
         Breadcrumb,
         BreadcrumbItem,
-        Card,
-        BreadcrumbNav,
-        XSubmenu
+        BreadcrumbNav:breadcrumbNav,
+        XSubmenu:xSubmenu
     },
     mixins: [
         Index,

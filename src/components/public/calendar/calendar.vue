@@ -41,14 +41,14 @@ li {
 }
 
 .wh_content_all_cl {
-    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
+    /* font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
         "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
     background-color: #fff;
     width: 100%;
     overflow: hidden;
     padding-bottom: 8px;
     border: 1px solid #dfe0e6;
-    border-radius: 6px;
+    border-radius: 6px; */
 }
 
 .wh_content {
@@ -154,7 +154,7 @@ li {
             <li @click="NextMonth(myDate,false)">
                 <div class="wh_jiantou2"></div>
             </li>
-            <li @click="NextMonth(myDate,false)" style="font-size:12px;color:black;">
+            <li @click="getToday()" style="font-size:12px;color:black;">
                 回今天
             </li>
         </div>
@@ -213,6 +213,7 @@ export default {
     created() {
         this.intStart();
         this.myDate = new Date();
+        this.getList( this.myDate);
     },
     methods: {
         intStart() {
@@ -313,10 +314,14 @@ export default {
                 }
             }
             this.list = arr;
+        },
+        getToday: function(){
+            var toDay = timeUtil.dateFormat(new Date());
+            this.$emit("isToday", toDay);
         }
     },
     mounted() {
-        this.getList(this.myDate);
+        //this.getList(this.myDate);
     },
     watch: {
         markDate: {

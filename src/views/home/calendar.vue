@@ -6,25 +6,24 @@
 </template>
 
 <script>
-import Calendar from "@components/public/calendar/calendar.vue";
-
+const calendar = ()=>import("@components/public/calendar/calendar.vue");
 export default {
     name: "XCalendar",
     data() {
         return {
             arr2: ["2019/4/2", "2019/4/3", "2019/4/4"],
-            Today: '', //当前日期
+            Today: '', 
         };
     },
     components: {
-        Calendar
+        Calendar:calendar
     },
     created() {
 
     },
     methods: {
         changeDate(data) {
-            //console.log(data); //左右点击切换月份
+            
         },
     },
 
@@ -35,10 +34,14 @@ export default {
 </script>
 
 <style scoped>
-.content {
-    padding: 10px 0px;
+.content{
+    background-color: #fff;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #dfe0e6;
+    border-radius: 6px;
+    height: 399px;
 }
-
 .cardsp {
     height: 28px;
     line-height: 28px;
@@ -62,8 +65,6 @@ export default {
 
 .circular {
     display: inline-block;
-    /*width: 12px;*/
-    /*height: 12px;*/
     border: 5px solid #136aa7;
     border-radius: 50%;
 }
@@ -152,18 +153,15 @@ export default {
 
 .wh_container>>>.wh_content_item>.wh_isMark {
     background-color: rgba(19, 105, 167, 0.15);
-    /*border-radius: 0px;*/
 }
 
 .wh_container>>>.wh_content_item .wh_isToday {
     background-color: rgba(19, 105, 167, 1);
-    /*border-radius: 0px;*/
     color: #ffffff;
 }
 
 .wh_container>>>.wh_content_item .wh_chose_day {
     background-color: rgba(19, 105, 167, 1);
-    /*border-radius: 0px;*/
     color: #ffffff;
 }
 </style>

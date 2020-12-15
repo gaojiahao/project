@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-10-29 15:34:01
+ * @LastEditTime: 2020-12-15 11:58:09
 -->
 <template>
 <div>
     <div style="margin-top: 10px;width: 100%;height: 20px;" v-show="showSave">
-        <Button type="primary" :style="{float:'right'}" @click="saveLayoutConfig">保存布局</Button>
+        <Button type="primary" :style="{float:'right'}" @click="saveLayoutConfig" size="small">保存布局</Button>
     </div>
     <grid-layout :layout.sync="layoutConfig" :col-num="12" :row-height="30" :is-draggable="true" :is-resizable="true" :is-mirrored="false" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
         <grid-item v-for="item in layoutConfig" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" @moved="movedEvent" @resized="resizedEvent">
@@ -26,28 +26,22 @@
 </template>
 
 <script>
-import {
-    Card,
-    Button
-} from "view-design";
-import XTable from "@views/home/table";
-import XCalendar from "@views/home/calendar";
-import XMessage from "@views/home/message";
-import XQuick from "@views/home/quick";
+const xTable = ()=>import("@views/home/table");
+const calendar = ()=>import("@views/home/calendar");
+const xMessage = ()=>import("@views/home/message");
+const xQuick = ()=>import("@views/home/quick");
 import VueGridLayout from 'vue-grid-layout';
 import LayoutJs from './layout'
 
 export default {
     name: "Index",
     components: {
-        Card,
-        XTable,
-        XCalendar,
-        XMessage,
-        XQuick,
+        XTable:xTable,
+        XCalendar:calendar,
+        XMessage:xMessage,
+        XQuick:xQuick,
         GridLayout: VueGridLayout.GridLayout,
         GridItem: VueGridLayout.GridItem,
-        Button
     },
     mixins: [LayoutJs],
     data() {
@@ -126,6 +120,66 @@ export default {
                 name: '自定义',
                 src: require('@assets/quick/custom.png'),
                 path: '/custom',
+            },{
+                name: '开发新品',
+                src: require('@assets/quick/createProduct.png'),
+                path: '/createProduct',
+            }, {
+                name: '新店入驻',
+                src: require('@assets/quick/addStore.png'),
+                path: '/addStore',
+            }, {
+                name: '预期查询',
+                src: require('@assets/quick/selectExpect.png'),
+                path: '/selectExpect',
+            }, {
+                name: '新增供应商',
+                src: require('@assets/quick/addGuest.png'),
+                path: '/addGuest',
+            }, {
+                name: '自定义',
+                src: require('@assets/quick/custom.png'),
+                path: '/custom',
+            },{
+                name: '开发新品',
+                src: require('@assets/quick/createProduct.png'),
+                path: '/createProduct',
+            }, {
+                name: '新店入驻',
+                src: require('@assets/quick/addStore.png'),
+                path: '/addStore',
+            }, {
+                name: '预期查询',
+                src: require('@assets/quick/selectExpect.png'),
+                path: '/selectExpect',
+            }, {
+                name: '新增供应商',
+                src: require('@assets/quick/addGuest.png'),
+                path: '/addGuest',
+            }, {
+                name: '自定义',
+                src: require('@assets/quick/custom.png'),
+                path: '/custom',
+            },{
+                name: '开发新品',
+                src: require('@assets/quick/createProduct.png'),
+                path: '/createProduct',
+            }, {
+                name: '新店入驻',
+                src: require('@assets/quick/addStore.png'),
+                path: '/addStore',
+            }, {
+                name: '预期查询',
+                src: require('@assets/quick/selectExpect.png'),
+                path: '/selectExpect',
+            }, {
+                name: '新增供应商',
+                src: require('@assets/quick/addGuest.png'),
+                path: '/addGuest',
+            }, {
+                name: '自定义',
+                src: require('@assets/quick/custom.png'),
+                path: '/custom',
             }, ]
         };
     },
@@ -146,9 +200,3 @@ export default {
     created() {}
 }
 </script>
-
-<style lang="less" scoped>
-// .vue-grid-item {
-//     background: aquamarine;
-// }
-</style>

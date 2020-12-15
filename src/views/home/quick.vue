@@ -4,17 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-10-28 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:10:20
+ * @LastEditTime: 2020-12-15 11:38:54
 -->
 <template>
-<div style="display:flex;">
-    <Card style="margin: 0px 10px 10px 0px;width:100%;background-color: #ffffff; flex:1;">
-        <div style="width: 200px;text-align: left;">快捷入口</div>
+<div class="quick_container">
+    <Card class="card">
+        <div class="title">快捷入口</div>
         <Divider />
-        <div style="width:100%;" v-for="(item,index) in quickList" :key='index'>
-            <div style=" width:100px;float:left; height:64px;">
-                <img :src="item.src" style="width:30px; height:30px">
-                <div style="margin-top:10px; font-size:12px;">{{item.name}}</div>
+        <div class="list" v-for="(item,index) in quickList" :key='index'>
+            <div class="list_box">
+                <img :src="item.src">
+                <div class="">{{item.name}}</div>
             </div>
         </div>
     </Card>
@@ -36,6 +36,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.quick_container{
+    display:flex;
+    .card {
+        width:100%;
+        background-color: #ffffff;
+        flex:1;
+        .title{
+            width: 200px;text-align: left;
+        }
+        .list{
+            width: 100%;
+            .list_box {
+                width:100px;float:left; height:64px;
+                img {
+                    width:30px; height:30px
+                }
+                .text {
+                    margin-top:10px; font-size:12px;
+                }
+            }
+        }
+    }
+}
 .ivu-divider-horizontal {
     margin-top: 10px;
     margin-bottom: 10px;

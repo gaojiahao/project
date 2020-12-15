@@ -11,9 +11,12 @@ d<!--
     <div class="container">
         <div class="logo"></div>
         <div class="text">跨境电商ERP</div>
-        <div class="type" v-model="type"><span :class="[type=='login' ? 'active':'']" @click="changeType('login')">登录
-            </span>|<span :class="[type!='login'?'active':'']" @click="changeType('register')">注册</span></div>
-        <template v-if="type=='register'">
+        <div class="type" v-model="type">
+            <span :class="[type=='login' ? 'active':'']" @click="changeType('login')">登录</span>
+            <!-- |
+            <span :class="[type!='login'?'active':'']" @click="changeType('register')">注册</span> -->
+        </div>
+        <!-- <template v-if="type=='register'">
             <Input class="account" prefix="ios-mail" v-model="phoneNumber" placeholder="邮箱" icon="ios-send" @click.native="send" />
             <Input class="account" v-model="phoneVerificationCode" placeholder="邮箱验证码" />
             <Input class="account" prefix="ios-contact" v-model="rUserCode" placeholder="账户" />
@@ -24,8 +27,8 @@ d<!--
             <div class="login">
                 <Button type="primary" @click="register" @keyup.enter="register">注册</Button>
             </div>
-        </template>
-        <template v-else>
+        </template> -->
+        <template>
             <Input class="account" prefix="ios-contact" v-model="userCode" placeholder="账户" />
             <form>
                 <Input class="password" prefix="ios-key" v-model="passWord" type="password" password placeholder="密码6-10位" />
@@ -34,7 +37,7 @@ d<!--
                 <Input v-model="code" placeholder="验证码" style="width: 80px;margin-left: 100px;float: left;" />
                 <s-identify :identifyCode="identifyCode" @click.native="refreshCode" @set-identifyCode="setIdentifyCode"></s-identify>
             </div>
-            <div class="login">
+            <div class="login_button">
                 <Button type="primary" @click="login" @keyup.enter="login">登录</Button>
             </div>
         </template>
@@ -303,16 +306,21 @@ export default {
     height: 100%;
     color: #464c5b;
     position: absolute;
+    background-image: url("~@assets/bg/bg.jpg");
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-position: center 0;
 
     .container {
-        border: 1px solid #808695;
+        // border: 1px solid #808695;
         border-radius: 10px;
         width: 400px;
         margin: auto;
         height: auto;
         position: relative;
         top: 30%;
-
+        background: rgba(255,255,255,0.6);
+        box-shadow: 2px 2px 5px rgb(104,104,104);
         .text {
             margin-top: 20px;
             color: #464c5b;
@@ -329,7 +337,7 @@ export default {
             width: 200px;
         }
 
-        .login {
+        .login_button {
             width: 200px;
             display: inline-block;
             position: relative;
