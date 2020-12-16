@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-07 10:20:14
+ * @LastEditTime: 2020-12-16 10:36:27
 -->
 <template>
 <div id="app" v-title data-title="跨境电商ERP">
@@ -55,7 +55,6 @@ export default {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
     color: #2c3e50;
 }
 .ivu-message-notice-content {

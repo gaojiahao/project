@@ -178,9 +178,13 @@ export default {
 .ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item /deep/ {
     color: #2b85e4;
 }
+.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item-group-title:hover{
+    background: #f3f3f3;
+}
 </style>
 <style lang="less" scoped>
 .ivu-menu-submenu-height{
     height: 54px;
 }
+
 </style>

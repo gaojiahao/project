@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-15 11:58:09
+ * @LastEditTime: 2020-12-16 09:09:52
 -->
 <template>
 <div>
@@ -79,7 +79,27 @@ export default {
                 type: 'expect',
                 text: '今日待办4',
 
-            }, ],
+            }, {
+                type: 'expect',
+                text: '今日待办4',
+
+            }, {
+                type: 'expect',
+                text: '今日待办4',
+
+            }, {
+                type: 'expect',
+                text: '今日待办4',
+
+            },  {
+                type: 'expect',
+                text: '今日待办4',
+
+            }, {
+                type: 'expect',
+                text: '今日待办4',
+
+            },],
             quickList: [{
                 name: '开发新品',
                 src: require('@assets/quick/createProduct.png'),

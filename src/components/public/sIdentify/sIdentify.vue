@@ -132,7 +132,7 @@ export default {
             ]
             let code = ''
             for (let i = 0; i < 4; i++) {
-                let index = Math.floor(Math.random() * 36)
+                let index = Math.floor(Math.random() * 62)
                 code += random[index]
             }
             return code

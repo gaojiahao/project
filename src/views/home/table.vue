@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 19:22:29
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-15 12:10:00
+ * @LastEditTime: 2020-12-15 21:04:31
 -->
 <template>
 <div>
@@ -33,7 +33,7 @@
         <Table border :columns="columns1" :data="data1" stripe></Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                <Page :total="100" :current="1" @on-change="changePage" show-elevator show-sizer transfer></Page>
             </div>
         </div>
     </Card>
@@ -128,27 +128,27 @@ export default {
             ],
             buttonSize: 'large',
             cityList: [{
-                    value: '遥控飞机',
+                    value: '1',
                     label: '遥控飞机'
                 },
                 {
-                    value: '遥控飞机',
+                    value: '2',
                     label: '遥控飞机'
                 },
                 {
-                    value: '遥控飞机',
+                    value: '3',
                     label: '遥控飞机'
                 },
                 {
-                    value: '遥控飞机',
+                    value: '4',
                     label: '遥控飞机'
                 },
                 {
-                    value: '遥控飞机',
+                    value: '5',
                     label: '遥控飞机'
                 },
                 {
-                    value: '遥控飞机',
+                    value: '6',
                     label: '遥控飞机'
                 }
             ],
@@ -157,7 +157,7 @@ export default {
         }
     },
     methods: {
-
+        changePage(){}
     }
 }
 </script>

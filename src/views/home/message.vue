@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-27 19:14:50
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-15 14:46:51
+ * @LastEditTime: 2020-12-15 18:09:54
 -->
 <template>
 <div class="message">
-    <Tabs value="name1">
+    <Tabs value="name1" :animated="false">
         <TabPane :label="label" name="name1">
-            <Scroll :on-reach-bottom="handleReachBottom">
+            <Scroll :on-reach-bottom="handleReachBottom" height="360">
                 <List :border="false" :split="false" v-for="(item,index) in messageList" :key="index">
                     <ListItem v-if="item.type=='wait'">
                         <Tag color="gold">待办</Tag>
@@ -20,7 +20,7 @@
             </Scroll>
         </TabPane>
         <TabPane label="提前提醒" name="name2">
-            <Scroll :on-reach-bottom="handleReachBottom">
+            <Scroll :on-reach-bottom="handleReachBottom" height="360">
                 <List :border="false" :split="false" v-for="(item,index) in messageList" :key="index">
                     <ListItem v-if="item.type=='warn'">
                         <Tag color="green">提醒</Tag>
@@ -30,7 +30,7 @@
             </Scroll>
         </TabPane>
         <TabPane label="逾期产品" name="name3">
-            <Scroll :on-reach-bottom="handleReachBottom">
+            <Scroll :on-reach-bottom="handleReachBottom" height="360">
                 <List :border="false" :split="false" v-for="(item,index) in messageList" :key="index">
                     <ListItem v-if="item.type=='expect'">
                         <Tag color="red">逾期</Tag>
@@ -40,7 +40,7 @@
             </Scroll>
         </TabPane>
         <TabPane label="全部" name="name4">
-            <Scroll :on-reach-bottom="handleReachBottom">
+            <Scroll :on-reach-bottom="handleReachBottom" height="360">
                 <List :border="false" :split="false" v-for="(item,index) in messageList" :key="index">
                     <ListItem>
                         <Tag color="gold" v-if="item.type=='wait'">待办</Tag>
