@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 16:56:06
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-05 11:03:47
+ * @LastEditTime: 2020-12-16 15:50:21
 -->
 <template>
 <div class="break-container">
@@ -15,11 +15,6 @@
                 {{item.meta.title}}
             </BreadcrumbItem>    
         </template>
-        <!--<BreadcrumbItem v-if="leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.name" @click.native="goMenu(leftMenu.oneLevel)">{{leftMenu.oneLevel.name}}</BreadcrumbItem>-->
-        <!--<BreadcrumbItem v-if="leftMenu&&leftMenu.twoLevel&&leftMenu.twoLevel.name" @click.native="goMenu(leftMenu.oneLevel,leftMenu.twoLevel)">
-            {{leftMenu.twoLevel&&leftMenu.twoLevel.name}}
-        </BreadcrumbItem>
-        <BreadcrumbItem v-if="leftMenu&&leftMenu.thirdLevel&&leftMenu.thirdLevel.name" @click.native="goMenu(leftMenu.oneLevel,leftMenu.twoLevel,leftMenu.thirdLevel)">{{leftMenu.thirdLevel&&leftMenu.thirdLevel.name}}</BreadcrumbItem>-->
     </Breadcrumb>
 </div>
 </template>
@@ -77,6 +72,9 @@ export default {
         setMenu(to,form,flag){
             if(flag){
                 this.data = [];
+            }
+            if(form.name=='index'){
+                this.data.push(to)
             }
             var a = this.data.find(obj => obj.name == to.name);
             if(!(a&&a.name))

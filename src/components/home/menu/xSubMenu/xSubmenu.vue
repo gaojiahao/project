@@ -170,19 +170,6 @@ export default {
     z-index: 2;
 }
 
-.ivu-menu-submenu-title-icon-up {
-    /*flex: ;position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%) rotate(180deg);*/
-}
-
-.ivu-menu-submenu-title-icon-down {
-    /*position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);*/
-}
 .ivu-menu-submenu-color {
     background: #DEE7F4;    
 }

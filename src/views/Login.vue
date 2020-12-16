@@ -359,24 +359,17 @@ export default {
             margin-left: auto;
         }
         .login_wrapper{
-            width: 1170px;
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: 0;
-            margin-top: 100px;
-            margin-left: auto;
+            margin-top: 150px;
+            margin-right: 150px;
+            float: right;
             .login_box {
                 border-radius: 10px;
                 width: 400px;
-                margin: auto;
-                height: auto;
-                position: relative;
-                top: 30%;
                 background: rgba(255,255,255,0.6);
                 box-shadow: 2px 2px 5px rgb(104,104,104);
                 text-align: center;
                 .text {
-                    margin-top: 20px;
+                    padding-top: 20px;
                     color: #464c5b;
                     font-size: 2rem;
                 }

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-07 09:22:55
+ * @LastEditTime: 2020-12-16 14:43:01
 -->
 <template>
 <div class="head">
@@ -22,6 +22,7 @@
                     <Icon type="md-arrow-dropdown"></Icon>
                 </div>
                 <DropdownMenu slot="list">
+                    <DropdownItem @click.native="loginOut">用户设置</DropdownItem>
                     <DropdownItem @click.native="loginOut">退出</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
@@ -49,7 +50,7 @@ import {
     DropdownMenu,
     DropdownItem
 } from "view-design";
-import YSubmenu from "@/components/home/menu/xSubMenu/ySubmenu";
+const YSubmenu = ()=>import("@/components/home/menu/xSubMenu/ySubmenu");
 const XZX_TOKEN_KEY = "XZX_LOGIN_TOKEN";
 const localStorage = window["localStorage"];
 export default {
@@ -67,7 +68,7 @@ export default {
         MenuItem,
         Submenu,
         MenuGroup,
-        YSubmenu,
+        YSubmenu:YSubmenu,
         Dropdown,
         DropdownMenu,
         DropdownItem
@@ -174,13 +175,6 @@ export default {
     }
 }
 </style><style scoped>
->>>.ivu-menu-item-group-title {
-    height: 30px;
-    line-height: 30px;
-    padding-left: 8px;
-    font-size: 14px;
-    color: #515a6e;
-}
 >>>.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item {
     padding: 7px 16px 8px;
     font-size: 12px !important;

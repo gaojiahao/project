@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-15 10:13:34
+ * @LastEditTime: 2020-12-16 15:55:39
 -->
 <template>
 <div class="layout">
@@ -31,7 +31,7 @@
             <div :class="[ leftMenu&&leftMenu.oneLevel.name!='index'&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length ? (isCollapsed ? 'marginRight' : 'marginLeft') : 'nomargin']" class="content">
                 <div :class="leftMenu&&leftMenu.oneLevel.value=='index' ? 'index_panel':'content-panel'">
                     <!-- 面包屑导航条 -->
-                    <BreadcrumbNav v-if="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" ref="breadcrumbNav"></BreadcrumbNav>
+                    <BreadcrumbNav v-show="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" ref="breadcrumbNav"></BreadcrumbNav>
                     <!-- 内容模块 -->
                     <transition>
                         <keep-alive>
