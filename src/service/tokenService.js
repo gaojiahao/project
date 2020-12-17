@@ -1,5 +1,6 @@
 import Fly from "flyio/dist/npm/fly";
 import router from "../router";
+import store from "../store";
 
 const fly = new Fly();
 // fly请求 设置拦截器
@@ -13,6 +14,7 @@ let tokenService = {
     storage.removeItem(XZX_TOKEN_KEY);
     sessionStorage.clear();
     localStorage.clear();
+    store.commit('clearMenuRouter');
   },
   // 设置token
   setToken(data) {
