@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 16:38:41
+ * @LastEditTime: 2020-12-17 17:26:16
  */
 export default {
     data() {
@@ -20,6 +20,7 @@ export default {
           },
         },
         formValidate: {
+          id:'',
           name: '',
           code: '',
         },

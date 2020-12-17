@@ -16,7 +16,7 @@
             <div>Loading</div>
         </Spin>
         <template v-else>
-            <template v-if="list.length">
+            <template v-if="data.length">
                 <Input search enter-button placeholder="" size="small" style="padding:5px;"/>
                 <Tree :data="data" :render="renderContent" @on-select-change="onSelectChange" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()">
                     <template slot="contextMenu">

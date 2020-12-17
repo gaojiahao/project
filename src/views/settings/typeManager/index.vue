@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-17 11:38:00
+ * @LastEditTime: 2020-12-17 15:05:11
 -->
 <template>
 <div class="platformManager-container">
@@ -98,9 +98,6 @@ export default {
                 }, 500);
             }
         },
-        clearFormData() {
-
-        },
         selectItem(index) {
             this.isShowBind = true;
         },
@@ -130,6 +127,7 @@ export default {
         },
         clearFormData() {
             this.isShowAdd = false;
+            this.isShowBind = false;
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
         edit(data){
@@ -168,7 +166,6 @@ export default {
         }
     },
     created() {
-        this.getEcommercePlatformList();
         setTimeout(() => {
             this.listLoading = false;
         }, 500);

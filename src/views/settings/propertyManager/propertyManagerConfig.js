@@ -4,18 +4,30 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 16:07:13
+ * @LastEditTime: 2020-12-17 15:11:14
  */
 export default {
     data() {
       return {
         formConfig:{
-          name:{
+          parentId:{
             name:'上一级类目',
+            type:'select', 
+            dataSource:{
+              type:'static',
+              data:[
+                {name:'材质',value:'a'},
+                {name:'金属',value:'1'},
+                {name:'颜色',value:'a-1'}
+              ],
+            }, 
+          },
+          name:{
+            name:'属性名称',
             type:'text',
           },
           code:{
-            name:'属性名称',
+            name:'属性code',
             type:'text',
           },
           url:{
@@ -24,6 +36,7 @@ export default {
           },
         },
         formValidate: {
+          parentId: '',
           name: '',
           code: '',
           url: '',

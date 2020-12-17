@@ -4,17 +4,27 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:17:18
+ * @LastEditTime: 2020-12-17 15:30:36
 -->
 <template>
 <div class="propertyManager-container">
     <div class="propertyManager-container-panel">
         <div class="left">
-            <PropertyManagerList :list="list" @select-item="selectItem"></PropertyManagerList>
+            <PropertyManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @edit="edit" @del="sureDeleteConfirm"></PropertyManagerList>
         </div>
-        <div class="right">
+        <div class="right" v-show="isShowAdd">
+            <Divider orientation="left" size="small">{{title}}</Divider>
             <div class="right-top">
-                <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
+                <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                    <template slot="button">
+                        <FormItem>
+                            <div style="width:100%">
+                                <Button type="primary" @click="save" style="float: left;">保存</Button>
+                                <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                            </div>
+                        </FormItem>
+                    </template>
+                </XForm>
             </div>
         </div>
     </div>
@@ -42,13 +52,9 @@ export default {
             list: [],
             selectPBind: {},
             selectSBind: {},
-        }
-    },
-    watch: {
-        list: {
-            handler(val) {
-                console.log(val)
-            }
+            listLoading: true,
+            title:'',
+            isShowAdd:false
         }
     },
     methods: {
@@ -76,30 +82,61 @@ export default {
             }
         },
         clearFormData() {
-
+            this.isShowAdd = false;
+            this.$refs['form'].$refs['formValidate'].resetFields();
         },
         selectItem(index) {
-            console.log(index)
-            //this.$refs['form'].$refs['formValidate'].resetFields();
             this.formValidate = this.list[index];
         },
-        selectPlatformBind(data) {
-            this.selectPBind = data;
-        },
-        //选择系统类目后的处理
-        selectSystemBind(data) {
-            this.selectSBind = data;
-            if (this.selectPBind && this.selectSBind) {
-                this.$Message.info('温馨提示：绑定成功');
-                setTimeout(() => {
-                    this.$refs.selectPlatformBind.removeSelect();
-                    this.$refs.selectSystemBind.removeSelect();
-                }, 1000);
+        showAdd(id) {
+            this.title = '新建';
+            this.$refs['form'].$refs['formValidate'].resetFields();
+            this.isShowAdd = true;
+            this.isShowBind = false;
+            if(id){
+                this.formValidate.parentId = id;
             }
+            this.$refs['form'].initEL('input');
+        },
+        edit(data){
+            this.title = '编辑';
+            this.formValidate = {
+                parentId: data.parentId,
+                name: data.title,
+                code: data.code,
+                url: data.parentId,
+                id: data.id, 
+            };
+            this.isShowAdd = true;
+            this.isShowBind = true;
+        },
+        sureDeleteConfirm (root, node, data,flag) {
+            this.$Modal.confirm({
+                title: '温馨提示',
+                content: '数据删除后将无法恢复！',
+                onCancel: () => {
+                    this.$Message.info('取消');
+                },
+                onOk: () => {
+                    flag ? this.deletesData() : this.deleteData(root, node, data);
+                    this.$Message.info({
+                        content: '删除成功',
+                        duration: 2
+                    });
+                },
+            });
+        },
+        deleteData(root, node, data) {
+            const parentKey = root.find(el => el === node).parent;
+            const parent = root.find(el => el.nodeKey === parentKey).node;
+            const index = parent.children.indexOf(data);
+            parent.children.splice(index, 1);
         }
     },
     created() {
-        this.getEcommercePlatformList();
+        setTimeout(() => {
+            this.listLoading = false;
+        }, 500);
     }
 }
 </script>
@@ -143,6 +180,15 @@ export default {
                 margin: 10px 10px;
                 transition: all 0.2s ease-in-out;
             }
+        }
+
+        .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-center, 
+        .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-left, 
+        .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-right
+        {
+            margin: 8px 0 0 0;
+            font-weight: 600;
+            color: #515a6e;
         }
     }
 }
