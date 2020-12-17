@@ -4,18 +4,18 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:40:02
+ * @LastEditTime: 2020-12-17 11:38:00
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <TypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" ></TypeManagerList>
+            <TypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @edit="edit" @del="sureDeleteConfirm"></TypeManagerList>
         </div>
         <div class="right">
             <div class="item" v-show="isShowAdd">
                 <div class="top">
-                    <Divider orientation="left" size="small">新建分类</Divider>
+                    <Divider orientation="left" size="small">{{title}}</Divider>
                     <div class="top_tabale">
                         <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
                             <template slot="button">
@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import TypeManagerList from "@components/settings/typeManager/typeManagerList";
-import TypeManagerTab from "@components/settings/typeManager/typeManagerTab";
 import config from "@views/settings/typeManager/typeManagerConfig";
-import XForm from "@components/public/form/xForm";
+const TypeManagerList = ()=>import("@components/settings/typeManager/typeManagerList");
+const TypeManagerTab = ()=>import("@components/settings/typeManager/typeManagerTab");
+const XForm = ()=>import("@components/public/form/xForm");
 import {
     addEcommercePlatform,
     getEcommercePlatformList
@@ -55,9 +55,9 @@ export default {
     name: "TypeManager",
     mixins: [config],
     components: {
-        TypeManagerList,
-        XForm,
-        TypeManagerTab,
+        TypeManagerList:TypeManagerList,
+        XForm:XForm,
+        TypeManagerTab:TypeManagerTab,
     },
     data() {
         return {
@@ -67,13 +67,7 @@ export default {
             isShowAdd: false,
             isShowBind:false,
             listLoading: true,
-        }
-    },
-    watch: {
-        list: {
-            handler(val) {
-                console.log(val)
-            }
+            title:''
         }
     },
     methods: {
@@ -90,39 +84,18 @@ export default {
             var params = this.formValidate;
             if (!this.formValidate.id) {
                 this.$FromLoading.show();
-                return new Promise((resolve, reject) => {
-                    addEcommercePlatform(params).then(res => {
-                        if (res.status == 200) {
-                            setTimeout(() => {
-                                this.$FromLoading.hide();
-                            }, 500);
-                            this.$Message.info('温馨提示：成功');
-                            this.getEcommercePlatformList();
-                            this.$refs['form'].$refs['formValidate'].resetFields();
-                            this.$refs['form'].initEL('input');
-                        } else {
-                            setTimeout(() => {
-                                this.$FromLoading.hide();
-                            }, 500);
-                            this.$Message.error({
-                                background: true,
-                                content: res.message
-                            });
-                        }
-                    }).catch(err => {
-                        setTimeout(() => {
-                            this.$FromLoading.hide();
-                        }, 500);
-                        this.$Message.error({
-                            background: true,
-                            content: err.message
-                        });
-                    });
-                });
+                setTimeout(() => {
+                    this.$FromLoading.hide();
+                    this.$Message.info('温馨提示：成功');
+                }, 500);
+                this.$refs['form'].$refs['formValidate'].resetFields();
+                this.$refs['form'].initEL('input');                   
             } else {
-                return new Promise((resolve, reject) => {
+                this.$FromLoading.show();
+                setTimeout(() => {
+                    this.$FromLoading.hide();
                     this.$Message.info('更新成功');
-                });
+                }, 500);
             }
         },
         clearFormData() {
@@ -145,12 +118,54 @@ export default {
                 }, 1000);
             }
         },
-        showAdd() {
-            this.isShowAdd = this.isShowAdd ? false:true;
+        showAdd(id) {
+            this.title = '新建';
+            this.$refs['form'].$refs['formValidate'].resetFields();
+            this.isShowAdd = true;
+            this.isShowBind = false;
+            if(id){
+                this.formValidate.parentId = id;
+            }
+            this.$refs['form'].initEL('input');
         },
         clearFormData() {
-            this.showAdd();
+            this.isShowAdd = false;
+            this.$refs['form'].$refs['formValidate'].resetFields();
         },
+        edit(data){
+            this.title = '编辑';
+            this.formValidate = {
+                parentId: data.parentId,
+                name: data.title,
+                code: data.code,
+                url: data.parentId,
+                id: data.id, 
+            };
+            this.isShowAdd = true;
+            this.isShowBind = true;
+        },
+        sureDeleteConfirm (root, node, data,flag) {
+            this.$Modal.confirm({
+                title: '温馨提示',
+                content: '数据删除后将无法恢复！',
+                onCancel: () => {
+                    this.$Message.info('取消');
+                },
+                onOk: () => {
+                    flag ? this.deletesData() : this.deleteData(root, node, data);
+                    this.$Message.info({
+                        content: '删除成功',
+                        duration: 2
+                    });
+                },
+            });
+        },
+        deleteData(root, node, data) {
+            const parentKey = root.find(el => el === node).parent;
+            const parent = root.find(el => el.nodeKey === parentKey).node;
+            const index = parent.children.indexOf(data);
+            parent.children.splice(index, 1);
+        }
     },
     created() {
         this.getEcommercePlatformList();

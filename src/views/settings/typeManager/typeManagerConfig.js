@@ -4,18 +4,30 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 15:34:26
+ * @LastEditTime: 2020-12-17 10:10:51
  */
 export default {
     data() {
       return {
         formConfig:{
-          name:{
+          parentId:{
             name:'上一级类目',
+            type:'select', 
+            dataSource:{
+              type:'static',
+              data:[
+                {name:'玩具类',value:'a'},
+                {name:'电子器元件',value:'1'},
+                {name:'积木类',value:'a-1'}
+              ],
+            }, 
+          },
+          name:{
+            name:'分类名称',
             type:'text',
           },
           code:{
-            name:'类名名称',
+            name:'分类code',
             type:'text',
           },
           url:{
@@ -24,25 +36,31 @@ export default {
           },
         },
         formValidate: {
+          parentId:'',
           name: '',
           code: '',
           url: '',
           id:'',
         },
         ruleValidate: {
+          parentId: [{
+            required: false,
+            message: '请输入上一级类目',
+            trigger: 'blur'
+          }],
           name: [{
               required: true,
-              message: '请输入上一级类目',
+              message: '请输入分类名称',
               trigger: 'blur'
           }],
           code: [{
               required: true,
               type: 'string',
-              message: '请输入类名名称',
+              message: '请输入分类code',
               trigger: 'blur'
           }],
           url: [{
-              required: true,
+              required: false,
               type: 'string',
               message: '请输入分组类别',
               trigger: 'blur'
