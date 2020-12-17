@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:43:23
+ * @LastEditTime: 2020-12-17 09:38:16
 -->
 <template>
 <div class="content">
@@ -104,6 +104,10 @@ export default {
                     this.removeSelect(d[i].children)
                 }
             }
+        },
+        clear(){
+            var checkData = this.$refs.tree.getCheckedNodes();
+            checkData[0].checked = false;     
         }
     }
 }

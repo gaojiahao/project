@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:33:48
+ * @LastEditTime: 2020-12-17 09:39:43
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <PlatformManagerList :list="listData" @select-item="selectItem" :loading="listLoading" @show-add="showAdd"></PlatformManagerList>
+            <PlatformManagerList :list="listData" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @del="sureDeleteConfirm"></PlatformManagerList>
         </div>
         <div class="right">
             <div class="item" v-show="isShowAdd">
@@ -22,7 +22,7 @@
                                 <FormItem>
                                     <div style="width:100%">
                                         <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                        <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                        <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
                                     </div>
                                 </FormItem>
                             </template>
@@ -46,13 +46,13 @@
 </template>
 
 <script>
-import PlatformManagerList from "@components/settings/platformManager/list";
-import SystemCategoryBind from "@components/settings/platformManager/systemCategoryBind";
-import PlatformCategoryBind from "@components/settings/platformManager/platformCategoryBind";
-import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
-import CategoryBind from "@components/settings/platformManager/categoryBind";
 import config from "@views/settings/platformManager/platformManagerConfig";
 import XForm from "@components/public/form/xForm";
+const PlatformManagerList = ()=>import("@components/settings/platformManager/list");
+const SystemCategoryBind = ()=>import("@components/settings/platformManager/systemCategoryBind");
+const PlatformCategoryBind = ()=>import("@components/settings/platformManager/platformCategoryBind");
+const NowCategoryBind = ()=>import("@components/settings/platformManager/nowCategoryBind");
+const CategoryBind = ()=>import("@components/settings/platformManager/categoryBind");
 import {
     addEcommercePlatform,
     getEcommercePlatformList
@@ -62,12 +62,12 @@ export default {
     name: "platformManager",
     mixins: [config],
     components: {
-        PlatformManagerList,
-        CategoryBind,
-        XForm,
-        SystemCategoryBind,
-        PlatformCategoryBind,
-        NowCategoryBind,
+        PlatformManagerList:PlatformManagerList,
+        CategoryBind:CategoryBind,
+        XForm:XForm,
+        SystemCategoryBind:SystemCategoryBind,
+        PlatformCategoryBind:PlatformCategoryBind,
+        NowCategoryBind:NowCategoryBind,
     },
     data() {
         return {
@@ -75,13 +75,9 @@ export default {
             selectPBind: {},
             selectSBind: {},
             listLoading: true,
-            isShowAdd: false,
-            isShowBind:false
-        }
-    },
-    computed: {
-        title:function () {
-            return this.formValidate.id ? '编辑平台':'新增平台';
+            isShowAdd: true,
+            isShowBind:false,
+            title:'新建'
         }
     },
     methods: {
@@ -122,16 +118,31 @@ export default {
             }
         },
         showAdd() {
-            this.isShowAdd = this.isShowAdd ? false:true;
+            this.$refs['form'].$refs['formValidate'].resetFields();
+            this.title = '新增';
+            this.isShowBind = false;
+            this.$refs.selectPlatformBind.clear();
+            this.$refs.selectSystemBind.clear();
         },
         clearFormData() {
-            this.showAdd();
+            this.$refs['form'].$refs['formValidate'].resetFields();
         },
         selectItem(index) {
-            // if (!this.$refs['form'].$refs['formValidate'].validate()) {
-            //     this.$refs['form'].$refs['formValidate'].resetFields();
-            // }
-            // this.formValidate = this.listData[index];
+            this.clearFormData();
+            this.title = '编辑';
+            //用接口去获取明细数据，不要用list去做双向绑定
+            this.formValidate = {
+                "code":"阿斯蒂芬",
+                "name":"阿斯蒂芬",
+                "url":"阿斯蒂芬",
+                "chargeUserId":"1ea276b5-0e68-1fa8-0182-840eb50a415a",
+                "lastModificationTime":null,
+                "lastModifierId":null,
+                "creationTime":"2020-12-10T17:31:51.76527",
+                "creatorId":null,
+                "id":"036ca4f2-0ae4-1d72-2e21-39f95e2aee54"
+            };
+            this.isShowAdd = true;
             this.isShowBind = true;
         },
         selectPlatformBind(data) {
@@ -147,6 +158,26 @@ export default {
                     this.$refs.selectSystemBind.removeSelect();
                 }, 1000);
             }
+        },
+        sureDeleteConfirm (index,flag) {
+            this.$Modal.confirm({
+                title: '温馨提示',
+                content: '数据删除后将无法恢复！',
+                onCancel: () => {
+                    this.$Message.info('取消');
+                },
+                onOk: () => {
+                    flag ? this.deletesData() : this.deleteData(index);
+                    this.$Message.info({
+                        content: '删除成功',
+                        duration: 2
+                    });
+                },
+            });
+        },
+        deleteData(index){
+            this.$delete(this.listData,index);
+            this.isShowAdd = false;
         }
     },
     created() {
@@ -156,52 +187,4 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/basicinfo/platformManager/index";
-.platformManager-container {
-    .platformManager-container-panel {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        width: 100%;
-        .left {
-            width: 350px;
-            background-color: #f5fffa;
-            height: 750px;
-            border: 1px solid #dcdee2;
-            border-color: #e8eaec;
-            transition: all 0.2s ease-in-out;
-        }
-        .right {
-            flex: 1;
-            .top {
-                flex: 1;
-                transition: all 0.2s ease-in-out;
-                margin: 0 0 10px 10px;
-                .top_tabale{
-                    background-color: #f5fffa;
-                    border: 1px solid #dcdee2;
-                    border-color: #e8eaec;    
-                }
-                .top_tabale_white{
-                    border: 1px solid #dcdee2;
-                    border-top:0;
-                    border-color: #e8eaec;    
-                }
-            }
-            .right-bottom {
-                transition: all 0.2s ease-in-out;
-                display: flex;
-                flex-direction: row;
-            }
-        }
-    }
-    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-center, 
-    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-left, 
-    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-right
-    {
-        margin: 8px 0 0 0;
-        font-weight: 600;
-        color: #515a6e;
-    }
-}
 </style>

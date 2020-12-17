@@ -22,6 +22,9 @@
                     <ListItem>
                         <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==index ? 'active':'']" @click="select(index)">
                             <span>{{item.name}}</span>&nbsp|&nbsp<span>{{item.code}}</span>
+                            <span style="float:right">
+                                <Icon type="md-close" @click.native="del($event,index)" />
+                            </span>
                         </div>
                     </ListItem>
                 </List>
@@ -83,6 +86,11 @@ export default {
         },
         add() {
             this.$emit('show-add');
+        },
+        del(e,index){
+            e.stopPropagation();
+            e.preventDefault();
+            this.$emit('del',index);
         }
     },
     created() {}
@@ -131,6 +139,9 @@ export default {
     }
     .ivu-list-item{
         padding: 3px 0;
+    }
+    .ivu-icon-md-close:hover{
+        color:red
     }
 }
 </style>>
