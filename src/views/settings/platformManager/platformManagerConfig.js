@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-06 16:38:56
+ * @LastEditTime: 2020-12-18 09:46:42
  */
 export default {
     data() {
@@ -15,7 +15,7 @@ export default {
             type:'text',
           },
           code:{
-            name:'平台code',
+            name:'平台编码',
             type:'text',
           },
           url:{
@@ -65,7 +65,7 @@ export default {
         ruleValidate: {
           name: [{
               required: true,
-              message: '请输入平台名称',
+              message: '请输入平台编码',
               trigger: 'blur'
           }],
           code: [{

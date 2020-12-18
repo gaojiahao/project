@@ -11,6 +11,7 @@
         </div>
     </div>
     <div class="content">
+        <Input search enter-button placeholder="" size="small" style="padding:5px;"/>
         <List :border="false" :split="false">
             <ListItem>
                 <div style="padding:0 10px 0 28px; width: 100%; text-align: left; font-weight:600">

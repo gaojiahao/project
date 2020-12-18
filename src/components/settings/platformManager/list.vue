@@ -11,12 +11,19 @@
         </div>
     </div>
     <div class="content">
+        <Input search enter-button placeholder="" size="small" style="padding:5px;"/>
+        <List :border="false" :split="false">
+            <ListItem>
+                <div style="padding:0 10px 0 28px; width: 100%; text-align: left; font-weight:600">
+                    <span>名称</span>&nbsp|&nbsp<span>编码</span>
+                </div>
+            </ListItem>
+        </List>
         <Spin fix v-if="loading">
             <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
             <div>Loading</div>
         </Spin>
         <template v-else>
-            <!--<Scroll :on-reach-bottom="handleReachBottom">-->
             <template v-if="list.length">
                 <List :border="false" :split="false" v-for="(item,index) in list" :key="index">
                     <ListItem>
@@ -33,7 +40,6 @@
                 暂无数据
             </template>
         </template>
-        <!--</Scroll>-->
     </div>
 </div>
 </div>
