@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 19:26:24
+ * @LastEditTime: 2020-12-18 11:05:46
 -->
 <template>
 <div>
@@ -52,9 +52,9 @@
 
 <script>
 import config from "@views/charting/chartingManager/viewProductAppointStoreConfig";
-const viewForm = ()=>import("@components/public/form/viewForm");
-const xForm = ()=>import("@components/public/form/xForm");
-const multUpload = ()=>import("@components/charting/multUpload");
+import ViewForm from "@components/public/form/viewForm";
+import XForm from "@components/public/form/xForm";
+import MultUpload from "@components/charting/multUpload";
 
 import {
     Tabs,
@@ -65,9 +65,9 @@ export default {
     components: {
         Tabs,
         TabPane,
-        ViewForm:viewForm,
-        XForm:xForm,
-        MultUpload:multUpload
+        ViewForm,
+        XForm,
+        MultUpload
     },
     mixins: [config],
     data(){

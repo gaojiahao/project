@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:36:25
+ * @LastEditTime: 2020-12-18 10:59:43
 -->
 <template>
 <div class="storeManager-container">
@@ -241,23 +241,6 @@ export default {
     }
 }
 </script>
-<style scoped>
->>>.ivu-input {
-    height: 26px;
-}
->>>.ivu-btn-small span {
-    font-size: 12px;
-}
->>>.ivu-table-row-highlight td {
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-hover td{
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td{
-    background-color: #B8D9FD;
-}
-</style>
 <style lang="less" scoped>
-@import "~@less/list/index";
+@import "~@less/list/index.less";
 </style>

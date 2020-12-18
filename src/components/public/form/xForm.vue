@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-12 10:19:51
+ * @LastEditTime: 2020-12-18 11:08:33
 -->
 <template>
 <div class="content">
@@ -88,7 +88,7 @@ import Texts from '@components/public/input/texts';
 import Size from '@components/public/input/size';
 import SelectorSingle from '@components/public/xSelect/selectorSingle';
 import SelectorMulti from '@components/public/xSelect/selectorMulti';
-const distributionPeople = ()=>import("@components/charting/distributionPeople");
+import DistributionPeople from "@components/charting/distributionPeople";
 
 export default {
     name: 'XForm',
@@ -99,7 +99,7 @@ export default {
         Size,
         SelectorSingle,
         SelectorMulti,
-        DistributionPeople:distributionPeople
+        DistributionPeople
     },
     props: {
         titleText: {

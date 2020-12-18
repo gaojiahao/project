@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 20:45:08
+ * @LastEditTime: 2020-12-18 11:06:25
 -->
 <template>
 <div class="size-content">
@@ -34,11 +34,11 @@
 </template>
 
 <script>
-const selectorSingle = ()=>import("@components/public/xSelect/selectorSingle");
+import SelectorSingle from "@components/public/xSelect/selectorSingle";
 export default {
     name: "DistributionPeople",
     components: {
-        SelectorSingle:selectorSingle
+        SelectorSingle
     },
     model: {
         prop: 'value', // prop说:我要将value1作为该组件被使用(被父组件调用)时,v-model能取到的值

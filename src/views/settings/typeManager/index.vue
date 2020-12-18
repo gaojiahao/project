@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-17 15:05:11
+ * @LastEditTime: 2020-12-18 11:03:40
 -->
 <template>
 <div class="platformManager-container">
@@ -43,9 +43,9 @@
 
 <script>
 import config from "@views/settings/typeManager/typeManagerConfig";
-const TypeManagerList = ()=>import("@components/settings/typeManager/typeManagerList");
-const TypeManagerTab = ()=>import("@components/settings/typeManager/typeManagerTab");
-const XForm = ()=>import("@components/public/form/xForm");
+import TypeManagerList from "@components/settings/typeManager/typeManagerList";
+import TypeManagerTab from "@components/settings/typeManager/typeManagerTab";
+import XForm from "@components/public/form/xForm";
 import {
     addEcommercePlatform,
     getEcommercePlatformList
@@ -55,9 +55,9 @@ export default {
     name: "TypeManager",
     mixins: [config],
     components: {
-        TypeManagerList:TypeManagerList,
-        XForm:XForm,
-        TypeManagerTab:TypeManagerTab,
+        TypeManagerList,
+        XForm,
+        TypeManagerTab,
     },
     data() {
         return {

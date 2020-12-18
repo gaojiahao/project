@@ -58,7 +58,7 @@ d<!--
 </template>
 
 <script>
-const sIdentify = ()=>import("@components/public/sIdentify/sIdentify");
+import SIdentify from "@components/public/sIdentify/sIdentify";
 import tokenService from "@service/tokenService";
 import {
     validateEmail,
@@ -68,7 +68,7 @@ import {
 export default {
     name: "Login",
     components: {
-        SIdentify:sIdentify
+        SIdentify
     },
     data() {
         var userCode = localStorage.getItem("userCode");

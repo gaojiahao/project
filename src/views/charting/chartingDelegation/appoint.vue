@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-12 09:42:57
+ * @LastEditTime: 2020-12-18 11:13:06
 -->
 <template>
 <div>
@@ -37,8 +37,8 @@
 
 <script>
 import config from "@views/charting/chartingDelegation/productAppointStoreConfig";
-const viewForm = ()=>import("@components/public/form/viewForm");
-const xForm = ()=>import("@components/public/form/xForm");
+import ViewForm from "@components/public/form/viewForm";
+import XForm from "@components/public/form/xForm";
 
 import {
     Tabs,
@@ -49,8 +49,8 @@ export default {
     components: {
         Tabs,
         TabPane,
-        ViewForm:viewForm,
-        XForm:xForm,
+        ViewForm,
+        XForm,
     },
     mixins: [config],
     data(){

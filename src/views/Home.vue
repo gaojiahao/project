@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-16 15:55:39
+ * @LastEditTime: 2020-12-18 11:10:16
 -->
 <template>
 <div class="layout">
@@ -58,16 +58,16 @@ import {
     Breadcrumb,
     BreadcrumbItem,
 } from "view-design";
-const head = ()=>import("@components/home/head/head");
-const breadcrumbNav = ()=>import("@components/home/menu/breadCrumbNav");
-const xSubmenu = ()=>import("@components/home/menu/xSubMenu/xSubmenu");
+import Head from "@components/home/head/head";
+import BreadcrumbNav from "@components/home/menu/breadCrumbNav";
+import XSubmenu from "@components/home/menu/xSubMenu/xSubmenu";
 import Index from "@mixins/index";
 import tokenService from "@service/tokenService";
 
 export default {
     name: "Home",
     components: {
-        Head:head,
+        Head,
         Layout,
         Header,
         Menu,
@@ -77,8 +77,8 @@ export default {
         Sider,
         Breadcrumb,
         BreadcrumbItem,
-        BreadcrumbNav:breadcrumbNav,
-        XSubmenu:xSubmenu
+        BreadcrumbNav,
+        XSubmenu
     },
     mixins: [
         Index,

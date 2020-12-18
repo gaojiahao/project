@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-11 19:15:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-12 11:46:48
+ * @LastEditTime: 2020-12-18 11:07:52
 -->
 <template>
     <div>
@@ -20,7 +20,7 @@
     </div>
 </template>
 <script>
-const upload = ()=>import("@components/public/upload/upload");
+import Upload from "@components/public/upload/upload";
 export default {
     name:'MultUpload',
     model: {
@@ -42,7 +42,7 @@ export default {
         },
     },
     components: {
-        Upload:upload
+        Upload
     },
     data(){
         return {

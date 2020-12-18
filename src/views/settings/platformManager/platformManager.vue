@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-17 09:39:43
+ * @LastEditTime: 2020-12-18 10:57:23
 -->
 <template>
 <div class="platformManager-container">
@@ -48,11 +48,11 @@
 <script>
 import config from "@views/settings/platformManager/platformManagerConfig";
 import XForm from "@components/public/form/xForm";
-const PlatformManagerList = ()=>import("@components/settings/platformManager/list");
-const SystemCategoryBind = ()=>import("@components/settings/platformManager/systemCategoryBind");
-const PlatformCategoryBind = ()=>import("@components/settings/platformManager/platformCategoryBind");
-const NowCategoryBind = ()=>import("@components/settings/platformManager/nowCategoryBind");
-const CategoryBind = ()=>import("@components/settings/platformManager/categoryBind");
+import PlatformManagerList from "@components/settings/platformManager/list";
+import SystemCategoryBind from "@components/settings/platformManager/systemCategoryBind";
+import PlatformCategoryBind from "@components/settings/platformManager/platformCategoryBind";
+import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
+import CategoryBind from "@components/settings/platformManager/categoryBind";
 import {
     addEcommercePlatform,
     getEcommercePlatformList
@@ -62,12 +62,12 @@ export default {
     name: "platformManager",
     mixins: [config],
     components: {
-        PlatformManagerList:PlatformManagerList,
-        CategoryBind:CategoryBind,
-        XForm:XForm,
-        SystemCategoryBind:SystemCategoryBind,
-        PlatformCategoryBind:PlatformCategoryBind,
-        NowCategoryBind:NowCategoryBind,
+        PlatformManagerList,
+        CategoryBind,
+        XForm,
+        SystemCategoryBind,
+        PlatformCategoryBind,
+        NowCategoryBind,
     },
     data() {
         return {
