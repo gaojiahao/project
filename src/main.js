@@ -4,13 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-11 15:46:35
+ * @LastEditTime: 2020-12-18 11:17:26
  */
 //引用插件
 import Vue from "vue";
 import App from "./App.vue";
 import "./registerServiceWorker";
-import router from "./router";
 import store from "./store";
 import VueRouter from "vue-router";
 import '@plugins/iview.js'
@@ -26,6 +25,7 @@ import '@less/common';
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import router from "./router";
 
 Vue.config.productionTip = false;
 Vue.directive("title", {
