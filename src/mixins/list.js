@@ -84,7 +84,6 @@ export default {
                     this.$Message.info('取消');
                 },
                 onOk: () => {
-                    debugger
                     flag ? this.deletesData() : this.deleteData();
                     this.$Message.info({
                         content: '删除成功',

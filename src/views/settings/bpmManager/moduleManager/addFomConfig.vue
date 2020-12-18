@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-09 14:36:39
+ * @LastEditTime: 2020-12-18 11:40:24
 -->
 <template>
 <div>
@@ -39,7 +39,7 @@
 <script>
 import Research from "@components/basicinfo/developNewProductList/research";
 import ModalForm from "@components/public/form/modalForm";
-import config from "@views/settings/moduleManager/addFormConfig";
+import config from "@views/settings/bpmManager/moduleManager/addFormConfig";
 
 export default {
     name: 'AddFomConfig',

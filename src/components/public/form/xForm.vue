@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 11:08:33
+ * @LastEditTime: 2020-12-18 15:00:25
 -->
 <template>
 <div class="content">
@@ -29,6 +29,14 @@
                         </Radio>
                     </template>
                 </RadioGroup>
+            </FormItem>
+            <!--复选框-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='checkbox'">
+                <CheckboxGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" :editable="formConfig[index]['disabled']">
+                    <template v-for="(item,index) in formConfig[index]['dataSource']['data']">
+                        <Checkbox :label="item.value">{{item.name}}</Checkbox>
+                    </template>
+                </CheckboxGroup>
             </FormItem>
             <!--formConfig[index]['dataSource']['multiple']控制选择器是否多选，单选-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='select'">

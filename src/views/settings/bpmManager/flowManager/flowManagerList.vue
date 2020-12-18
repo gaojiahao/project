@@ -2,17 +2,17 @@
  * @Descripttion: 
  * @version: 1.0.0
  * @Author: gaojiahao
- * @Date: 2020-10-26 12:11:24
+ * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-07 11:24:17
+ * @LastEditTime: 2020-12-18 18:03:33
 -->
 <template>
-<div class="storeManager-container">
+<div class="flowManager-container">
     <div class="filter">
         <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">添加模块</Button>
+            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新增</Button>
             <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight">删除</Button>
+            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
         </div>
         <div class="filter-search">
             <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
@@ -22,70 +22,55 @@
         </div>
     </div>
     <div>
-        <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
+        <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="goConfig(row)">表单视图</Button>
-                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="goConfig(row)">列表视图</Button>
-                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">关联流程</Button>
+                <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="goSaveBpm(row.id)">工作流编辑</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                <Page :total="100" :current="1" @on-change="changePage" show-elevator show-sizer :page-size="25" :page-size-opts="[25,50,200]"></Page>
             </div>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
 </div>
 </template>
 
 <script>
-import config from "@views/settings/moduleManager/supplierListConfig";
+import config from "@views/settings/bpmManager/flowManager/listConfig";
 import list from "@mixins/list";
+import nodelist from './nodeList';
 
 export default {
-    name: "ModuleManagerList",
-    mixins: [config,list],
+    name: 'FlowManagerList',
+    computed: {
+
+    },
+    mixins: [nodelist,list,config],
     data() {
         return {
             titleText: '',
             showModel: false,
             columns: this.getTableColumn(),
             data: this.getData(),
-            filter: "large",
-            isAlibaba:false
+            loading: true
         }
     },
     methods: {
-        clearFormData() {
-
-        },
-        showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '新建';
-            }
-            this.showModel = flag;
-        },
-        save() {
-
-        },
         changePage() {
 
         },
         goAdd(){
-            this.$router.push({name:'addModule'});
+            this.$router.push({name:'addFlow'});
         },
         goEdit(){
             if(this.activatedRow.id)
-            this.$router.push({name:'AddSupplier',query: {id:this.activatedRow.id}});
+            this.$router.push({name:'editFlow',query: {id:this.activatedRow.id}});
         },
         goDetail(id){
             if(id)
-            this.$router.push({name:'ViewSupplier',query: {id:id}});
+            this.$router.push({name:'viewFlow',query: {id:id}});
         },
         changeCoulmns(data){
             let datas = [];
@@ -108,48 +93,50 @@ export default {
         },
         getTableColumn(){
             var columns = [{
-                    type: 'selection',
-                    width: 60,
-                    align: 'center'
-                },{
                     type: 'index',
                     width: 80,
                     align: 'center',
                     title: '序号'
-                }, {
-                    title: '模块编号',
-                    key: 'storeName'
                 },
                 {
-                    title: '模块名称',
-                    key: 'name',
+                    title: '模型名称',
+                    key: 'moduleName',
+                },
+                {
+                    title: '流程名称',
+                    key: 'flowName',
                     render: (h, params) => {
-                        return h("span", {// 创建的标签名
-                        // 执行的一些列样式或者事件等操作
+                        return h("span", {
                         style: {
                             display: "inline-block",
                             color: "#2d8cf0"
                         },
                         on:{
-                            click:()=>{// 这里给了他一个打印事件，下面有展示图
+                            click:()=>{
                                 this.goDetail(params.row.id)    
                             }
                         }
-                        },params.row.name);//  展示的内容
+                        },params.row.flowName);
                     }
                 },
-                
+                {
+                    title: '版本号',
+                    key: 'edition',
+                },
+                {
+                    title: '业务表',
+                    key: 'businessTable',
+                },
                 {
                     title: '状态',
                     key: 'status',
                     render: (h, params) => {
-                        return h("span", {// 创建的标签名
-                        // 执行的一些列样式或者事件等操作
+                        return h("span", {
                         style: {
                             display: "inline-block",
                             color: params.row.status=='启用' ? "#19be6b": "#ed4014"
                         },
-                        },params.row.status);//  展示的内容
+                        },params.row.status);
                     }
                 }, {
                     title: '创建时间',
@@ -161,77 +148,71 @@ export default {
                 {
                     title: '修改时间',
                     key: 'createTime'
-                }, {
+                }, 
+                {
                     title: '修改者',
                     key: 'creater'
-                },{
+                },
+                {
                     title: '操作',
                     slot: 'action',
-                    align: 'center',
-                    width: 310
+                    align: 'center'
                 }
             ];
             return columns;
         },
         getData(){
-            var data = [{
+            var data = [
+            {
                 id:'fds',
-                storeName: 'createNewProduct',
-                name: '新品开发',
+                moduleName: '新品开发',
+                flowName: '新品开发流程',
+                edition: '1.0',
+                businessTable: 'v_product',
                 status: "启用",
                 createTime: "2020-11-06",
                 creater:"李四"
             }, {
-                id:'fds',
-                storeName: 'createNewProduct',
-                name: '请假管理',
-                status: "未启用",
-                createTime: "2020-11-06",
-                creater:"李四"
-            },
-            {
-                id:'fds',
-                storeName: 'createNewProduct',
-                name: '销售推荐',
+                id:'fds1',
+                moduleName: '制图管理',
+                flowName: '制图管理流程',
+                edition: '1.0',
+                businessTable: 'v_product',
                 status: "启用",
                 createTime: "2020-11-06",
                 creater:"李四"
-            }, ]
-            if(this.isAlibaba){
-
-            }
+            },{
+                id:'fds2',
+                moduleName: '销售推品',
+                flowName: '新销售推品流程',
+                edition: '1.0',
+                businessTable: 'v_product',
+                status: "启用",
+                createTime: "2020-11-06",
+                creater:"李四"
+            },]
             return data;
         },
         goConfig(row){
             this.$router.push({name:'addFomConfig',params: {id:row.id||'1',name:row.name}});
+        },
+        setFilter(data){
+            this.showFilterModel = false;
+            this.loading = true;
+            setTimeout(() => {
+                this.loading = false;
+            }, 500);  
+        },
+        goSaveBpm(id){
+            if(id)
+                this.$router.push({name:'saveBpm',query: {id:id}});    
         }
     },
-    created(){
-        
-    }
+    created() {}
 }
 </script>
-
-<style scoped>
->>>.ivu-input {
-    height: 26px;
-}
->>>.ivu-btn-small span {
-    font-size: 12px;
-}
->>>.ivu-table-row-highlight td {
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-hover td{
-    background-color: #B8D9FD;
-}
->>>.ivu-table-stripe .ivu-table-body tr.ivu-table-row-highlight:nth-child(2n) td{
-    background-color: #B8D9FD;
-}
-</style><style lang="less" scoped>
-.storeManager-container {
-    // margin-top: 16px;
-
+<style lang="less" scoped>
+.flowManager-container {
     .head {
         height: 30px;
 
@@ -239,17 +220,14 @@ export default {
             float: left;
         }
     }
-
     .filter {
         height: 30px;
-
         .filter-button {
             float: left;
             .marginRight{
                 margin-right: 10px;
             }
         }
-
         .filter-search {
             float: right;
             display: flex;
@@ -260,4 +238,3 @@ export default {
     }
 }
 </style>
-

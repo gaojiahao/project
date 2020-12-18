@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-08 14:29:30
+ * @LastEditTime: 2020-12-18 17:46:59
 -->
 <template>
-<Modal v-model="show" title="高级筛选" @on-ok="ok" @on-cancel="cancel" width="800">
+<Modal v-model="show" title="高级筛选" @on-ok="ok" @on-cancel="cancel" width="800" draggable >
     <Form ref="formValidate" :model="formValidate" :label-width="120">
         <template v-for="(item, index) in formConfig">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
@@ -28,8 +28,15 @@
                 </Select>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
-                <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker> - 
-                <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
+                <DatePicker v-model="formValidate[index]" @on-change="formValidate[index]=$event" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px"></DatePicker>
+            </FormItem>
+            <!--复选框-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='checkbox'">
+                <CheckboxGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" :editable="formConfig[index]['disabled']">
+                    <template v-for="(item,index) in formConfig[index]['dataSource']['data']">
+                        <Checkbox :label="item.value">{{item.name}}</Checkbox>
+                    </template>
+                </CheckboxGroup>
             </FormItem>
         </template>
     </Form>
@@ -78,7 +85,7 @@ export default {
             this.$emit('show-filter', false);
         },
         clearData(){
-            this.formValidate={};
+            this.$refs['formValidate'].resetFields();
         },
         handleSubmit() {
             this.$emit('set-filter', this.formValidate);

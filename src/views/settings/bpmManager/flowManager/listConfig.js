@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 20:03:05
+ * @LastEditTime: 2020-12-18 17:30:29
  */
 export default {
   data() {
@@ -56,33 +56,30 @@ export default {
           trigger: 'change' 
         }],
       }, 
-      filtersConfig:{
-        sku:{
-          name:'模块编号',
-          value:'sku',
-          type:'text',
-        },  
+      filtersConfig:{ 
         color:{
-          name:'模块名称',
-          value:'color',
+          name:'模型名称',
+          type:'text',
+        },
+        flwoName:{
+          name:'流程名称',
           type:'text',
         },
         createTime:{
           name:'创建时间',
-          value:'createTime',
           type:'dateTime',
         },
         status:{
           name:'状态',
           value:'status',
-          type:'radio',
+          type:'checkbox',
           dataSource:{
             type:'static',
             data:[
-              {name:'已审核',value:'true'},
-              {name:'未审核',value:'false'}
+              {name:'启用',value:'1'},
+              {name:'禁止',value:'0'}
             ],
-          },
+          }
         },
       }
     }

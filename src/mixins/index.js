@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 19:03:41
+ * @LastEditTime: 2020-12-18 12:08:53
  */
 export default {
     data() {
@@ -77,27 +77,25 @@ export default {
                 auth: false,    
               },
               {
-                name: '模块管理',
-                value: 'moduleManager',
-                status: true,
-              },
-              {
-                name: '流程管理',
-                value: 'bpm',
+                name: '工作流',
+                value: 'bpmManager',
                 status: true,
                 children: [
-                  // {
-                  //   name: '新建流程',
-                  //   value: 'saveBpm',
-                  //   status: true,
-                  //   children: [],
-                  // },
-                  // {
-                  //   name: '更新流程',
-                  //   value: 'updataBpm',
-                  //   status: false,
-                  //   children: [],
-                  // }
+                  {
+                    name: '模型管理',
+                    value: 'moduleManager',
+                    status: true,
+                  }, 
+                  {
+                    name: '流程管理',
+                    value: 'flowManager',
+                    status: true,
+                  },
+                  {
+                    name: '表单关联管理',
+                    value: 'formManager',
+                    status: true,
+                  },    
                 ],
               },
             ],

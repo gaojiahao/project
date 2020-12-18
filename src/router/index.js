@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 09:14:24
+ * @LastEditTime: 2020-12-18 18:03:25
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -146,116 +146,170 @@ const routes = [
             },
           },
           {
-            path:"moduleManager",
-            name:"moduleManager",
-            component: resolve=>(require(["@views/settings/moduleManager/index"],resolve)),
-            meta:{
-              title: "模块管理",
-              group: "moduleManager"
-            },
-            redirect:'moduleManager/moduleManagerList',
-            children:[
-              {
-                path:"moduleManagerList",
-                name:"moduleManagerList",
-                component: resolve=>(require(["@views/settings/moduleManager/moduleManagerList"],resolve)),
-                meta:{
-                  title: "模块管理",
-                  group: "moduleManager",
-                  level: 1,
-                },  
-              },
-              {
-                path:"addModule",
-                name:"addModule",
-                component: resolve=>(require(["@views/settings/moduleManager/addModule"],resolve)),
-                meta:{
-                  title: "新增模块",
-                  group: "moduleManager",
-                  level: 2,
-                },  
-              },
-              {
-                path:"addFomConfig",
-                name:"addFomConfig",
-                component: resolve=>(require(["@views/settings/moduleManager/addFomConfig"],resolve)),
-                meta:{
-                  title: "表单视图",
-                  group: "moduleManager",
-                  level: 2,
-                },  
-              },
-              {
-                path:"setFomConfig",
-                name:"setFomConfig",
-                component: resolve=>(require(["@views/settings/moduleManager/setFomConfig"],resolve)),
-                meta:{
-                  title: "表单配置",
-                  group: "moduleManager",
-                  level: 3,
-                },  
-              }
-            ]
-          },
-          {
-            path: "bpm",
-            name: "bpm",
+            path: "bpmManager",
+            name: "bpmManager",
             component: resolve=>(require(["@views/settings/bpmManager/index"],resolve)),
             meta: {
-              title: "流程管理",
+              title: "工作流",
               group: "bpm",
             },
-            redirect:'bpm/bpmManager',
+            redirect:'bpmManager/moduleManager',
             children:[
               {
-                path: 'bpmManager',
-                name: 'BpmManager',
+                path: 'flowManager',
+                name: 'flowManager',
                 meta:{ 
                   title:'流程管理',
-                  group: "bpmManager",
+                  group: "flowManager",
                   level: 1,
                 },
-                component: resolve=>(require(["@views/settings/bpmManager/bpmManager"],resolve)),
+                component: resolve=>(require(["@views/settings/bpmManager/flowManager"],resolve)),
+                redirect:'flowManager/flowManagerList',
+                children:[
+                  {
+                    path: 'flowManagerList',
+                    name: 'flowManagerList',
+                    meta:{ 
+                      title:'流程列表',
+                      group: "flowManager",
+                      level: 2,
+                    },
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/flowManagerList"],resolve)),
+                  },
+                  {
+                    path: 'addFlow',
+                    name: 'addFlow',
+                    meta:{ 
+                      title:'新建',
+                      group: "flowManager",
+                      level: 3,
+                    },
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/addFlow"],resolve)),
+                  },
+                  {
+                    path: 'editFlow',
+                    name: 'editFlow',
+                    meta:{ 
+                      title:'修改',
+                      group: "flowManager",
+                      level: 3,
+                    },
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/addFlow"],resolve)),
+                  },
+                  {
+                    path: 'viewFlow',
+                    name: 'viewFlow',
+                    meta:{ 
+                      title:'查看',
+                      group: "flowManager",
+                      level: 3,
+                    },
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/addFlow"],resolve)),
+                  },
+                  {
+                    path: 'saveBpm',
+                    name: 'saveBpm',
+                    meta:{ 
+                      title:'工作流编辑',
+                      group: "flowManager",
+                      level: 3,
+                    },
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/saveBpm"],resolve)),
+                  },
+                  {
+                    path: 'saveBpm2',
+                    name: 'SaveBpm2',
+                    meta:{ 
+                      title:'新建流程',
+                      group: "flowManager",
+                    },
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/saveBpm2"],resolve)),
+                  },
+                  {
+                    path: 'updataBpm',
+                    name: 'UpdataBpm',
+                    meta:{ 
+                      title:'更新流程',
+                      group: "flowManager",
+                      level: 3,
+                    },
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/updataBpm"],resolve)),
+                  },
+                ]
               },
               {
-                path: 'saveBpm',
-                name: 'SaveBpm',
+                path: 'moduleManager',
+                name: 'moduleManager',
                 meta:{ 
-                  title:'新建流程',
-                  group: "saveBpm",
-                  level: 2,
+                  title:'模型管理',
+                  group: "moduleManager",
+                  level: 1,
                 },
-                component: resolve=>(require(["@views/settings/bpmManager/saveBpm"],resolve)),
-              },
-              {
-                path: 'saveBpm2',
-                name: 'SaveBpm2',
-                meta:{ 
-                  title:'新建流程',
-                  group: "saveBpm2",
-                },
-                component: resolve=>(require(["@views/settings/bpmManager/saveBpm2"],resolve)),
-              },
-              {
-                path: 'updataBpm',
-                name: 'UpdataBpm',
-                meta:{ 
-                  title:'更新流程',
-                  group: "updataBpm",
-                  level: 2,
-                },
-                component: resolve=>(require(["@views/settings/bpmManager/updataBpm"],resolve)),
-              },
-              // {
-              //   path: 'addBpm',
-              //   name: 'addBpm',
-              //   meta:{ 
-              //     title:'新建流程',
-              //     group: "AddBpm",
-              //     level: 2,
-              //   },
-              //   component: AddBpm
-              // },
+                component: resolve=>(require(["@views/settings/bpmManager/moduleManager"],resolve)),
+                redirect:'moduleManager/moduleManagerList',
+                children:[
+                  {
+                    path:"moduleManagerList",
+                    name:"moduleManagerList",
+                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/moduleManagerList"],resolve)),
+                    meta:{
+                      title: "模型管理",
+                      group: "moduleManager",
+                      level: 1,
+                    },  
+                  },
+                  {
+                    path:"addModule",
+                    name:"addModule",
+                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/addModule"],resolve)),
+                    meta:{
+                      title: "新增",
+                      group: "moduleManager",
+                      level: 2,
+                    },  
+                  },
+                  {
+                    path:"editModule",
+                    name:"editModule",
+                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/addModule"],resolve)),
+                    meta:{
+                      title: "修改",
+                      group: "moduleManager",
+                      level: 2,
+                    },  
+                  },
+                  {
+                    path:"viewModule",
+                    name:"viewModule",
+                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/addModule"],resolve)),
+                    meta:{
+                      title: "查看",
+                      group: "moduleManager",
+                      level: 2,
+                    },  
+                  },
+                  {
+                    path:"addFomConfig",
+                    name:"addFomConfig",
+                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/addFomConfig"],resolve)),
+                    meta:{
+                      title: "表单视图",
+                      group: "moduleManager",
+                      level: 2,
+                    },  
+                  },
+                  {
+                    path:"setFomConfig",
+                    name:"setFomConfig",
+                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/setFomConfig"],resolve)),
+                    meta:{
+                      title: "表单配置",
+                      group: "moduleManager",
+                      level: 3,
+                    },  
+                  }
+                ]
+              }
             ]
           },
         ]

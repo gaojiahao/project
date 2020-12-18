@@ -32,7 +32,7 @@ const modalForm = ()=>import("@components/public/form/modalForm");
 const containerPanel = ()=>import("@components/settings/moduleManager/containerPanel");
 const configPanel = ()=>import("@components/settings/moduleManager/configPanel");
 
-import config from "@views/settings/moduleManager/setFomConfigs"
+import config from "@views/settings/bpmManager/moduleManager/setFomConfigs"
 import {
     getEcommercePlatformList
 } from "@service/basicinfoService"
