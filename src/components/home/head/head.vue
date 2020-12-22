@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 11:07:20
+ * @LastEditTime: 2020-12-22 19:51:49
 -->
 <template>
 <div class="head">
@@ -18,7 +18,7 @@
         <li class="right-item right-title" style="padding:0px 10px;">
             <Dropdown>
                 <div href="javascript:void(0)">
-                    {{userInfo.userName}}
+                    {{userInfo.nickName}}
                     <Icon type="md-arrow-dropdown"></Icon>
                 </div>
                 <DropdownMenu slot="list">
@@ -34,7 +34,7 @@
             |
         </li>
         <li class="right-item right-title" style="padding:0px 10px;">
-            {{userInfo.name}}
+            {{userInfo.userName}}
         </li>
     </Menu>
 </div>
@@ -119,7 +119,7 @@ export default {
     created() {
         var storage = window.sessionStorage;
         var value = JSON.parse(storage.getItem("activeMenu"));
-        this.userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY));
+        this.userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY))['userInfo'];
         this.activeIndex = value && value.oneLevel && value.oneLevel.value;
     },
 };

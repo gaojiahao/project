@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-09 18:01:40
+ * @LastEditTime: 2020-12-22 19:20:06
  */
 const os = require('os');
 const path = require("path");
@@ -200,7 +200,7 @@ module.exports = {
     proxy: {
       //配置跨域
       "/api": {
-        target: "http://crossborder.erp.com", //这里后台的地址模拟的;应该填写你们真实的后台接口
+        target: "http://cbapi.com", //这里后台的地址模拟的;应该填写你们真实的后台接口
         //ws: true,
         changOrigin: true, //允许跨域
         pathRewrite: {

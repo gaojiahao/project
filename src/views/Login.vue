@@ -114,17 +114,19 @@ export default {
                     this.$Message.error("请输入有效的手机号或验证码！");
                     return;
                 }
-                params.userCode = this.mobile;
+                params.phoneNumberOrEmailAddress = this.mobile;
                 params.password = this.testCode;
+                params.rememberClient = true;
+                params.platForm = 'backstage';
+                params.loginType = 'Password';
+                params.verificationCode ='';
+                params.timestamp = new Date();
             } else {
                 if (!this.userCode || !this.passWord) {
                     this.$Message.error("请输入用户名或密码");
                     return;
                 }
                 if (this.code) {
-                    console.log(this.code.toUpperCase())
-                    console.log(this.code.toLowerCase())
-                    console.log(this.identifyCode)
                     if (this.code != this.identifyCode.toLowerCase()&&this.code != this.identifyCode.toUpperCase()) {
                         this.$Message.error("验证码出错");
                         return;
@@ -133,35 +135,31 @@ export default {
                     this.$Message.error("验证码不能为空");
                     return;
                 }
-                params.userName = this.userCode;
+                params.phoneNumberOrEmailAddress = this.userCode;
                 params.password = this.passWord;
+                params.rememberClient = true;
+                params.platForm = 'backstage';
+                params.loginType = 'Password';
+                params.verificationCode ='';
+                params.timestamp = +new Date();
             }
             this.$loading.show();
-            var data = {
-                token:'adfadsfdsf234234cxvz',
-                name:'小竹熊管理员',
-                userName:'admim',
-                timestamp: +new Date()
-            };
-            tokenService.setToken(data);
-            this.$router.push('index');
-            // tokenService
-            //     .pcLogin(params)
-            //     .then(data => {
-
-            //         var token = tokenService.getToken();
-            //         if (token) {
-            //             this.$router.push('index');
-            //         }
-            //     })
-            //     .catch(err => {
-            //         this.$loading.hide();
-            //         this.$Message["error"]({
-            //             background: true,
-            //             content: '温馨提示：' + err.message
-            //         });
-            //         this.refreshCode();
-            //     });
+            tokenService
+                .pcLogin(params)
+                .then(data => {
+                    var token = tokenService.getToken();
+                    if (token) {
+                        this.$router.push('index');
+                    }
+                })
+                .catch(err => {
+                    this.$loading.hide();
+                    this.$Message["error"]({
+                        background: true,
+                        content: '温馨提示：' + err.message
+                    });
+                    this.refreshCode();
+                });
         },
         /**
          * @name: gaojiahao

@@ -30,7 +30,7 @@ let tokenService = {
       globalToken != null
         ? globalToken
         : JSON.parse(storage.getItem(XZX_TOKEN_KEY)) || {};
-    if (token["token"]) {
+    if (token["accessToken"]) {
       let timestamp = token.timestamp;
       let timeCalc = new Date() - timestamp;
       if (timeCalc > (2 * 3600 * 1000)) {
@@ -39,7 +39,7 @@ let tokenService = {
       // } else if (timeCalc > (12 * 3600 * 1000)) { // 设置12小时过期时间
       //   return ''
       }
-      return token["token"];
+      return token["accessToken"];
     } else {
       return "";
     }
@@ -89,7 +89,7 @@ let tokenService = {
       let params = {
         method: "post",
         baseURL: process.env.VUE_APP_API,
-        url: "/api/app/user/login",
+        url: "/api/Authenticate",
         headers: {
           "Content-Type": "application/json"
         },
@@ -100,7 +100,7 @@ let tokenService = {
         .request(params, params.data)
         .then(res => {
           let data = res.data;
-          this.setToken(data['data'] || "");
+          this.setToken(data['result'] || "");
           resolve(data);
         })
         .catch(function(error) {
