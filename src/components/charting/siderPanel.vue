@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-14 17:21:04
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 17:54:33
+ * @LastEditTime: 2020-12-21 16:48:03
 -->
 <template>
     <div>
@@ -66,7 +66,7 @@ import {
         },
         methods:{
             onClose(){
-                this.$emit('show-panel',false);
+                this.$emit('show','ShowPanel',false);
             }
         }
     }

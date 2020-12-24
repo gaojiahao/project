@@ -2,6 +2,168 @@ export default {
     data() {
       return {
         list:[
+          {
+            id:'fds',
+            name:'开发审核',
+            value:'kfsh',
+            "nodeList": [
+              {
+                "id": "node76JYr1TYvjNvdGSs",
+                "width": 40,
+                "height": 40,
+                "coordinate": [
+                  -295,
+                  -394
+                ],
+                "data": {
+                  "prop": "start",
+                  "name": "开始"
+                },
+                "left": -295,
+                "top": -394,
+                "type": "start",
+                "text": "开始"
+              },
+              {
+                "id": "nodemAk3FGJMI2zY55Km",
+                "width": 140,
+                "height": 60,
+                "coordinate": [
+                  -345,
+                  -156
+                ],
+                "data": {
+                  "prop": "condition",
+                  "name": "条件"
+                },
+                "left": -345,
+                "top": -156,
+                "type": "condition",
+                "text": "条件"
+              },
+              {
+                "id": "nodetaUQKRqHRuGPJrqJ",
+                "width": 120,
+                "height": 50,
+                "coordinate": [
+                  -335,
+                  -31
+                ],
+                "data": {
+                  "prop": "task",
+                  "name": "任务"
+                },
+                "left": -335,
+                "top": -31,
+                "type": "task",
+                "text": "任务"
+              },
+              {
+                "id": "nodeliFEcAq1N0Fr96iB",
+                "width": 40,
+                "height": 40,
+                "coordinate": [
+                  -295,
+                  113
+                ],
+                "data": {
+                  "prop": "end",
+                  "name": "结束"
+                },
+                "left": -295,
+                "top": 113,
+                "type": "end",
+                "text": "结束"
+              },
+              {
+                "id": "nodehQpwTBtI4e1q2JK9",
+                "width": 120,
+                "height": 50,
+                "coordinate": [
+                  -335,
+                  -288
+                ],
+                "data": {
+                  "prop": "task",
+                  "name": "任务1111"
+                },
+                "left": -335,
+                "top": -288,
+                "type": "task",
+                "text": "任务1111"
+              }
+            ],
+            "linkList": [
+              {
+                "id": "linkTArIvZlGJnPjlwis",
+                "startId": "nodehQpwTBtI4e1q2JK9",
+                "endId": "nodemAk3FGJMI2zY55Km",
+                "startAt": [
+                  60,
+                  50
+                ],
+                "endAt": [
+                  70,
+                  0
+                ],
+                "data": {
+                  "name": "线",
+                  "prop": "line"
+                }
+              },
+              {
+                "id": "linkGKgBJaRcKziINZ5C",
+                "startId": "nodemAk3FGJMI2zY55Km",
+                "endId": "nodetaUQKRqHRuGPJrqJ",
+                "startAt": [
+                  70,
+                  60
+                ],
+                "endAt": [
+                  60,
+                  0
+                ],
+                "data": {
+                  "name": "线",
+                  "prop": "line"
+                }
+              },
+              {
+                "id": "linktOOnRygEAjEcIQFd",
+                "startId": "nodetaUQKRqHRuGPJrqJ",
+                "endId": "nodeliFEcAq1N0Fr96iB",
+                "startAt": [
+                  60,
+                  50
+                ],
+                "endAt": [
+                  20,
+                  0
+                ],
+                "data": {
+                  "name": "线",
+                  "prop": "line"
+                }
+              },
+              {
+                "id": "linkzTKkFBnz6L5H8AIa",
+                "startId": "node76JYr1TYvjNvdGSs",
+                "endId": "nodehQpwTBtI4e1q2JK9",
+                "startAt": [
+                  20,
+                  40
+                ],
+                "endAt": [
+                  60,
+                  0
+                ],
+                "data": {
+                  "name": "线",
+                  "prop": "line"
+                }
+              }
+            ]
+          },
             {
                 id:'fdsf',
                 name:'开发审核',

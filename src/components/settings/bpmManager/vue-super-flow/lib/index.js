@@ -549,7 +549,11 @@
 					this.graph = n,
 					this.id = r,
 					this.coordinate = z(c),
+					this.left = c[0],
+					this.top = c[1],
 					this.data = d,
+					this.type = d.prop,
+					this.text = d.name,
 					this.width = s,
 					this.height = u
 				}
@@ -622,7 +626,11 @@
 							width: this.width,
 							height: this.height,
 							coordinate: z(this.coordinate),
-							data: this.data
+							data: this.data,
+							left: this.coordinate[0],
+							top: this.coordinate[1],
+							type: this.data.prop,
+							text: this.data.name
 						}
 					}
 				},
@@ -1185,7 +1193,7 @@
 							})),
 							linkList: this.linkList.map((function(t) {
 								return t.toJSON()
-							}))
+							})),
 						}
 					}
 				},

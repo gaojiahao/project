@@ -3,8 +3,9 @@
     <!--顶部操作按钮-->
     <div style="height:48px;line-height: 48px;">
         <div style="float:left">
+            <Button size="small" @click.native="goReturn()">返回</Button>
             <Button size="small" type="info">临时保存</Button>
-            <Button size="small" type="success">表单设置</Button>
+            <Button size="small" @click.native="showModal('ShowPanel',true)" type="success">表单设置</Button>
             <Button size="small" @click.native="zoomAdd">放大</Button>
             <Button size="small" @click.native="zoomSub">缩小</Button>
             <Button size="small" type="warning" @click.native="save">保存流程图</Button>
@@ -14,9 +15,6 @@
         <!--左侧菜单-->
         <div class="node-container">
             <template v-for="item in nodeItemList">
-                <!--<span class="node-item" @mousedown="evt => nodeItemMouseDown(evt, item)">
-                    {{item.label}}
-                </span>-->
                 <div class="item" @mousedown="evt => nodeItemMouseDown(evt, item)" v-if="item.key=='start'">
                     <div class="start">
                         {{item.label}}
@@ -41,31 +39,33 @@
                 </div>
             </template>
         </div>
-        <!--画布-->
-        <!--<div class="flow-container" ref="flowContainer">-->
-            <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc" @node-mousedown="nodeMousedown" @line-mousedown="lineMousedown">
-                <template v-slot:node="{data}">
-                    <div :class="`flow-node flow-node-${data.prop}`">
-                        <template v-if="data.prop=='condition'">
-                            <div class="text">{{data.name}}</div>
-                            <div class="top"></div>
-                            <div class="bottom"></div>   
-                        </template>
-                        <template v-else>
-                            {{data.name}}
-                        </template>
-                        <!--<header>
-                            {{data.name}}
-                        </header>
-                        <section>
-                            {{data.desc}}
-                        </section>-->
-                    </div>
-                </template>
-            </super-flow>
-        <!--</div>-->
+        <super-flow ref="superFlow" :node-list="nodeList" :link-list="linkList" :origin="origin" :graph-menu="graphMenuList" :node-menu="nodeMenuList" :link-menu="linkMenuList" :enter-intercept="enterIntercept" :output-intercept="outputIntercept" :link-desc="linkDesc" @node-mousedown="nodeMousedown" @line-mousedown="lineMousedown">
+            <template v-slot:node="{data}">
+                <div :class="`flow-node flow-node-${data.prop}`">
+                    <template v-if="data.prop=='condition'">
+                        <div class="text">{{data.name}}</div>
+                        <div class="top"></div>
+                        <div class="bottom"></div>   
+                    </template>
+                    <template v-else>
+                        {{data.name}}
+                    </template>
+                </div>
+            </template>
+        </super-flow>
         <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form>
     </div>
+    <SiderPanel :show="isShow['ShowPanel']" @show="showModal">
+        <div slot="info">
+            <FieldList @show="showModal" @save="saveFormSettings"></FieldList>
+        </div>
+    </SiderPanel>
+    <NameModal :show="isShow['NameModal']" :title="nameModalTitle" :nodeSetting="nodeSetting" @show="showModal"></NameModal>
+    <ParticipantDecisionModal :show="isShow['ParticipantDecisionModal']" :nodeSetting="nodeSetting" :data="participantDecisionData" @show="showModal" @save="saveParticipantDecision"></ParticipantDecisionModal>
+    <AddParticipant :show="isShow['AddParticipantModal']" @show="showModal" :selectAddParticipant="selectAddParticipant" @save="saveAddParticipant"></AddParticipant>
+    <AddDataAuth :show="isShow['AddDataAuthModal']" @show="showModal" :selectDataAuthData="selectDataAuthData" @save="saveDataAuth"></AddDataAuth>
+    <AddButton :show="isShow['AddButtonModal']" @show="showModal" :selectDataAddButton="selectDataAddButton" @save="saveAddButton"></AddButton>
+    <AddCondition :show="isShow['AddConditionModal']" :formSettings="formSettings" @show="showModal" :selectAddCondition="selectAddCondition" @save="saveAddCondition"></AddCondition>
 </div>
 </template>
 
@@ -77,13 +77,29 @@ const drawerType = {
 import SuperFlow from '@components/settings/bpmManager/vue-super-flow/lib';
 import '@components/settings/bpmManager/vue-super-flow/lib/index.css';
 import FlowNodeForm from '@components/settings/bpmManager/vue-super-flow/lib/node_form';
+import FieldList from '@components/settings/bpmManager/vue-super-flow/lib/fieldList';
+import SiderPanel from "@components/charting/siderPanel";
+import NameModal from '@components/settings/bpmManager/vue-super-flow/lib/nameModal';
+import ParticipantDecisionModal from '@components/settings/bpmManager/vue-super-flow/lib/participantDecisionModal';
+import AddParticipant from '@components/settings/bpmManager/vue-super-flow/lib/addParticipant';
+import AddDataAuth from '@components/settings/bpmManager/vue-super-flow/lib/addDataAuth';
+import AddButton from '@components/settings/bpmManager/vue-super-flow/lib/addButton';
+import AddCondition from '@components/settings/bpmManager/vue-super-flow/lib/addCondition';
 
 import list from './nodeList'
 export default {
     name: 'SaveBpm',
     components: {
         FlowNodeForm,
-        SuperFlow
+        SuperFlow,
+        SiderPanel,
+        FieldList,
+        NameModal,
+        ParticipantDecisionModal,
+        AddParticipant,
+        AddDataAuth,
+        AddButton,
+        AddCondition
     },
     mixins: [list],
     data() {
@@ -94,6 +110,121 @@ export default {
                 visible: false,
                 type: null,
                 info: null,
+                edit: (type, info) => {
+                    this.isShow['NameModal'] = true;
+                    if (type === drawerType.node) {
+                        this.selectNode(info);
+                        this.nameModalTitle = '修改任务名称';
+                        this.$set(this.nodeSetting, 'name', info.data.name);
+                        this.$set(this.nodeSetting, 'desc', info.data.desc);
+                    } else {
+                        
+                        this.$set(this.linkSetting, 'desc', info.data ? info.data.desc : '')
+                    }
+                },
+                openParticipantDecision: (type, info) => {
+                    this.selectNode(info);
+                    this.isShow['ParticipantDecisionModal'] = true;
+                },
+                openAddParticipant: (type, info) => {
+                    if(this.dataAddParticipant[info.id]){
+                        this.selectAddParticipant = this.dataAddParticipant[info.id];
+                    } else {
+                        this.selectAddParticipant = {
+                            nodeId:info.id,
+                            config: []
+                        }
+                    }
+                    this.isShow['AddParticipantModal'] = true;
+                },
+                openAddDataAuth: (type, info) => {
+                    if(this.dataAuthData[info.id]){
+                        this.selectDataAuthData = this.dataAuthData[info.id];
+                    } else {
+                        this.selectDataAuthData = {
+                            nodeId:info.id,
+                            config: [
+                                {
+                                    id:'fds',
+                                    fieldName: '姓名',
+                                    fieldCode: "name",
+                                    type: '文本',
+                                    edit: false,
+                                    hidden:false,
+                                    required:false
+                                },
+                                {
+                                    id:'fds2',
+                                    fieldName: '性别',
+                                    fieldCode: "sex",
+                                    type: '文本',
+                                    edit: false,
+                                    hidden:false,
+                                    required:false
+                                },
+                                {
+                                    id:'fds3',
+                                    fieldName: '年龄',
+                                    fieldCode: "age",
+                                    type: '文本',
+                                    edit: false,
+                                    hidden:false,
+                                    required:false
+                                },
+                            ],
+                        }
+                    }
+                    this.isShow['AddDataAuthModal'] = true;
+                },
+                openAddButton: (type, info) => {
+                    if(this.dataAddButton[info.id]){
+                        this.selectDataAddButton = this.dataAddButton[info.id];
+                    } else {
+                        this.selectDataAddButton = {
+                            nodeId:info.id,
+                            config: [
+                                {
+                                    name: '同意',
+                                    value: "agree",
+                                    action: false
+                                },
+                                {
+                                    name: '拒绝',
+                                    value: "disagree",
+                                    action: false
+                                },
+                                {
+                                    name: '撤回',
+                                    value: "recall",
+                                    action: false
+                                },
+                                {
+                                    name: '终止',
+                                    value: "stop",
+                                    action: false
+                                },
+                                {
+                                    name: '转办',
+                                    value: "transfer",
+                                    action: false
+                                },
+                            ],
+                        }
+                    }
+                    this.isShow['AddButtonModal'] = true;
+                },
+                openAddCondition: (type, info) => {
+                    debugger
+                    if(this.dataAddCondition[info.id]){
+                        this.selectAddCondition = this.dataAddCondition[info.id];
+                    } else {
+                        this.selectAddCondition = {
+                            nodeId:info.id,
+                            config: []
+                        }
+                    }
+                    this.isShow['AddConditionModal'] = true;
+                },
                 open: (type, info) => {
                     const conf = this.drawerConf
                     conf.visible = true
@@ -142,94 +273,6 @@ export default {
             //鼠标右键快捷菜单
             graphMenuList: [
                 [{
-                        label: '开始',
-                        disable(graph) {
-                            return !!graph.nodeList.find(node => node.data.prop === 'start')
-                        },
-                        selected: (graph, coordinate) => {
-                            const start = graph.nodeList.find(node => node.data.prop === 'start')
-                            if (!start) {
-                                graph.addNode({
-                                    width: 100,
-                                    height: 80,
-                                    coordinate: coordinate,
-                                    type: 'start',
-                                    data: {
-                                        prop: 'start',
-                                        name: '开始'
-                                    }
-                                })
-                            }
-                        }
-                    },
-                    {
-                        label: '条件',
-                        disable: false,
-                        selected: (graph, coordinate) => {
-                            graph.addNode({
-                                width: 160,
-                                height: 80,
-                                coordinate: coordinate,
-                                type: 'condition',
-                                data: {
-                                    prop: 'condition',
-                                    name: '条件'
-                                }
-                            })
-                        }
-                    },
-                    {
-                        label: '审批',
-                        disable: false,
-                        selected: (graph, coordinate) => {
-                            graph.addNode({
-                                width: 160,
-                                height: 80,
-                                coordinate: coordinate,
-                                type: 'task',
-                                data: {
-                                    prop: 'task',
-                                    name: '审批'
-                                }
-                            })
-                        }
-                    },
-                    {
-                        label: '抄送',
-                        disable: false,
-                        selected: (graph, coordinate) => {
-                            graph.addNode({
-                                width: 160,
-                                height: 80,
-                                coordinate: coordinate,
-                                type: 'cc',
-                                data: {
-                                    prop: 'cc',
-                                    name: '抄送'
-                                }
-                            })
-                        }
-                    },
-                    {
-                        label: '结束',
-                        disable(graph) {
-                            return !!graph.nodeList.find(point => point.data.prop === 'end')
-                        },
-                        selected: (graph, coordinate) => {
-                            graph.addNode({
-                                width: 80,
-                                height: 50,
-                                coordinate: coordinate,
-                                type: 'end',
-                                data: {
-                                    prop: 'end',
-                                    name: '结束'
-                                }
-                            })
-                        }
-                    }
-                ],
-                [{
                         label: '保存',
                         selected: (graph, coordinate) => {
                             console.log(JSON.stringify(graph.toJSON(), null, 2))
@@ -246,21 +289,75 @@ export default {
             //节点右键菜单列表
             nodeMenuList: [
                 [{
+                    label: '修改描述',
+                    hidden(node) {
+                        return ['start','end'].indexOf(node.type)!=-1;
+                    },
+                    selected: (node, coordinate) => {
+                        this.drawerConf.edit(drawerType.node, node)
+                    }
+                }],
+                [{
+                    label: '添加条件',
+                    hidden(node) {
+                        return ['start','end','task'].indexOf(node.type)!=-1;
+                    },
+                    selected: (node, coordinate) => {
+                        this.drawerConf.openAddCondition(drawerType.node, node)
+                    }
+                }],
+                [{
+                    label: '参与者决策',
+                    hidden(node) {
+                        return ['start','end','condition'].indexOf(node.type)!=-1;
+                    },
+                    selected: (node, coordinate) => {
+                        this.drawerConf.openParticipantDecision(drawerType.node, node)
+                    }
+                }],
+                [{
+                    label: '添加参与者',
+                    hidden(node) {
+                        return ['start','end','condition'].indexOf(node.type)!=-1;
+                    },
+                    selected: (node, coordinate) => {
+                        this.drawerConf.openAddParticipant(drawerType.node, node)
+                    }
+                }],
+                [{
+                    label: '添加数据权限',
+                    hidden(node) {
+                        return ['start','end','condition'].indexOf(node.type)!=-1;
+                    },
+                    selected: (node, coordinate) => {
+                        this.drawerConf.openAddDataAuth(drawerType.node, node)
+                    }
+                }],
+                [{
+                    label: '添加操作按钮',
+                    hidden(node) {
+                        return ['start','end','condition'].indexOf(node.type)!=-1;
+                    },
+                    selected: (node, coordinate) => {
+                        this.drawerConf.openAddButton(drawerType.node, node)
+                    }
+                }],
+                // [{
+                //     label: '编辑',
+                //     hidden(node) {
+                //         return ['start','end'].indexOf(node.type)!=-1;
+                //     },
+                //     selected: (node, coordinate) => {
+                //         this.drawerConf.open(drawerType.node, node)
+                //     }
+                // }],
+                [{
                     label: '删除',
                     disable: false,
-                    hidden(node) {
-                        return node.data.prop === 'start'
-                    },
                     selected(node, coordinate) {
                         node.remove()
                     }
                 }],
-                [{
-                    label: '编辑',
-                    selected: (node, coordinate) => {
-                        this.drawerConf.open(drawerType.node, node)
-                    }
-                }]
             ],
             //线右键菜单列表
             linkMenuList: [
@@ -329,9 +426,30 @@ export default {
                     }
                 },
             ],
-            visible:false, //是否显示右侧表单
+            visible:false,
             selectModel:'',
-            zoom: 0.5
+            zoom: 0.5,
+            nameModalTitle:"",
+            formSettings:[],
+            isShow:{
+                ShowPanel:false,
+                NameModal:false,
+                ParticipantDecisionModal:false,
+                AddParticipantModal:false,
+                AddDataAuthModal:false,
+                AddButtonModal:false,
+                AddConditionModal:false,
+            },
+            participantDecisionData:{},
+            dataAuthData:{},
+            selectDataAuthData:{},
+            dataAddButton:{},
+            selectDataAddButton:{},
+            dataAddCondition:{},
+            selectAddCondition:{},
+            dataAddParticipant:{},
+            selectAddParticipant:{}
+
         }
     },
     watch: {
@@ -344,8 +462,8 @@ export default {
     },
     methods: {
         enterIntercept(formNode, toNode, graph) {
-            const formType = formNode.data.prop
-            switch (toNode.data.prop) {
+            const formType = formNode.type
+            switch (toNode.type) {
                 case 'start':
                     return false
                 case 'task':
@@ -372,7 +490,7 @@ export default {
             }
         },
         outputIntercept(node, graph) {
-            return !(node.data.prop === 'end')
+            return !(node.type === 'end')
         },
         //线的名称
         linkDesc(link) {
@@ -380,7 +498,6 @@ export default {
         },
         //保存节点数据
         settingSubmit(data) {
-            console.log(data);
             const conf = this.drawerConf
             if (this.drawerConf.type === drawerType.node) {
                 if (!conf.info.data) conf.info.data = {}
@@ -399,7 +516,28 @@ export default {
         },
         //保存工作流数据
         save() {
-            console.log(JSON.stringify(this.$refs.superFlow.graph.toJSON(), null, 2))
+            var json = {};
+            let a = (JSON.stringify(this.$refs.superFlow.graph.toJSON(), null, 2));
+            let arr = Object.values(this.participantDecisionData);
+            let arr2 = Object.values(this.dataAuthData);
+            let arr3 = Object.values(this.dataAddButton);
+            let arr4 = Object.values(this.dataAddCondition);
+            let arr5 = Object.values(this.dataAddParticipant);
+            json = {
+                ...this.$refs.superFlow.graph.toJSON(),
+                participantDecision: arr,
+                addParticipant: arr5,
+                authData: arr2,
+                addButton: arr3,
+                addCondition: arr4,
+            }
+            console.log(a);
+            console.log(JSON.stringify(arr));
+            console.log(JSON.stringify(arr2));
+            console.log(JSON.stringify(arr3));
+            console.log(JSON.stringify(arr4));
+            console.log(JSON.stringify(arr5));
+            console.log(JSON.stringify(json));
         },
         //暂时没用
         docMousemove({
@@ -411,7 +549,6 @@ export default {
 
                 conf.ele.style.top = clientY - conf.offsetTop + 'px'
                 conf.ele.style.left = clientX - conf.offsetLeft + 'px'
-                console.log(conf);
 
             } else if (conf.isDown) {
 
@@ -519,7 +656,6 @@ export default {
         },
         //点击左侧菜单瞬间生成配置
         nodeItemMouseDown(evt, info) {
-            console.log(info.label)
             this.selectModel = info.label;
             const {
                 clientX,
@@ -548,19 +684,10 @@ export default {
             ele.style.margin = '0'
             ele.style.top = clientY - conf.offsetTop + 'px'
             ele.style.left = clientX - conf.offsetLeft + 'px'
-
-            console.log("clientY",clientY)
-            console.log("clientX",clientX)
-            console.log("conf.offsetTop",conf.offsetTop)
-            console.log("conf.offsetLeft",conf.offsetLeft)
-            console.log("ele",this.dragConf.ele)
-
             this.$el.appendChild(this.dragConf.ele)
         },
         //拖动节点放下后
         nodeMousedown(data){
-            console.log(data);
-            this.visible = true;
             this.selectNode(data);
         },
         selectNode(data){
@@ -571,8 +698,6 @@ export default {
             })
         },
         lineMousedown(data){
-            console.log(data);
-            this.visible = true;
             this.selectLine(data);
         },
         selectLine(data){
@@ -596,6 +721,38 @@ export default {
             this.zoom = this.zoom - 0.1
             this.$refs.superFlow.$el.style.transform = `scale(${this.zoom})`
         },
+        goReturn(){
+            this.$router.go(-1);
+        },
+        saveFormSettings(data){
+            this.$nextTick(() => {
+                this.formSettings = data;
+            });
+        },
+        showPanel(flag){
+            this.isShowPanel = flag;
+        },
+        showNameModal(flag){
+            this.isShowNameModal = flag;
+        },
+        showModal(name,flag){
+            this.isShow[name] = flag;
+        },
+        saveParticipantDecision(id,data){
+            this.$set(this.participantDecisionData,id,data);
+        },
+        saveDataAuth(id,data){
+            this.$set(this.dataAuthData,id,data);
+        },
+        saveAddButton(id,data){
+            this.$set(this.dataAddButton,id,data);    
+        },
+        saveAddCondition(id,data){
+            this.$set(this.dataAddCondition,id,data);
+        },
+        saveAddParticipant(id,data){
+            this.$set(this.dataAddParticipant,id,data);
+        }
     },
     created() {
         var data = this.$route.query;

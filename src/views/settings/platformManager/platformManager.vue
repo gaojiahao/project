@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 10:57:23
+ * @LastEditTime: 2020-12-19 10:48:41
 -->
 <template>
 <div class="platformManager-container">
@@ -108,11 +108,16 @@ export default {
                                 background: true,
                                 content: res.message
                             });
+                            this.$FromLoading.show();
                         }
                     });
                 });
             } else {
                 return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    setTimeout(() => {
+                        this.$FromLoading.hide();
+                    }, 500);
                     this.$Message.info('更新成功');
                 });
             }
