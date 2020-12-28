@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 09:46:42
+ * @LastEditTime: 2020-12-25 15:14:20
  */
 export default {
     data() {
@@ -22,7 +22,7 @@ export default {
             name:'url',
             type:'text',
           },
-          chargeUserId:{
+          chargeUser:{
             name:'负责人名称',
             type:'select',
             dataSource:{
@@ -31,15 +31,15 @@ export default {
                 data:[
                   {
                     name: 'admin',
-                    value: '66f3065c-4cbc-40d1-84fa-ecf8c73c72cf'
+                    value: 12
                   },
                   {
                     name: '王二',
-                    value: '1ea276b5-0e68-1fa8-0182-840eb50a415a'
+                    value: 13
                   },
                   {
                     name: '李四',
-                    value: '56106114-c665-8a41-a1df-3d49a1a94afb'
+                    value: 14
                   },
                 ],
               },
@@ -59,19 +59,20 @@ export default {
           name: '',
           code: '',
           url: '',
-          chargeUserId: '',
-          id:'',
+          chargeUser: null,
+          merchantId:1,
+          parentIndex:0,
         },
         ruleValidate: {
           name: [{
               required: true,
-              message: '请输入平台编码',
+              message: '请输入平台名称',
               trigger: 'blur'
           }],
           code: [{
               required: true,
               type: 'string',
-              message: '请输入平台code',
+              message: '请输入平台编码',
               trigger: 'blur'
           }],
           url: [{
@@ -80,16 +81,16 @@ export default {
               message: '请输入url',
               trigger: 'blur'
           }],
-          chargeUserId: [{ 
+          chargeUser: [{ 
             required: true, 
             message: '请选择负责人名称', 
             trigger: 'change' 
           }],
         },
         platformType:[
-            {
-                
-            }
+          {
+              
+          }
         ]
       }
     }

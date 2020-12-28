@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-19 10:48:41
+ * @LastEditTime: 2020-12-28 09:53:45
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <PlatformManagerList :list="listData" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @del="sureDeleteConfirm"></PlatformManagerList>
+            <PlatformManagerList :list="listData" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @del="sureDeleteConfirm" @set-filter="setFilter"></PlatformManagerList>
         </div>
         <div class="right">
             <div class="item" v-show="isShowAdd">
@@ -54,8 +54,11 @@ import PlatformCategoryBind from "@components/settings/platformManager/platformC
 import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
 import CategoryBind from "@components/settings/platformManager/categoryBind";
 import {
-    addEcommercePlatform,
-    getEcommercePlatformList
+    CreatePlatforms,
+    GetPlatformsPage,
+    UpdatePlatforms,
+    GetPlatformsById,
+    DelPlatforms
 } from "@service/basicinfoService"
 
 export default {
@@ -77,17 +80,33 @@ export default {
             listLoading: true,
             isShowAdd: true,
             isShowBind:false,
-            title:'新建'
+            pageData:{
+                skipCount: 1,
+                skipTotal: 100,
+                maxResultCount: 100,
+                keyword:''
+            }
         }
     },
+    computed:{
+        title(){
+            if(this.formValidate.id){
+                return '编辑';
+            } else {
+                return '新建';
+            }
+        }    
+    },
     methods: {
-        getEcommercePlatformList() {
+        GetPlatformsPage() {
             return new Promise((resolve, reject) => {
-                getEcommercePlatformList().then(res => {
-                    this.$nextTick(() => {
-                        this.listData = res.data.items;
-                        this.listLoading = false;
-                    });
+                GetPlatformsPage(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.listData = res.result.item.items;
+                            this.listLoading = false;
+                        });
+                    }
                 });
             });
         },
@@ -96,57 +115,74 @@ export default {
             if (!this.formValidate.id) {
                 return new Promise((resolve, reject) => {
                     this.$FromLoading.show();
-                    addEcommercePlatform(params).then(res => {
-                        if (res.status == 200) {
+                    CreatePlatforms(params).then(res => {
+                        if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：成功');
-                            this.getEcommercePlatformList();
+                            this.$Message.info('温馨提示：新建成功！');
+                            this.GetPlatformsPage();
                             this.$refs['form'].$refs['formValidate'].resetFields();
                             this.$refs['form'].initEL('input');
-                        } else if (res.status == 403) {
+                        } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.message
+                                content: res.result.message
                             });
-                            this.$FromLoading.show();
+                            this.$FromLoading.hide();
                         }
                     });
                 });
             } else {
                 return new Promise((resolve, reject) => {
                     this.$FromLoading.show();
-                    setTimeout(() => {
-                        this.$FromLoading.hide();
-                    }, 500);
-                    this.$Message.info('更新成功');
+                    UpdatePlatforms(params).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：更新成功！');
+                            this.GetPlatformsPage();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
                 });
             }
         },
         showAdd() {
             this.$refs['form'].$refs['formValidate'].resetFields();
-            this.title = '新增';
             this.isShowBind = false;
             this.$refs.selectPlatformBind.clear();
             this.$refs.selectSystemBind.clear();
         },
         clearFormData() {
+            this.formValidate.id = '';
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
-        selectItem(index) {
+        selectItem(id) {
             this.clearFormData();
-            this.title = '编辑';
-            //用接口去获取明细数据，不要用list去做双向绑定
-            this.formValidate = {
-                "code":"阿斯蒂芬",
-                "name":"阿斯蒂芬",
-                "url":"阿斯蒂芬",
-                "chargeUserId":"1ea276b5-0e68-1fa8-0182-840eb50a415a",
-                "lastModificationTime":null,
-                "lastModifierId":null,
-                "creationTime":"2020-12-10T17:31:51.76527",
-                "creatorId":null,
-                "id":"036ca4f2-0ae4-1d72-2e21-39f95e2aee54"
-            };
+            return new Promise((resolve, reject) => {
+                GetPlatformsById({id:id}).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.formValidate = {
+                            name: res.result.item.name,
+                            code: res.result.item.code,
+                            url: res.result.item.url,
+                            chargeUser: res.result.item.chargeUser,
+                            merchantId: res.result.item.merchantId,
+                            parentIndex: res.result.item.parentIndex,
+                            id: res.result.item.id,
+                        }
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.message
+                        });
+                    }
+                });
+            });
             this.isShowAdd = true;
             this.isShowBind = true;
         },
@@ -164,7 +200,7 @@ export default {
                 }, 1000);
             }
         },
-        sureDeleteConfirm (index,flag) {
+        sureDeleteConfirm (id,flag) {
             this.$Modal.confirm({
                 title: '温馨提示',
                 content: '数据删除后将无法恢复！',
@@ -172,21 +208,38 @@ export default {
                     this.$Message.info('取消');
                 },
                 onOk: () => {
-                    flag ? this.deletesData() : this.deleteData(index);
-                    this.$Message.info({
-                        content: '删除成功',
-                        duration: 2
-                    });
+                    flag ? this.deletesData() : this.deleteData(id);
                 },
             });
         },
-        deleteData(index){
-            this.$delete(this.listData,index);
-            this.isShowAdd = false;
+        deleteData(id){
+            if (id) {
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    DelPlatforms({id:id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：删除成功！');
+                            this.GetPlatformsPage();
+                            this.clearFormData();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
+            }
+        },
+        setFilter(value){
+            this.pageData.keyword = value;
+            this.GetPlatformsPage(); 
         }
     },
     created() {
-        this.getEcommercePlatformList();
+        this.GetPlatformsPage();
     }
 }
 </script>

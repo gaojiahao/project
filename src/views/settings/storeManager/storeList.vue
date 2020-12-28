@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 10:59:43
+ * @LastEditTime: 2020-12-26 09:43:06
 -->
 <template>
 <div class="storeManager-container">
@@ -18,7 +18,7 @@
     </div>
     <div class="filter">
         <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">添加商品</Button>
+            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
             <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
             <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
             <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
@@ -35,137 +35,73 @@
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal"></Page>
             </div>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
 </div>
 </template>
 
 <script>
-import ModalForm from "@components/public/form/modalForm";
 import config from "@views/settings/storeManager/storeManagerConfig";
 import list from "@mixins/list";
+import {
+    GetStorePage,
+    CreateStore,
+    UpdateStore,
+    GetStoreById,
+    DelStore
+} from "@service/basicinfoService"
 
 export default {
     name: "StoreList",
-    components: {
-        ModalForm,
-    },
     mixins: [config,list],
     data() {
         return {
             titleText: '',
             showModel: false,
             columns: this.getTableColumn(),
-            data: [{
-                id:"q22222",
-                storeName: '亚马孙积木',
-                name: '婉儿',
-                storeCode: 'XFDSFDF1',
-                account: "12321312",
-                LoginID: "dsfdsf",
-                appKey: "fdsfsd",
-                appSecret: "fdsfsdf",
-                status: "已启用",
-                createTime: "2020-11-06",
-            }, {
-                id:"q22222",
-                storeName: '亚马孙积木',
-                name: '婉儿',
-                storeCode: 'XFDSFDF1',
-                account: "12321312",
-                LoginID: "dsfdsf",
-                appKey: "fdsfsd",
-                appSecret: "fdsfsdf",
-                status: "已启用",
-                createTime: "2020-11-06",
-            }, {
-                id:"q22222",
-                storeName: '亚马孙积木',
-                name: '婉儿',
-                storeCode: 'XFDSFDF1',
-                account: "12321312",
-                LoginID: "dsfdsf",
-                appKey: "fdsfsd",
-                appSecret: "fdsfsdf",
-                status: "已启用",
-                createTime: "2020-11-06",
-            }, {
-                id:"q22222",
-                storeName: '亚马孙积木',
-                name: '婉儿',
-                storeCode: 'XFDSFDF1',
-                account: "12321312",
-                LoginID: "dsfdsf",
-                appKey: "fdsfsd",
-                appSecret: "fdsfsdf",
-                status: "已启用",
-                createTime: "2020-11-06",
-            }, {
-                id:"q22222",
-                storeName: '亚马孙积木',
-                name: '婉儿',
-                storeCode: 'XFDSFDF1',
-                account: "12321312",
-                LoginID: "dsfdsf",
-                appKey: "fdsfsd",
-                appSecret: "fdsfsdf",
-                status: "已启用",
-                createTime: "2020-11-06",
-            }, {
-                id:"q22222",
-                storeName: '亚马孙积木',
-                name: '婉儿',
-                storeCode: 'XFDSFDF1',
-                account: "12321312",
-                LoginID: "dsfdsf",
-                appKey: "fdsfsd",
-                appSecret: "fdsfsdf",
-                status: "已启用",
-                createTime: "2020-11-06",
-            }, {
-                id:"q22222",
-                storeName: '亚马孙积木',
-                name: '婉儿',
-                storeCode: 'XFDSFDF1',
-                account: "12321312",
-                LoginID: "dsfdsf",
-                appKey: "fdsfsd",
-                appSecret: "fdsfsdf",
-                status: "已启用",
-                createTime: "2020-11-06",
-            }, ],
-            activatedIndex: "yamashu"
+            data: [],
+            activatedIndex: "yamashu",
+            loading: true,
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
         }
     },
     methods: {
+        GetStorePage() {
+            return new Promise((resolve, reject) => {
+                GetStorePage(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPage = res.result.item.totalCount;
+                            this.data = res.result.item.items;
+                            this.loading = false;
+                        });
+                    }
+                });
+            });
+        },
         clearFormData() {
 
         },
-        showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '新建';
-            }
-            this.showModel = flag;
-        },
-        save() {
-
-        },
-        changePage() {
-
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetStorePage();
         },
         goAdd(){
             this.$router.push({name:'AddStore'});
         },
         goEdit(){
             if(this.activatedRow.id){
-                this.$router.push({name:'AddStore',query: {id:this.activatedRow.id}});
+                this.$router.push({name:'editStore',query: {id:this.activatedRow.id}});
             }
         },
         checkALl(){
@@ -195,38 +131,51 @@ export default {
                     title: '序号'
                 }, {
                     title: '店铺名称',
-                    key: 'storeName'
-                },
-                {
-                    title: '负责人',
                     key: 'name'
                 },
                 {
-                    title: '店铺代码',
-                    key: 'storeCode'
+                    title: '店铺编码',
+                    key: 'code'
                 },
                 {
-                    title: '账号名称',
+                    title: '平台名称',
+                    key: 'platformName'
+                },
+                {
+                    title: '账号',
                     key: 'account'
                 },
                 {
                     title: 'LoginID',
-                    key: 'LoginID'
+                    key: 'login_Id'
                 },
                 {
                     title: 'appKey',
-                    key: 'appKey'
+                    key: 'app_Key'
                 },
                 {
                     title: 'appSecret',
-                    key: 'appSecret'
+                    key: 'app_Secret'
                 },
                 {
                     title: '状态',
                     key: 'status'
-                }, {
+                },
+                {
+                    title: '创建者',
+                    key: 'createdBy'
+                },
+                {
                     title: '创建时间',
-                    key: 'createTime'
+                    key: 'createdOn'
+                },
+                {
+                    title: '修改者',
+                    key: 'modifyBy'
+                },
+                {
+                    title: '修改时间',
+                    key: 'modifyOn'
                 }]
                 // }, {
                 //     title: '操作',
@@ -237,7 +186,41 @@ export default {
         },
         change(value){
             this.activatedIndex = value;
-        }
+        },
+        deleteData(){
+            if(this.activatedRow.id){
+                this.loading = true;
+                return new Promise((resolve, reject) => {
+                    DelStore({id:this.activatedRow.id}).then(res => {
+                        if (res.result.code == 200) {
+                            for(var i=0;i<this.selectedList.length;i++){
+                                for(var j=0;j<this.data.length;j++){
+                                    if(this.selectedList[i].id==this.data[j].id){
+                                        this.data.splice(j, 1);   
+                                    }
+                                }
+                            }
+                            debugger
+                            this.$Message.info('温馨提示：删除成功！');
+                            if(this.data.length<1){
+                                this.pageData.skipCount-1;
+                            }
+                            this.GetStorePage();
+                            this.loading = false;
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.loading = false;
+                        }
+                    });
+                });
+            } 
+        },
+    },
+    created(){
+        this.GetStorePage();
     }
 }
 </script>

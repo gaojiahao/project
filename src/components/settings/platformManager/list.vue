@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="content">
-        <Input search enter-button placeholder="" size="small" style="padding:5px;"/>
+        <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
         <List :border="false" :split="false">
             <ListItem>
                 <div style="padding:0 10px 0 28px; width: 100%; text-align: left; font-weight:600">
@@ -27,10 +27,10 @@
             <template v-if="list.length">
                 <List :border="false" :split="false" v-for="(item,index) in list" :key="index">
                     <ListItem>
-                        <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==index ? 'active':'']" @click="select(index)">
+                        <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==item.id ? 'active':'']" @click="select(item.id)">
                             <span>{{item.name}}</span>&nbsp|&nbsp<span>{{item.code}}</span>
                             <span style="float:right">
-                                <Icon type="md-close" @click.native="del($event,index)" />
+                                <Icon type="md-close" @click.native="del($event,item.id)" />
                             </span>
                         </div>
                     </ListItem>
@@ -86,17 +86,24 @@ export default {
                 }, 1000);
             });
         },
-        select(index) {
-            this.selectIndex = index;
-            this.$emit('select-item', index);
+        select(id) {
+            this.selectIndex = id;
+            this.$emit('select-item', id);
         },
         add() {
             this.$emit('show-add');
         },
-        del(e,index){
+        del(e,id){
             e.stopPropagation();
             e.preventDefault();
-            this.$emit('del',index);
+            this.$emit('del',id);
+        },
+        onSearch(value){
+            debugger
+            this.$emit('set-filter',value);
+        },
+        onCler(){
+            this.$emit('set-filter','');
         }
     },
     created() {}

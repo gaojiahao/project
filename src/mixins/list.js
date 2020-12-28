@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: gaojiahao
+ * @Date: 2020-11-18 14:29:46
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-25 15:55:07
+ */
 import ModalForm from "@components/public/form/modalForm";
 import SeniorFilter from "@components/public/filter/seniorFilter";
 import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
@@ -85,10 +93,6 @@ export default {
                 },
                 onOk: () => {
                     flag ? this.deletesData() : this.deleteData();
-                    this.$Message.info({
-                        content: '删除成功',
-                        duration: 2
-                    });
                 },
             });
         },

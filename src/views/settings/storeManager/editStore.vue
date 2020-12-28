@@ -2,9 +2,17 @@
  * @Descripttion: 
  * @version: 1.0.0
  * @Author: gaojiahao
+ * @Date: 2020-12-25 11:55:52
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-25 15:39:23
+-->
+<!--
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-25 11:56:39
+ * @LastEditTime: 2020-12-24 20:43:53
 -->
 <template>
 <div class="add_store">
@@ -31,11 +39,14 @@ import config from "@views/settings/storeManager/addStoreConfig";
 import PlatformCategoryBind from "@components/settings/platformManager/platformCategoryBind";
 import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
 import {
-    CreateStore
+    GetStorePage,
+    CreateStore,
+    UpdateStore,
+    GetStoreById
 } from "@service/basicinfoService"
 
 export default {
-    name: "AddStore",
+    name: "EditStore",
     components: {
         XForm,
         PlatformCategoryBind,
@@ -44,6 +55,7 @@ export default {
     data() {
         return {
             selectPBind: {},
+            id:null
         }
     },
     mixins: [config],
@@ -92,7 +104,33 @@ export default {
         },
     },
     created() {
-
+        this.id = this.$route.query.id;
+        if(this.id) {
+            return new Promise((resolve, reject) => {
+                GetStoreById({id:this.id}).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.formValidate = {
+                            id: res.result.item.id,
+                            name: res.result.item.name,
+                            code: res.result.item.code,
+                            account: res.result.item.account,
+                            login_Id: res.result.item.login_Id,
+                            app_Key: res.result.item.app_Key,
+                            app_Secret: res.result.item.app_Secret,
+                            platformId: res.result.item.platformId,
+                            platformName: res.result.item.platformName,
+                            remark: res.result.item.remark,
+                        }
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.message
+                        });
+                    }
+                });
+            });    
+        }
     }
 }
 </script>

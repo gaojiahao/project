@@ -65,100 +65,114 @@ export default {
             default: true
         }
     },
+    watch:{
+        list:{
+            handler(val){
+                for(var i=0;i<val.length;i++){
+                    val[i].title = val[i].name;
+                    val[i].parentId = val[i].parentID;
+                    val[i].code = val[i].id;
+                }
+                this.data= val;
+            }    
+        }
+    },
     data() {
         return {
-            data: [{
-                id: '1',
-                title: '电子器元件',
-                loading: false,
-                parentId: '',
-                code:'dzqyj',
-                contextmenu: true,
-                children: [{
-                    id: 'a',
-                    title: '玩具类',
-                    loading: false,
-                    parentId: '1',
-                    code:'wjl',
-                    contextmenu: true,
-                    children: [{
-                        id: 'a-1',
-                        title: '积木类',
-                        loading: false,
-                        parentId: 'a',
-                        code:'jml',
-                        contextmenu: true,
-                        children: [{
-                            id: 'a-1-1',
-                            title: '木质积木',
-                            loading: false,
-                            parentId: 'a-1',
-                            code:'mzjm',
-                            contextmenu: true,
-                        }, {
-                            id: 'a-1-2',
-                            title: 'pvc积木',
-                            loading: false,
-                            parentId: 'a-1',
-                            code:'pvcjm',
-                            contextmenu: true,
-                        }]
-                    }, {
-                        id: 'a-2',
-                        title: '遥控类',
-                        loading: false,
-                        parentId: 'a',
-                        code:'ykl',
-                        contextmenu: true,
-                    }]
-                }, ]
-            },
-            {
-                id: '2',
-                title: '积木玩具类',
-                loading: false,
-                parentId: '',
-                code:'dzqyj2',
-                contextmenu: true,
-                children: [{
-                    id: 'a1',
-                    title: '玩具类',
-                    loading: false,
-                    parentId: '2',
-                    code:'wjl2',
-                    contextmenu: true,
-                    children: [{
-                        id: 'a-11',
-                        title: '积木类',
-                        loading: false,
-                        parentId: 'a1',
-                        code:'jml2',
-                        contextmenu: true,
-                        children: [{
-                            id: 'a-1-1',
-                            title: '木质积木',
-                            loading: false,
-                            parentId: 'a-11',
-                            code:'mzjm2',
-                            contextmenu: true,
-                        }, {
-                            id: 'a-1-21',
-                            title: 'pvc积木',
-                            loading: false,
-                            parentId: 'a-11',
-                            code:'pvcjm2',
-                            contextmenu: true,
-                        }]
-                    }, {
-                        id: 'a-21',
-                        title: '遥控类',
-                        loading: false,
-                        parentId: 'a1',
-                        code:'ykl2',
-                        contextmenu: true,
-                    }]
-                }, ]
-            }],
+            data: [
+            //{
+            //     id: '1',
+            //     title: '电子器元件',
+            //     loading: false,
+            //     parentId: '',
+            //     code:'dzqyj',
+            //     contextmenu: true,
+            //     children: [{
+            //         id: 'a',
+            //         title: '玩具类',
+            //         loading: false,
+            //         parentId: '1',
+            //         code:'wjl',
+            //         contextmenu: true,
+            //         children: [{
+            //             id: 'a-1',
+            //             title: '积木类',
+            //             loading: false,
+            //             parentId: 'a',
+            //             code:'jml',
+            //             contextmenu: true,
+            //             children: [{
+            //                 id: 'a-1-1',
+            //                 title: '木质积木',
+            //                 loading: false,
+            //                 parentId: 'a-1',
+            //                 code:'mzjm',
+            //                 contextmenu: true,
+            //             }, {
+            //                 id: 'a-1-2',
+            //                 title: 'pvc积木',
+            //                 loading: false,
+            //                 parentId: 'a-1',
+            //                 code:'pvcjm',
+            //                 contextmenu: true,
+            //             }]
+            //         }, {
+            //             id: 'a-2',
+            //             title: '遥控类',
+            //             loading: false,
+            //             parentId: 'a',
+            //             code:'ykl',
+            //             contextmenu: true,
+            //         }]
+            //     }, ]
+            // },
+            // {
+            //     id: '2',
+            //     title: '积木玩具类',
+            //     loading: false,
+            //     parentId: '',
+            //     code:'dzqyj2',
+            //     contextmenu: true,
+            //     children: [{
+            //         id: 'a1',
+            //         title: '玩具类',
+            //         loading: false,
+            //         parentId: '2',
+            //         code:'wjl2',
+            //         contextmenu: true,
+            //         children: [{
+            //             id: 'a-11',
+            //             title: '积木类',
+            //             loading: false,
+            //             parentId: 'a1',
+            //             code:'jml2',
+            //             contextmenu: true,
+            //             children: [{
+            //                 id: 'a-1-1',
+            //                 title: '木质积木',
+            //                 loading: false,
+            //                 parentId: 'a-11',
+            //                 code:'mzjm2',
+            //                 contextmenu: true,
+            //             }, {
+            //                 id: 'a-1-21',
+            //                 title: 'pvc积木',
+            //                 loading: false,
+            //                 parentId: 'a-11',
+            //                 code:'pvcjm2',
+            //                 contextmenu: true,
+            //             }]
+            //         }, {
+            //             id: 'a-21',
+            //             title: '遥控类',
+            //             loading: false,
+            //             parentId: 'a1',
+            //             code:'ykl2',
+            //             contextmenu: true,
+            //         }]
+            //     }, ]
+            // }
+            ],
         }
     },
     methods: {
@@ -180,7 +194,7 @@ export default {
                             marginRight: '8px'
                         }
                     }),
-                    h('span', data.title)
+                    h('span', data.name)
                 ]),
                 h('span', {
                     style: {
@@ -209,6 +223,7 @@ export default {
                         },
                         on: {
                             click: (e) => {
+                                debugger
                                 this.edit(e,data) 
                             }
                         }
@@ -236,6 +251,7 @@ export default {
             this.$emit('show-add',data.id);
         },
         edit(e,data){
+            debugger
             e.stopPropagation();
             e.preventDefault();
             this.$emit('edit', data);

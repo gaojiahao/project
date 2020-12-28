@@ -4,92 +4,85 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-09 10:35:44
+ * @LastEditTime: 2020-12-26 10:53:58
  */
 export default {
     data() {
+      const platformIdVali = (rule, value, callback) => {
+        if (value == '') {
+            callback(new Error('请选择平台名称'));
+        } else {
+          callback();
+        }
+    };
       return {
         formConfig:{
-          storeName:{
-            name:'平台名称',
-            type:'text',
-          },
           name:{
             name:'店铺名称',
             type:'text',
           },
-          storeCode:{
-            name:'店铺负责人',
-            type:'select',
-            dataSource:{
-                type:'static',
-                data:[
-                  {name:'李四',value:'001'},
-                  {name:'王五',value:'002'}
-                ],
-            }
-          },
-          account:{
-            name:'店铺业务员',
-            type:'select',
-            dataSource:{
-                type:'static',
-                data:[
-                  {name:'李四',value:'001'},
-                  {name:'王五',value:'002'}
-                ],
-            }
-          },
-          LoginID:{
-            name:'店铺代码',
+          code:{
+            name:'店铺代号',
             type:'text',
           },
-          appKey:{
+          account:{
             name:'账号名称',
             type:'text',
           },
-          createTime:{
-            name:'LoginID',
+          login_Id:{
+            name:'login_Id',
             type:'text',
           },
-          fdsf:{
-            name:'appKey',
+          app_Key:{
+            name:'app_Key',
             type:'text',
           },
-          dfds:{
-            name:'appSercet',
+          app_Secret:{
+            name:'app_Secret',
             type:'text',
+          },
+          remark:{
+            name:'备注',
+            type:'textarea',
+          },
+          platformId:{
+            name:'平台名称',
+            type:'select',
+            isName:true,
+            dataSource:{
+                type:'dynamic',
+                url:'/api/GetPlatformsList',
+                data:[],
+            },
+            bind:{
+              target: 'platformName',
+              bindValue: 'name'
+            }
           },
         },
         formValidate: {
-          storeName:'',
           name: '',
-          storeCode: '',
+          code:'',
           account: '',
-          LoginID:'',
-          appKey:'',
-          status:'',
-          createTime:'',
-          fdsf:'',
-          dfds:''
+          login_Id: '',
+          app_Key:'',
+          app_Secret:'',
+          platformId:'',
+          platformName:'',
+          remark:'',
         },
         ruleValidate: {
-          storeName: [{
+          name: [{
               required: true,
               message: '请输入店铺名称',
               trigger: 'blur'
           }],
-          name: [{
+          code: [{
               required: true,
-              type: 'string',
-              message: '请输入负责人',
+              message: '请输入店铺代码',
               trigger: 'blur'
           }],
-          status: [{ 
-            required: true, 
-            message: '是否启用', 
-            trigger: 'change' 
-          }],
+          platformId: [{ validator: platformIdVali, trigger: 'change' }],
       }, 
       }
     }

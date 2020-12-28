@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 11:03:40
+ * @LastEditTime: 2020-12-26 12:35:56
 -->
 <template>
 <div class="platformManager-container">
@@ -47,8 +47,9 @@ import TypeManagerList from "@components/settings/typeManager/typeManagerList";
 import TypeManagerTab from "@components/settings/typeManager/typeManagerTab";
 import XForm from "@components/public/form/xForm";
 import {
-    addEcommercePlatform,
-    getEcommercePlatformList
+    GetCategoryList,
+    CreateCategory,
+    UpdateCategory
 } from "@service/basicinfoService"
 
 export default {
@@ -71,31 +72,56 @@ export default {
         }
     },
     methods: {
-        getEcommercePlatformList() {
+        GetCategoryList() {
             return new Promise((resolve, reject) => {
-                getEcommercePlatformList().then(res => {
-                    this.$nextTick(() => {
-                        this.list = res.data.items;
-                    });
+                GetCategoryList().then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.list = res.result.item;
+                            this.listLoading = false;
+                        });
+                    }
                 });
             });
         },
         save() {
             var params = this.formValidate;
             if (!this.formValidate.id) {
-                this.$FromLoading.show();
-                setTimeout(() => {
-                    this.$FromLoading.hide();
-                    this.$Message.info('温馨提示：成功');
-                }, 500);
-                this.$refs['form'].$refs['formValidate'].resetFields();
-                this.$refs['form'].initEL('input');                   
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    CreateCategory(params).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：新建成功！');
+                            this.GetCategoryList();
+                            this.$refs['form'].$refs['formValidate'].resetFields();
+                            this.$refs['form'].initEL('input');
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
             } else {
-                this.$FromLoading.show();
-                setTimeout(() => {
-                    this.$FromLoading.hide();
-                    this.$Message.info('更新成功');
-                }, 500);
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    UpdateCategory(params).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：更新成功！');
+                            this.GetCategoryList();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
             }
         },
         selectItem(index) {
@@ -166,9 +192,7 @@ export default {
         }
     },
     created() {
-        setTimeout(() => {
-            this.listLoading = false;
-        }, 500);
+        this.GetCategoryList();
     }
 }
 </script>

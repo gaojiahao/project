@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 15:00:25
+ * @LastEditTime: 2020-12-26 12:13:54
 -->
 <template>
 <div class="content">
@@ -40,8 +40,8 @@
             </FormItem>
             <!--formConfig[index]['dataSource']['multiple']控制选择器是否多选，单选-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='select'">
-                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']">
-                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.value">{{ item.name }}</Option>
+                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable :disabled="formConfig[index]['disabled']" :label-in-value='true' v-show="!formConfig[index]['hidden']" @on-select="onChange">
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <!--图片上传-->
@@ -97,6 +97,7 @@ import Size from '@components/public/input/size';
 import SelectorSingle from '@components/public/xSelect/selectorSingle';
 import SelectorMulti from '@components/public/xSelect/selectorMulti';
 import DistributionPeople from "@components/charting/distributionPeople";
+import $flyio from '@plugins/ajax'
 
 export default {
     name: 'XForm',
@@ -204,13 +205,46 @@ export default {
                 }
                 console.log(e, e.keyCode, e.srcElement, e.which);
             }
+        },
+        initForm(){
+            for(var item in this.formConfig){
+                console.log(this.formConfig[item]);
+                var form = this;
+                
+                if(this.formConfig[item].bind&&this.formConfig[item].bind.bindValue){
+                    var valueField = this.formConfig[item].bind.bindValue;
+                    form.$on('value-change-' + item,function(value){
+                        this.formValidate[this.formConfig[item].bind.target] = value;
+                    })
+                }
+                if(this.formConfig[item].type=='select'&&this.formConfig[item].dataSource.type=='dynamic'){
+                    $flyio.post({
+                        url: this.formConfig[item].dataSource.url,
+                        data:{ maxResultCount:200}
+                    }).then((res) => {
+                        if(res.result.code==200){
+                            var data = res.result.item.map((e,index)=>{
+                                e.value = e.id;
+                                return e;
+                            });
+                            this.formConfig[item].dataSource.data = data;
+                        }
+                    })
+                }
+            }
+        },
+        initDataSource(){
+
+        },
+        onChange(data){
+            this.$emit('value-change-'+data.tag,data.label);
         }
     },
     mounted() {
         this.initClick();
     },
     created() {
-
+        this.initForm();
     }
 }
 </script>
