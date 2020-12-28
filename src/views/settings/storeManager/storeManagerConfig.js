@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 20:04:55
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2020-12-28 18:06:06
  */
 export default {
   data() {
@@ -82,6 +82,11 @@ export default {
         storeName:{
           name:'店铺名称',
           value:'storeName',
+          type:'text',
+        }, 
+        platFormName:{
+          name:'平台名称',
+          value:'platFormName',
           type:'text',
         },  
         name:{

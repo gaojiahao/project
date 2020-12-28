@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-17 19:09:54
+ * @LastEditTime: 2020-12-28 20:49:48
 -->
 <template>
 <div class="brandManager-container">
     <div class="brandManager-container-panel">
         <div class="left">
-            <BrandManagerList :list="listData" @select-item="selectItem" @show-add="showAdd" :loading="listLoading" @del="sureDeleteConfirm"></BrandManagerList>
+            <BrandManagerList :list="listData" @select-item="selectItem" @show-add="showAdd" :loading="listLoading" @del="sureDeleteConfirm" @set-filter="setFilter"></BrandManagerList>
         </div>
         <div class="right">
             <div class="item" v-show="isShowAdd">
@@ -44,8 +44,11 @@ import BrandManagerList from "@components/settings/brandManager/brandManagerList
 import config from "@views/settings/brandManager/brandManagerConfig";
 import XForm from "@components/public/form/xForm";
 import {
-    addEcommercePlatform,
-    getEcommercePlatformList
+    CreateBrand,
+    GetBrandList,
+    UpdateBrand,
+    DelBrand,
+    GetBrandById
 } from "@service/basicinfoService"
 
 export default {
@@ -58,49 +61,78 @@ export default {
     },
     data() {
         return {
-            listData: [
-                {id:'1',name:'森宝',code:'senbao'},
-                {id:'2',name:'嘉宝',code:'jiabao'},
-                {id:'3',name:'美宝',code:'meibao'},
-            ],
+            listData: [],
             selectPBind: {},
             selectSBind: {},
             isShowAdd: true,
             listLoading: true,
-            title:'新建'
+            pageData:{
+                skipCount: 1,
+                skipTotal: 100,
+                maxResultCount: 200,
+                keyword:''
+            }
         }
     },
+    computed:{
+        title(){
+            if(this.formValidate.id){
+                return '编辑';
+            } else {
+                return '新建';
+            }
+        }    
+    },
     methods: {
-        // getEcommercePlatformList() {
-        //     return new Promise((resolve, reject) => {
-        //         getEcommercePlatformList().then(res => {
-        //             this.$nextTick(() => {
-        //                 this.listData = res.data.items;
-        //             });
-        //         });
-        //     });
-        // },
+        GetBrandList() {
+            return new Promise((resolve, reject) => {
+                GetBrandList({keyword:this.pageData.keyword,maxResultCount:this.pageData.maxResultCount}).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.listData = res.result.item;
+                            this.listLoading = false;
+                        });
+                    }
+                });
+            });
+        },
         save() {
             var params = this.formValidate;
             if (!this.formValidate.id) {
                 return new Promise((resolve, reject) => {
-                    addEcommercePlatform(params).then(res => {
-                        if (res.status == 200) {
-                            this.$Message.info('温馨提示：成功');
-                            this.getEcommercePlatformList();
+                    this.$FromLoading.show();
+                    CreateBrand(params).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：新建成功！');
+                            this.GetBrandList();
                             this.$refs['form'].$refs['formValidate'].resetFields();
                             this.$refs['form'].initEL('input');
-                        } else if (res.status == 403) {
+                        } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.message
+                                content: res.result.message
                             });
+                            this.$FromLoading.hide();
                         }
                     });
                 });
             } else {
                 return new Promise((resolve, reject) => {
-                    this.$Message.info('更新成功');
+                    this.$FromLoading.show();
+                    UpdateBrand(params).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：更新成功！');
+                            this.GetBrandList();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
                 });
             }
         },
@@ -110,20 +142,33 @@ export default {
             this.$refs['form'].initEL('input');
         },
         clearFormData() {
+            this.formValidate.id = '';
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
-        selectItem(index) {
+        selectItem(id) {
             this.clearFormData();
-            this.title = '编辑';
-            //用接口去获取明细数据，不要用list去做双向绑定
-            this.formValidate = {
-                "code":"ssss",
-                "name":"森宝",
-            };
-            this.isShowAdd = true;
-            this.isShowBind = true;
+            return new Promise((resolve, reject) => {
+                GetBrandById({id:id}).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.formValidate = {
+                            name: res.result.item.name,
+                            code: res.result.item.code,
+                            platformId: res.result.item.platformId,
+                            merchantId: res.result.item.merchantId,
+                            parentIndex: res.result.item.parentIndex,
+                            id: res.result.item.id,
+                        }
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.message
+                        });
+                    }
+                });
+            });
         },
-        sureDeleteConfirm (index,flag) {
+        sureDeleteConfirm (id,flag) {
             this.$Modal.confirm({
                 title: '温馨提示',
                 content: '数据删除后将无法恢复！',
@@ -131,74 +176,41 @@ export default {
                     this.$Message.info('取消');
                 },
                 onOk: () => {
-                    flag ? this.deletesData() : this.deleteData(index);
-                    this.$Message.info({
-                        content: '删除成功',
-                        duration: 2
-                    });
+                    flag ? this.deletesData() : this.deleteData(id);
                 },
             });
         },
-        deleteData(index){
-            this.$delete(this.listData,index);
-            this.isShowAdd = false;
+        deleteData(id){
+            if (id) {
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    DelBrand({id:id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：删除成功！');
+                            this.GetBrandList();
+                            this.clearFormData();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
+            }
+        },
+        setFilter(value){
+            this.pageData.keyword = value;
+            this.GetBrandList(); 
         }
     },
     created() {
-        setTimeout(() => {
-            this.listLoading = false;
-        }, 500);     
+        this.GetBrandList();     
     }
 }
 </script>
-
 <style lang="less" scoped>
-.brandManager-container {
-    .brandManager-container-panel {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        width: 100%;
-        .left {
-            width: 350px;
-            background-color: #f5fffa;
-            height: 750px;
-            border: 1px solid #dcdee2;
-            border-color: #e8eaec;
-            transition: all 0.2s ease-in-out;
-        }
-        .right {
-            flex: 1;
-            .top {
-                flex: 1;
-                transition: all 0.2s ease-in-out;
-                margin: 0 0 10px 10px;
-                .top_tabale{
-                    background-color: #f5fffa;
-                    border: 1px solid #dcdee2;
-                    border-color: #e8eaec;    
-                }
-                .top_tabale_white{
-                    border: 1px solid #dcdee2;
-                    border-top:0;
-                    border-color: #e8eaec;    
-                }
-            }
-            .right-bottom {
-                transition: all 0.2s ease-in-out;
-                display: flex;
-                flex-direction: row;
-            }
-        }
-    }
-    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-center, 
-    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-left, 
-    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-right
-    {
-        margin: 8px 0 0 0;
-        font-weight: 600;
-        color: #515a6e;
-    }
-}
+@import "~@less/basicinfo/platformManager/index";
 </style>

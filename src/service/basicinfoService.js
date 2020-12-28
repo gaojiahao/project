@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-28 09:45:10
+ * @LastEditTime: 2020-12-28 19:49:13
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -106,6 +106,36 @@ export let DelCategory = (data = {}) => {
 export let GetCategoryById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetCategoryById',
+    data: data
+  })
+};
+export let CreateBrand = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateBrand',
+    data: data
+  })
+};
+export let UpdateBrand = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateBrand',
+    data: data
+  })
+};
+export let DelBrand = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelBrand',
+    data: data
+  })
+};
+export let GetBrandList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetBrandList',
+    data: data
+  })
+};
+export let GetBrandById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetBrandById',
     data: data
   })
 };

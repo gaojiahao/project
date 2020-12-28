@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-26 12:35:56
+ * @LastEditTime: 2020-12-28 20:08:40
 -->
 <template>
 <div class="platformManager-container">
@@ -74,7 +74,7 @@ export default {
     methods: {
         GetCategoryList() {
             return new Promise((resolve, reject) => {
-                GetCategoryList().then(res => {
+                GetCategoryList({key:200}).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.list = res.result.item;

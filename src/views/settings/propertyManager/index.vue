@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-17 15:30:36
+ * @LastEditTime: 2020-12-28 19:53:06
 -->
 <template>
 <div class="propertyManager-container">
@@ -13,18 +13,20 @@
             <PropertyManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @edit="edit" @del="sureDeleteConfirm"></PropertyManagerList>
         </div>
         <div class="right" v-show="isShowAdd">
-            <Divider orientation="left" size="small">{{title}}</Divider>
-            <div class="right-top">
-                <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
-                    <template slot="button">
-                        <FormItem>
-                            <div style="width:100%">
-                                <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                            </div>
-                        </FormItem>
-                    </template>
-                </XForm>
+            <div class="top">
+                <Divider orientation="left" size="small">{{title}}</Divider>
+                <div class="top_tabale">
+                    <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                        <template slot="button">
+                            <FormItem>
+                                <div style="width:100%">
+                                    <Button type="primary" @click="save" style="float: left;">保存</Button>
+                                    <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                </div>
+                            </FormItem>
+                        </template>
+                    </XForm>
+                </div>
             </div>
         </div>
     </div>
@@ -36,8 +38,7 @@ import PropertyManagerList from "@components/settings/propertyManager/propertyMa
 import config from "@views/settings/propertyManager/propertyManagerConfig.js";
 import XForm from "@components/public/form/xForm";
 import {
-    addEcommercePlatform,
-    getEcommercePlatformList
+    GetBrandList
 } from "@service/basicinfoService"
 
 export default {
@@ -54,16 +55,34 @@ export default {
             selectSBind: {},
             listLoading: true,
             title:'',
-            isShowAdd:false
+            isShowAdd:false,
+            pageData:{
+                skipCount: 1,
+                skipTotal: 100,
+                maxResultCount: 100,
+                keyword:''
+            }
         }
     },
+    computed:{
+        title(){
+            if(this.formValidate.id){
+                return '编辑';
+            } else {
+                return '新建';
+            }
+        }    
+    },
     methods: {
-        getEcommercePlatformList() {
+        GetBrandList() {
             return new Promise((resolve, reject) => {
-                getEcommercePlatformList().then(res => {
-                    this.$nextTick(() => {
-                        this.list = res.data.items;
-                    });
+                GetBrandList(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.listData = res.result.item.items;
+                            this.listLoading = false;
+                        });
+                    }
                 });
             });
         },
@@ -134,9 +153,7 @@ export default {
         }
     },
     created() {
-        setTimeout(() => {
-            this.listLoading = false;
-        }, 500);
+        this.GetPlatformsPage();
     }
 }
 </script>
@@ -151,7 +168,6 @@ export default {
         width: 100%;
 
         .left {
-            margin: 10px 10px;
             width: 350px;
             background-color: #f5fffa;
             height: 750px;
@@ -165,14 +181,15 @@ export default {
             display: flex;
             flex-direction: column;
 
-            .right-top {
+            .top {
                 flex: 1;
-                margin: 10px 10px;
-                background-color: #f5fffa;
-                border: 1px solid #dcdee2;
-                border-color: #e8eaec;
                 transition: all 0.2s ease-in-out;
-                max-height: 300px;
+                margin: 0 0 10px 10px;
+                .top_tabale{
+                    background-color: #f5fffa;
+                    border: 1px solid #dcdee2;
+                    border-color: #e8eaec;    
+                }
             }
 
             .right-bottom {

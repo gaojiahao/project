@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 11:38:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 16:32:35
+ * @LastEditTime: 2020-12-28 19:27:33
 -->
 <template>
     <div>
@@ -62,6 +62,7 @@ export default {
     methods:{
         onSelect(value){
             console.log('选中了搜索',value)
+            this.$emit('set-filter',value);
         },
         onClear(){
             this.filterName = '';

@@ -4,36 +4,46 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-17 17:26:16
+ * @LastEditTime: 2020-12-28 20:15:15
  */
 export default {
     data() {
       return {
         formConfig:{
           name:{
-            name:'品牌编码',
-            type:'text',
-          },
-          code:{
             name:'品牌名称',
             type:'text',
           },
+          code:{
+            name:'品牌编码',
+            type:'text',
+          },
+          platformId:{
+            name:'平台名称',
+            type:'select',
+            dataSource:{
+                type:'dynamic',
+                url:'/api/GetPlatformsList',
+                data:[],
+            },
+          },
         },
         formValidate: {
-          id:'',
           name: '',
           code: '',
+          platformId: '',
+          merchantId: 0
         },
         ruleValidate: {
           name: [{
               required: true,
-              message: '请输入品牌编码',
+              message: '请输入品牌名称',
               trigger: 'blur'
           }],
           code: [{
               required: true,
               type: 'string',
-              message: '请输入品牌名称',
+              message: '请输入品牌编码',
               trigger: 'blur'
           }],
         }

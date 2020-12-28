@@ -6,7 +6,7 @@
             <span class="text">当前平台</span>
         </div>
         <div class="right">
-            <Button type="primary" icon="md-add" size="small" @click.native="add">新建平台
+            <Button type="primary" icon="md-add" size="small" @click.native="add">新建
             </Button>
         </div>
     </div>
@@ -15,7 +15,7 @@
         <List :border="false" :split="false">
             <ListItem>
                 <div style="padding:0 10px 0 28px; width: 100%; text-align: left; font-weight:600">
-                    <span>名称</span>&nbsp|&nbsp<span>编码</span>
+                    <span class="default">名称</span>&nbsp|&nbsp<span class="default">编码</span>
                 </div>
             </ListItem>
         </List>
@@ -28,7 +28,7 @@
                 <List :border="false" :split="false" v-for="(item,index) in list" :key="index">
                     <ListItem>
                         <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==item.id ? 'active':'']" @click="select(item.id)">
-                            <span>{{item.name}}</span>&nbsp|&nbsp<span>{{item.code}}</span>
+                            <span class="default">{{item.name}}</span>&nbsp|&nbsp<span class="default">{{item.code}}</span>
                             <span style="float:right">
                                 <Icon type="md-close" @click.native="del($event,item.id)" />
                             </span>
@@ -51,9 +51,6 @@ import {
     List,
     ListItem,
 } from "view-design";
-import {
-    getEcommercePlatformList
-} from "@service/basicinfoService"
 export default {
     name: 'PlatformManagerList',
     components: {
@@ -99,7 +96,6 @@ export default {
             this.$emit('del',id);
         },
         onSearch(value){
-            debugger
             this.$emit('set-filter',value);
         },
         onCler(){

@@ -3,7 +3,7 @@
     <div class="head">
         <div class="left">
             <Icon type="md-apps" />
-            <span class="text">当前品牌</span>
+            <span class="text">当前平台</span>
         </div>
         <div class="right">
             <Button type="primary" icon="md-add" size="small" @click.native="add">新建
@@ -11,11 +11,11 @@
         </div>
     </div>
     <div class="content">
-        <Input search enter-button placeholder="" size="small" style="padding:5px;"/>
+        <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
         <List :border="false" :split="false">
             <ListItem>
                 <div style="padding:0 10px 0 28px; width: 100%; text-align: left; font-weight:600">
-                    <span>名称</span>&nbsp|&nbsp<span>编码</span>
+                    <span class="default">名称</span>&nbsp|&nbsp<span class="default">编码</span>
                 </div>
             </ListItem>
         </List>
@@ -27,10 +27,10 @@
             <template v-if="list.length">
                 <List :border="false" :split="false" v-for="(item,index) in list" :key="index">
                     <ListItem>
-                        <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==index ? 'active':'']" @click="select(index)">
-                            <span>{{item.name}}</span>&nbsp|&nbsp<span>{{item.code}}</span>
+                        <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==item.id ? 'active':'']" @click="select(item.id)">
+                            <span class="default">{{item.name}}</span>&nbsp|&nbsp<span class="default">{{item.code}}</span>
                             <span style="float:right">
-                                <Icon type="md-close" @click.native="del($event,index)" />
+                                <Icon type="md-close" @click.native="del($event,item.id)" />
                             </span>
                         </div>
                     </ListItem>
@@ -51,11 +51,8 @@ import {
     List,
     ListItem,
 } from "view-design";
-import {
-    getEcommercePlatformList
-} from "@service/basicinfoService"
 export default {
-    name: 'PlatformManagerList',
+    name: 'BrandManagerList',
     components: {
         Scroll,
         List,
@@ -86,17 +83,23 @@ export default {
                 }, 1000);
             });
         },
-        select(index) {
-            this.selectIndex = index;
-            this.$emit('select-item', index);
+        select(id) {
+            this.selectIndex = id;
+            this.$emit('select-item', id);
         },
         add() {
             this.$emit('show-add');
         },
-        del(e,index){
+        del(e,id){
             e.stopPropagation();
             e.preventDefault();
-            this.$emit('del',index);
+            this.$emit('del',id);
+        },
+        onSearch(value){
+            this.$emit('set-filter',value);
+        },
+        onCler(){
+            this.$emit('set-filter','');
         }
     },
     created() {}

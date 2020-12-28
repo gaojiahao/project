@@ -4,18 +4,18 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-26 09:43:06
+ * @LastEditTime: 2020-12-28 19:37:11
 -->
 <template>
 <div class="storeManager-container">
-    <div class="head">
+    <!-- <div class="head">
         <div class="select-type">
             渠道：
             <Button type="primary" size="small" :ghost="activatedIndex=='yamashu'?false:true" @click="change('yamashu')">亚马逊</Button>
             <Button type="primary" size="small" :ghost="activatedIndex=='sumaitong'?false:true" @click="change('sumaitong')">速卖通</Button>
             <Button type="primary" size="small" :ghost="activatedIndex=='eBay'?false:true" @click="change('eBay')">eBay</Button>
         </div>
-    </div>
+    </div> -->
     <div class="filter">
         <div class="filter-button">
             <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
@@ -26,7 +26,7 @@
         <div class="filter-search">
             <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
             <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
-            <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
+            <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
             <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
         </div>
     </div>
@@ -96,6 +96,11 @@ export default {
             this.pageData.skipCount = page;
             this.GetStorePage();
         },
+        refresh(){
+            this.loading = true;
+            this.pageData.skipCount=1;
+            this.GetStorePage();
+        },
         goAdd(){
             this.$router.push({name:'AddStore'});
         },
@@ -113,7 +118,6 @@ export default {
             let datas = [];
             let columns = this.getTableColumn();
             datas.push(columns[0]);
-            datas.push(columns[1]);
             data.forEach(col => {
                 for(var i=0;i<columns.length;i++){
                     if(col == columns[i].key){
@@ -218,6 +222,16 @@ export default {
                 });
             } 
         },
+        setFilter(value){
+            this.pageData = {
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:value,
+                pageSizeOpts:[15,50,200],
+            },
+            this.GetStorePage(); 
+        }
     },
     created(){
         this.GetStorePage();

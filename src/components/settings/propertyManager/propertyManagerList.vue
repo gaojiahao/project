@@ -1,5 +1,5 @@
 <template>
-<div class="type-manager-list">
+<div class="property-manager-list">
     <div class="head">
         <div class="left">
             <Icon type="md-apps" />
@@ -253,7 +253,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.type-manager-list {
+.property-manager-list {
     width: 100%;
 
     .head {

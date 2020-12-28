@@ -4,29 +4,39 @@
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:24:48
+ * @LastEditTime: 2020-12-28 17:53:14
 -->
 <template>
     <div>
-        <Dropdown style="margin-left: 20px">
-            <Button type="primary" size="small">
+        <div class="filterColumns">
+            <Button type="primary" size="small" @click="show">
                 列
                 <Icon type="ios-arrow-down"></Icon>
             </Button>
-            <DropdownMenu slot="list">
-                <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;float: left;margin-left: 5px;">
-                    <Checkbox
-                        :indeterminate="indeterminate"
-                        :value="checkAll"
-                        @click.prevent.native="handleCheckAll">全选</Checkbox>
-                </div>
-                <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
-                    <template v-for="(item,index) in data">
-                        <Checkbox :label="item.value">{{item.name}}</Checkbox>
-                    </template>
-                </CheckboxGroup>
-            </DropdownMenu>
-        </Dropdown>
+            <div class="filterColumnsBox" v-show="isShow">
+                <Card>
+                    <Row>
+                        <Col span="24">
+                            <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;float: left;margin-left: 5px;width: 100%;">
+                                <Checkbox
+                                    :indeterminate="indeterminate"
+                                    :value="checkAll"
+                                    @click.prevent.native="handleCheckAll">全选</Checkbox>
+                            </div>
+                        </Col>
+                    </Row>
+                    <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
+                        <Row>
+                            <template v-for="(item,index) in data">
+                                <Col span="12">
+                                    <Checkbox :label="item.value">{{item.name}}</Checkbox>
+                                </Col>
+                            </template>
+                        </Row>
+                    </CheckboxGroup>
+                </Card>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -34,6 +44,8 @@ import {
     Dropdown,
     DropdownMenu,
     DropdownItem,
+    Row,
+    Col
 } from "view-design";
 export default {
     name:"CustomColumns",
@@ -41,6 +53,8 @@ export default {
         Dropdown,
         DropdownMenu,
         DropdownItem,
+        Row,
+        Col
     },
     props:{
         columns: {
@@ -56,7 +70,8 @@ export default {
             checkAll: true,
             checkAllGroup: [],
             data:[],
-            defaultCheckAllGroup:[]
+            defaultCheckAllGroup:[],
+            isShow:false,
         }
     },
     watch:{
@@ -95,6 +110,9 @@ export default {
             }
             this.$emit('change-coulmns',this.checkAllGroup);
         },
+        show(){
+            this.isShow = this.isShow ? false:true;
+        },
         init(){
             this.data = [];
             this.checkAllGroup = [];
@@ -117,6 +135,18 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.filterColumns{
+    margin-left: 20px;
+    .filterColumnsBox{
+        transition: all .2s ease-in-out;
+        position: absolute;
+        right: 15px;
+        top: 113px;
+        z-index: 10;
+        width: 300px;
+        background-color: #fff;    
+    }
+}
 .ivu-checkbox-group-item {
     float: left;
     margin-left: 5px;

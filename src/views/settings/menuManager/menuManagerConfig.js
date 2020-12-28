@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-04 15:57:15
+ * @LastEditTime: 2020-12-28 15:08:11
  */
 export default {
   data() {
@@ -89,7 +89,46 @@ export default {
         parentId: [{
 
         }],
-    }, 
+      },
+      filtersConfig:{
+        name:{
+          name:'菜单名称',
+          value:'name',
+          type:'text',
+        },  
+        createTime:{
+          name:'创建时间',
+          value:'createTime',
+          type:'dateTime',
+        },
+        status:{
+          name:'状态',
+          value:'status',
+          type:'radio',
+          dataSource:{
+            type:'static',
+            data:[
+              {name:'已启用',value:'true'},
+              {name:'未启用',value:'false'}
+            ],
+          },
+        },
+        modifyTime:{
+          name:'修改时间',
+          value:'modifyTime',
+          type:'dateTime',
+        },
+        creater:{
+          name:'创建者',
+          value:'creater',
+          type:'text',
+        },
+        modifyer:{
+          name:'修改者',
+          value:'modifyer',
+          type:'text',
+        },
+      }
     }
   }
 }

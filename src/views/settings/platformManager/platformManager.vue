@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-28 09:53:45
+ * @LastEditTime: 2020-12-28 16:46:14
 -->
 <template>
 <div class="platformManager-container">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="item"  v-show="isShowBind">
+            <div class="item" v-show="isShowBind">
                 <div class="top">
                     <Divider orientation="left" size="small">类目绑定</Divider>
                     <div class="" style="display:flex">
@@ -175,6 +175,8 @@ export default {
                             parentIndex: res.result.item.parentIndex,
                             id: res.result.item.id,
                         }
+                        this.isShowAdd = true;
+                        this.isShowBind = true;
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
@@ -183,8 +185,6 @@ export default {
                     }
                 });
             });
-            this.isShowAdd = true;
-            this.isShowBind = true;
         },
         selectPlatformBind(data) {
             this.selectPBind = data;

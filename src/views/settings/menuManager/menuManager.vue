@@ -4,30 +4,42 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:53:39
+ * @LastEditTime: 2020-12-28 15:05:39
 -->
 <template>
 <div>
-    <div style="margin: 10px 0;overflow: hidden">
-        <div style="float: left;">
-            <Input search enter-button placeholder="菜单..." />
+    <div class="filter">
+        <div class="filter-button">
+            <Button size="small" type="primary" icon="ios-add" @click.native="showPop(true)" class="marginRight">新建</Button>
+            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
+            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+            <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
         </div>
-        <div style="float: right;">
-            <Button type="info" @click.native="showPop(true)">新建菜单</Button>
-            <!--<Button type="primary">更改状态</Button>
-            <Button type="error">删除</Button>-->
+        <div class="filter-search">
+            <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+            <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
+            <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
         </div>
     </div>
-    <Table row-key="id" :loading="loading" border :columns="columns" :data="list" stripe>
-        <template slot-scope="{ row }" slot="number">
-            <strong>{{ row.number }}</strong>
-        </template>
-        <template slot-scope="{ row, index }" slot="action">
-            <Button type="success" size="small" style="margin-right: 5px" @click="showChildPop(true,row,index)">新建子菜单</Button>
-            <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true,row)">编辑</Button>
-            <Button type="error" size="small" @click="remove(index)">删除</Button>
-        </template>
-    </Table>
+    <div class="myTable">
+        <Table row-key="id" :loading="loading" border :columns="columns" :data="list" stripe>
+            <template slot-scope="{ row }" slot="number">
+                <strong>{{ row.number }}</strong>
+            </template>
+            <template slot-scope="{ row, index }" slot="action">
+                <Button type="success" size="small" style="margin-right: 5px" @click="showChildPop(true,row,index)">新建子菜单</Button>
+                <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true,row)">编辑</Button>
+                <Button type="error" size="small" @click="remove(index)">删除</Button>
+            </template>
+        </Table>
+        <div style="margin: 10px;overflow: hidden">
+            <div style="float: right;">
+                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal"></Page>
+            </div>
+        </div>
+    </div>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ModalForm :titleText="addMenuTitle" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="saveMenu" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
     <AddChildMenu :titleText="addChildMenuTitle" :formValidate="formValidate" :ruleValidate="ruleValidate" :showChildModel='showChildModel' :formConfig="formConfig" @save="saveChildMenu" @show-child-pop="showChildPop" @clear-form-data="clearFormData"></AddChildMenu>
 </div>
@@ -37,6 +49,7 @@
 import ModalForm from "@components/public/form/modalForm"
 import AddChildMenu from "@components/settings/menuManager/addChildMenu"
 import config from '@views/settings/menuManager/menuManagerConfig'
+import list from "@mixins/list";
 import {
     addMenu,
     getMenuList
@@ -51,7 +64,7 @@ export default {
     computed: {
 
     },
-    mixins: [config],
+    mixins: [config,list],
     data() {
         return {
             list: [],
@@ -125,6 +138,14 @@ export default {
                     align: 'center'
                 }
             ],
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
         }
     },
     methods: {
@@ -242,8 +263,35 @@ export default {
                 this.list[this.childIndex].children.push(params);
                 this.list[this.childIndex]['_showChildren'] = true;
             });
-        }
-
+        },
+        goEdit(){
+            if(this.activatedRow.id){
+                this.$router.push({name:'editStore',query: {id:this.activatedRow.id}});
+            }
+        },
+        changeCoulmns(data){
+            let datas = [];
+            let columns = this.getTableColumn();
+            datas.push(columns[0]);
+            datas.push(columns[1]);
+            data.forEach(col => {
+                for(var i=0;i<columns.length;i++){
+                    if(col == columns[i].key){
+                        datas.push(columns[i]);
+                    }
+                }
+            });
+            this.columns = datas;
+        },
+        checkALl(){
+            this.$nextTick(function () {
+                this.columns = this.getTableColumn();
+            })
+        },
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetStorePage();
+        },
     },
     created() {
         this.getMenuList();
@@ -253,10 +301,6 @@ export default {
     }
 }
 </script>
-
-<style scoped>
->>>.ivu-table th,
->>>.ivu-table td {
-    height: 28px;
-}
+<style lang="less" scoped>
+@import "~@less/list/index.less";
 </style>
