@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 11:56:49
+ * @LastEditTime: 2020-12-29 20:47:56
 -->
 <template>
 <div class="platformManager-container">
@@ -33,11 +33,11 @@
             <div class="item" v-show="isShowBind">
                 <div class="top">
                     <Divider orientation="left" size="small">类目绑定</Divider>
-                    <div class="" style="display:flex">
-                        <PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind>
-                        <SystemCategoryBind @select-system-bind="selectSystemBind" ref="selectSystemBind"></SystemCategoryBind>
-                        <NowCategoryBind></NowCategoryBind>
-                    </div>
+                    <Row>
+                        <Col span="8"><PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind></Col>
+                        <Col span="8"><SystemCategoryBind @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind></Col>
+                        <Col span="8"><NowCategoryBind></NowCategoryBind></Col>
+                    </Row>
                 </div>
             </div>
         </div>
@@ -46,6 +46,10 @@
 </template>
 
 <script>
+import {
+    Row,
+    Col
+} from "view-design";
 import config from "@views/settings/platformManager/platformManagerConfig";
 import XForm from "@components/public/form/xForm";
 import PlatformManagerList from "@components/settings/platformManager/list";
@@ -58,8 +62,12 @@ import {
     GetPlatformsPage,
     UpdatePlatforms,
     GetPlatformsById,
-    DelPlatforms
+    DelPlatforms,
+    GetCategoryList,
+    CreateCategoryRelation,
+    GetCategoryRelatedList
 } from "@service/settingsService"
+import systemCategoryBindVue from '../../../components/settings/platformManager/systemCategoryBind.vue';
 
 export default {
     name: "platformManager",
@@ -71,6 +79,8 @@ export default {
         SystemCategoryBind,
         PlatformCategoryBind,
         NowCategoryBind,
+        Row,
+        Col
     },
     data() {
         return {
@@ -85,7 +95,9 @@ export default {
                 skipTotal: 100,
                 maxResultCount: 100,
                 keyword:''
-            }
+            },
+            systemCategoryData:[],
+            nowCategoryData:[],
         }
     },
     computed:{
@@ -184,6 +196,7 @@ export default {
                         }
                         this.isShowAdd = true;
                         this.isShowBind = true;
+                        this.GetCategoryRelatedList(this.formValidate.id);
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
@@ -198,13 +211,30 @@ export default {
         },
         //选择系统类目后的处理
         selectSystemBind(data) {
+            debugger
             this.selectSBind = data;
             if (this.selectPBind && this.selectSBind) {
-                this.$Message.info('温馨提示：绑定成功');
-                setTimeout(() => {
-                    this.$refs.selectPlatformBind.removeSelect();
-                    this.$refs.selectSystemBind.removeSelect();
-                }, 1000);
+                var data = {
+                    categoryId: this.selectSBind.id,
+                    categoryName: this.selectSBind.name,
+                    platformsId: this.formValidate.id,
+                    platformName: this.formValidate.name,
+                    eCategotyId: this.selectPBind.id,
+                    eCategotyName: this.selectPBind.title
+                };
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    CreateCategoryRelation(data).then(res => {
+                        if(res.result.code==200){
+                            this.$nextTick(() => {
+                                this.$FromLoading.hide();
+                                this.$Message.info('温馨提示：绑定成功');
+                                this.$refs.selectPlatformBind.removeSelect();
+                                this.$refs.selectSystemBind.removeSelect();
+                            });
+                        }
+                    });
+                });
             }
         },
         sureDeleteConfirm (id,flag) {
@@ -243,10 +273,33 @@ export default {
         setFilter(value){
             this.pageData.keyword = value;
             this.GetPlatformsPage(); 
-        }
+        },
+        GetCategoryList() {
+            return new Promise((resolve, reject) => {
+                GetCategoryList().then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.systemCategoryData = res.result.item;
+                        });
+                    }
+                });
+            });
+        },
+        GetCategoryRelatedList(id) {
+            return new Promise((resolve, reject) => {
+                GetCategoryRelatedList({platformId:id,maxResultCount:200}).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.nowCategoryData = res.result.item;
+                        });
+                    }
+                });
+            });
+        },
     },
     created() {
         this.GetPlatformsPage();
+        this.GetCategoryList();
     }
 }
 </script>

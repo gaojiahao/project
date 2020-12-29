@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 16:41:57
+ * @LastEditTime: 2020-12-29 17:56:35
 -->
 <template>
 <div class="storeManager-container">
@@ -175,7 +175,8 @@ export default {
                 },
                 {
                     title: '创建时间',
-                    key: 'createdOn'
+                    key: 'createdOn',
+                    width: 160
                 },
                 {
                     title: '修改者',
@@ -183,7 +184,8 @@ export default {
                 },
                 {
                     title: '修改时间',
-                    key: 'modifyOn'
+                    key: 'modifyOn',
+                    width: 160
                 }]
                 // }, {
                 //     title: '操作',

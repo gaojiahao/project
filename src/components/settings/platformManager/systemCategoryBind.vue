@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 16:44:41
+ * @LastEditTime: 2020-12-29 20:17:26
 -->
 <template>
 <div class="content">
@@ -14,56 +14,89 @@
     <div style="margin:5px">
         <Input search clearable placeholder="" />
     </div>
-    <Tree :data="data" show-checkbox @on-check-change="checkChange" check-strictly></Tree>
+    <div class="list">
+        <Tree :data="data" :render="renderContent" show-checkbox @on-check-change="checkChange" check-strictly></Tree>
+    </div>
 </div>
 </template>
 
 <script>
 export default {
     name: 'SystemCategoryBind',
+    props:{
+        data:{
+            type:Array,
+            default () {
+                return []
+            }           
+        },
+    },
+    watch:{},
     data() {
         return {
-            data: [{
-                id: 1,
-                title: '电子器元件',
-                loading: false,
-                expand: true,
-                children: [{
-                    id: 'a',
-                    title: '玩具类',
-                    loading: false,
-                    expand: true,
-                    children: [{
-                        id: 'a-1',
-                        title: '积木类',
-                        loading: false,
-                        expand: true,
-                        children: [{
-                            id: 'a-1-1',
-                            title: '木质积木',
-                            loading: false,
-                            children: []
-                        }, {
-                            id: 'a-1-2',
-                            title: 'pvc积木',
-                            loading: false,
-                            children: []
-                        }]
-                    }, {
-                        id: 'a-2',
-                        title: '遥控类',
-                        loading: false,
-                        expand: true,
-                        children: []
-                    }]
-                }, ]
-            }],
+            // data: [{
+            //     id: 1,
+            //     title: '电子器元件',
+            //     loading: false,
+            //     expand: true,
+            //     children: [{
+            //         id: 'a',
+            //         title: '玩具类',
+            //         loading: false,
+            //         expand: true,
+            //         children: [{
+            //             id: 'a-1',
+            //             title: '积木类',
+            //             loading: false,
+            //             expand: true,
+            //             children: [{
+            //                 id: 'a-1-1',
+            //                 title: '木质积木',
+            //                 loading: false,
+            //                 children: []
+            //             }, {
+            //                 id: 'a-1-2',
+            //                 title: 'pvc积木',
+            //                 loading: false,
+            //                 children: []
+            //             }]
+            //         }, {
+            //             id: 'a-2',
+            //             title: '遥控类',
+            //             loading: false,
+            //             expand: true,
+            //             children: []
+            //         }]
+            //     }, ]
+            // }],
             loop: 0
         }
     },
     methods: {
         selectChangeAll() {
 
+        },
+        renderContent (h, { root, node, data }) {
+            var t = this,
+            e = t.$createElement;
+            return h('span', {
+                style: {
+                    display: 'inline-block',
+                    width: '100%'
+                }
+            }, [
+                h('span', [
+                    // h('Icon', {
+                    //     props: {
+                    //         type: 'ios-paper-outline'
+                    //     },
+                    //     style: {
+                    //         marginRight: '8px'
+                    //     }
+                    // }),
+                    h('span', data.name)
+                ]),
+            ]);
         },
         checkChange(items, item) {
             this.$emit('select-system-bind', item);
@@ -112,14 +145,8 @@ export default {
     }
 }
 </script>
-<style scoped>
->>>.ivu-tree-children li {
-    float: left;
-}
-</style>
 <style lang="less" scoped>
 .content {
-    flex: 1;
     margin: 0 10px 0 0;
     background-color: #ffffff;
     border: 1px solid #dcdee2;
@@ -130,6 +157,14 @@ export default {
         height: 30px;
         background:#d2effd;
         line-height: 30px;
+    }
+    .list{
+        overflow-y: scroll;
+        height: 375px;
+        position: relative;    
+    }
+    .demo-tree-render /deep/ .ivu-tree-title{
+        width: 100%;
     }
 }
 </style>

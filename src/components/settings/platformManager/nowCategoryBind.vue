@@ -4,14 +4,16 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 16:43:56
+ * @LastEditTime: 2020-12-29 20:24:00
 -->
 <template>
 <div class="content">
     <div class="head">
         <span class="text">已绑定类目</span>
     </div>
-    <Tree :data="data"></Tree>
+    <div class="list">
+        <Tree :data="data" :render="renderContent"></Tree>
+    </div>
 </div>
 </template>
 
@@ -62,6 +64,20 @@ export default {
         selectChangeAll() {
 
         },
+        renderContent (h, { root, node, data }) {
+            var t = this,
+            e = t.$createElement;
+            return h('span', {
+                style: {
+                    display: 'inline-block',
+                    width: '100%'
+                }
+            }, [
+                h('span', [
+                    h('span', data.title)
+                ]),
+            ]);
+        },
         checkChange(items, item) {
             console.log(items);
             console.log(item);
@@ -96,14 +112,8 @@ export default {
     }
 }
 </script>
-<style scoped>
->>>.ivu-tree-children li {
-    float: left;
-}
-</style>
 <style lang="less" scoped>
 .content {
-    flex: 1;
     margin: 0 0 0 0;
     background-color: #ffffff;
     border: 1px solid #dcdee2;
@@ -114,6 +124,11 @@ export default {
         height: 30px;
         background:#d2effd;
         line-height: 30px;
+    }
+    .list{
+        overflow-y: scroll;
+        height: 417px;
+        position: relative;    
     }
 }
 </style>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 16:44:08
+ * @LastEditTime: 2020-12-29 20:19:15
 -->
 <template>
 <div class="content">
@@ -14,7 +14,9 @@
     <div style="margin:5px">
         <Input search clearable placeholder="" />
     </div>
-    <Tree ref="tree" :data="data" show-checkbox @on-check-change="checkChange" check-strictly expand-node></Tree>
+    <div class="list">
+        <Tree ref="tree" :data="data" :render="renderContent" show-checkbox @on-check-change="checkChange" check-strictly expand-node></Tree>
+    </div>
 </div>
 </template>
 
@@ -65,6 +67,20 @@ export default {
         selectChangeAll() {
 
         },
+        renderContent (h, { root, node, data }) {
+            var t = this,
+            e = t.$createElement;
+            return h('span', {
+                style: {
+                    display: 'inline-block',
+                    width: '100%'
+                }
+            }, [
+                h('span', [
+                    h('span', data.title)
+                ]),
+            ]);
+        },
         checkChange(items, item) {
             this.$emit('select-platform-bind', item);
             if (items.length > 1) {
@@ -112,14 +128,8 @@ export default {
     }
 }
 </script>
-<style scoped>
->>>.ivu-tree-children li {
-    float: left;
-}
-</style>
 <style lang="less" scoped>
 .content {
-    flex: 1;
     margin: 0 10px 0 0;
     background-color: #ffffff;
     border: 1px solid #dcdee2;
@@ -130,6 +140,11 @@ export default {
         height: 30px;
         background:#d2effd;
         line-height: 30px;
+    }
+    .list{
+        overflow-y: scroll;
+        height: 375px;
+        position: relative;    
     }
 }
 </style>

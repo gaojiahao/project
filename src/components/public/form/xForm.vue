@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 09:49:56
+ * @LastEditTime: 2020-12-29 19:16:19
 -->
 <template>
 <div class="content">
@@ -163,7 +163,6 @@ export default {
             this.$refs['formValidate'].resetFields();
         },
         handleSubmit(name) {
-            debugger
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$emit('save');
@@ -210,7 +209,6 @@ export default {
         },
         initForm(){
             for(var item in this.formConfig){
-                console.log(this.formConfig[item]);
                 var form = this;
                 
                 if(this.formConfig[item].bind&&this.formConfig[item].bind.bindValue){

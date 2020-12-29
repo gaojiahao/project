@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 16:41:44
+ * @LastEditTime: 2020-12-29 18:01:03
 -->
 <template>
 <div class="storeManager-container">
@@ -99,6 +99,11 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
+            this.GetSupplierPage();
+        },
+        refresh(){
+            this.loading = true;
+            this.pageData.skipCount=1;
             this.GetSupplierPage();
         },
         goAdd(){
