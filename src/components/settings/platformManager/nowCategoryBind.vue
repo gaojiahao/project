@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:43:15
+ * @LastEditTime: 2020-12-29 16:43:56
 -->
 <template>
 <div class="content">
@@ -105,14 +105,14 @@ export default {
 .content {
     flex: 1;
     margin: 0 0 0 0;
-    background-color: #f5fffa;
+    background-color: #ffffff;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
 
     .head {
         width: 100%;
         height: 30px;
-        background: linear-gradient(to top, #d2effd, #ffffff);
+        background:#d2effd;
         line-height: 30px;
     }
 }

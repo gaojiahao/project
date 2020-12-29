@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-25 15:38:16
+ * @LastEditTime: 2020-12-29 16:21:35
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -477,6 +477,16 @@ const routes = [
                   level: 2,
                 },
                 component: resolve=>(require(["@views/basicinfo/supplierManager/viewSupplier"],resolve)),
+              },
+              {
+                path: 'editSupplier',
+                name: 'editSupplier',
+                meta:{ 
+                  title:'编辑供应商',
+                  group: "supplierManager",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/basicinfo/supplierManager/editSupplier"],resolve)),
               },
             ]
           },

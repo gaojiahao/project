@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 15:49:30
+ * @LastEditTime: 2020-12-29 16:29:38
 -->
 <template>
 <div>
@@ -16,7 +16,6 @@
                     <FormItem>
                         <div style="width:100%">
                             <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
                             <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                         </div>
                     </FormItem>
@@ -32,11 +31,12 @@ import XForm from "@components/public/form/xForm";
 import config from "@views/basicinfo/supplierManager/addSupplierConfig";
 import {
     CreateSupplier,
-    UpdateSupplier
+    UpdateSupplier,
+    GetSupplierById
 } from "@service/basicinfoService"
 
 export default {
-    name: "AddSupplier",
+    name: "EditSupplier",
     components: {
         XForm,
     },
@@ -101,7 +101,31 @@ export default {
 
     },
     created() {
-
+        this.id = this.$route.query.id;
+        if(this.id) {
+            return new Promise((resolve, reject) => {
+                GetSupplierById({id:this.id}).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.formValidate = {
+                            id: res.result.item.id,
+                            name: res.result.item.name,
+                            code: res.result.item.code,
+                            telePhone: res.result.item.telePhone,
+                            changeUser: res.result.item.changeUser,
+                            address: res.result.item.address,
+                            email: res.result.item.email,
+                            remark: res.result.item.remark,
+                        }
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.message
+                        });
+                    }
+                });
+            });    
+        }
     }
 }
 </script>

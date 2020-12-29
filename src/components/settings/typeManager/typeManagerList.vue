@@ -11,13 +11,13 @@
         </div>
     </div>
     <div class="content">
+        <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
         <Spin fix v-if="loading">
             <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
             <div>Loading</div>
         </Spin>
         <template v-else>
             <template v-if="data.length">
-                <Input search enter-button placeholder="" size="small" style="padding:5px;"/>
                 <Tree :data="data" :render="renderContent" @on-select-change="onSelectChange" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()">
                     <template slot="contextMenu">
                         <DropdownItem @click.native="append">添加</DropdownItem>
@@ -44,7 +44,7 @@ import {
 } from "view-design";
 import {
     getEcommercePlatformList
-} from "@service/basicinfoService"
+} from "@service/settingsService"
 export default {
     name: 'TypeManagerList',
     components: {
@@ -224,7 +224,7 @@ export default {
                         on: {
                             click: (e) => {
                                 debugger
-                                this.edit(e,data) 
+                                this.edit(e,root,node,data) 
                             }
                         }
                     }),
@@ -248,13 +248,13 @@ export default {
         append(e,data) {
             e.stopPropagation();
             e.preventDefault();
-            this.$emit('show-add',data.id);
+            this.$emit('show-add',data);
         },
-        edit(e,data){
-            debugger
+        edit(e,root,node,data){
             e.stopPropagation();
             e.preventDefault();
-            this.$emit('edit', data);
+            debugger
+            this.$emit('edit', root,node,data);
         },
         remove(e,root, node, data) {
             e.stopPropagation();
@@ -264,6 +264,12 @@ export default {
         handleContextMenu(e,data) {
             this.contextData = data;
         },
+        onSearch(value){
+            this.$emit('set-filter',value);
+        },
+        onCler(){
+            this.$emit('set-filter','');
+        }
     },
     created() {
         

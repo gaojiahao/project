@@ -4,10 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-25 15:14:20
+ * @LastEditTime: 2020-12-29 15:55:51
  */
 export default {
     data() {
+      const chargeUserVail = (rule, value, callback) => {
+        if (value == '') {
+            callback(new Error('请选择负责人名称'));
+        } else {
+          callback();
+        }
+      };
       return {
         formConfig:{
           name:{
@@ -81,17 +88,8 @@ export default {
               message: '请输入url',
               trigger: 'blur'
           }],
-          chargeUser: [{ 
-            required: true, 
-            message: '请选择负责人名称', 
-            trigger: 'change' 
-          }],
+          chargeUser: [{ validator: chargeUserVail, trigger: 'change' }],
         },
-        platformType:[
-          {
-              
-          }
-        ]
       }
     }
   }

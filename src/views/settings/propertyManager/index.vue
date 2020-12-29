@@ -39,7 +39,7 @@ import config from "@views/settings/propertyManager/propertyManagerConfig.js";
 import XForm from "@components/public/form/xForm";
 import {
     GetBrandList
-} from "@service/basicinfoService"
+} from "@service/settingsService"
 
 export default {
     name: "PropertyManager",
@@ -169,7 +169,7 @@ export default {
 
         .left {
             width: 350px;
-            background-color: #f5fffa;
+            background-color: #ffffff;
             height: 750px;
             border: 1px solid #dcdee2;
             border-color: #e8eaec;
@@ -186,7 +186,7 @@ export default {
                 transition: all 0.2s ease-in-out;
                 margin: 0 0 10px 10px;
                 .top_tabale{
-                    background-color: #f5fffa;
+                    background-color: #ffffff;
                     border: 1px solid #dcdee2;
                     border-color: #e8eaec;    
                 }

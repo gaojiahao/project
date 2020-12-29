@@ -49,7 +49,7 @@ import {
     UpdateBrand,
     DelBrand,
     GetBrandById
-} from "@service/basicinfoService"
+} from "@service/settingsService"
 
 export default {
     name: "BrandManager",

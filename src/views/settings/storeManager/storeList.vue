@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-28 19:37:11
+ * @LastEditTime: 2020-12-29 16:41:57
 -->
 <template>
 <div class="storeManager-container">
@@ -35,7 +35,7 @@
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal"></Page>
+                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@ import {
     UpdateStore,
     GetStoreById,
     DelStore
-} from "@service/basicinfoService"
+} from "@service/settingsService"
 
 export default {
     name: "StoreList",
@@ -126,6 +126,10 @@ export default {
                 }
             });
             this.columns = datas;
+        },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetStorePage();
         },
         getTableColumn(){
             var data = [{
@@ -204,7 +208,6 @@ export default {
                                     }
                                 }
                             }
-                            debugger
                             this.$Message.info('温馨提示：删除成功！');
                             if(this.data.length<1){
                                 this.pageData.skipCount-1;

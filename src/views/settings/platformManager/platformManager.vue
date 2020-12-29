@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-28 16:46:14
+ * @LastEditTime: 2020-12-29 11:56:49
 -->
 <template>
 <div class="platformManager-container">
@@ -59,7 +59,7 @@ import {
     UpdatePlatforms,
     GetPlatformsById,
     DelPlatforms
-} from "@service/basicinfoService"
+} from "@service/settingsService"
 
 export default {
     name: "platformManager",
@@ -112,45 +112,52 @@ export default {
         },
         save() {
             var params = this.formValidate;
-            if (!this.formValidate.id) {
-                return new Promise((resolve, reject) => {
-                    this.$FromLoading.show();
-                    CreatePlatforms(params).then(res => {
-                        if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：新建成功！');
-                            this.GetPlatformsPage();
-                            this.$refs['form'].$refs['formValidate'].resetFields();
-                            this.$refs['form'].initEL('input');
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.message
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    if (!this.formValidate.id) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreatePlatforms(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：新建成功！');
+                                    this.GetPlatformsPage();
+                                    this.$refs['form'].$refs['formValidate'].resetFields();
+                                    this.$refs['form'].initEL('input');
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.message
+                                    });
+                                    this.$FromLoading.hide();
+                                }
                             });
-                            this.$FromLoading.hide();
-                        }
-                    });
-                });
-            } else {
-                return new Promise((resolve, reject) => {
-                    this.$FromLoading.show();
-                    UpdatePlatforms(params).then(res => {
-                        if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：更新成功！');
-                            this.GetPlatformsPage();
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.message
+                        });
+                    } else {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            UpdatePlatforms(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：更新成功！');
+                                    this.GetPlatformsPage();
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.message
+                                    });
+                                    this.$FromLoading.hide();
+                                }
                             });
-                            this.$FromLoading.hide();
-                        }
-                    });
-                });
-            }
+                        });
+                    }
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         },
         showAdd() {
+            this.$delete(this.formValidate,'id');
             this.$refs['form'].$refs['formValidate'].resetFields();
             this.isShowBind = false;
             this.$refs.selectPlatformBind.clear();

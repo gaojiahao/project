@@ -35,7 +35,7 @@ const configPanel = ()=>import("@components/settings/moduleManager/configPanel")
 import config from "@views/settings/bpmManager/moduleManager/setFomConfigs"
 import {
     getEcommercePlatformList
-} from "@service/basicinfoService"
+} from "@service/settingsService"
 
 export default {
     name: 'SetFomConfig',

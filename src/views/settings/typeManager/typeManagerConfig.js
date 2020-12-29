@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-26 12:43:57
+ * @LastEditTime: 2020-12-29 11:14:31
  */
 export default {
     data() {
@@ -12,29 +12,29 @@ export default {
         formConfig:{
           parentId:{
             name:'上一级类目',
-            type:'select', 
-            dataSource:{
-              type:'static',
-              data:[
-                {name:'玩具类',value:1},
-                {name:'电子器元件',value:2},
-                {name:'积木类',value:3}
-              ],
-            }, 
+            type:'text',
+            disabled:true,
+            hidden:true,
+          },
+          parentName:{
+            name:'上一级类目',
+            type:'text',
+            disabled:true, 
           },
           name:{
             name:'分类名称',
             type:'text',
           },
-          url:{
-            name:'分组类别',
+          level:{
+            name:'分类层级',
             type:'text',
           },
         },
         formValidate: {
           parentId:0,
+          parentName:'',
           name: '',
-          url: '',
+          level: '',
           merchantId:1
         },
         ruleValidate: {
@@ -46,12 +46,6 @@ export default {
           name: [{
               required: true,
               message: '请输入分类名称',
-              trigger: 'blur'
-          }],
-          url: [{
-              required: false,
-              type: 'string',
-              message: '请输入分组类别',
               trigger: 'blur'
           }],
         },

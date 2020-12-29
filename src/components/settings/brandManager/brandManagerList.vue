@@ -3,7 +3,7 @@
     <div class="head">
         <div class="left">
             <Icon type="md-apps" />
-            <span class="text">当前平台</span>
+            <span class="text">当前品牌</span>
         </div>
         <div class="right">
             <Button type="primary" icon="md-add" size="small" @click.native="add">新建

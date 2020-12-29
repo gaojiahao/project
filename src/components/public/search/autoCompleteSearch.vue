@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 11:38:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-28 19:27:33
+ * @LastEditTime: 2020-12-29 15:13:53
 -->
 <template>
     <div>
@@ -66,7 +66,7 @@ export default {
         },
         onClear(){
             this.filterName = '';
-            console.log('清空了搜索')   
+            this.$emit('set-filter','');  
         },
         clickOption(item){
             this.filterName = item.name;

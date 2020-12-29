@@ -4,19 +4,30 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-25 11:56:39
+ * @LastEditTime: 2020-12-29 16:52:11
 -->
 <template>
 <div class="add_store">
     <div class="top">
+        <Divider orientation="left" size="small">店铺信息</Divider>
         <div class="top_tabale">
-            <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form"></XForm>
+            <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                <template slot="button">
+                    <FormItem>
+                        <div style="width:100%">
+                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                        </div>
+                    </FormItem>
+                </template>
+            </XForm>
         </div>
     </div>
     <div class="item">
         <div class="top">
             <Divider orientation="left" size="small">选择运营类目</Divider>
-            <div class="" style="display:flex">
+            <div class="" style="display:flex;background: #fff; padding-top:10px">
                 <PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind>
                 <NowCategoryBind></NowCategoryBind>
             </div>
@@ -32,7 +43,7 @@ import PlatformCategoryBind from "@components/settings/platformManager/platformC
 import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
 import {
     CreateStore
-} from "@service/basicinfoService"
+} from "@service/settingsService"
 
 export default {
     name: "AddStore",
@@ -50,72 +61,64 @@ export default {
     methods: {
         save() {
             var params = this.formValidate;
-            if (!this.formValidate.id) {
-                return new Promise((resolve, reject) => {
-                    this.$FromLoading.show();
-                    CreateStore(params).then(res => {
-                        if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：新建成功！');
-                            this.$refs['form'].$refs['formValidate'].resetFields();
-                            this.$refs['form'].initEL('input');
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.message
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    if (!this.formValidate.id) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreateStore(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：新建成功！');
+                                    this.$refs['form'].$refs['formValidate'].resetFields();
+                                    this.$refs['form'].initEL('input');
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.message
+                                    });
+                                    this.$FromLoading.hide();
+                                }
                             });
-                            this.$FromLoading.hide();
-                        }
-                    });
-                });
-            } else {
-                return new Promise((resolve, reject) => {
-                    this.$FromLoading.show();
-                    UpdateStore(params).then(res => {
-                        if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：更新成功！');
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.message
+                        });
+                    } else {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            UpdateStore(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：更新成功！');
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.message
+                                    });
+                                    this.$FromLoading.hide();
+                                }
                             });
-                            this.$FromLoading.hide();
-                        }
-                    });
-                });
-            }
+                        });
+                    }
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         },
-        clearFormData() {},
+        clearFormData() {
+            this.formValidate.id = '';
+            this.$refs['form'].$refs['formValidate'].resetFields();
+        },
         selectPlatformBind(data) {
             this.selectPBind = data;
         },
+        goReturn(){
+            this.$router.go(-1);
+        }
     },
     created() {
 
     }
 }
 </script>
-
 <style lang="less" scoped>
-.top {
-    flex: 1;
-    transition: all 0.2s ease-in-out;
-    margin: 0 0 10px 10px;
-    .top_tabale{
-        background-color: #f5fffa;
-        border: 1px solid #dcdee2;
-        border-color: #e8eaec;    
-    }
-}
-
-.top-title {
-    margin: 10px 10px;
-    background: linear-gradient(to top, #d2effd, #ffffff);
-    border: 1px solid #dcdee2;
-    border-color: #e8eaec;
-    transition: all 0.2s ease-in-out;
-    text-align: left;
-    padding: 10px 20px;
-}
+@import "~@less/form.less";
 </style>

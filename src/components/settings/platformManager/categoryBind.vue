@@ -89,7 +89,7 @@ export default {
 .content {
     flex: 1;
     margin: 0 10px;
-    background-color: #f5fffa;
+    background-color: #ffffff;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
 }

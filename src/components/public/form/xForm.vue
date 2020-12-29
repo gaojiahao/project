@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-26 12:13:54
+ * @LastEditTime: 2020-12-29 09:49:56
 -->
 <template>
 <div class="content">
@@ -43,6 +43,7 @@
                 <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable :disabled="formConfig[index]['disabled']" :label-in-value='true' v-show="!formConfig[index]['hidden']" @on-select="onChange">
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
                 </Select>
+                <span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <!--图片上传-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='uploadImage'">
@@ -162,6 +163,7 @@ export default {
             this.$refs['formValidate'].resetFields();
         },
         handleSubmit(name) {
+            debugger
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$emit('save');

@@ -46,7 +46,7 @@ import {
 } from "view-design";
 import {
     getEcommercePlatformList
-} from "@service/basicinfoService"
+} from "@service/settingsService"
 export default {
     name: 'Container',
     components: {
@@ -129,7 +129,7 @@ export default {
         overflow-y: scroll;
         height: 710px;
         position: relative;
-        background-color: #f5fffa;
+        background-color: #ffffff;
         .active {
             color: #2d8cf0;
             background-color: #f8f8f9;

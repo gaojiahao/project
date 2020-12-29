@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-28 20:08:40
+ * @LastEditTime: 2020-12-29 17:19:51
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <TypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @edit="edit" @del="sureDeleteConfirm"></TypeManagerList>
+            <TypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @edit="edit" @del="sureDeleteConfirm" @set-filter="setFilter"></TypeManagerList>
         </div>
         <div class="right">
             <div class="item" v-show="isShowAdd">
@@ -49,8 +49,9 @@ import XForm from "@components/public/form/xForm";
 import {
     GetCategoryList,
     CreateCategory,
-    UpdateCategory
-} from "@service/basicinfoService"
+    UpdateCategory,
+    DelCategory
+} from "@service/settingsService"
 
 export default {
     name: "TypeManager",
@@ -65,16 +66,28 @@ export default {
             list: [],
             selectPBind: {},
             selectSBind: {},
-            isShowAdd: false,
+            isShowAdd: true,
             isShowBind:false,
             listLoading: true,
-            title:''
+            pageData:{
+                keyword:'',
+                maxResultCount:200,
+            }
         }
+    },
+    computed:{
+        title(){
+            if(this.formValidate.id){
+                return '编辑';
+            } else {
+                return '新建';
+            }
+        }    
     },
     methods: {
         GetCategoryList() {
             return new Promise((resolve, reject) => {
-                GetCategoryList({key:200}).then(res => {
+                GetCategoryList(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.list = res.result.item;
@@ -141,13 +154,14 @@ export default {
                 }, 1000);
             }
         },
-        showAdd(id) {
-            this.title = '新建';
+        showAdd(data) {
+            this.$delete(this.formValidate,'id');
             this.$refs['form'].$refs['formValidate'].resetFields();
             this.isShowAdd = true;
             this.isShowBind = false;
-            if(id){
-                this.formValidate.parentId = id;
+            if(data.id){
+                this.formValidate.parentName = data.name;
+                this.formValidate.parentId = data.id;
             }
             this.$refs['form'].initEL('input');
         },
@@ -156,14 +170,17 @@ export default {
             this.isShowBind = false;
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
-        edit(data){
-            this.title = '编辑';
+        edit(root,node,data){
+            var parentName = "";
+            if(data.parentId){
+                parentName = root.find(el => el.node.id === node.node.parentId).node.name;
+            }
             this.formValidate = {
                 parentId: data.parentId,
-                name: data.title,
-                code: data.code,
-                url: data.parentId,
-                id: data.id, 
+                parentName :parentName,
+                name: data.name,
+                level: data.level,
+                id: data.id,
             };
             this.isShowAdd = true;
             this.isShowBind = true;
@@ -177,18 +194,33 @@ export default {
                 },
                 onOk: () => {
                     flag ? this.deletesData() : this.deleteData(root, node, data);
-                    this.$Message.info({
-                        content: '删除成功',
-                        duration: 2
-                    });
                 },
             });
         },
         deleteData(root, node, data) {
-            const parentKey = root.find(el => el === node).parent;
-            const parent = root.find(el => el.nodeKey === parentKey).node;
-            const index = parent.children.indexOf(data);
-            parent.children.splice(index, 1);
+            if (data.id) {
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    DelCategory({id:data.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：删除成功！');
+                            this.GetCategoryList();
+                            this.clearFormData();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
+            }    
+        },
+        setFilter(value){
+            this.pageData.keyword = value;
+            this.GetCategoryList(); 
         }
     },
     created() {
@@ -207,7 +239,7 @@ export default {
         width: 100%;
         .left {
             width: 350px;
-            background-color: #f5fffa;
+            background-color: #ffffff;
             height: 750px;
             border: 1px solid #dcdee2;
             border-color: #e8eaec;
@@ -220,7 +252,7 @@ export default {
                 transition: all 0.2s ease-in-out;
                 margin: 0 0 10px 10px;
                 .top_tabale{
-                    background-color: #f5fffa;
+                    background-color: #ffffff;
                     border: 1px solid #dcdee2;
                     border-color: #e8eaec;    
                 }

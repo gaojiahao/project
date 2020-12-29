@@ -191,7 +191,7 @@ export default {
 <style lang="less" scoped>
 .top {
     flex: 1;
-    // background-color: #f5fffa;
+    // background-color: #ffffff;
     // border: 1px solid #dcdee2;
     // border-color: #e8eaec;
     transition: all 0.2s ease-in-out;
@@ -215,13 +215,13 @@ export default {
 .ivu-divider-horizontal.ivu-divider-with-text-left:before {
     border-top: 1px solid #dcdee2;
     border-left: 1px solid #dcdee2;
-    background-color: #f5fffa;
+    background-color: #ffffff;
     width: 3%;
 }
 .ivu-divider-horizontal.ivu-divider-with-text-left:after {
     border-top: 1px solid #dcdee2;
     border-right: 1px solid #dcdee2;
-    background-color: #f5fffa;
+    background-color: #ffffff;
 }
 .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-center, 
 .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-left, 
@@ -232,7 +232,7 @@ export default {
     color: #515a6e;
 }
 .top_tabale{
-    background-color: #f5fffa;
+    background-color: #ffffff;
     border: 1px solid #dcdee2;
     border-top:0;
     border-color: #e8eaec;    

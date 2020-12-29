@@ -599,7 +599,7 @@ export default {
 .viewResearch{
     .top {
         // flex: 1;
-        background-color: #f5fffa;
+        background-color: #ffffff;
         border: 1px solid #dcdee2;
         border-color: #e8eaec;
         transition: all 0.2s ease-in-out;
