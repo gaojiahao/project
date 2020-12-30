@@ -112,7 +112,7 @@ export default {
     .head {
         width: 100%;
         height: 40px;
-        background: linear-gradient(to top, #d2effd, #ffffff);
+    background: #ffffff;
         line-height: 40px;
 
         .left {

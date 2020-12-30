@@ -253,7 +253,6 @@ export default {
         edit(e,root,node,data){
             e.stopPropagation();
             e.preventDefault();
-            debugger
             this.$emit('edit', root,node,data);
         },
         remove(e,root, node, data) {
@@ -284,7 +283,7 @@ export default {
     .head {
         width: 100%;
         height: 40px;
-        background: linear-gradient(to top, #d2effd, #ffffff);
+    background: #ffffff;
         line-height: 40px;
 
         .left {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-12 19:54:00
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:23:14
+ * @LastEditTime: 2020-12-30 17:02:37
 -->
 <style>
     .ivu-table th.demo-table-info-column{
@@ -659,7 +659,7 @@ export default {
 }
 
 .bottom-title {
-    background: linear-gradient(to top, #d2effd, #ffffff);
+background: #ffffff;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     transition: all 0.2s ease-in-out;

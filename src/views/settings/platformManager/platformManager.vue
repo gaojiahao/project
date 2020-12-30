@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 20:47:56
+ * @LastEditTime: 2020-12-30 11:36:45
 -->
 <template>
 <div class="platformManager-container">
@@ -67,7 +67,6 @@ import {
     CreateCategoryRelation,
     GetCategoryRelatedList
 } from "@service/settingsService"
-import systemCategoryBindVue from '../../../components/settings/platformManager/systemCategoryBind.vue';
 
 export default {
     name: "platformManager",

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:16:54
+ * @LastEditTime: 2020-12-30 17:03:42
 -->
 <template>
 <div>
@@ -184,7 +184,7 @@ export default {
 }
 
 .top-title {
-    background: linear-gradient(to top, #d2effd, #ffffff);
+background: #ffffff;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     transition: all 0.2s ease-in-out;

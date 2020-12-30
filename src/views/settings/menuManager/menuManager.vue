@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-28 15:05:39
+ * @LastEditTime: 2020-12-30 10:54:47
 -->
 <template>
 <div>
@@ -51,9 +51,8 @@ import AddChildMenu from "@components/settings/menuManager/addChildMenu"
 import config from '@views/settings/menuManager/menuManagerConfig'
 import list from "@mixins/list";
 import {
-    addMenu,
-    getMenuList
-} from '@service/authority'
+    AuthModuleList
+} from "@service/settingsService"
 
 export default {
     name: 'MenuManager',
@@ -139,11 +138,8 @@ export default {
                 }
             ],
             pageData:{
-                skipCount: 1,
-                skipTotal: 15,
-                maxResultCount: 15,
+                maxResultCount: 200,
                 keyword:'',
-                pageSizeOpts:[15,50,200],
             },
             totalPage:0,
         }
@@ -161,17 +157,12 @@ export default {
         //获取菜单列表
         getMenuList() {
             let data = [];
-
-            getMenuList(data).then(res => {
-                if (res.status == 200) {
-                    console.log(res.data.data.items);
-                    this.loading = false;
-                    this.list = res.data.data.items;
-                    //需要遍历处理子节点，默认树形展开 this.list[this.childIndex]['_showChildren'] = true;
-                } else {
-                    this.$Message.error({
-                        background: true,
-                        content: res.message
+            AuthModuleList(this.pageData).then(res => {
+                if(res.result.code==200){
+                    this.$nextTick(() => {
+                        this.totalPage = res.result.item.totalCount;
+                        this.data = res.result.item.items;
+                        this.loading = false;
                     });
                 }
             });

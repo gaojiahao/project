@@ -154,7 +154,7 @@ export default {
 }
 
 .top-title {
-    background: linear-gradient(to top, #d2effd, #ffffff);
+background: #ffffff;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     transition: all 0.2s ease-in-out;

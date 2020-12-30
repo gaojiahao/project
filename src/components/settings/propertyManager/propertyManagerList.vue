@@ -11,13 +11,13 @@
         </div>
     </div>
     <div class="content">
+        <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
         <Spin fix v-if="loading">
             <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
             <div>Loading</div>
         </Spin>
         <template v-else>
             <template v-if="data.length">
-                <Input search enter-button placeholder="" size="small" style="padding:5px;"/>
                 <Tree :data="data" :render="renderContent" @on-select-change="onSelectChange" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()">
                     <template slot="contextMenu">
                         <DropdownItem @click.native="append">添加</DropdownItem>
@@ -62,100 +62,24 @@ export default {
             default: true
         }
     },
+    watch:{
+        list:{
+            handler(val){
+                for(var i=0;i<val.length;i++){
+                    val[i].title = val[i].name;
+                    for(var j=0;j<val[i].attributesValues.length;j++){
+                        val[i].attributesValues[j].title = val[i].attributesValues[j].valueName;
+                    };
+                    val[i].children = val[i].attributesValues;
+                    val[i].code = val[i].id;
+                }
+                this.data= val;
+            }    
+        }
+    },
     data() {
         return {
-            data: [{
-                id: '1',
-                title: '材质',
-                loading: false,
-                parentId: '',
-                code:'dzqyj',
-                contextmenu: true,
-                children: [{
-                    id: 'a',
-                    title: '金属',
-                    loading: false,
-                    parentId: '1',
-                    code:'wjl',
-                    contextmenu: true,
-                    children: [{
-                        id: 'a-1',
-                        title: '黄金',
-                        loading: false,
-                        parentId: 'a',
-                        code:'jml',
-                        contextmenu: true,
-                        children: [{
-                            id: 'a-1-1',
-                            title: '99金',
-                            loading: false,
-                            parentId: 'a-1',
-                            code:'mzjm',
-                            contextmenu: true,
-                        }, {
-                            id: 'a-1-2',
-                            title: '95金',
-                            loading: false,
-                            parentId: 'a-1',
-                            code:'pvcjm',
-                            contextmenu: true,
-                        }]
-                    }, {
-                        id: 'a-2',
-                        title: '白银',
-                        loading: false,
-                        parentId: 'a',
-                        code:'ykl',
-                        contextmenu: true,
-                    }]
-                }, ]
-            },
-            {
-                id: '2',
-                title: '颜色',
-                loading: false,
-                parentId: '',
-                code:'dzqyj2',
-                contextmenu: true,
-                children: [{
-                    id: 'a1',
-                    title: '红色',
-                    loading: false,
-                    parentId: '2',
-                    code:'wjl2',
-                    contextmenu: true,
-                    children: [{
-                        id: 'a-11',
-                        title: '桃红色',
-                        loading: false,
-                        parentId: 'a1',
-                        code:'jml2',
-                        contextmenu: true,
-                        children: [{
-                            id: 'a-1-1',
-                            title: '桃红色1',
-                            loading: false,
-                            parentId: 'a-11',
-                            code:'mzjm2',
-                            contextmenu: true,
-                        }, {
-                            id: 'a-1-21',
-                            title: '桃红色2',
-                            loading: false,
-                            parentId: 'a-11',
-                            code:'pvcjm2',
-                            contextmenu: true,
-                        }]
-                    }, {
-                        id: 'a-21',
-                        title: '蓝色',
-                        loading: false,
-                        parentId: 'a1',
-                        code:'ykl2',
-                        contextmenu: true,
-                    }]
-                }, ]
-            }],
+            data: [],
         }
     },
     methods: {
@@ -167,7 +91,8 @@ export default {
                     display: 'inline-block',
                     width: '100%'
                 }
-            }, [
+            }, 
+            [
                 h('span', [
                     h('Icon', {
                         props: {
@@ -186,6 +111,7 @@ export default {
                         marginRight: '32px'
                     }
                 }, [
+                    data.attributesValues ?
                     h('Button', {
                         props: Object.assign({}, this.buttonProps, {
                             icon: 'ios-add'
@@ -194,9 +120,10 @@ export default {
                             marginRight: '8px'
                         },
                         on: {
-                            click: (e) => { this.append(e,data) }
+                            click: (e) => { this.appendChild(e,root,node,data) }
                         }
-                    }),
+                    }):'',
+                    data.attributesValues ?
                     h('Button', {
                         props: Object.assign({}, this.buttonProps, {
                             icon: 'ios-create-outline'
@@ -206,16 +133,36 @@ export default {
                         },
                         on: {
                             click: (e) => {
-                                this.edit(e,data) 
+                                this.edit(e,root,node,data)
+                            }
+                        }
+                    }):h('Button', {
+                        props: Object.assign({}, this.buttonProps, {
+                            icon: 'ios-create-outline'
+                        }),
+                        style: {
+                            marginRight: '8px'
+                        },
+                        on: {
+                            click: (e) => {
+                                this.editChild(e,root,node,data)
                             }
                         }
                     }),
+                    data.attributesValues ?
                     h('Button', {
                         props: Object.assign({}, this.buttonProps, {
                             icon: 'ios-remove'
                         }),
                         on: {
                             click: (e) => { this.remove(e,root, node, data) }
+                        }
+                    }):h('Button', {
+                        props: Object.assign({}, this.buttonProps, {
+                            icon: 'ios-remove'
+                        }),
+                        on: {
+                            click: (e) => { this.removeChild(e,root, node, data) }
                         }
                     })
                 ])
@@ -230,21 +177,42 @@ export default {
         append(e,data) {
             e.stopPropagation();
             e.preventDefault();
-            this.$emit('show-add',data.id);
+            this.$emit('show-add',data);
         },
-        edit(e,data){
+        appendChild(e,root,node,data){
             e.stopPropagation();
             e.preventDefault();
-            this.$emit('edit', data);
+            this.$emit('show-add-child',root,node,data);
+        },
+        edit(e,root,node,data){
+            e.stopPropagation();
+            e.preventDefault();
+            this.$emit('edit', root,node,data);
+        },
+        editChild(e,root,node,data){
+            e.stopPropagation();
+            e.preventDefault();
+            this.$emit('edit-child', root,node,data);
         },
         remove(e,root, node, data) {
             e.stopPropagation();
             e.preventDefault();
             this.$emit('del',root, node, data)
         },
+        removeChild(e,root, node, data) {
+            e.stopPropagation();
+            e.preventDefault();
+            this.$emit('del-child',root, node, data)
+        },
         handleContextMenu(e,data) {
             this.contextData = data;
         },
+        onSearch(value){
+            this.$emit('set-filter',value);
+        },
+        onCler(){
+            this.$emit('set-filter','');
+        }
     },
     created() {
         
@@ -259,7 +227,7 @@ export default {
     .head {
         width: 100%;
         height: 40px;
-        background: linear-gradient(to top, #d2effd, #ffffff);
+    background: #ffffff;
         line-height: 40px;
 
         .left {

@@ -4,34 +4,35 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:54:12
+ * @LastEditTime: 2020-12-30 11:55:44
 -->
 <template>
-<div>
-    <div style="margin: 10px 0;overflow: hidden">
-        <div style="float: left;">
-            <Input search enter-button placeholder="角色..." />
+<div class="roleManager_container">
+    <div class="filter">
+        <div class="filter-button">
+            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
+            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
+            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+            <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
         </div>
-        <div style="float: right;">
-            <Button type="info" @click.native="showPop(true)">新建角色</Button>
+        <div class="filter-search">
+            <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+            <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
+            <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
         </div>
     </div>
-    <Table border :columns="columns" :data="list" stripe>
-        <template slot-scope="{ row }" slot="number">
-            <strong>{{ row.number }}</strong>
-        </template>
-        <template slot-scope="{ row, index }" slot="action">
+    <div class="myTable">
+        <Table border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <Button type="success" size="small" style="margin-right: 5px" @click="setUserAuthority(index)">分配权限</Button>
-            <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true,row)">编辑</Button>
-            <Button type="error" size="small" @click="remove(index)">删除</Button>
-        </template>
-    </Table>
-    <div style="margin: 10px;overflow: hidden">
-        <div style="float: right;">
-            <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+        </Table>
+        <div style="margin: 10px;overflow: hidden">
+            <div style="float: right;">
+                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
+            </div>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <Modal v-model="modal1" title="分配权限" @on-ok="ok" @on-cancel="cancel" width="800">
         <XTreeAdd></XTreeAdd>
     </Modal>
@@ -39,22 +40,22 @@
 </template>
 
 <script>
-import XTreeAdd from "@components/public/tree/xTreeAdd"
-import ModalForm from "@components/public/form/modalForm"
-import config from '@views/settings/roleManager/roleManagerConfig.js'
+import XTreeAdd from "@components/public/tree/xTreeAdd";
+import list from "@mixins/list";
+import config from '@views/settings/roleManager/roleManagerConfig.js';
+import {
+    AuthRoleList
+} from "@service/settingsService"
+
 export default {
     name: 'RoleManager',
     components: {
         XTreeAdd,
-        ModalForm
     },
-    computed: {
-
-    },
-    mixins: [config],
+    mixins: [config,list],
     data() {
         return {
-            list: this.mockTableData1(),
+            data: [],
             titleText: '',
             columns: [{
                     title: '序号',
@@ -100,6 +101,14 @@ export default {
             modal1: false,
             showModel: false,
             titleText: '',
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
         }
     },
     methods: {
@@ -108,71 +117,113 @@ export default {
             this.userId = this.list[userId].roleName;
             this.modal1 = true;
         },
-        // show(index) {
-        //     this.$Modal.info({
-        //         title: 'User Info',
-        //         content: `number：${this.list[index].roleName}`
-        //     })
-        // },
-        remove(index) {
-            this.list.splice(index, 1);
+        AuthRoleList() {
+            return new Promise((resolve, reject) => {
+                AuthRoleList(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPage = res.result.item.totalCount;
+                            this.data = res.result.item.items;
+                            this.loading = false;
+                        });
+                    }
+                });
+            });
         },
-        mockTableData1() {
-            let data = [];
-            for (let i = 0; i < 15; i++) {
-                data.push({
-                    roleName: '角色' + Math.floor(Math.random() * 100 + 1),
-                    status: Math.floor(Math.random() * 3 + 1),
-                    createTime: new Date(),
-                    id: Math.floor(Math.random() * 10000 + 1)
-                })
-            }
-            return data;
-        },
-        formatDate(date) {
-            const y = date.getFullYear();
-            let m = date.getMonth() + 1;
-            m = m < 10 ? '0' + m : m;
-            let d = date.getDate();
-            d = d < 10 ? ('0' + d) : d;
-            return y + '-' + m + '-' + d;
-        },
-        changePage() {
-            this.list = this.mockTableData1();
-        },
-        ok() {
-            this.$Message.info('温馨提示：分配权限成功！');
-        },
-        cancel() {
-            this.$Message.info('温馨提示：您取消了分配权限！');
-        },
-        showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '新建';
-            }
-            this.showModel = flag;
-        },
-        save() {
+        clearFormData() {
 
         },
-        clearFormData() {}
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetStorePage();
+        },
+        refresh(){
+            this.loading = true;
+            this.pageData.skipCount=1;
+            this.GetStorePage();
+        },
+        goAdd(){
+            this.$router.push({name:'addRole'});
+        },
+        goEdit(){
+            if(this.activatedRow.id){
+                this.$router.push({name:'addRole',query: {id:this.activatedRow.id}});
+            }
+        },
+        checkALl(){
+            this.$nextTick(function () {
+                this.columns = this.getTableColumn();
+            })
+        },
+        changeCoulmns(data){
+            let datas = [];
+            let columns = this.getTableColumn();
+            datas.push(columns[0]);
+            data.forEach(col => {
+                for(var i=0;i<columns.length;i++){
+                    if(col == columns[i].key){
+                        datas.push(columns[i]);
+                    }
+                }
+            });
+            this.columns = datas;
+        },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetStorePage();
+        },
+        deleteData(){
+            if(this.activatedRow.id){
+                this.loading = true;
+                return new Promise((resolve, reject) => {
+                    DelStore({id:this.activatedRow.id}).then(res => {
+                        if (res.result.code == 200) {
+                            for(var i=0;i<this.selectedList.length;i++){
+                                for(var j=0;j<this.data.length;j++){
+                                    if(this.selectedList[i].id==this.data[j].id){
+                                        this.data.splice(j, 1);   
+                                    }
+                                }
+                            }
+                            this.$Message.info('温馨提示：删除成功！');
+                            if(this.data.length<1){
+                                this.pageData.skipCount-1;
+                            }
+                            this.GetStorePage();
+                            this.loading = false;
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.loading = false;
+                        }
+                    });
+                });
+            } 
+        },
+        setFilter(value){
+            this.pageData = {
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:value,
+                pageSizeOpts:[15,50,200],
+            },
+            this.GetStorePage(); 
+        },
+        ok(){
+
+        },
+        cancel(){
+            
+        }
     },
-    created() {}
+    created() {
+        this.AuthRoleList();
+    }
 }
 </script>
-
-<style scoped>
->>>.ivu-table th,
->>>.ivu-table td {
-    height: 28px;
-}
-
->>>.ivu-modal-footer {
-    border-top: 0;
-    padding: 12px 18px 12px 18px;
-    text-align: right;
-}
+<style lang="less" scoped>
+@import "~@less/list/index.less";
 </style>

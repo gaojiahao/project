@@ -4,60 +4,66 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-17 15:11:14
+ * @LastEditTime: 2020-12-30 16:05:33
  */
 export default {
     data() {
       return {
         formConfig:{
-          parentId:{
-            name:'上一级类目',
-            type:'select', 
-            dataSource:{
-              type:'static',
-              data:[
-                {name:'材质',value:'a'},
-                {name:'金属',value:'1'},
-                {name:'颜色',value:'a-1'}
-              ],
-            }, 
-          },
           name:{
             name:'属性名称',
             type:'text',
           },
-          code:{
-            name:'属性code',
-            type:'text',
-          },
-          url:{
+          groupName:{
             name:'属性组别',
             type:'text',
           },
         },
+        formConfig2:{
+          attributeId:{
+            name:'上级属性项',
+            type:'text', 
+            disabled:true,
+            hidden:true
+          },
+          attributeName:{
+            name:'上级属性项',
+            type:'text', 
+            disabled:true,
+          },
+          valueName:{
+            name:'属性值名称',
+            type:'text',
+          },
+        },
         formValidate: {
-          parentId: '',
           name: '',
-          code: '',
-          url: '',
-          id:'',
+          groupName: '',
+        },
+        formValidate2: {
+          attributeId: '',
+          attributeName:'',
+          valueName: '',
         },
         ruleValidate: {
           name: [{
-              required: true,
-              message: '请输入上一级类目',
-              trigger: 'blur'
-          }],
-          code: [{
               required: true,
               type: 'string',
               message: '请输入属性名称',
               trigger: 'blur'
           }],
-          url: [{
+          groupName: [{
               required: true,
               type: 'string',
               message: '请输入属性组别',
+              trigger: 'blur'
+          }],
+        },
+        ruleValidate2: {
+          name: [{
+              required: true,
+              type: 'string',
+              message: '请输入属性值名称',
               trigger: 'blur'
           }],
         },

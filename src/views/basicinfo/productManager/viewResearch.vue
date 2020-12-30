@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-23 16:48:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:02:12
+ * @LastEditTime: 2020-12-30 17:06:24
 -->
 <template>
 <div class="viewResearch">
@@ -636,7 +636,7 @@ export default {
         }
     }
     .top-title {
-        background: linear-gradient(to top, #d2effd, #ffffff);
+    background: #ffffff;
         border: 1px solid #dcdee2;
         border-color: #e8eaec;
         transition: all 0.2s ease-in-out;
@@ -651,7 +651,7 @@ export default {
             width: 50%;
             float: left;
             .title {
-                background: linear-gradient(to top, #d2effd, #ffffff);
+            background: #ffffff;
                 border: 1px solid #dcdee2;
                 border-color: #e8eaec;
                 transition: all 0.2s ease-in-out;
@@ -664,7 +664,7 @@ export default {
             margin-right: 1%;
             float: left;
             .title {
-                background: linear-gradient(to top, #d2effd, #ffffff);
+            background: #ffffff;
                 border: 1px solid #dcdee2;
                 border-color: #e8eaec;
                 transition: all 0.2s ease-in-out;
@@ -678,7 +678,7 @@ export default {
             width: 49%;
             margin-left: 1%;
             .title {
-                background: linear-gradient(to top, #d2effd, #ffffff);
+            background: #ffffff;
                 border: 1px solid #dcdee2;
                 border-color: #e8eaec;
                 transition: all 0.2s ease-in-out;
@@ -691,7 +691,7 @@ export default {
         .research-container-item3 {
             width: 100%;
             .title {
-                background: linear-gradient(to top, #d2effd, #ffffff);
+            background: #ffffff;
                 border: 1px solid #dcdee2;
                 border-color: #e8eaec;
                 transition: all 0.2s ease-in-out;

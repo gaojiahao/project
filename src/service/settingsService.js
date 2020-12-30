@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 17:27:17
+ * @LastEditTime: 2020-12-30 16:03:53
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -67,6 +67,7 @@ export let DelPlatforms = (data = {}) => {
     data: data
   })
 };
+//店铺管理
 export let CreateStore = (data = {}) => {
   return $flyio.post({
     url: '/api/CreateStore',
@@ -97,6 +98,7 @@ export let DelStore = (data = {}) => {
     data: data
   })
 };
+//分类管理
 export let GetCategoryList = (data = {}) => {
   return $flyio.post({
     url: '/api/GetCategoryList',
@@ -127,6 +129,7 @@ export let GetCategoryById = (data = {}) => {
     data: data
   })
 };
+//品牌管理
 export let CreateBrand = (data = {}) => {
   return $flyio.post({
     url: '/api/CreateBrand',
@@ -154,6 +157,130 @@ export let GetBrandList = (data = {}) => {
 export let GetBrandById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetBrandById',
+    data: data
+  })
+};
+//属性管理
+export let CreateAttributes = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateAttributes',
+    data: data
+  })
+};
+export let UpdateAttributes = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateAttributes',
+    data: data
+  })
+};
+export let DelAttributes = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelAttributes',
+    data: data
+  })
+};
+export let GetAttributeList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetAttributeList',
+    data: data
+  })
+};
+export let GetAttributeById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetAttributeById',
+    data: data
+  })
+};
+//属性值管理
+export let CreateAttributeValue = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateAttributeValue',
+    data: data
+  })
+};
+export let UpdateAttributeValue = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateAttributeValue',
+    data: data
+  })
+};
+export let DelAttributeValue = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelAttributeValue',
+    data: data
+  })
+};
+//菜单管理
+export let CreateAuthModule = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateAuthModule',
+    data: data
+  })
+};
+export let UpdateAuthModule = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateAuthModule',
+    data: data
+  })
+};
+export let DeleteAuthModule = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DeleteAuthModule',
+    data: data
+  })
+};
+export let AuthModuleList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/AuthModuleList',
+    data: data
+  })
+};
+export let AuthModulePage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/AuthModulePage',
+    data: data
+  })
+};
+export let GetUserRoleMenu = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetUserRoleMenu',
+    data: data
+  })
+};
+export let UpdateMenuStatus = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateMenuStatus',
+    data: data
+  })
+};
+//角色管理
+export let AuthRoleList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/AuthRoleList',
+    data: data
+  })
+};
+export let CreateAuthRole = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateAuthRole',
+    data: data
+  })
+};
+export let UpdateAuthRole = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateAuthRole',
+    data: data
+  })
+};
+export let DeleteAuthRole = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DeleteAuthRole',
+    data: data
+  })
+};
+export let UpdateRoleState = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateRoleState',
     data: data
   })
 };

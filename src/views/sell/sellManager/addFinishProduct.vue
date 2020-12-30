@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-13 19:37:15
+ * @LastEditTime: 2020-12-30 17:04:08
 -->
 <template>
 <div>
@@ -66,7 +66,7 @@ export default {
 
 .bottom-title {
     margin: 0 10px;
-    background: linear-gradient(to top, #d2effd, #ffffff);
+background: #ffffff;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
     transition: all 0.2s ease-in-out;

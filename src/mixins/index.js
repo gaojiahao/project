@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 12:08:53
+ * @LastEditTime: 2020-12-30 11:01:41
  */
 export default {
     data() {
@@ -65,14 +65,14 @@ export default {
                 auth: false,    
               },
               {
-                name: '用户管理',
-                value: 'userManager',
+                name: '角色管理',
+                value: 'roleManager',
                 status: true,
                 auth: false,    
               },
               {
-                name: '角色管理',
-                value: 'roleManager',
+                name: '用户管理',
+                value: 'userManager',
                 status: true,
                 auth: false,    
               },

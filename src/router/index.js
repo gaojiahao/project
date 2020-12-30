@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 16:21:35
+ * @LastEditTime: 2020-12-30 11:55:09
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -149,11 +149,44 @@ const routes = [
           {
             path: "roleManager",
             name: "roleManager",
-            component: resolve=>(require(["@views/settings/roleManager/roleManager"],resolve)),
+            component: resolve=>(require(["@views/settings/roleManager"],resolve)),
+            redirect:'roleManager/roleManager',
             meta: {
               title: "角色管理",
               group: "roleManager",
             },
+            children:[
+              {
+                path: "roleManager",
+                name: "roleManager",
+                component: resolve=>(require(["@views/settings/roleManager/roleManager"],resolve)),
+                meta: {
+                  title: "角色管理",
+                  group: "roleManager",
+                  level: 1,
+                },
+              },
+              {
+                path: "addRole",
+                name: "addRole",
+                component: resolve=>(require(["@views/settings/roleManager/addRole"],resolve)),
+                meta: {
+                  title: "添加角色",
+                  group: "roleManager",
+                  level: 2,
+                },
+              },
+              {
+                path: "addRole",
+                name: "addRole",
+                component: resolve=>(require(["@views/settings/roleManager/addRole"],resolve)),
+                meta: {
+                  title: "编辑角色",
+                  group: "roleManager",
+                  level: 2,
+                },
+              },
+            ]
           },
           {
             path: "bpmManager",

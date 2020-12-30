@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 11:34:06
+ * @LastEditTime: 2020-12-30 12:01:50
 -->
 <template>
 <div class="add_store">
     <div class="top">
-        <Divider orientation="left" size="small">店铺信息</Divider>
+        <Divider orientation="left" size="small">角色信息</Divider>
         <div class="top_tabale">
             <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
                 <template slot="button">
@@ -24,43 +24,23 @@
             </XForm>
         </div>
     </div>
-    <div class="item">
-        <div class="top">
-            <Divider orientation="left" size="small">选择运营类目</Divider>
-            <Row>
-                <Col span="12"><PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind></Col>
-                <Col span="12"><NowCategoryBind></NowCategoryBind></Col>
-            </Row>
-        </div>
-    </div>
 </div>
 </template>
 
 <script>
-import {
-    Row,
-    Col
-} from "view-design";
 import XForm from "@components/public/form/xForm";
-import config from "@views/settings/storeManager/addStoreConfig";
-import PlatformCategoryBind from "@components/settings/platformManager/platformCategoryBind";
-import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
+import config from "@views/settings/roleManager/roleManagerConfig";
 import {
-    CreateStore
+    CreateAuthRole
 } from "@service/settingsService"
 
 export default {
-    name: "AddStore",
+    name: "AddRole",
     components: {
         XForm,
-        PlatformCategoryBind,
-        NowCategoryBind,
-        Row,
-        Col
     },
     data() {
         return {
-            selectPBind: {},
         }
     },
     mixins: [config],
@@ -72,28 +52,12 @@ export default {
                     if (!this.formValidate.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
-                            CreateStore(params).then(res => {
+                            CreateAuthRole(params).then(res => {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.$refs['form'].$refs['formValidate'].resetFields();
                                     this.$refs['form'].initEL('input');
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.message
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    } else {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            UpdateStore(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -112,9 +76,6 @@ export default {
         clearFormData() {
             this.formValidate.id = '';
             this.$refs['form'].$refs['formValidate'].resetFields();
-        },
-        selectPlatformBind(data) {
-            this.selectPBind = data;
         },
         goReturn(){
             this.$router.go(-1);
