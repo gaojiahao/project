@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 20:10:17
+ * @LastEditTime: 2020-12-31 14:54:15
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -324,6 +324,12 @@ export let GetSystemConfigList = (data = {}) => {
 export let DelSystemConfig = (data = {}) => {
   return $flyio.post({
     url: '/api/DelSystemConfig',
+    data: data
+  })
+};
+export let GetSystemConfigById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetSystemConfigById',
     data: data
   })
 };

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 11:24:28
+ * @LastEditTime: 2020-12-31 14:17:35
 -->
 <template>
 <div class="platformManager-container">
@@ -33,7 +33,7 @@
             <div class="item"  v-show="isShowBind">
                 <div class="top">
                     <Divider orientation="left" size="small">分类属性</Divider>
-                    <TypeManagerTab :list="attrList" :loading="attrLoading" :pageAttrData="pageAttrData" @change-page="changePage" @on-page-size-change="onPageSizeChange"></TypeManagerTab>
+                    <TypeManagerTab :list="attrList" :loading="attrLoading" :pageAttrData="pageAttrData" @change-page="changePage" @on-page-size-change="onPageSizeChange" @get-data="GetAttributeCategoryPage"></TypeManagerTab>
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@ export default {
                 });
             });
         },
-        GetAttributeCategoryPage(id) {
+        GetAttributeCategoryPage() {
             return new Promise((resolve, reject) => {
                 GetAttributeCategoryPage({categoryId:this.formValidate.id,...this.pageAttrData}).then(res => {
                     if(res.result.code==200){
@@ -206,6 +206,14 @@ export default {
                 level: data.level,
                 id: data.id,
             };
+            this.pageAttrData={
+                skipCount: 1,
+                skipTotal: 10,
+                maxResultCount: 10,
+                keyword:'',
+                totalPage:0,
+                pageSizeOpts:[10,50,200],
+            },
             this.GetAttributeCategoryPage();
             this.isShowAdd = true;
             this.isShowBind = true;

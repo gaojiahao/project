@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 10:13:23
+ * @LastEditTime: 2020-12-31 15:57:16
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
         <template v-for="(item, index) in formValidate">
-            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='text'">
-                <Input v-model="formValidate[index]" :style="{width:'200px'}"></Input>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="(formConfig[index]&&formConfig[index]['type']=='text')&&!formConfig[index]['hidden']">
+                <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']"></Input>
             </FormItem>
             <!--数值控件-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='number'">
@@ -31,6 +31,10 @@
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
                 </Select>
                 <span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
+            </FormItem>
+            <!--图片上传-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='uploadImage'">
+                <UploadImg v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></UploadImg>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
                 <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker> 
@@ -61,13 +65,15 @@
 <script>
 import SelectorSingle from '@components/public/xSelect/selectorSingle'
 import SelectorMulti from '@components/public/xSelect/selectorMulti'
+import UploadImg from '@components/public/upload/uploadImg';
 import $flyio from '@plugins/ajax'
 
 export default {
     name: 'ModalForm',
     components: {
         SelectorSingle,
-        SelectorMulti
+        SelectorMulti,
+        UploadImg
     },
     props: {
         titleText: {

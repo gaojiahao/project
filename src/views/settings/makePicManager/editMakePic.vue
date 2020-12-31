@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 19:50:02
+ * @LastEditTime: 2020-12-31 14:56:25
 -->
 <template>
 <div class="add_store">
@@ -31,7 +31,8 @@ import XForm from "@components/public/form/xForm";
 import config from "@views/settings/makePicManager/addMakePicConfig";
 import {
     CreateSystemConfig,
-    UpdateSysetmConfig
+    UpdateSysetmConfig,
+    GetSystemConfigById
 } from "@service/settingsService"
 
 export default {
@@ -50,15 +51,13 @@ export default {
             var params = this.formValidate;
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
-                    if (!this.formValidate.id) {
+                    if (this.formValidate.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
                             UpdateSysetmConfig(params).then(res => {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：新建成功！');
-                                    this.$refs['form'].$refs['formValidate'].resetFields();
-                                    this.$refs['form'].initEL('input');
+                                    this.$Message.info('温馨提示：更新成功！');
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -86,19 +85,14 @@ export default {
         this.id = this.$route.query.id;
         if(this.id) {
             return new Promise((resolve, reject) => {
-                GetStoreById({id:this.id}).then(res => {
+                GetSystemConfigById({id:this.id}).then(res => {
                     if (res.result.code == 200) {
                         this.$FromLoading.hide();
                         this.formValidate = {
                             id: res.result.item.id,
                             name: res.result.item.name,
                             code: res.result.item.code,
-                            account: res.result.item.account,
-                            login_Id: res.result.item.login_Id,
-                            app_Key: res.result.item.app_Key,
-                            app_Secret: res.result.item.app_Secret,
-                            platformId: res.result.item.platformId,
-                            platformName: res.result.item.platformName,
+                            enabled: res.result.item.enabled,
                             remark: res.result.item.remark,
                         }
                     } else if (res.result.code == 400) {

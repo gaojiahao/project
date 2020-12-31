@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 11:25:05
+ * @LastEditTime: 2020-12-31 11:40:31
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -230,7 +230,7 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：新建成功！');
-                            // this.GetCategoryList();
+                            this.$$emit('get-data');
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 10:07:23
+ * @LastEditTime: 2020-12-31 11:58:20
  */
 export default {
     data() {
@@ -61,14 +61,12 @@ export default {
             },
             bind:[
               {target: 'attributeName',bindValue: 'name'},
-              {target: 'attributesValues' , bindValue:'attributesValues'}
             ]
           },
         },
         formValidate2: {
           attributeName: '',
           attributeId:'',
-          attributesValues:[],
         },
         ruleValidate2: {
           attributeName: [{
