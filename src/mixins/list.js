@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-18 14:29:46
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 16:41:31
+ * @LastEditTime: 2020-12-31 16:48:39
  */
 import ModalForm from "@components/public/form/modalForm";
 import SeniorFilter from "@components/public/filter/seniorFilter";
@@ -85,16 +85,18 @@ export default {
             this.activatedRow = currentRow;    
         },
         sureDeleteConfirm (flag) {
-            this.$Modal.confirm({
-                title: '温馨提示',
-                content: '数据删除后将无法恢复！',
-                onCancel: () => {
-                    this.$Message.info('取消');
-                },
-                onOk: () => {
-                    flag ? this.deletesData() : this.deleteData();
-                },
-            });
+            if(this.activatedRow.id){
+                this.$Modal.confirm({
+                    title: '温馨提示',
+                    content: '数据删除后将无法恢复！',
+                    onCancel: () => {
+                        this.$Message.info('取消');
+                    },
+                    onOk: () => {
+                        flag ? this.deletesData() : this.deleteData();
+                    },
+                });
+            }
         },
     },
     created(){

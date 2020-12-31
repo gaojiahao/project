@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 16:38:16
+ * @LastEditTime: 2020-12-31 16:43:20
 -->
 <template>
 <div>
@@ -33,7 +33,7 @@
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal"></Page>
+                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
             </div>
         </div>
     </div>
@@ -323,7 +323,11 @@ export default {
                 pageSizeOpts:[15,50,200],
             };
             this.getMenuList(); 
-        }
+        },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.getMenuList();
+        },
     },
     created() {
         this.getMenuList();
