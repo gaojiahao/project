@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:48:59
+ * @LastEditTime: 2020-12-31 11:25:05
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
     <TabPane label="分类属性">
-        <Table border :columns="columns" :data="data" stripe>
+        <Table border :columns="columns" :data="data.attributeBinds" :loading="loading" stripe>
             <template slot-scope="{ row, index }" slot="action">
                 <i-switch size="large">
                     <span slot="open">ON</span>
@@ -19,7 +19,7 @@
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                <Page :total="pageAttrData.totalPage" :current="pageAttrData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageAttrData.pageSizeOpts" :page-size="pageAttrData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
             </div>
         </div>
     </TabPane>
@@ -37,9 +37,9 @@
         <Table border :columns="columns2" :data="data2" stripe></Table>
     </TabPane>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="showPop(true)">添加属性</Button>
-    <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton">保存</Button>
+    <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="save()">保存</Button>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==1" class="tabsButton">保存</Button>
-    <ModalForm :titleText="titleText" :formValidate="formValidate2" :ruleValidate="ruleValidate2" :showModel='showModel' :formConfig="formConfig2" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <ModalForm :titleText="titleText" :formValidate="formValidate2" :ruleValidate="ruleValidate2" :showModel='showModel' :formConfig="formConfig2" @save="add" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <div slot="footer">
         <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
     </div>
@@ -54,6 +54,9 @@ import {
 } from "view-design";
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/settings/typeManager/typeManagerConfig";
+import {
+    BindAttributeCategory
+} from "@service/settingsService"
 export default {
     name: 'TypeManagerTab',
     components: {
@@ -62,8 +65,34 @@ export default {
         ModalForm
     },
     mixins: [config],
-    computed: {
-
+    props: {
+        list: {
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        loading:{
+            type:Boolean,
+            default: true
+        },
+        pageAttrData:{
+            type: Object,
+            default () {
+                return {}
+            }
+        },
+    },
+    watch:{
+        list:{
+            handler(val){
+                this.data.categoryId = this.$parent.formValidate.id;
+                this.data.attributeBinds = val.map((e,index)=>{
+                    e.isCheck = true;
+                    return e;
+                });
+            }
+        }
     },
     data() {
         return {
@@ -75,35 +104,42 @@ export default {
                 },
                 {
                     title: '属性名称',
-                    key: 'proName'
+                    key: 'attributeName'
                 },
+                // {
+                //     title: '属性值',
+                //     key: 'proValue',
+                //     render: (h, params) => {
+                //         return h("span", {
+                //             style: {
+                //                 display: "inline-block",
+                //             },
+                //         }, params.attributesValues ? console.log(params.attributesValues .filter(item => item.valueName)) : '');//  展示的内容
+                //     }
+                // },
                 {
-                    title: '属性值',
-                    key: 'proValue'
-                },
-                {
-                    title: '属性状态',
-                    slot: 'action',
-                    align: 'center'
+                    title: '是否启用',
+                    key: 'isCheck',
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('Checkbox', {
+                            props: {
+                                single: false,
+                                value:  this.data['attributeBinds'][params.index][params.column.key]
+                            },
+                            on: {
+                                'on-change': (event) => {
+                                    this.data['attributeBinds'][params.index][params.column.key] = event; //获取编辑行的inde和编辑字段名，对表格数据进行重新赋值
+                                }
+                            }
+                        });
+                    }
                 }
             ],
-            data: [{
-                    proName: '颜色',
-                    proValue: "color"
-                },
-                {
-                    proName: '尺寸',
-                    proValue: "size"
-                },
-                {
-                    proName: '带电',
-                    proValue: "isElect"
-                },
-                {
-                    proName: '材质',
-                    proValue: "unit"
-                }
-            ],
+            data: {
+                categoryId:'',
+                attributeBinds:[]
+            },
             columns2: [{
                     title: '输出文件名称',
                     key: 'name'
@@ -176,8 +212,47 @@ export default {
         selectTab(name) {
             this.activeTab = name;
         },
-        save() {
-
+        add() {
+            this.data.categoryId = this.data.categoryId?this.data.categoryId:this.$parent.formValidate.id;
+            this.data.attributeBinds.push({
+                ...this.formValidate2,
+                categoryId: this.$parent.formValidate.id,
+                categoryName: this.$parent.formValidate.name,
+                isCheck: true
+            });
+            this.$refs['form'].$refs['formValidate'].resetFields();
+        },
+        BindAttributeCategory(){
+            if (this.data.categoryId) {
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    BindAttributeCategory(this.data).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：新建成功！');
+                            // this.GetCategoryList();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
+            } else {
+                this.$Message.error({
+                    background: true,
+                    content: '请选择属性'
+                }); 
+            }
+        },
+        save(){
+            this.BindAttributeCategory();
+            this.data = {
+                categoryId:'',
+                attributeBinds:[]    
+            }
         },
         clearFormData() {},
         showPop(flag, row) {
@@ -189,9 +264,12 @@ export default {
             }
             this.showModel = flag;
         },
-        changePage(){
-            
-        }
+        changePage(page){
+            this.$emit('change-page',page);
+        },
+        onPageSizeChange(pagesize){
+            this.$emit('on-page-size-change',pagesize);
+        },
     }
 }
 </script>

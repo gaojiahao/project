@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-28 17:53:14
+ * @LastEditTime: 2020-12-30 19:26:03
 -->
 <template>
     <div>
@@ -141,7 +141,7 @@ export default {
         transition: all .2s ease-in-out;
         position: absolute;
         right: 15px;
-        top: 113px;
+        // top: 113px;
         z-index: 10;
         width: 300px;
         background-color: #fff;    

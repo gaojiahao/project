@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-10 11:10:41
+ * @LastEditTime: 2020-12-31 10:13:23
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -27,9 +27,10 @@
                 </RadioGroup>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='select'">
-                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable>
-                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.value">{{ item.name }}</Option>
+                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable :disabled="formConfig[index]['disabled']" :label-in-value='true' v-show="!formConfig[index]['hidden']" @on-select="onChange">
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
                 </Select>
+                <span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
                 <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker> 
@@ -60,6 +61,8 @@
 <script>
 import SelectorSingle from '@components/public/xSelect/selectorSingle'
 import SelectorMulti from '@components/public/xSelect/selectorMulti'
+import $flyio from '@plugins/ajax'
+
 export default {
     name: 'ModalForm',
     components: {
@@ -175,10 +178,43 @@ export default {
                 }
                 // console.log(e, e.keyCode, e.srcElement, e.which);
             }
+        },
+        initForm(){
+            for(var item in this.formConfig){
+                var form = this;
+                
+                if(this.formConfig[item].bind&&this.formConfig[item].bind.length){
+                    form.$on('value-change-' + item,function(value){
+                        for(var i=0;i<this.formConfig[item].bind.length;i++){
+                            this.formValidate[this.formConfig[item].bind[i].target] = value;
+                        }
+                    })
+                }
+                if(this.formConfig[item].type=='select'&&this.formConfig[item].dataSource.type=='dynamic'){
+                    $flyio.post({
+                        url: this.formConfig[item].dataSource.url,
+                        data:{ maxResultCount:200}
+                    }).then((res) => {
+                        if(res.result.code==200){
+                            var data = res.result.item.map((e,index)=>{
+                                e.value = e.id;
+                                return e;
+                            });
+                            this.formConfig[item].dataSource.data = data;
+                        }
+                    })
+                }
+            }
+        },
+        onChange(data){
+            this.$emit('value-change-'+data.tag,data.label);
         }
     },
     mounted() {
         this.initClick();
+    },
+    created(){
+        this.initForm();
     }
 }
 </script>

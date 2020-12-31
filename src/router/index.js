@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 11:55:09
+ * @LastEditTime: 2020-12-30 19:35:29
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -123,10 +123,43 @@ const routes = [
             path: "makePicManager",
             name: "makePicManager",
             component: resolve=>(require(["@views/settings/makePicManager/index"],resolve)),
+            redirect:'makePicManager/makePicList',
             meta: {
-              title: "制图管理",
+              title: "制图选项管理",
               group: "makePicManager",
             },
+            children:[
+              {
+                path: "makePicList",
+                name: "makePicList",
+                component: resolve=>(require(["@views/settings/makePicManager/makePicList"],resolve)),
+                meta: {
+                  title: "制图选项管理",
+                  group: "makePicManager",
+                  level: 1,
+                },
+              },
+              {
+                path: "addMakePic",
+                name: "addMakePic",
+                component: resolve=>(require(["@views/settings/makePicManager/addMakePic"],resolve)),
+                meta: {
+                  title: "新建制图选项",
+                  group: "makePicManager",
+                  level: 2,
+                },
+              },
+              {
+                path: "editMakePic",
+                name: "editMakePic",
+                component: resolve=>(require(["@views/settings/makePicManager/editMakePic"],resolve)),
+                meta: {
+                  title: "编辑制图选项",
+                  group: "makePicManager",
+                  level: 2,
+                },
+              },
+            ]
           },
           {
             path: "menuManager",

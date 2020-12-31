@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 17:19:51
+ * @LastEditTime: 2020-12-31 11:24:28
 -->
 <template>
 <div class="platformManager-container">
@@ -33,7 +33,7 @@
             <div class="item"  v-show="isShowBind">
                 <div class="top">
                     <Divider orientation="left" size="small">分类属性</Divider>
-                    <TypeManagerTab></TypeManagerTab>
+                    <TypeManagerTab :list="attrList" :loading="attrLoading" :pageAttrData="pageAttrData" @change-page="changePage" @on-page-size-change="onPageSizeChange"></TypeManagerTab>
                 </div>
             </div>
         </div>
@@ -50,7 +50,8 @@ import {
     GetCategoryList,
     CreateCategory,
     UpdateCategory,
-    DelCategory
+    DelCategory,
+    GetAttributeCategoryPage
 } from "@service/settingsService"
 
 export default {
@@ -69,10 +70,20 @@ export default {
             isShowAdd: true,
             isShowBind:false,
             listLoading: true,
+            attrList:[],
+            attrLoading:true,
             pageData:{
                 keyword:'',
                 maxResultCount:200,
-            }
+            },
+            pageAttrData:{
+                skipCount: 1,
+                skipTotal: 10,
+                maxResultCount: 10,
+                keyword:'',
+                totalPage:0,
+                pageSizeOpts:[10,50,200],
+            },
         }
     },
     computed:{
@@ -92,6 +103,19 @@ export default {
                         this.$nextTick(() => {
                             this.list = res.result.item;
                             this.listLoading = false;
+                        });
+                    }
+                });
+            });
+        },
+        GetAttributeCategoryPage(id) {
+            return new Promise((resolve, reject) => {
+                GetAttributeCategoryPage({categoryId:this.formValidate.id,...this.pageAttrData}).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.attrList = res.result.item.items;
+                            this.pageAttrData.totalPage = res.result.item.totalCount;
+                            this.attrLoading = false;
                         });
                     }
                 });
@@ -182,6 +206,7 @@ export default {
                 level: data.level,
                 id: data.id,
             };
+            this.GetAttributeCategoryPage();
             this.isShowAdd = true;
             this.isShowBind = true;
         },
@@ -221,7 +246,15 @@ export default {
         setFilter(value){
             this.pageData.keyword = value;
             this.GetCategoryList(); 
-        }
+        },
+        changePage(page) {
+            this.pageAttrData.skipCount = page;
+            this.GetAttributeCategoryPage();
+        },
+        onPageSizeChange(pagesize){
+            this.pageAttrData.maxResultCount = pagesize;
+            this.GetAttributeCategoryPage();
+        },
     },
     created() {
         this.GetCategoryList();

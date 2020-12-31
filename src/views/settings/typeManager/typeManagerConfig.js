@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 11:14:31
+ * @LastEditTime: 2020-12-31 10:07:23
  */
 export default {
     data() {
@@ -50,45 +50,28 @@ export default {
           }],
         },
         formConfig2:{
-          property:{
+          attributeId:{
             name:'属性',
             type:'select',
+            isName:true,
             dataSource:{
-              multiple:false,
-              type:'static',
-              data:[
-                {
-                  name: '材质',
-                  value: 'metel'
-                },
-                {
-                  name: '颜色',
-                  value: 'color'
-                },
-                {
-                  name: '大小',
-                  value: 'size'
-                },
-              ],
+              type:'dynamic',
+              url:'/api/GetAttributeList',
+              data:[],
             },
-            columns:[
-              {
-                name:'ID',
-                value:'id'
-              },
-              {
-                name:'属性',
-                value:'property'
-              },
-            ],
+            bind:[
+              {target: 'attributeName',bindValue: 'name'},
+              {target: 'attributesValues' , bindValue:'attributesValues'}
+            ]
           },
         },
         formValidate2: {
-          property: '',
-          id:'',
+          attributeName: '',
+          attributeId:'',
+          attributesValues:[],
         },
         ruleValidate2: {
-          property: [{
+          attributeName: [{
               required: true,
               message: '请输入属性',
               trigger: 'change'

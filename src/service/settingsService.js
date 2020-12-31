@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 16:03:53
+ * @LastEditTime: 2020-12-30 20:10:17
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -191,6 +191,18 @@ export let GetAttributeById = (data = {}) => {
     data: data
   })
 };
+export let BindAttributeCategory = (data = {}) => {
+  return $flyio.post({
+    url: '/api/BindAttributeCategory',
+    data: data
+  })
+};
+export let GetAttributeCategoryPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetAttributeCategoryPage',
+    data: data
+  })
+};
 //属性值管理
 export let CreateAttributeValue = (data = {}) => {
   return $flyio.post({
@@ -281,6 +293,37 @@ export let DeleteAuthRole = (data = {}) => {
 export let UpdateRoleState = (data = {}) => {
   return $flyio.post({
     url: '/api/UpdateRoleState',
+    data: data
+  })
+};
+//系统设置
+export let CreateSystemConfig = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateSystemConfig',
+    data: data
+  })
+};
+export let UpdateSysetmConfig = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateSysetmConfig',
+    data: data
+  })
+};
+export let GetSystemConfigPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetSystemConfigPage',
+    data: data
+  })
+};
+export let GetSystemConfigList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetSystemConfigList',
+    data: data
+  })
+};
+export let DelSystemConfig = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelSystemConfig',
     data: data
   })
 };
