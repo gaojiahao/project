@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 11:32:24
+ * @LastEditTime: 2021-01-04 16:45:26
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -352,4 +352,40 @@ export let GetSystemConfigById = (data = {}) => {
   })
 };
 //用户管理
+export let CreateUserInfo = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateUserInfo',
+    data: data
+  })
+};
+export let UpdateUserInfo = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateUserInfo',
+    data: data
+  })
+};
+export let GetUserInfoById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetUserInfoById',
+    data: data
+  })
+};
+export let DelUserInfo = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelUserInfo',
+    data: data
+  })
+};
+export let GetUserInfoPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetUserInfoPage',
+    data: data
+  })
+};
+export let GetUserInfoList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetUserInfoList',
+    data: data
+  })
+};
 //修改用户菜单权限

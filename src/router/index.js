@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 17:53:40
+ * @LastEditTime: 2021-01-04 17:12:46
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -173,11 +173,44 @@ const routes = [
           {
             path: "userManager",
             name: "userManager",
-            component: resolve=>(require(["@views/settings/userManager/userManager"],resolve)),
+            component: resolve=>(require(["@views/settings/userManager"],resolve)),
+            redirect:'userManager/userManager',
             meta: {
               title: "用户管理",
               group: "userManager",
             },
+            children:[
+              {
+                path: "userManager",
+                name: "userManager",
+                component: resolve=>(require(["@views/settings/userManager/userManager"],resolve)),
+                meta: {
+                  title: "用户管理",
+                  group: "userManager",
+                  level: 1,
+                },
+              },
+              {
+                path: "addUser",
+                name: "addUser",
+                component: resolve=>(require(["@views/settings/userManager/addUser"],resolve)),
+                meta: {
+                  title: "添加用户",
+                  group: "userManager",
+                  level: 2,
+                },
+              },
+              {
+                path: "editUser",
+                name: "editUser",
+                component: resolve=>(require(["@views/settings/userManager/editUser"],resolve)),
+                meta: {
+                  title: "编辑用户",
+                  group: "userManager",
+                  level: 2,
+                },
+              },
+            ]
           },
           {
             path: "roleManager",

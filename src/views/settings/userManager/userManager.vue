@@ -4,44 +4,45 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:54:29
+ * @LastEditTime: 2021-01-04 17:47:21
 -->
 <template>
-<div>
-    <div style="margin: 10px 0;overflow: hidden">
-        <div style="float: left;">
-            <Input search enter-button placeholder="用户..." />
+<div class="userManager_container">
+    <div class="filter">
+        <div class="filter-button">
+            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
+            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
+            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+            <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
         </div>
-        <div style="float: right;">
-            <Button type="info" @click.native="showPop(true)">新建用户</Button>
-            <!--<Button type="primary">更改状态</Button>
-            <Button type="error">删除</Button>-->
-        </div>
-    </div>
-    <Table row-key="id" border :columns="columns" :data="list" stripe>
-        <template slot-scope="{ row }" slot="number">
-            <strong>{{ row.number }}</strong>
-        </template>
-        <template slot-scope="{ row, index }" slot="action">
-            <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true,row)">编辑</Button>
-            <Button type="error" size="small" @click="remove(index)">删除</Button>
-        </template>
-    </Table>
-    <div style="margin: 10px;overflow: hidden">
-        <div style="float: right;">
-            <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+        <div class="filter-search">
+            <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+            <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
+            <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <div class="myTable">
+        <Table row-key="id" border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
+        </Table>
+        <div style="margin: 10px;overflow: hidden">
+            <div style="float: right;">
+                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
+            </div>
+        </div>
+    </div>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
 </div>
 </template>
 
 <script>
-import ModalForm from "@components/public/form/modalForm"
-import config from '@views/settings/userManager/userManagerConfig.js'
+import ModalForm from "@components/public/form/modalForm";
+import list from "@mixins/list";
+import config from '@views/settings/userManager/userManagerConfig.js';
 import {
-    addMenu
-} from '@service/authority'
+    GetUserInfoPage,
+    DelUserInfo
+} from "@service/settingsService";
 
 export default {
     name: 'UserManager',
@@ -51,10 +52,10 @@ export default {
     computed: {
 
     },
-    mixins: [config],
+    mixins: [config,list],
     data() {
         return {
-            list: this.mockTableData1(),
+            data: [],
             titleText: '',
             showModel: false,
             columns: [{
@@ -66,143 +67,173 @@ export default {
                 },
                 {
                     title: '用户名称',
-                    key: 'menuName',
+                    key: 'userName',
                 },
                 {
-                    title: '角色',
+                    title: '昵称',
+                    key: 'nickName',
+                },
+                {
+                    title: '性别',
+                    key: 'sex',
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                            },
+                        },params.row.sex ==1 ?'男':'女');//  展示的内容
+                    }
+                },
+                {
+                    title: '手机',
+                    key: 'phoneNumber',
+                },
+                {
+                    title: '邮箱',
+                    key: 'email',
+                },
+                {
+                    title: '所属角色',
                     key: 'roleName'
                 },
                 {
-                    title: '创建时间',
-                    key: 'createTime',
-                    render: (h, params) => {
-                        return h('div', this.formatDate(this.list[params.index].createTime));
-                    }
+                    title: '生日',
+                    key: 'birthday',
                 },
                 {
-                    title: '状态',
-                    key: 'status',
+                    title: '是否启用',
+                    key: 'enabled',
                     width: 120,
                     render: (h, params) => {
-                        const row = params.row;
-                        const color = row.status === 1 ? 'success' : 'error';
-                        const text = row.status === 1 ? '启用' : '禁用';
-
-                        return h('Tag', {
-                            props: {
-                                type: 'dot',
-                                color: color
-                            }
-                        }, text);
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                                color: params.row.enabled==true ? "#19be6b": "#ed4014"
+                            },
+                        },params.row.enabled?'是':'否');//  展示的内容
                     }
                 },
                 {
-                    title: '操作',
-                    slot: 'action',
-                    align: 'center'
-                }
+                    title: '创建时间',
+                    key: 'createdOn',
+                },
+                {
+                    title: '创建者',
+                    key: 'createdBy',
+                },
             ],
-            modal1: false
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyWord:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
         }
     },
     methods: {
-        setUserAuthority(userId) {
-            this.titleText = '正在编辑' + this.userId + "的权限";
-            this.userId = this.list[userId].roleName;
-            this.modal1 = true;
-        },
-        remove(index) {
-            this.list.splice(index, 1);
-        },
-        mockTableData1() {
-            let data = [];
-            for (let i = 0; i < 15; i++) {
-                data.push({
-                    menuName: '用户' + Math.floor(Math.random() * 100 + 1),
-                    status: Math.floor(Math.random() * 3 + 1),
-                    roleName: '角色' + Math.floor(Math.random() * 100 + 1),
-                    createTime: new Date(),
-                    id: Math.random() * 100,
-                })
-            }
-            return data;
-        },
-        formatDate(date) {
-            const y = date.getFullYear();
-            let m = date.getMonth() + 1;
-            m = m < 10 ? '0' + m : m;
-            let d = date.getDate();
-            d = d < 10 ? ('0' + d) : d;
-            return y + '-' + m + '-' + d;
-        },
-        changePage() {
-            this.list = this.mockTableData1();
-        },
-        ok() {
-
-        },
-        cancel() {
-
-        },
-        showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '新建';
-            }
-            this.showModel = flag;
-        },
-        save() {
-            var params = this.formValidate;
+        GetUserInfoPage() {
             return new Promise((resolve, reject) => {
-                addMenu(params).then(res => {
-                    if (res.status == 200) {
-                        this.$Message.info(res.data.message);
-                    } else if (res.status == 403) {
-                        this.$Message.error({
-                            background: true,
-                            content: res.message
+                GetUserInfoPage(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPage = res.result.item.totalCount;
+                            this.data = res.result.item.items;
+                            this.loading = false;
                         });
                     }
                 });
             });
         },
-        handleSubmit(name) {
-            this.$refs[name].validate((valid) => {
-                if (valid) {
-                    this.$emit('save');
-                    this.$emit('show-pop', false);
-                    this.$emit('clear-form-data');
-                } else {
-                    this.$Message.error('保存失败');
-                }
+        clearFormData() {
+
+        },
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetUserInfoPage();
+        },
+        refresh(){
+            this.loading = true;
+            this.pageData.skipCount=1;
+            this.GetUserInfoPage();
+        },
+        goAdd(){
+            this.$router.push({name:'addUser'});
+        },
+        goEdit(){
+            if(this.activatedRow.id){
+                this.$router.push({name:'editUser',query: {id:this.activatedRow.id}});
+            }
+        },
+        checkALl(){
+            this.$nextTick(function () {
+                this.columns = this.getTableColumn();
             })
         },
-        clearFormData() {
-            this.formValidate = {
-                id: '',
-                tenantCode: '',
-                userName: '',
-                email: '',
-                status: '',
-                roleId: '',
-            };
+        changeCoulmns(data){
+            let datas = [];
+            let columns = this.getTableColumn();
+            datas.push(columns[0]);
+            data.forEach(col => {
+                for(var i=0;i<columns.length;i++){
+                    if(col == columns[i].key){
+                        datas.push(columns[i]);
+                    }
+                }
+            });
+            this.columns = datas;
+        },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetUserInfoPage();
+        },
+        deleteData(){
+            if(this.activatedRow.id){
+                this.loading = true;
+                return new Promise((resolve, reject) => {
+                    DelUserInfo({id:this.activatedRow.id,moduleIdList:this.activatedRow.moduleIdList||[]}).then(res => {
+                        if (res.result.code == 200) {
+                            for(var i=0;i<this.selectedList.length;i++){
+                                for(var j=0;j<this.data.length;j++){
+                                    if(this.selectedList[i].id==this.data[j].id){
+                                        this.data.splice(j, 1);   
+                                    }
+                                }
+                            }
+                            this.$Message.info('温馨提示：删除成功！');
+                            if(this.data.length<1){
+                                this.pageData.skipCount-1;
+                            }
+                            this.GetUserInfoPage();
+                            this.loading = false;
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.loading = false;
+                        }
+                    });
+                });
+            } 
+        },
+        setFilter(value){
+            this.pageData = {
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyWord:value,
+                pageSizeOpts:[15,50,200],
+            },
+            this.GetUserInfoPage(); 
         },
     },
-    created() {}
+    created() {
+        this.GetUserInfoPage();
+    }
 }
 </script>
-
-<style scoped>
->>>.ivu-table th,
->>>.ivu-table td {
-    height: 28px;
-}
-
->>>.ivu-modal-footer {
-    border-top: 0;
-    padding: 12px 18px 12px 18px;
-    text-align: right;
-}
+<style lang="less" scoped>
+@import "~@less/list/index.less";
 </style>

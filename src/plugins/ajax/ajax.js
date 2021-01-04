@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-24 15:48:41
+ * @LastEditTime: 2021-01-04 16:54:15
  */
 import Fly from "flyio/dist/npm/fly";
 // 请求地址引入
@@ -168,7 +168,7 @@ let Rxports = {
         .catch(err => {
           Message.error({
             background: true,
-            content: "温馨提示："+err.response.data.error.message,
+            content: "温馨提示："+err.message,
             duration: 3
           });
           // reject(err);
@@ -187,7 +187,7 @@ let Rxports = {
           // 弹窗提醒
             Message.error({
               background: true,
-              content: "温馨提示："+err.response.data.error.message,
+              content: "温馨提示："+err.message,
               duration: 3
             });
           // reject(err);
