@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 11:55:44
+ * @LastEditTime: 2021-01-04 15:17:18
 -->
 <template>
 <div class="roleManager_container">
@@ -13,6 +13,7 @@
             <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
             <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
             <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+            <Button type="success" size="small" style="margin-right: 5px" @click="show(true)">分配权限</Button>
             <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
         </div>
         <div class="filter-search">
@@ -24,7 +25,6 @@
     </div>
     <div class="myTable">
         <Table border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
-            <Button type="success" size="small" style="margin-right: 5px" @click="setUserAuthority(index)">分配权限</Button>
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
@@ -33,9 +33,7 @@
         </div>
     </div>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
-    <Modal v-model="modal1" title="分配权限" @on-ok="ok" @on-cancel="cancel" width="800">
-        <XTreeAdd></XTreeAdd>
-    </Modal>
+    <XTreeAdd @save-menu="saveMenu" :showModel="modal1" @show-modal="show" :roleAuthData="roleAuthData"></XTreeAdd>
 </div>
 </template>
 
@@ -44,7 +42,12 @@ import XTreeAdd from "@components/public/tree/xTreeAdd";
 import list from "@mixins/list";
 import config from '@views/settings/roleManager/roleManagerConfig.js';
 import {
-    AuthRoleList
+    AuthRoleList,
+    AuthRolePage,
+    DeleteAuthRole,
+    AuthModuleList,
+    UpdateUserRoleMenu,
+    GetUserRoleMenuById
 } from "@service/settingsService"
 
 export default {
@@ -69,34 +72,46 @@ export default {
                     key: 'roleName'
                 },
                 {
-                    title: '创建时间',
-                    key: 'createTime',
-                    render: (h, params) => {
-                        return h('div', this.formatDate(this.list[params.index].createTime));
-                    }
+                    title: '角色编码',
+                    key: 'roleCode'
                 },
                 {
-                    title: '状态',
-                    key: 'status',
+                    title: '是否启用',
+                    key: 'enabled',
                     width: 120,
                     render: (h, params) => {
-                        const row = params.row;
-                        const color = row.status === 3 ? 'primary' : row.status === 1 ? 'success' : 'error';
-                        const text = row.status === 3 ? '默认' : row.status === 1 ? '启用' : '禁用';
-
-                        return h('Tag', {
-                            props: {
-                                type: 'dot',
-                                color: color
-                            }
-                        }, text);
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                                color: params.row.enabled==true ? "#19be6b": "#ed4014"
+                            },
+                        },params.row.enabled?'是':'否');//  展示的内容
                     }
                 },
                 {
-                    title: '操作',
-                    slot: 'action',
-                    align: 'center'
-                }
+                    title: '是否管理员',
+                    key: 'isAdmin',
+                    width: 120,
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                                color: params.row.isAdmin==true ? "#19be6b": "#ed4014"
+                            },
+                        },params.row.isAdmin?'是':'否');//  展示的内容
+                    }
+                },
+                {
+                    title: '创建时间',
+                    key: 'createdOn',
+                    // render: (h, params) => {
+                    //     return h('div', this.formatDate(this.list[params.index].createTime));
+                    // }
+                },
+                {
+                    title: '创建者',
+                    key: 'createdBy',
+                },
             ],
             modal1: false,
             showModel: false,
@@ -105,21 +120,17 @@ export default {
                 skipCount: 1,
                 skipTotal: 15,
                 maxResultCount: 15,
-                keyword:'',
+                roleName:'',
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
+            roleAuthData:[],
         }
     },
     methods: {
-        setUserAuthority(userId) {
-            this.titleText = '正在编辑' + this.userId + "的权限";
-            this.userId = this.list[userId].roleName;
-            this.modal1 = true;
-        },
-        AuthRoleList() {
+        AuthRolePage() {
             return new Promise((resolve, reject) => {
-                AuthRoleList(this.pageData).then(res => {
+                AuthRolePage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -135,19 +146,19 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetStorePage();
+            this.AuthRolePage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetStorePage();
+            this.AuthRolePage();
         },
         goAdd(){
             this.$router.push({name:'addRole'});
         },
         goEdit(){
             if(this.activatedRow.id){
-                this.$router.push({name:'addRole',query: {id:this.activatedRow.id}});
+                this.$router.push({name:'editRole',query: {id:this.activatedRow.id}});
             }
         },
         checkALl(){
@@ -176,7 +187,7 @@ export default {
             if(this.activatedRow.id){
                 this.loading = true;
                 return new Promise((resolve, reject) => {
-                    DelStore({id:this.activatedRow.id}).then(res => {
+                    DeleteAuthRole({id:this.activatedRow.id,moduleIdList:this.activatedRow.moduleIdList||[]}).then(res => {
                         if (res.result.code == 200) {
                             for(var i=0;i<this.selectedList.length;i++){
                                 for(var j=0;j<this.data.length;j++){
@@ -189,7 +200,7 @@ export default {
                             if(this.data.length<1){
                                 this.pageData.skipCount-1;
                             }
-                            this.GetStorePage();
+                            this.AuthRolePage();
                             this.loading = false;
                         } else if (res.result.code == 400) {
                             this.$Message.error({
@@ -207,20 +218,45 @@ export default {
                 skipCount: 1,
                 skipTotal: 15,
                 maxResultCount: 15,
-                keyword:value,
+                roleName:value,
                 pageSizeOpts:[15,50,200],
             },
-            this.GetStorePage(); 
+            this.AuthRolePage(); 
         },
-        ok(){
-
+        saveMenu(data){
+            var params ={
+                ...this.activatedRow,
+                moduleIdList: data 
+            }
+            return new Promise((resolve, reject) => {
+                this.loading = true;
+                UpdateUserRoleMenu(params).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.$Message.info('温馨提示：分配权限成功！');
+                        });
+                        this.AuthRolePage();
+                    }
+                });
+            });    
         },
-        cancel(){
-            
-        }
+        show(flag){
+            if(this.activatedRow.id){
+                this.modal1 = flag;
+                if(flag){
+                    return new Promise((resolve, reject) => {
+                        GetUserRoleMenuById({id:this.activatedRow.id}).then(res => {
+                            if(res.result.code==200){
+                                this.roleAuthData = res.result.item.moduleIdList ? res.result.item.moduleIdList:[];
+                            }
+                        });
+                    });    
+                }
+            }
+        },
     },
     created() {
-        this.AuthRoleList();
+        this.AuthRolePage();
     }
 }
 </script>

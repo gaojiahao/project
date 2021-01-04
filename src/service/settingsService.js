@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 14:54:15
+ * @LastEditTime: 2021-01-04 11:32:24
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -296,6 +296,24 @@ export let UpdateRoleState = (data = {}) => {
     data: data
   })
 };
+export let AuthRolePage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/AuthRolePage',
+    data: data
+  })
+};
+export let GetUserRoleMenuById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetUserRoleMenuById',
+    data: data
+  })
+};
+export let UpdateUserRoleMenu = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateUserRoleMenu',
+    data: data
+  })
+};
 //系统设置
 export let CreateSystemConfig = (data = {}) => {
   return $flyio.post({
@@ -333,3 +351,5 @@ export let GetSystemConfigById = (data = {}) => {
     data: data
   })
 };
+//用户管理
+//修改用户菜单权限

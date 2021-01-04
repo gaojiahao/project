@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 19:35:29
+ * @LastEditTime: 2020-12-31 17:53:40
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -205,6 +205,16 @@ const routes = [
                 component: resolve=>(require(["@views/settings/roleManager/addRole"],resolve)),
                 meta: {
                   title: "添加角色",
+                  group: "roleManager",
+                  level: 2,
+                },
+              },
+              {
+                path: "editRole",
+                name: "editRole",
+                component: resolve=>(require(["@views/settings/roleManager/editRole"],resolve)),
+                meta: {
+                  title: "编辑角色",
                   group: "roleManager",
                   level: 2,
                 },

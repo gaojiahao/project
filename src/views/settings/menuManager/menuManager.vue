@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 16:43:20
+ * @LastEditTime: 2020-12-31 17:20:52
 -->
 <template>
 <div>
@@ -225,7 +225,7 @@ export default {
             } else {
                 return new Promise((resolve, reject) => {
                     this.$FromLoading.show();
-                    UpdateAuthModule(params).then(res => {
+                    UpdateAuthModule({...params,id:this.activatedRow.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：更新成功！');
@@ -246,7 +246,6 @@ export default {
         },
         goEdit(){
             if(this.activatedRow.id){
-                this.formValidate = this.activatedRow;
                 this.formValidate = {
                     id:this.activatedRow.id,
                     name: this.activatedRow.name,
@@ -256,7 +255,6 @@ export default {
                     isMenu: this.activatedRow.isMenu,
                     enabled:this.activatedRow.enabled,
                     parentId:this.activatedRow.parentId,
-                    children:this.activatedRow.children
                 },
                 this.showModel = true;
             }
