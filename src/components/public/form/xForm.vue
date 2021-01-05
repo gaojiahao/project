@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 17:23:14
+ * @LastEditTime: 2021-01-05 11:52:32
 -->
 <template>
 <div class="content">
@@ -78,6 +78,9 @@
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
                 <DatePicker v-model="formValidate[index]" @on-change="formValidate[index]=$event" format="yyyy-MM-dd HH:mm" type="date" placeholder="" style="width: 200px" :disabled="formConfig[index]['disabled']"></DatePicker> 
+            </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='password'">
+                <Input v-model="formValidate[index]" :style="{width:'300px'}" :disabled="formConfig[index]['disabled']" type="password" password :placeholder="formConfig[index]['placeholder']" ></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
         </template>
         <slot name='button'>
@@ -226,10 +229,19 @@ export default {
                         data:{ maxResultCount:200}
                     }).then((res) => {
                         if(res.result.code==200){
-                            var data = res.result.item.map((e,index)=>{
-                                e.value = e.id;
-                                return e;
-                            });
+                            if(this.formConfig[item].dataSource.col){
+                                var data = res.result.item.map((e,index)=>{
+                                    for(var i=0;i<this.formConfig[item].dataSource.col.length;i++){
+                                        e[this.formConfig[item].dataSource.col[i]['k']] = e[this.formConfig[item].dataSource.col[i]['v']];
+                                    }
+                                    return e;
+                                });    
+                            } else {
+                                var data = res.result.item.map((e,index)=>{
+                                    e.value = e.id;
+                                    return e;
+                                });
+                            }
                             this.formConfig[item].dataSource.data = data;
                         }
                     })

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 16:35:43
+ * @LastEditTime: 2021-01-04 20:36:16
 -->
 <template>
 <div class="propertyManager-container">
@@ -342,7 +342,7 @@ export default {
         .left {
             width: 350px;
             background-color: #ffffff;
-            height: 750px;
+            height: 790px;
             border: 1px solid #dcdee2;
             border-color: #e8eaec;
             transition: all 0.2s ease-in-out;

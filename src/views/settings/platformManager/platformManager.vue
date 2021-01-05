@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 11:36:45
+ * @LastEditTime: 2021-01-05 14:34:57
 -->
 <template>
 <div class="platformManager-container">
@@ -34,9 +34,9 @@
                 <div class="top">
                     <Divider orientation="left" size="small">类目绑定</Divider>
                     <Row>
-                        <Col span="8"><PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind></Col>
-                        <Col span="8"><SystemCategoryBind @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind></Col>
-                        <Col span="8"><NowCategoryBind></NowCategoryBind></Col>
+                        <Col span="8"><PlatformCategoryBind @select-platform-bind="selectPlatformBind" @set-filter="setPlatformCategoryFilter" ref="selectPlatformBind" :data="platformCategoryData"></PlatformCategoryBind></Col>
+                        <Col span="8"><SystemCategoryBind @select-system-bind="selectSystemBind" @set-filter="setSystemCategoryFilter" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind></Col>
+                        <Col span="8"><NowCategoryBind :loading="nowLoading" @set-filter="setNowCategoryFilter" ref="selectNowBind" :data="nowCategoryData" @del="delCategoryRelationConfirm"></NowCategoryBind></Col>
                     </Row>
                 </div>
             </div>
@@ -56,7 +56,7 @@ import PlatformManagerList from "@components/settings/platformManager/list";
 import SystemCategoryBind from "@components/settings/platformManager/systemCategoryBind";
 import PlatformCategoryBind from "@components/settings/platformManager/platformCategoryBind";
 import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
-import CategoryBind from "@components/settings/platformManager/categoryBind";
+
 import {
     CreatePlatforms,
     GetPlatformsPage,
@@ -65,7 +65,9 @@ import {
     DelPlatforms,
     GetCategoryList,
     CreateCategoryRelation,
-    GetCategoryRelatedList
+    GetCategoryRelatedList,
+    GetEcommerceCategoryList,
+    DelCategoryRelation
 } from "@service/settingsService"
 
 export default {
@@ -73,7 +75,6 @@ export default {
     mixins: [config],
     components: {
         PlatformManagerList,
-        CategoryBind,
         XForm,
         SystemCategoryBind,
         PlatformCategoryBind,
@@ -97,6 +98,8 @@ export default {
             },
             systemCategoryData:[],
             nowCategoryData:[],
+            platformCategoryData:[],
+            nowLoading:true,
         }
     },
     computed:{
@@ -195,7 +198,9 @@ export default {
                         }
                         this.isShowAdd = true;
                         this.isShowBind = true;
-                        this.GetCategoryRelatedList(this.formValidate.id);
+                        this.$refs.selectPlatformBind.onCler();
+                        this.$refs.selectSystemBind.onCler();
+                        this.GetCategoryRelatedList();
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
@@ -207,30 +212,70 @@ export default {
         },
         selectPlatformBind(data) {
             this.selectPBind = data;
-        },
-        //选择系统类目后的处理
-        selectSystemBind(data) {
-            debugger
-            this.selectSBind = data;
-            if (this.selectPBind && this.selectSBind) {
-                var data = {
+            if (this.selectPBind.id && this.selectSBind.id) {
+                var datas = {
                     categoryId: this.selectSBind.id,
                     categoryName: this.selectSBind.name,
                     platformsId: this.formValidate.id,
                     platformName: this.formValidate.name,
                     eCategotyId: this.selectPBind.id,
-                    eCategotyName: this.selectPBind.title
+                    eCategotyName: this.selectPBind.name
                 };
                 return new Promise((resolve, reject) => {
                     this.$FromLoading.show();
-                    CreateCategoryRelation(data).then(res => {
+                    CreateCategoryRelation(datas).then(res => {
                         if(res.result.code==200){
                             this.$nextTick(() => {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：绑定成功');
-                                this.$refs.selectPlatformBind.removeSelect();
-                                this.$refs.selectSystemBind.removeSelect();
+                                this.$refs.selectPlatformBind.clear();
+                                this.$refs.selectSystemBind.clear();
+                                this.selectPBind = {};
+                                this.selectSBind = {};
+                                this.GetCategoryRelatedList();
                             });
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
+            }
+        },
+        //选择系统类目后的处理
+        selectSystemBind(data) {
+            this.selectSBind = data;
+            if (this.selectPBind.id && this.selectSBind.id) {
+                var datas = {
+                    categoryId: this.selectSBind.id,
+                    categoryName: this.selectSBind.name,
+                    platformsId: this.formValidate.id,
+                    platformName: this.formValidate.name,
+                    eCategotyId: this.selectPBind.id,
+                    eCategotyName: this.selectPBind.name
+                };
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    CreateCategoryRelation(datas).then(res => {
+                        if(res.result.code==200){
+                            this.$nextTick(() => {
+                                this.$FromLoading.hide();
+                                this.$Message.info('温馨提示：绑定成功');
+                                this.$refs.selectPlatformBind.clear();
+                                this.$refs.selectSystemBind.clear();
+                                this.selectPBind = {};
+                                this.selectSBind = {};
+                                this.GetCategoryRelatedList();
+                            });
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
                         }
                     });
                 });
@@ -271,11 +316,20 @@ export default {
         },
         setFilter(value){
             this.pageData.keyword = value;
-            this.GetPlatformsPage(); 
+            this.GetPlatformsPage();
         },
-        GetCategoryList() {
+        setPlatformCategoryFilter(value){
+            this.GetEcommerceCategoryList(value); 
+        },
+        setSystemCategoryFilter(value){
+            this.GetCategoryList(value);
+        },
+        setNowCategoryFilter(value){
+            this.GetCategoryRelatedList();
+        },
+        GetCategoryList(value) {
             return new Promise((resolve, reject) => {
-                GetCategoryList().then(res => {
+                GetCategoryList({keyword:value,maxResultCount:200}).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.systemCategoryData = res.result.item;
@@ -284,19 +338,65 @@ export default {
                 });
             });
         },
-        GetCategoryRelatedList(id) {
+        GetCategoryRelatedList() {
+            this.nowLoading = true;
             return new Promise((resolve, reject) => {
-                GetCategoryRelatedList({platformId:id,maxResultCount:200}).then(res => {
+                GetCategoryRelatedList({platformId:this.formValidate.id,maxResultCount:200}).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.nowCategoryData = res.result.item;
+                            this.nowLoading = false;
                         });
                     }
                 });
             });
         },
+        GetEcommerceCategoryList(value) {
+            return new Promise((resolve, reject) => {
+                GetEcommerceCategoryList({keyword:value,maxResultCount:200}).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.platformCategoryData = res.result.item;
+                        });
+                    }
+                });
+            });
+        },
+        delCategoryRelationConfirm(id) {
+            this.$Modal.confirm({
+                title: '温馨提示',
+                content: '数据删除后将无法恢复！',
+                onCancel: () => {
+                    this.$Message.info('取消');
+                },
+                onOk: () => {
+                    this.delCategoryRelationData(id);
+                },
+            });
+        },
+        delCategoryRelationData(id){
+            if (id) {
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    DelCategoryRelation({id:id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：删除成功！');
+                            this.GetCategoryRelatedList();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
+            }
+        },
     },
     created() {
+        this.GetEcommerceCategoryList();
         this.GetPlatformsPage();
         this.GetCategoryList();
     }

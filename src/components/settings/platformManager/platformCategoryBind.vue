@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 20:19:15
+ * @LastEditTime: 2021-01-05 14:23:37
 -->
 <template>
 <div class="content">
@@ -12,7 +12,7 @@
         <span class="text">平台类目</span>
     </div>
     <div style="margin:5px">
-        <Input search clearable placeholder="" />
+        <Input search clearable placeholder="" size="small" @on-search="onSearch" @on-clear="onCler" />
     </div>
     <div class="list">
         <Tree ref="tree" :data="data" :render="renderContent" show-checkbox @on-check-change="checkChange" check-strictly expand-node></Tree>
@@ -23,43 +23,16 @@
 <script>
 export default {
     name: 'PlatformCategoryBind',
+    props:{
+        data:{
+            type:Array,
+            default () {
+                return []
+            }           
+        },
+    },
     data() {
         return {
-            data: [{
-                id: 1,
-                title: '电子器元件',
-                loading: false,
-                expand: true,
-                children: [{
-                    id: 'a',
-                    title: '玩具类',
-                    loading: false,
-                    expand: true,
-                    children: [{
-                        id: 'a-1',
-                        title: '积木类',
-                        loading: false,
-                        expand: true,
-                        children: [{
-                            id: 'a-1-1',
-                            title: '木质积木',
-                            loading: false,
-                            children: []
-                        }, {
-                            id: 'a-1-2',
-                            title: 'pvc积木',
-                            loading: false,
-                            children: []
-                        }]
-                    }, {
-                        id: 'a-2',
-                        title: '遥控类',
-                        loading: false,
-                        expand: true,
-                        children: []
-                    }]
-                }, ]
-            }],
             loop: 0
         }
     },
@@ -77,7 +50,7 @@ export default {
                 }
             }, [
                 h('span', [
-                    h('span', data.title)
+                    h('span', data.name)
                 ]),
             ]);
         },
@@ -111,19 +84,17 @@ export default {
                 }
             }
         },
-        removeSelect(data) {
-            var d = data || this.data;
-            var len = d.length
-            for (var i = 0; i < len; i++) {
-                d[i].checked = false;
-                if (d[i].children && d[i].children.length > 0) {
-                    this.removeSelect(d[i].children)
-                }
-            }
-        },
         clear(){
             var checkData = this.$refs.tree.getCheckedNodes();
-            checkData[0].checked = false;     
+            if(checkData.length){
+                checkData[0].checked = false;
+            }
+        },
+        onSearch(value){
+            this.$emit('set-filter',value);
+        },
+        onCler(){
+            this.$emit('set-filter','');
         }
     }
 }

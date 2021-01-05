@@ -9,9 +9,11 @@
             <Button type="primary" icon="md-add" size="small" @click.native="add">新建
             </Button>
         </div>
+        <div style="margin:0 5px">
+            <Input search clearable placeholder="" size="small" @on-search="onSearch" @on-clear="onCler" />
+        </div>
     </div>
     <div class="content">
-        <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
         <List :border="false" :split="false">
             <ListItem>
                 <div style="padding:0 10px 0 28px; width: 100%; text-align: left; font-weight:600">
@@ -110,8 +112,8 @@ export default {
     width: 100%;
     .head {
         width: 100%;
-        height: 40px;
-    background: #ffffff;
+        height: 80px;
+        background: #ffffff;
         line-height: 40px;
 
         .left {

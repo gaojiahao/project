@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 17:45:31
+ * @LastEditTime: 2021-01-04 20:02:54
  */
 export default {
   data() {
@@ -43,7 +43,8 @@ export default {
         },
         password:{
           name:'密码',
-          type:'text'
+          type:'password',
+          placeholder:'密码由6-20位数字加大小写字母特殊字符组成',
         },
         enabled:{
           name:'是否启用',
@@ -100,7 +101,7 @@ export default {
         phoneNumber:'',
         birthday:'',
         sex:'',
-        password:'123456',
+        password:'',
         enabled:true,
         remark:'',
         // roleId:'',
@@ -116,13 +117,23 @@ export default {
             type: 'string',
             message: '请输入邮箱',
             trigger: 'blur'
-        }],
+          },
+          { type: 'email', message: '请输入有效的邮箱', trigger: 'blur' }
+        ],
         phoneNumber: [{
-          required: true,
-          type: 'string',
-          message: '请输入手机',
-          trigger: 'blur'
-        }],
+            required: true,
+            type: 'string',
+            message: '请输入手机',
+            trigger: 'blur'
+          },{ pattern: /^1[3456789]\d{9}$/, message: "手机号码格式不正确", trigger: "blur" }
+        ],
+        password:[{
+            required: true,
+            type: 'string',
+            message: '请输入密码',
+            trigger: 'blur'
+          },{ pattern: /(?=.*([a-zA-Z].*))(?=.*[0-9].*)[a-zA-Z0-9-*/+.~!@#$%^&*()]{6,20}$/, message: "密码格式不正确", trigger: "blur" }
+        ],
         status: [{ 
           required: true, 
           message: '是否启用', 

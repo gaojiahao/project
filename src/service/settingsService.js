@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 16:45:26
+ * @LastEditTime: 2021-01-05 10:51:46
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -64,6 +64,13 @@ export let GetCategoryRelatedList = (data = {}) => {
 export let DelPlatforms = (data = {}) => {
   return $flyio.post({
     url: '/api/DelPlatforms',
+    data: data
+  })
+};
+//获取平台类目
+export let GetEcommerceCategoryList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetEcommerceCategoryList',
     data: data
   })
 };

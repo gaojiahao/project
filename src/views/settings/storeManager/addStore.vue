@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 11:34:06
+ * @LastEditTime: 2021-01-04 20:22:59
 -->
 <template>
 <div class="add_store">
@@ -26,7 +26,7 @@
     </div>
     <div class="item">
         <div class="top">
-            <Divider orientation="left" size="small">选择运营类目</Divider>
+            <Divider orientation="left" size="small">选择系统类目</Divider>
             <Row>
                 <Col span="12"><PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind></Col>
                 <Col span="12"><NowCategoryBind></NowCategoryBind></Col>
@@ -127,4 +127,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/form.less";
+.add_store /deep/ .ivu-row {
+    background: #ffffff;
+}
 </style>

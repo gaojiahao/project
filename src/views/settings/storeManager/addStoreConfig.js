@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-26 10:53:58
+ * @LastEditTime: 2021-01-04 18:07:36
  */
 export default {
     data() {
@@ -70,6 +70,7 @@ export default {
           platformId:'',
           platformName:'',
           remark:'',
+          storeBinds:[]
         },
         ruleValidate: {
           name: [{

@@ -9,9 +9,9 @@
             <Button type="primary" icon="md-add" size="small" @click.native="add">新建
             </Button>
         </div>
+        <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
     </div>
     <div class="content">
-        <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
         <Spin fix v-if="loading">
             <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
             <div>Loading</div>
@@ -226,7 +226,7 @@ export default {
 
     .head {
         width: 100%;
-        height: 40px;
+        height: 80px;
     background: #ffffff;
         line-height: 40px;
 

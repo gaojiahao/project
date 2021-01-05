@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 20:24:00
+ * @LastEditTime: 2021-01-05 11:06:30
 -->
 <template>
 <div class="content">
@@ -12,7 +12,11 @@
         <span class="text">已绑定类目</span>
     </div>
     <div class="list">
-        <Tree :data="data" :render="renderContent"></Tree>
+        <Table height="410" :columns="columns" :data="data" :loading="loading">
+            <template slot-scope="{ row, index }" slot="action">
+                <Button type="error" icon="ios-close" size="small" style="margin-right: 5px" @click="del(row.id)"></Button>
+            </template>
+        </Table>
     </div>
 </div>
 </template>
@@ -20,94 +24,53 @@
 <script>
 export default {
     name: 'NowCategoryBind',
+    props:{
+        data:{
+            type:Array,
+            default () {
+                return []
+            }           
+        },
+        loading:{
+            type:Boolean,
+            default:true
+        }
+    },
     data() {
         return {
-            data: [{
-                id: 1,
-                title: '电子器元件',
-                loading: false,
-                expand: true,
-                children: [{
-                    id: 'a',
-                    title: '玩具类',
-                    loading: false,
-                    expand: true,
-                    children: [{
-                        id: 'a-1',
-                        title: '积木类',
-                        loading: false,
-                        expand: true,
-                        children: [{
-                            id: 'a-1-1',
-                            title: '木质积木',
-                            loading: false,
-                            children: []
-                        }, {
-                            id: 'a-1-2',
-                            title: 'pvc积木',
-                            loading: false,
-                            children: []
-                        }]
-                    }, {
-                        id: 'a-2',
-                        title: '遥控类',
-                        loading: false,
-                        expand: true,
-                        children: []
-                    }]
-                }, ]
-            }],
-            loop: 0
+            columns: [
+                {
+                    type: 'index',
+                    align: 'center',
+                    title: '序号'
+                },
+                {
+                    title: '平台类目',
+                    key: 'eCategotyName',
+                    align: 'center'
+                },
+                {
+                    title: '系统类目',
+                    key: 'categoryName',
+                    align: 'center'
+                },
+                {
+                    title: '操作',
+                    slot: 'action',
+                    align: 'center'
+                }
+            ],
         }
     },
     methods: {
-        selectChangeAll() {
-
+        onSearch(value){
+            this.$emit('set-filter',value);
         },
-        renderContent (h, { root, node, data }) {
-            var t = this,
-            e = t.$createElement;
-            return h('span', {
-                style: {
-                    display: 'inline-block',
-                    width: '100%'
-                }
-            }, [
-                h('span', [
-                    h('span', data.title)
-                ]),
-            ]);
+        onCler(){
+            this.$emit('set-filter','');
         },
-        checkChange(items, item) {
-            console.log(items);
-            console.log(item);
-            if (items.length > 1) {
-                this.loop = 0
-                this.childnodes(this.data, items, item)
-            }
-        },
-        childnodes(data, items, item) {
-            if (this.loop) return false
-            const len = data.length
-            const its = items.length
-            let i = 0
-            let j = 0
-            for (i = 0; i < len; i++) {
-                for (j = 0; j < its; j++) {
-                    if (items[j].id === data[i].id) {
-                        if (items[j].id === item.id) {
-                            break
-                        } else {
-                            this.loop = 1
-                            data[i].checked = false
-                            return false
-                        }
-                    }
-                }
-                if (!this.loop && data[i].children && data[i].children.length > 0) {
-                    this.childnodes(data[i].children, items, item)
-                }
-            }
+        del(id){
+            this.$emit('del',id);
         }
     }
 }
@@ -126,8 +89,8 @@ export default {
         line-height: 30px;
     }
     .list{
-        overflow-y: scroll;
-        height: 417px;
+        overflow: hidden;
+        height: 410px;
         position: relative;    
     }
 }

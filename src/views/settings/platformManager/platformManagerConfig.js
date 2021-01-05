@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 15:55:51
+ * @LastEditTime: 2021-01-05 11:48:08
  */
 export default {
     data() {
@@ -33,33 +33,14 @@ export default {
             name:'负责人名称',
             type:'select',
             dataSource:{
-                multiple:false,
-                type:'static',
-                data:[
-                  {
-                    name: 'admin',
-                    value: 12
-                  },
-                  {
-                    name: '王二',
-                    value: 13
-                  },
-                  {
-                    name: '李四',
-                    value: 14
-                  },
-                ],
-              },
-              columns:[
-                {
-                  name:'ID',
-                  value:'id'
-                },
-                {
-                  name:'用户',
-                  value:'name'
-                },
-              ],
+              type:'dynamic',
+              url:'/api/GetUserInfoList',
+              data:[],
+              col:[
+                {k:'name',v:'userName'},
+                {k:'value',v:'id'}
+              ]
+            },
           },
         },
         formValidate: {
@@ -88,7 +69,12 @@ export default {
               message: '请输入url',
               trigger: 'blur'
           }],
-          chargeUser: [{ validator: chargeUserVail, trigger: 'change' }],
+          chargeUser: [{ 
+            required: true, 
+            message: '请选择负责人',
+            validator: chargeUserVail, 
+            trigger: 'change' 
+          }],
         },
       }
     }
