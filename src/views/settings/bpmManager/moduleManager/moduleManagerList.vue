@@ -4,20 +4,21 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 17:34:54
+ * @LastEditTime: 2021-01-05 19:54:43
 -->
 <template>
-<div class="storeManager-container">
+<div class="moduleManager-container">
     <div class="filter">
         <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新增</Button>
+            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
             <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
             <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+            <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
         </div>
         <div class="filter-search">
             <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
             <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
-            <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
+            <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
             <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
         </div>
     </div>
@@ -26,7 +27,7 @@
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator show-sizer :page-size="25" :page-size-opts="[25,50,200]"></Page>
+                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
             </div>
         </div>
     </div>
@@ -37,6 +38,12 @@
 <script>
 import config from "@views/settings/bpmManager/moduleManager/supplierListConfig";
 import list from "@mixins/list";
+import {
+    CreateWorkflowPackage,
+    UpdateWorkflowPackage,
+    DelWorkflowPackage,
+    GetWorkflowPackagePage,
+} from "@service/settingsService"
 
 export default {
     name: "ModuleManagerList",
@@ -47,12 +54,39 @@ export default {
             showModel: false,
             columns: this.getTableColumn(),
             data: this.getData(),
-            loading: true
+            loading: true,
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
         }
     },
     methods: {
-        changePage() {
-
+        GetWorkflowPackagePage() {
+            return new Promise((resolve, reject) => {
+                GetWorkflowPackagePage(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPage = res.result.item.totalCount;
+                            this.data = res.result.item.items;
+                            this.loading = false;
+                        });
+                    }
+                });
+            });
+        },
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetWorkflowPackagePage();
+        },
+        refresh(){
+            this.loading = true;
+            this.pageData.skipCount=1;
+            this.GetWorkflowPackagePage();
         },
         goAdd(){
             this.$router.push({name:'addModule'});
@@ -84,6 +118,10 @@ export default {
                 this.columns = this.getTableColumn();
             })
         },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetWorkflowPackagePage();
+        },
         getTableColumn(){
             var columns = [{
                     type: 'index',
@@ -93,7 +131,7 @@ export default {
                 }, 
                 {
                     title: '模型名称',
-                    key: 'name',
+                    key: 'packageName',
                     render: (h, params) => {
                         return h("span", {
                         style: {
@@ -105,36 +143,24 @@ export default {
                                 this.goDetail(params.row.id)    
                             }
                         }
-                        },params.row.name);
+                        },params.row.packageName);
                     }
                 },
-                
                 {
-                    title: '状态',
-                    key: 'status',
-                    render: (h, params) => {
-                        return h("span", {
-                        style: {
-                            display: "inline-block",
-                            color: params.row.status=='启用' ? "#19be6b": "#ed4014"
-                        },
-                        },params.row.status);
-                    }
-                }, {
                     title: '创建时间',
-                    key: 'createTime'
+                    key: 'createdOn'
                 }, {
                     title: '创建者',
-                    key: 'creater'
+                    key: 'createdBy'
+                },
+                {
+                    title: '修改者',
+                    key: 'modifyBy'
                 },
                 {
                     title: '修改时间',
-                    key: 'createTime'
+                    key: 'modifyOn'
                 }, 
-                {
-                    title: '修改者',
-                    key: 'creater'
-                },
             ];
             return columns;
         },
@@ -167,44 +193,56 @@ export default {
         goConfig(row){
             this.$router.push({name:'addFomConfig',params: {id:row.id||'1',name:row.name}});
         },
-        setFilter(data){
-            this.showFilterModel = false;
-            this.loading = true;
-            setTimeout(() => {
-                this.loading = false;
-            }, 500);  
+        change(value){
+            this.activatedIndex = value;
+        },
+        deleteData(){
+            if(this.activatedRow.id){
+                this.loading = true;
+                return new Promise((resolve, reject) => {
+                    DelWorkflowPackage({id:this.activatedRow.id}).then(res => {
+                        if (res.result.code == 200) {
+                            for(var i=0;i<this.selectedList.length;i++){
+                                for(var j=0;j<this.data.length;j++){
+                                    if(this.selectedList[i].id==this.data[j].id){
+                                        this.data.splice(j, 1);   
+                                    }
+                                }
+                            }
+                            this.$Message.info('温馨提示：删除成功！');
+                            if(this.data.length<1){
+                                this.pageData.skipCount-1;
+                            }
+                            this.GetWorkflowPackagePage();
+                            this.loading = false;
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                            this.loading = false;
+                        }
+                    });
+                });
+            } 
+        },
+        setFilter(value){
+            this.pageData = {
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:value,
+                pageSizeOpts:[15,50,200],
+            },
+            this.GetWorkflowPackagePage(); 
         }
     },
     created(){
-        
+        this.GetWorkflowPackagePage();
     }
 }
 </script>
 <style lang="less" scoped>
-.storeManager-container {
-    .head {
-        height: 30px;
-
-        .select-type {
-            float: left;
-        }
-    }
-    .filter {
-        height: 30px;
-        .filter-button {
-            float: left;
-            .marginRight{
-                margin-right: 10px;
-            }
-        }
-        .filter-search {
-            float: right;
-            display: flex;
-            .marginRight{
-                margin-right: 10px;
-            }
-        }
-    }
-}
+@import "~@less/list/index.less";
 </style>
 

@@ -4,35 +4,40 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 20:22:59
+ * @LastEditTime: 2021-01-06 09:34:27
 -->
 <template>
 <div class="add_store">
-    <div class="top">
-        <Divider orientation="left" size="small">店铺信息</Divider>
-        <div class="top_tabale">
-            <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
-                <template slot="button">
-                    <FormItem>
-                        <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
-                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
-                        </div>
-                    </FormItem>
-                </template>
-            </XForm>
-        </div>
-    </div>
-    <div class="item">
-        <div class="top">
-            <Divider orientation="left" size="small">选择系统类目</Divider>
-            <Row>
-                <Col span="12"><PlatformCategoryBind @select-platform-bind="selectPlatformBind" ref="selectPlatformBind"></PlatformCategoryBind></Col>
-                <Col span="12"><NowCategoryBind></NowCategoryBind></Col>
-            </Row>
-        </div>
-    </div>
+    <Row>
+        <Col span="12">
+            <div class="top">
+                <Divider orientation="left" size="small">店铺信息</Divider>
+                <div class="top_tabale">
+                    <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                        <template slot="button">
+                            <FormItem>
+                                <div style="width:100%">
+                                    <Button type="primary" @click="save" style="float: left;">保存</Button>
+                                    <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
+                                    <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                                </div>
+                            </FormItem>
+                        </template>
+                    </XForm>
+                </div>
+            </div>
+        </Col>
+        <Col span="12">
+            <div class="item">
+                <div class="top">
+                    <Divider orientation="left" size="small">选择系统类目绑定</Divider>
+                    <div class="top_tabale">
+                        <SystemCategoryBind :loading="loading" @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind>
+                    </div>
+                </div>
+            </div>
+        </Col>
+    </Row>
 </div>
 </template>
 
@@ -43,8 +48,7 @@ import {
 } from "view-design";
 import XForm from "@components/public/form/xForm";
 import config from "@views/settings/storeManager/addStoreConfig";
-import PlatformCategoryBind from "@components/settings/platformManager/platformCategoryBind";
-import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
+import SystemCategoryBind from "@components/settings/storeManager/systemCategoryBind";
 import {
     CreateStore
 } from "@service/settingsService"
@@ -53,14 +57,15 @@ export default {
     name: "AddStore",
     components: {
         XForm,
-        PlatformCategoryBind,
-        NowCategoryBind,
+        SystemCategoryBind,
         Row,
         Col
     },
     data() {
         return {
             selectPBind: {},
+            systemCategoryData:[],
+            loading:true
         }
     },
     mixins: [config],
@@ -76,6 +81,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
+                                    this.$refs.selectSystemBind.clear();
                                     this.$refs['form'].$refs['formValidate'].resetFields();
                                     this.$refs['form'].initEL('input');
                                 } else if (res.result.code == 400) {
@@ -118,16 +124,33 @@ export default {
         },
         goReturn(){
             this.$router.go(-1);
+        },
+        GetCategoryList(value) {
+            this.loading = true;
+            return new Promise((resolve, reject) => {
+                GetCategoryList({keyword:value,maxResultCount:200}).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.systemCategoryData = res.result.item;
+                            this.loading = false;
+                        });
+                    }
+                });
+            });
+        },
+        setSystemCategoryFilter(value){
+            debugger
+            this.GetCategoryList(value);
+        },
+        selectSystemBind(data){
+            this.formValidate.storeBinds = data;
         }
     },
     created() {
-
+        
     }
 }
 </script>
 <style lang="less" scoped>
 @import "~@less/form.less";
-.add_store /deep/ .ivu-row {
-    background: #ffffff;
-}
 </style>

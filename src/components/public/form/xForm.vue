@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 11:52:32
+ * @LastEditTime: 2021-01-05 16:37:00
 -->
 <template>
 <div class="content">
@@ -198,7 +198,6 @@ export default {
             var iGlength = inputGroupArr.length;
             document.onkeypress = function (e) {
                 var e = event || e;
-                console.log(inputGroupArr.indexOf(e.srcElement));
                 var idx = inputGroupArr.indexOf(e.srcElement);
                 console.log(e, e.keyCode, e.srcElement, e.which);
                 if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
@@ -210,7 +209,7 @@ export default {
                     }
                     e.preventDefault();
                 }
-                console.log(e, e.keyCode, e.srcElement, e.which);
+                // console.log(e, e.keyCode, e.srcElement, e.which);
             }
         },
         initForm(){

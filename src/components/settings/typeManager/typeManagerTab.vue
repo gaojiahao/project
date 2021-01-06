@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 11:40:31
+ * @LastEditTime: 2021-01-05 20:59:14
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -27,10 +27,11 @@
         <div style="width:100%;height:38px;margin-top:10px">
             <div style="float:left">
                 <RadioGroup v-model="platform">
-                    <Radio label="all">全平台</Radio>
-                    <Radio label="yms">亚马孙</Radio>
-                    <Radio label="smt">速卖通</Radio>
-                    <Radio label="eBay">eBay</Radio>
+                    <template v-for="(ditem,dIndex) in platformList">
+                        <Radio :label="ditem.id" :key="ditem.id">
+                            {{ditem.name}}
+                        </Radio>
+                    </template>
                 </RadioGroup>
             </div>
         </div>
@@ -55,7 +56,9 @@ import {
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/settings/typeManager/typeManagerConfig";
 import {
-    BindAttributeCategory
+    BindAttributeCategory,
+    GetPlatformsList,
+    GetSystemConfigList
 } from "@service/settingsService"
 export default {
     name: 'TypeManagerTab',
@@ -140,7 +143,8 @@ export default {
                 categoryId:'',
                 attributeBinds:[]
             },
-            columns2: [{
+            columns2: [
+                {
                     title: '输出文件名称',
                     key: 'name'
                 },
@@ -158,7 +162,7 @@ export default {
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.data2[params.index][params.column.key] = event.currentTarget.value; //获取编辑行的inde和编辑字段名，对表格数据进行重新赋值
+                                    this.data2[params.index][params.column.key] = event.currentTarget.value;
                                 }
                             }
                         });
@@ -175,37 +179,19 @@ export default {
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.data2[params.index][params.column.key] = event; //获取编辑行的inde和编辑字段名，对表格数据进行重新赋值
+                                    this.data2[params.index][params.column.key] = event;
                                 }
                             }
                         });
                     }
                 }
             ],
-            data2: [{
-                    name: '主视图',
-                },
-                {
-                    name: '详情图',
-
-                },
-                {
-                    name: '3D建模',
-                },
-                {
-                    name: '视频文件',
-                },
-                {
-                    name: '音频文件',
-                },
-                {
-                    name: '其他文件',
-                }
-            ],
+            data2: [],
             activeTab: '',
-            platform: 'all',
+            platform: '',
             titleText: '添加属性',
-            showModel: false
+            showModel: false,
+            platformList:[]
         }
     },
     methods: {
@@ -270,6 +256,32 @@ export default {
         onPageSizeChange(pagesize){
             this.$emit('on-page-size-change',pagesize);
         },
+        GetPlatformsList() {
+            return new Promise((resolve, reject) => {
+                GetPlatformsList(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.platformList = res.result.item;
+                        });
+                    }
+                });
+            });
+        },
+        GetSystemConfigList() {
+            return new Promise((resolve, reject) => {
+                GetSystemConfigList().then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.data2 = res.result.item;
+                        });
+                    }
+                });
+            });
+        },
+    },
+    created(){
+        this.GetPlatformsList();
+        this.GetSystemConfigList();
     }
 }
 </script>

@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 18:07:36
+ * @LastEditTime: 2021-01-05 16:41:39
  */
 export default {
     data() {
       const platformIdVali = (rule, value, callback) => {
-        if (value == '') {
+        if (value == ''||value === undefined) {
             callback(new Error('请选择平台名称'));
         } else {
           callback();
@@ -83,7 +83,7 @@ export default {
               message: '请输入店铺代码',
               trigger: 'blur'
           }],
-          platformId: [{ validator: platformIdVali, trigger: 'change' }],
+          platformId: [{ required: true, message: '请选择平台名称',validator: platformIdVali, trigger: 'change' }],
       }, 
       }
     }

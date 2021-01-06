@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 10:51:46
+ * @LastEditTime: 2021-01-05 19:39:18
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -395,4 +395,28 @@ export let GetUserInfoList = (data = {}) => {
     data: data
   })
 };
-//修改用户菜单权限
+//模型管理
+export let CreateWorkflowPackage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateWorkflowPackage',
+    data: data
+  })
+};
+export let UpdateWorkflowPackage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateWorkflowPackage',
+    data: data
+  })
+};
+export let DelWorkflowPackage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelWorkflowPackage',
+    data: data
+  })
+};
+export let GetWorkflowPackagePage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetWorkflowPackagePage',
+    data: data
+  })
+};

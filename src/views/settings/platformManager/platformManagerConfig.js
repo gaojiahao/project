@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 11:48:08
+ * @LastEditTime: 2021-01-05 16:38:35
  */
 export default {
     data() {
       const chargeUserVail = (rule, value, callback) => {
-        if (value == '') {
+        if (value == ''||value === undefined) {
             callback(new Error('请选择负责人名称'));
         } else {
           callback();
@@ -47,7 +47,7 @@ export default {
           name: '',
           code: '',
           url: '',
-          chargeUser: null,
+          chargeUser: '',
           merchantId:1,
           parentIndex:0,
         },

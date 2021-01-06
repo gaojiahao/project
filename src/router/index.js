@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 17:12:46
+ * @LastEditTime: 2021-01-05 20:21:36
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -390,7 +390,7 @@ const routes = [
                   {
                     path:"editModule",
                     name:"editModule",
-                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/addModule"],resolve)),
+                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/editModule"],resolve)),
                     meta:{
                       title: "修改",
                       group: "moduleManager",
