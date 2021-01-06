@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 19:54:43
+ * @LastEditTime: 2021-01-06 10:09:09
 -->
 <template>
 <div class="moduleManager-container">
@@ -214,6 +214,7 @@ export default {
                                 this.pageData.skipCount-1;
                             }
                             this.GetWorkflowPackagePage();
+                            this.activatedRow = {};
                             this.loading = false;
                         } else if (res.result.code == 400) {
                             this.$Message.error({

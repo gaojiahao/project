@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 20:23:24
+ * @LastEditTime: 2021-01-06 09:59:13
 -->
 <template>
 <div class="add_store">
@@ -31,7 +31,7 @@ import XForm from "@components/public/form/xForm";
 import config from "@views/settings/bpmManager/moduleManager/addSupplierConfig";
 import {
     UpdateWorkflowPackage,
-    GetSystemConfigById
+    GetWorkflowPackageById
 } from "@service/settingsService"
 
 export default {
@@ -84,15 +84,12 @@ export default {
         this.id = this.$route.query.id;
         if(this.id) {
             return new Promise((resolve, reject) => {
-                GetSystemConfigById({id:this.id}).then(res => {
+                GetWorkflowPackageById({id:this.id}).then(res => {
                     if (res.result.code == 200) {
                         this.$FromLoading.hide();
                         this.formValidate = {
                             id: res.result.item.id,
-                            name: res.result.item.name,
-                            code: res.result.item.code,
-                            enabled: res.result.item.enabled,
-                            remark: res.result.item.remark,
+                            packageName: res.result.item.packageName,
                         }
                     } else if (res.result.code == 400) {
                         this.$Message.error({

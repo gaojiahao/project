@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 17:47:21
+ * @LastEditTime: 2021-01-06 10:07:51
 -->
 <template>
 <div class="userManager_container">
@@ -206,6 +206,7 @@ export default {
                                 this.pageData.skipCount-1;
                             }
                             this.GetUserInfoPage();
+                            this.activatedRow = {};
                             this.loading = false;
                         } else if (res.result.code == 400) {
                             this.$Message.error({

@@ -4,20 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-12-25 11:55:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 19:31:51
--->
-<!--
- * @Descripttion: 
- * @version: 1.0.0
- * @Author: gaojiahao
- * @Date: 2020-10-26 12:11:24
- * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-24 20:43:53
+ * @LastEditTime: 2021-01-06 09:51:38
 -->
 <template>
 <div class="add_store">
     <div class="top">
-        <Divider orientation="left" size="small">店铺信息</Divider>
+        <Divider orientation="left" size="small">用户信息</Divider>
         <div class="top_tabale">
             <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
                 <template slot="button">
@@ -100,8 +92,8 @@ export default {
                             birthday:res.result.item.birthday,
                             sex:res.result.item.sex,
                             password:res.result.item.password,
-                            sex:res.result.item.sex,
-                            sex:res.result.item.sex
+                            enabled:res.result.item.enabled,
+                            remark:res.result.item.remark
                         };
                     } else if (res.result.code == 400) {
                         this.$Message.error({

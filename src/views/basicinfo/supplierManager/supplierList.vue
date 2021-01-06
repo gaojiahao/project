@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 18:01:03
+ * @LastEditTime: 2021-01-06 10:08:59
 -->
 <template>
 <div class="storeManager-container">
@@ -242,6 +242,7 @@ export default {
                                 this.pageData.skipCount-1;
                             }
                             this.GetSupplierPage();
+                            this.activatedRow = {};
                             this.loading = false;
                         } else if (res.result.code == 400) {
                             this.$Message.error({

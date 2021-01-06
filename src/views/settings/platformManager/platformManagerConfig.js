@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 16:38:35
+ * @LastEditTime: 2021-01-06 09:40:53
  */
 export default {
     data() {
@@ -24,6 +24,7 @@ export default {
           code:{
             name:'平台编码',
             type:'text',
+            hidden: true
           },
           url:{
             name:'url',
