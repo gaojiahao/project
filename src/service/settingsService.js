@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-06 09:56:47
+ * @LastEditTime: 2021-01-07 09:32:35
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -133,6 +133,19 @@ export let DelCategory = (data = {}) => {
 export let GetCategoryById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetCategoryById',
+    data: data
+  })
+};
+//新增制图选项关联
+export let UpdateFileRelation = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateFileRelation',
+    data: data
+  })
+};
+export let GetFileRelationList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetFileRelationList',
     data: data
   })
 };
@@ -321,6 +334,12 @@ export let UpdateUserRoleMenu = (data = {}) => {
     data: data
   })
 };
+export let DeleteUserRoleMenu = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DeleteUserRoleMenu',
+    data: data
+  })
+};
 //系统设置
 export let CreateSystemConfig = (data = {}) => {
   return $flyio.post({
@@ -423,6 +442,37 @@ export let GetWorkflowPackagePage = (data = {}) => {
 export let GetWorkflowPackageById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetWorkflowPackageById',
+    data: data
+  })
+};
+//流程管理
+export let CreateWorkflowClause = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateWorkflowClause',
+    data: data
+  })
+};
+export let UpdateWorkflowClause = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateWorkflowClause',
+    data: data
+  })
+};
+export let DelWorkflowClause = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelWorkflowClause',
+    data: data
+  })
+};
+export let GetWorkflowClausePage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetWorkflowClausePage',
+    data: data
+  })
+};
+export let GetWorkflowClauseById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetWorkflowClauseById',
     data: data
   })
 };

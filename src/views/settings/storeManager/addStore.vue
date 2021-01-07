@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-06 09:34:27
+ * @LastEditTime: 2021-01-06 17:58:35
 -->
 <template>
 <div class="add_store">
@@ -139,7 +139,6 @@ export default {
             });
         },
         setSystemCategoryFilter(value){
-            debugger
             this.GetCategoryList(value);
         },
         selectSystemBind(data){

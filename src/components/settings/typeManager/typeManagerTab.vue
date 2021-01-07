@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 20:59:14
+ * @LastEditTime: 2021-01-06 17:07:34
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -26,7 +26,7 @@
     <TabPane label="制作文件">
         <div style="width:100%;height:38px;margin-top:10px">
             <div style="float:left">
-                <RadioGroup v-model="platform">
+                <RadioGroup v-model="platform" @on-change="onChange">
                     <template v-for="(ditem,dIndex) in platformList">
                         <Radio :label="ditem.id" :key="ditem.id">
                             {{ditem.name}}
@@ -35,15 +35,15 @@
                 </RadioGroup>
             </div>
         </div>
-        <Table border :columns="columns2" :data="data2" stripe></Table>
+        <Table border :columns="columns2" :data="filesData" stripe v-if="platform"></Table>
     </TabPane>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="showPop(true)">添加属性</Button>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="save()">保存</Button>
-    <Button type="primary" size="small" slot="extra" v-show="activeTab==1" class="tabsButton">保存</Button>
+    <Button type="primary" size="small" slot="extra" v-show="activeTab==1" class="tabsButton" @click.native="saveFileSettings()">保存</Button>
     <ModalForm :titleText="titleText" :formValidate="formValidate2" :ruleValidate="ruleValidate2" :showModel='showModel' :formConfig="formConfig2" @save="add" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
-    <div slot="footer">
-        <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
-    </div>
+        <div slot="footer">
+            <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
+        </div>
     </Modal>
 </Tabs>
 </template>
@@ -58,7 +58,9 @@ import config from "@views/settings/typeManager/typeManagerConfig";
 import {
     BindAttributeCategory,
     GetPlatformsList,
-    GetSystemConfigList
+    GetSystemConfigList,
+    UpdateFileRelation,
+    GetFileRelationList
 } from "@service/settingsService"
 export default {
     name: 'TypeManagerTab',
@@ -85,6 +87,10 @@ export default {
                 return {}
             }
         },
+        categoryId:{
+            type:Number,
+
+        }
     },
     watch:{
         list:{
@@ -94,6 +100,18 @@ export default {
                     e.isCheck = true;
                     return e;
                 });
+            }
+        },
+        categoryId:{
+            handler(val){
+                this.platform = '';
+                this.GetSystemConfigList();
+            }
+        },
+        platform:{
+            handler(val){
+                this.filesData = [];
+                this.initFile();
             }
         }
     },
@@ -109,17 +127,6 @@ export default {
                     title: '属性名称',
                     key: 'attributeName'
                 },
-                // {
-                //     title: '属性值',
-                //     key: 'proValue',
-                //     render: (h, params) => {
-                //         return h("span", {
-                //             style: {
-                //                 display: "inline-block",
-                //             },
-                //         }, params.attributesValues ? console.log(params.attributesValues .filter(item => item.valueName)) : '');//  展示的内容
-                //     }
-                // },
                 {
                     title: '是否启用',
                     key: 'isCheck',
@@ -132,7 +139,7 @@ export default {
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.data['attributeBinds'][params.index][params.column.key] = event; //获取编辑行的inde和编辑字段名，对表格数据进行重新赋值
+                                    this.data['attributeBinds'][params.index][params.column.key] = event;
                                 }
                             }
                         });
@@ -150,7 +157,7 @@ export default {
                 },
                 {
                     title: '数量',
-                    key: 'count',
+                    key: 'quantity',
                     align: 'center',
                     render: (h, params) => {
                         return h('Input', {
@@ -158,11 +165,11 @@ export default {
                                 width: '100px',
                             },
                             props: {
-                                value: params.row.conName,
+                                value: this.filesData[params.index][params.column.key]
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.data2[params.index][params.column.key] = event.currentTarget.value;
+                                    this.filesData[params.index][params.column.key] = event.currentTarget.value;
                                 }
                             }
                         });
@@ -175,23 +182,25 @@ export default {
                     render: (h, params) => {
                         return h('Checkbox', {
                             props: {
-                                single: false
+                                single: false,
+                                value: params.row.isCheck
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.data2[params.index][params.column.key] = event;
+                                    this.filesData[params.index][params.column.key] = event;
                                 }
                             }
                         });
                     }
                 }
             ],
-            data2: [],
+            filesData: [],
             activeTab: '',
             platform: '',
             titleText: '添加属性',
             showModel: false,
-            platformList:[]
+            platformList:[],
+            fileSettings:[]
         }
     },
     methods: {
@@ -216,7 +225,7 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：新建成功！');
-                            this.$$emit('get-data');
+                            this.$emit('get-data');
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
@@ -268,20 +277,80 @@ export default {
             });
         },
         GetSystemConfigList() {
+            return GetSystemConfigList().then(res => {
+                if(res.result.code==200){
+                    return res.result.item;  
+                }
+            }).catch(e =>{console.log(e)});  
+        },
+        onChange(e){
+
+        },
+        saveFileSettings(){
+            var data = {
+                categoryId:this.categoryId,
+                platformId:this.platform,
+            }
+            var arr = [];
+            for(var j=0;j<this.filesData.length;j++){
+                if(this.filesData[j].isCheck){
+                    var obj = {
+                        categoryId: this.categoryId,
+                        platformId: this.platform,
+                        fileTypeName: this.filesData[j].name,
+                        fileTypeId: this.filesData[j].id,
+                        quantity: this.filesData[j].quantity,
+                    }
+                    arr.push(obj);
+                }
+            }
+            data['fileRelations'] = JSON.parse(JSON.stringify(arr));
             return new Promise((resolve, reject) => {
-                GetSystemConfigList().then(res => {
-                    if(res.result.code==200){
-                        this.$nextTick(() => {
-                            this.data2 = res.result.item;
+                this.$FromLoading.show();
+                UpdateFileRelation(data).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.$Message.info('温馨提示：保存成功！');
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.message
                         });
+                        this.$FromLoading.hide();
                     }
                 });
             });
         },
+        GetFileRelationList(a){
+            var me = this;
+            return GetFileRelationList({categoryId:this.categoryId,platformId:this.platform}).then(res => {
+                if (res.result.code == 200) {
+                    var data = res.result.item;
+                    for(var i=0;i<data.length;i++){
+                        for(var j=0;j<a.length;j++){
+                            if(data[i].fileTypeId==a[j].id){
+                                a[j] = {
+                                    ...a[j],
+                                    quantity: data[i]['quantity'],
+                                    isCheck: true   
+                                }
+                            }
+                        }
+                    }
+                    me.filesData=a;
+                }
+            }).catch(e =>{console.log(e)}); 
+        },
+        async init(){
+            await this.GetPlatformsList();
+        },
+        async initFile(){
+            var a=await this.GetSystemConfigList();
+            await this.GetFileRelationList(a);
+        }
     },
     created(){
-        this.GetPlatformsList();
-        this.GetSystemConfigList();
+        this.init();
     }
 }
 </script>

@@ -4,14 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 19:26:03
+ * @LastEditTime: 2021-01-07 11:51:52
 -->
 <template>
     <div>
         <div class="filterColumns">
-            <Button type="primary" size="small" @click="show">
-                列
-                <Icon type="ios-arrow-down"></Icon>
+            <Button size="small" @click="show">
+                <Icon type="md-settings"></Icon>
             </Button>
             <div class="filterColumnsBox" v-show="isShow">
                 <Card>

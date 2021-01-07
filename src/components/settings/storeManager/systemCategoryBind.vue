@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-06 09:34:52
+ * @LastEditTime: 2021-01-06 17:43:42
 -->
 <template>
 <div class="content">
@@ -120,7 +120,7 @@ export default {
         calleArr: function(data){
             for(var i in data){
                 for(var j=0;j<this.formData.length;j++){
-                    if(this.formData[j]['id']==data[i]['id']){
+                    if(this.formData[j]['categoryId']==data[i]['id']){
                         data[i]['checked'] = true;
                     }    
                 }

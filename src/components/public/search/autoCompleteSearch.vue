@@ -4,16 +4,16 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 11:38:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 15:13:53
+ * @LastEditTime: 2021-01-07 11:45:21
 -->
 <template>
-    <div>
+    <div class="auto_search_container">
         <span style="margin-left:5px" v-show="filterName">{{filterName}}:</span>
         <AutoComplete
             v-model="value"
             icon="ios-search"
             placeholder="关键词"
-            style="width:300px;margin-top: -1px;" @on-select="onSelect" clearable @on-clear="onClear">
+            style="width:300px;" @on-select="onSelect" clearable @on-clear="onClear">
             <div class="demo-auto-complete-item">
                 <!--<div class="demo-auto-complete-group">
                     <span style="float:left;">{{ item.name }}:</span><span style="float:left;">{{ value }}</span>
@@ -86,6 +86,16 @@ export default {
 }
 </script>
 <style scoped>
+    .auto_search_container{
+        height: 24px;
+        display: inline-block;
+        margin-right: 10px;
+    }
+    >>>.ivu-input-icon {
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+    }
     .demo-auto-complete-item{
         padding: 8px 0;
         border-bottom: 1px solid #F6F6F6;
@@ -116,6 +126,6 @@ export default {
         display: flex;
     }
     >>>.ivu-input {
-        height: 26px;
+        height: 24px;
     }
 </style>

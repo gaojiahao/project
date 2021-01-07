@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-06 10:09:09
+ * @LastEditTime: 2021-01-06 20:53:23
 -->
 <template>
 <div class="moduleManager-container">
@@ -103,7 +103,6 @@ export default {
             let datas = [];
             let columns = this.getTableColumn();
             datas.push(columns[0]);
-            datas.push(columns[1]);
             data.forEach(col => {
                 for(var i=0;i<columns.length;i++){
                     if(col == columns[i].key){

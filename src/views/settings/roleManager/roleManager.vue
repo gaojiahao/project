@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 15:17:18
+ * @LastEditTime: 2021-01-07 09:34:18
 -->
 <template>
 <div class="roleManager_container">
@@ -47,7 +47,8 @@ import {
     DeleteAuthRole,
     AuthModuleList,
     UpdateUserRoleMenu,
-    GetUserRoleMenuById
+    GetUserRoleMenuById,
+    DeleteUserRoleMenu
 } from "@service/settingsService"
 
 export default {
@@ -187,7 +188,7 @@ export default {
             if(this.activatedRow.id){
                 this.loading = true;
                 return new Promise((resolve, reject) => {
-                    DeleteAuthRole({id:this.activatedRow.id,moduleIdList:this.activatedRow.moduleIdList||[]}).then(res => {
+                    DeleteUserRoleMenu({id:this.activatedRow.id}).then(res => {
                         if (res.result.code == 200) {
                             for(var i=0;i<this.selectedList.length;i++){
                                 for(var j=0;j<this.data.length;j++){
