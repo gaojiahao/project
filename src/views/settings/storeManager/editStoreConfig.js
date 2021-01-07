@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 16:05:58
+ * @LastEditTime: 2021-01-07 16:05:39
  */
 export default {
     data() {
@@ -21,11 +21,11 @@ export default {
             name:'店铺名称',
             type:'text',
           },
-          // code:{
-          //   name:'店铺代号',
-          //   type:'text',
-          //   hidden: true
-          // },
+          code:{
+            name:'店铺代号',
+            type:'text',
+            disabled: true
+          },
           account:{
             name:'账号名称',
             type:'text',
@@ -81,7 +81,7 @@ export default {
           app_Secret:'',
           platformId:'',
           platformName:'',
-          status:1,
+          status:'',
           remark:'',
           storeBinds:[]
         },

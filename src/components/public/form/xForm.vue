@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 16:37:00
+ * @LastEditTime: 2021-01-07 16:00:49
 -->
 <template>
 <div class="content">
@@ -212,7 +212,8 @@ export default {
                 // console.log(e, e.keyCode, e.srcElement, e.which);
             }
         },
-        initForm(){
+        //for循环异步处理
+        async initForm(){
             for(var item in this.formConfig){
                 var form = this;
                 
@@ -223,7 +224,7 @@ export default {
                     })
                 }
                 if(this.formConfig[item].type=='select'&&this.formConfig[item].dataSource.type=='dynamic'){
-                    $flyio.post({
+                    await $flyio.post({
                         url: this.formConfig[item].dataSource.url,
                         data:{ maxResultCount:200}
                     }).then((res) => {
@@ -246,6 +247,7 @@ export default {
                     })
                 }
             }
+            
         },
         initDataSource(){
 

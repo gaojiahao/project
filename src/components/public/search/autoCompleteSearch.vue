@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 11:38:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 11:45:21
+ * @LastEditTime: 2021-01-07 14:29:30
 -->
 <template>
     <div class="auto_search_container">
@@ -15,11 +15,8 @@
             placeholder="关键词"
             style="width:300px;" @on-select="onSelect" clearable @on-clear="onClear">
             <div class="demo-auto-complete-item">
-                <!--<div class="demo-auto-complete-group">
-                    <span style="float:left;">{{ item.name }}:</span><span style="float:left;">{{ value }}</span>
-                </div>-->
                 <Option v-for="(item,index) in filterList" :value="value" :key="index">
-                    <span class="demo-auto-complete-title" @click="clickOption(item)" style="float:left;">{{ item.name }}:{{value}}</span>
+                    <span class="demo-auto-complete-title" @click="clickOption(item)" style="float:left; padding: 7px 16px; width:100%;">{{ item.name }}:{{value}}</span>
                 </Option>
             </div>
         </AutoComplete>
@@ -61,7 +58,6 @@ export default {
     },
     methods:{
         onSelect(value){
-            console.log('选中了搜索',value)
             this.$emit('set-filter',value);
         },
         onClear(){
@@ -97,7 +93,6 @@ export default {
         line-height: 24px;
     }
     .demo-auto-complete-item{
-        padding: 8px 0;
         border-bottom: 1px solid #F6F6F6;
     }
     .demo-auto-complete-group{
@@ -124,6 +119,7 @@ export default {
     }
     >>>.ivu-select-item {
         display: flex;
+        padding: 0;
     }
     >>>.ivu-input {
         height: 24px;

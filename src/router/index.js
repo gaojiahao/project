@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 20:21:36
+ * @LastEditTime: 2021-01-07 15:31:31
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -86,6 +86,16 @@ const routes = [
                 component: resolve=>(require(["@views/settings/storeManager/editStore"],resolve)),
                 meta: {
                   title: "编辑店铺",
+                  group: "storeManager",
+                  level: 2,
+                },
+              },
+              {
+                path: "viewStore",
+                name: "viewStore",
+                component: resolve=>(require(["@views/settings/storeManager/viewStore"],resolve)),
+                meta: {
+                  title: "查看店铺",
                   group: "storeManager",
                   level: 2,
                 },

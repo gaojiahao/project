@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 11:51:52
+ * @LastEditTime: 2021-01-07 15:23:22
 -->
 <template>
     <div>
@@ -16,7 +16,7 @@
                 <Card>
                     <Row>
                         <Col span="24">
-                            <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;float: left;margin-left: 5px;width: 100%;">
+                            <div style="border-bottom: 1px solid #e9e9e9;padding-bottom:6px;margin-bottom:6px;float: left;margin-left: 5px;width: 100%;line-height: 24px;">
                                 <Checkbox
                                     :indeterminate="indeterminate"
                                     :value="checkAll"
@@ -149,5 +149,6 @@ export default {
 .ivu-checkbox-group-item {
     float: left;
     margin-left: 5px;
+    line-height: 24px;
 }
 </style>

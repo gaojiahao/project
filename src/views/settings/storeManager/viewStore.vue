@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 16:21:47
+ * @LastEditTime: 2021-01-07 16:08:17
 -->
 <template>
 <div class="edit_store">
@@ -13,16 +13,15 @@
             <div class="top">
                 <Divider orientation="left" size="small">店铺信息</Divider>
                 <div class="top_tabale">
-                    <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                    <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%">
-                                    <Button type="primary" @click="save" style="float: left;">保存</Button>
                                     <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>
                         </template>
-                    </XForm>
+                    </ViewForm>
                 </div>
             </div>
         </Col>
@@ -45,7 +44,7 @@ import {
     Row,
     Col
 } from "view-design";
-import XForm from "@components/public/form/xForm";
+import ViewForm from "@components/public/form/viewForm";
 import config from "@views/settings/storeManager/editStoreConfig";
 import SystemCategoryBind from "@components/settings/storeManager/systemCategoryBind";
 import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
@@ -59,7 +58,7 @@ import {
 export default {
     name: "EditStore",
     components: {
-        XForm,
+        ViewForm,
         SystemCategoryBind,
         Row,
         Col
@@ -85,9 +84,8 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
-                                    // this.$refs['form'].$refs['formValidate'].resetFields();
-                                    // this.$refs['form'].initEL('input');
-                                    this.$router.go(-1);
+                                    this.$refs['form'].$refs['formValidate'].resetFields();
+                                    this.$refs['form'].initEL('input');
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -104,7 +102,6 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
-                                    this.$router.go(-1);
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,

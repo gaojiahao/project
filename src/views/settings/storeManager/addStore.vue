@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-06 17:58:35
+ * @LastEditTime: 2021-01-07 16:20:59
 -->
 <template>
 <div class="add_store">
@@ -18,7 +18,7 @@
                             <FormItem>
                                 <div style="width:100%">
                                     <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                    <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
+                                    <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">重置</Button>
                                     <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>
@@ -82,8 +82,9 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.$refs.selectSystemBind.clear();
-                                    this.$refs['form'].$refs['formValidate'].resetFields();
-                                    this.$refs['form'].initEL('input');
+                                    // this.$refs['form'].$refs['formValidate'].resetFields();
+                                    // this.$refs['form'].initEL('input');
+                                    this.$router.go(-1);
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
