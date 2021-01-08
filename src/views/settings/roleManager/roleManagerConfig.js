@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 17:47:18
+ * @LastEditTime: 2021-01-08 15:57:14
  */
 export default {
   data() {
@@ -14,10 +14,10 @@ export default {
           name:'角色名称',
           type:'text',
         },
-        roleCode:{
-          name:'角色编码',
-          type:'text',
-        },
+        // roleCode:{
+        //   name:'角色编码',
+        //   type:'text',
+        // },
         enabled:{
           name:'是否启用',
           type:'radio',
@@ -43,14 +43,14 @@ export default {
       },
       formValidate: {
         roleName: '',
-        roleCode:'',
+        // roleCode:'',
         enabled:true,
         isAdmin:false,
         merchantId:0,
         moduleIdList:[]
       },
       ruleValidate: {
-        name: [{
+        roleName: [{
             required: true,
             message: '请输入角色名称',
             trigger: 'blur'

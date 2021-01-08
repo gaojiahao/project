@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 11:58:20
+ * @LastEditTime: 2021-01-08 16:13:02
  */
 export default {
     data() {
@@ -47,6 +47,11 @@ export default {
               required: true,
               message: '请输入分类名称',
               trigger: 'blur'
+          }],
+          level: [{
+            required: true,
+            message: '请输入分类层级',
+            trigger: 'blur'
           }],
         },
         formConfig2:{

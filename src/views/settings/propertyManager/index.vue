@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 20:36:16
+ * @LastEditTime: 2021-01-08 16:55:39
 -->
 <template>
 <div class="propertyManager-container">
@@ -21,7 +21,7 @@
                             <FormItem>
                                 <div style="width:100%">
                                     <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                    <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                    <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
                                 </div>
                             </FormItem>
                         </template>
@@ -38,7 +38,7 @@
                             <FormItem>
                                 <div style="width:100%">
                                     <Button type="primary" @click="saveChild" style="float: left;">保存</Button>
-                                    <Button @click="clearFormData2" style="float: left; margin-left:10px">取消</Button>
+                                    <!-- <Button @click="clearFormData2" style="float: left; margin-left:10px">取消</Button> -->
                                 </div>
                             </FormItem>
                         </template>
@@ -203,9 +203,10 @@ export default {
         clearFormData() {
             this.formValidate.id = '';
             this.$refs['form'].$refs['formValidate'].resetFields();
+            this.formValidate2.attributeId='';
         },
         clearFormData2() {
-            this.formValidate2.id = '';
+            this.formValidate2.attributeId='';
             this.$refs['form2'].$refs['formValidate'].resetFields();
         },
         selectItem(id) {

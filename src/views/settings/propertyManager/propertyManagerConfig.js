@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 16:05:33
+ * @LastEditTime: 2021-01-08 16:49:46
  */
 export default {
     data() {
@@ -60,7 +60,7 @@ export default {
           }],
         },
         ruleValidate2: {
-          name: [{
+          valueName: [{
               required: true,
               type: 'string',
               message: '请输入属性值名称',

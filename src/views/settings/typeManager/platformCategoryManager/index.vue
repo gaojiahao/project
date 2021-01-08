@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 09:32:48
+ * @LastEditTime: 2021-01-08 16:48:39
 -->
 <template>
 <div class="platformManager-container">
@@ -22,7 +22,7 @@
                                 <FormItem>
                                     <div style="width:100%">
                                         <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                        <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                        <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
                                     </div>
                                 </FormItem>
                             </template>
@@ -114,43 +114,49 @@ export default {
         },
         save() {
             var params = this.formValidate;
-            if (!this.formValidate.id) {
-                return new Promise((resolve, reject) => {
-                    this.$FromLoading.show();
-                    CreateEcommerceCategory(params).then(res => {
-                        if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：新建成功！');
-                            this.GetEcommerceCategoryList();
-                            this.$refs['form'].$refs['formValidate'].resetFields();
-                            this.$refs['form'].initEL('input');
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.message
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    if (!this.formValidate.id) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreateEcommerceCategory(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：新建成功！');
+                                    this.GetEcommerceCategoryList();
+                                    this.$refs['form'].$refs['formValidate'].resetFields();
+                                    this.$refs['form'].initEL('input');
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.message
+                                    });
+                                    this.$FromLoading.hide();
+                                }
                             });
-                            this.$FromLoading.hide();
-                        }
-                    });
-                });
-            } else {
-                return new Promise((resolve, reject) => {
-                    this.$FromLoading.show();
-                    UpdateEcommerceCategory(params).then(res => {
-                        if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：更新成功！');
-                            this.GetEcommerceCategoryList();
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.message
+                        });
+                    } else {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            UpdateEcommerceCategory(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：更新成功！');
+                                    this.GetEcommerceCategoryList();
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.message
+                                    });
+                                    this.$FromLoading.hide();
+                                }
                             });
-                            this.$FromLoading.hide();
-                        }
-                    });
-                });
-            }
+                        });
+                    }
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         },
         selectItem(index) {
             this.isShowBind = true;
@@ -181,9 +187,10 @@ export default {
             this.$refs['form'].initEL('input');
         },
         clearFormData() {
-            this.isShowAdd = false;
+            // this.isShowAdd = false;
             this.isShowBind = false;
             this.$refs['form'].$refs['formValidate'].resetFields();
+            this.formValidate.parentId=0;
         },
         edit(root,node,data){
             var parentName = "";
