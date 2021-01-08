@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-17 11:38:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 14:29:30
+ * @LastEditTime: 2021-01-07 19:19:36
 -->
 <template>
     <div class="auto_search_container">
@@ -13,7 +13,7 @@
             v-model="value"
             icon="ios-search"
             placeholder="关键词"
-            style="width:300px;" @on-select="onSelect" clearable @on-clear="onClear">
+            style="width:300px;" @on-select="onSelect" clearable @on-clear="onClear" :transfer="true">
             <div class="demo-auto-complete-item">
                 <Option v-for="(item,index) in filterList" :value="value" :key="index">
                     <span class="demo-auto-complete-title" @click="clickOption(item)" style="float:left; padding: 7px 16px; width:100%;">{{ item.name }}:{{value}}</span>

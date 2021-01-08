@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 16:00:49
+ * @LastEditTime: 2021-01-07 17:49:18
 -->
 <template>
 <div class="content">
@@ -219,8 +219,8 @@ export default {
                 
                 if(this.formConfig[item].bind&&this.formConfig[item].bind.bindValue){
                     var valueField = this.formConfig[item].bind.bindValue;
-                    form.$on('value-change-' + item,function(value){
-                        this.formValidate[this.formConfig[item].bind.target] = value;
+                    form.$on('value-change-' + item,function(data){
+                        this.formValidate[this.formConfig[data.tag].bind.target] = data.label;
                     })
                 }
                 if(this.formConfig[item].type=='select'&&this.formConfig[item].dataSource.type=='dynamic'){
@@ -253,7 +253,7 @@ export default {
 
         },
         onChange(data){
-            this.$emit('value-change-'+data.tag,data.label);
+            this.$emit('value-change-'+data.tag,data);
         }
     },
     mounted() {

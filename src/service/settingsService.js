@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 09:32:35
+ * @LastEditTime: 2021-01-08 09:18:29
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -67,10 +67,34 @@ export let DelPlatforms = (data = {}) => {
     data: data
   })
 };
-//获取平台类目
+//平台类目
+export let CreateEcommerceCategory = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateEcommerceCategory',
+    data: data
+  })
+};
+export let UpdateEcommerceCategory = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateEcommerceCategory',
+    data: data
+  })
+};
+export let DelEcommerceCategory = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelEcommerceCategory',
+    data: data
+  })
+};
 export let GetEcommerceCategoryList = (data = {}) => {
   return $flyio.post({
     url: '/api/GetEcommerceCategoryList',
+    data: data
+  })
+};
+export let GetEcommerceCategoryById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetEcommerceCategoryById',
     data: data
   })
 };

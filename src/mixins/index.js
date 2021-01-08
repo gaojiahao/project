@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 11:01:41
+ * @LastEditTime: 2021-01-07 20:12:32
  */
 export default {
     data() {
@@ -39,6 +39,18 @@ export default {
                 value: 'typeManager',
                 status: true,
                 auth: true,
+                children: [
+                  {
+                    name: '平台分类',
+                    value: 'platformCategoryManager',
+                    status: true,
+                  },
+                  {
+                    name: '系统分类',
+                    value: 'systemCategoryManager',
+                    status: true,
+                  },
+                ]
               },
               {
                 name: '属性管理',
@@ -91,11 +103,11 @@ export default {
                     value: 'flowManager',
                     status: true,
                   },
-                  {
-                    name: '表单关联管理',
-                    value: 'formManager',
-                    status: true,
-                  },    
+                  // {
+                  //   name: '表单关联管理',
+                  //   value: 'formManager',
+                  //   status: true,
+                  // },    
                 ],
               },
             ],
@@ -129,11 +141,11 @@ export default {
                 value: 'supplierManager',
                 status: true,
               },
-              {
-                name: '客户管理',
-                value: 'customerManager',
-                status: true,
-              }
+              // {
+              //   name: '客户管理',
+              //   value: 'customerManager',
+              //   status: true,
+              // }
             ]
           },
           'sell': {

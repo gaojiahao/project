@@ -4,32 +4,36 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-06 10:07:51
+ * @LastEditTime: 2021-01-07 20:31:44
 -->
 <template>
 <div class="userManager_container">
-    <div class="filter">
-        <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
-            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
-            <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
-        </div>
-        <div class="filter-search">
-            <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
-            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
-            <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
-            <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
-        </div>
-    </div>
     <div class="myTable">
-        <Table row-key="id" border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
+        <Table row-key="id" border :columns="columns" height="695" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
+            <template slot="header">
+                <div class="filter">
+                    <div class="filter-button">
+                        <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
+                        <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
+                        <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+                        <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
+                        <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+                        <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+                        <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
+                    </div>
+                    <div class="filter-search">
+                        <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
+                    </div>
+                </div>    
+            </template>
+            <template slot="footer">
+                <div class="footer_page">
+                    <div class="footer_page_right">
+                        <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
+                    </div>
+                </div>
+            </template>
         </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
-            </div>
-        </div>
     </div>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
 </div>
@@ -58,7 +62,58 @@ export default {
             data: [],
             titleText: '',
             showModel: false,
-            columns: [{
+            columns: this.getTableColumn(),
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyWord:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
+        }
+    },
+    methods: {
+        GetUserInfoPage() {
+            return new Promise((resolve, reject) => {
+                GetUserInfoPage(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPage = res.result.item.totalCount;
+                            this.data = res.result.item.items;
+                            this.loading = false;
+                        });
+                    }
+                });
+            });
+        },
+        clearFormData() {
+
+        },
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetUserInfoPage();
+        },
+        refresh(){
+            this.loading = true;
+            this.pageData.skipCount=1;
+            this.GetUserInfoPage();
+        },
+        goAdd(){
+            this.$router.push({name:'addUser'});
+        },
+        goEdit(){
+            if(this.activatedRow.id){
+                this.$router.push({name:'editUser',query: {id:this.activatedRow.id}});
+            }
+        },
+        checkALl(){
+            this.$nextTick(function () {
+                this.columns = this.getTableColumn();
+            })
+        },
+        getTableColumn(){
+            var data = [{
                     title: '序号',
                     slot: 'number',
                     type: 'index',
@@ -120,56 +175,8 @@ export default {
                 {
                     title: '创建者',
                     key: 'createdBy',
-                },
-            ],
-            pageData:{
-                skipCount: 1,
-                skipTotal: 15,
-                maxResultCount: 15,
-                keyWord:'',
-                pageSizeOpts:[15,50,200],
-            },
-            totalPage:0,
-        }
-    },
-    methods: {
-        GetUserInfoPage() {
-            return new Promise((resolve, reject) => {
-                GetUserInfoPage(this.pageData).then(res => {
-                    if(res.result.code==200){
-                        this.$nextTick(() => {
-                            this.totalPage = res.result.item.totalCount;
-                            this.data = res.result.item.items;
-                            this.loading = false;
-                        });
-                    }
-                });
-            });
-        },
-        clearFormData() {
-
-        },
-        changePage(page) {
-            this.pageData.skipCount = page;
-            this.GetUserInfoPage();
-        },
-        refresh(){
-            this.loading = true;
-            this.pageData.skipCount=1;
-            this.GetUserInfoPage();
-        },
-        goAdd(){
-            this.$router.push({name:'addUser'});
-        },
-        goEdit(){
-            if(this.activatedRow.id){
-                this.$router.push({name:'editUser',query: {id:this.activatedRow.id}});
-            }
-        },
-        checkALl(){
-            this.$nextTick(function () {
-                this.columns = this.getTableColumn();
-            })
+                },]
+            return data;
         },
         changeCoulmns(data){
             let datas = [];

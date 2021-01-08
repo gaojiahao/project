@@ -4,26 +4,35 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 17:20:52
+ * @LastEditTime: 2021-01-07 21:00:00
 -->
 <template>
 <div>
-    <div class="filter">
-        <div class="filter-button">
-            <Button size="small" type="primary" icon="ios-add" @click.native="showPop(true)" class="marginRight">新建</Button>
-            <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-            <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
-            <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
-        </div>
-        <div class="filter-search">
-            <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
-            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
-            <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
-            <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
-        </div>
-    </div>
     <div class="myTable">
-        <Table row-key="id" :loading="loading" border :columns="columns" :data="data" highlight-row ref="selection" @on-select="onSelect" @on-current-change="onCurrentChange" stripe>
+        <Table row-key="id" :loading="loading" height="695" border :columns="columns" :data="data" highlight-row ref="selection" @on-select="onSelect" @on-current-change="onCurrentChange" stripe>
+            <template slot="header">
+                <div class="filter">
+                    <div class="filter-button">
+                        <Button size="small" type="primary" icon="ios-add" @click.native="showPop(true)" class="marginRight">新建</Button>
+                        <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
+                        <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+                        <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
+                        <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+                        <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+                        <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
+                    </div>
+                    <div class="filter-search">
+                        <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
+                    </div>
+                </div>    
+            </template>
+            <template slot="footer">
+                <div class="footer_page">
+                    <div class="footer_page_right">
+                        <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
+                    </div>
+                </div>
+            </template>
             <template slot-scope="{ row }" slot="number">
                 <strong>{{ row.number }}</strong>
             </template>
@@ -31,11 +40,6 @@
                 <Button type="success" size="small" style="margin-right: 5px" @click="showChildPop(true,row,index)">新建子菜单</Button>
             </template>
         </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
-            </div>
-        </div>
     </div>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ModalForm :titleText="title" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="saveMenu" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
@@ -67,59 +71,7 @@ export default {
             data: [],
             showModel: false,
             loading: true,
-            columns: [
-                {
-                    title: '菜单名称',
-                    key: 'name',
-                    tree: true
-                },
-                {
-                    title: '路由地址',
-                    key: 'linkUrl',
-                },
-                {
-                    title: '菜单图标',
-                    key: 'icon'
-                },
-                {
-                    title: '标签',
-                    key: 'code'
-                },
-                {
-                    title: '是否菜单',
-                    key: 'isMenu',
-                    render: (h, params) => {
-                        return h("span", {
-                            style: {
-                                display: "inline-block",
-                                color: params.row.isMenu==true ? "#19be6b": "#ed4014"
-                            },
-                        },params.row.isMenu?'是':'否');
-                    }
-                },
-                {
-                    title: '创建时间',
-                    key: 'createdOn',
-                },
-                {
-                    title: '是否启用',
-                    key: 'enabled',
-                    render: (h, params) => {
-                        return h("span", {
-                            style: {
-                                display: "inline-block",
-                                color: params.row.enabled==true ? "#19be6b": "#ed4014"
-                            },
-                        },params.row.enabled?'是':'否');
-                    }
-                },
-                {
-                    title: '操作',
-                    slot: 'action',
-                    align: 'center',
-                    width:250
-                }
-            ],
+            columns: this.getTableColumn(),
             pageData:{
                 skipCount: 1,
                 skipTotal: 15,
@@ -262,8 +214,6 @@ export default {
         changeCoulmns(data){
             let datas = [];
             let columns = this.getTableColumn();
-            datas.push(columns[0]);
-            datas.push(columns[1]);
             data.forEach(col => {
                 for(var i=0;i<columns.length;i++){
                     if(col == columns[i].key){
@@ -277,6 +227,60 @@ export default {
             this.$nextTick(function () {
                 this.columns = this.getTableColumn();
             })
+        },
+        getTableColumn(){
+            var data = [{
+                    title: '菜单名称',
+                    key: 'name',
+                    tree: true
+                },
+                {
+                    title: '路由地址',
+                    key: 'linkUrl',
+                },
+                {
+                    title: '菜单图标',
+                    key: 'icon'
+                },
+                {
+                    title: '标签',
+                    key: 'code'
+                },
+                {
+                    title: '是否菜单',
+                    key: 'isMenu',
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                                color: params.row.isMenu==true ? "#19be6b": "#ed4014"
+                            },
+                        },params.row.isMenu?'是':'否');
+                    }
+                },
+                {
+                    title: '创建时间',
+                    key: 'createdOn',
+                },
+                {
+                    title: '是否启用',
+                    key: 'enabled',
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                                color: params.row.enabled==true ? "#19be6b": "#ed4014"
+                            },
+                        },params.row.enabled?'是':'否');
+                    }
+                },
+                {
+                    title: '操作',
+                    slot: 'action',
+                    align: 'center',
+                    width:250
+                }]
+            return data;
         },
         changePage(page) {
             this.pageData.skipCount = page;
