@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 10:43:56
+ * @LastEditTime: 2021-01-08 11:36:53
  */
 export default {
   data() {
@@ -34,7 +34,8 @@ export default {
         },
         merchantCode:{
           name:'商户号',
-          type:'text',  
+          type:'text', 
+          disabled:true 
         },
         email:{
           name:'邮箱',
@@ -42,7 +43,8 @@ export default {
         },
         phoneNumber:{
           name:'手机',
-          type:'text',  
+          type:'text',
+          disabled:true
         },
         birthday:{
           name:'生日',
@@ -63,6 +65,7 @@ export default {
           name:'密码',
           type:'password',
           placeholder:'密码由6-20位数字加大小写字母特殊字符组成',
+          hidden:true
         },
         enabled:{
           name:'是否启用',
@@ -105,6 +108,7 @@ export default {
         password:'',
         enabled:true,
         remark:'',
+        userRoleId:'',
       },
       ruleValidate: {
         userName: [{

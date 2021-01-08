@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-25 11:55:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-06 09:51:38
+ * @LastEditTime: 2021-01-08 11:03:24
 -->
 <template>
 <div class="add_store">
@@ -28,7 +28,7 @@
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/settings/userManager/userManagerConfig";
+import config from "@views/settings/userManager/editUserManagerConfig";
 import {
     UpdateUserInfo,
     GetUserInfoById
@@ -74,7 +74,8 @@ export default {
         clearFormData() {},
         goReturn(){
             this.$router.go(-1);
-        }
+        },
+
     },
     created() {
         this.id = this.$route.query.id;
@@ -86,14 +87,17 @@ export default {
                         this.formValidate = {
                             id: res.result.item.id,
                             userName: res.result.item.userName,
+                            roleId: res.result.item.roleId,
+                            merchantCode: res.result.item.merchantCode,
                             nickName:res.result.item.nickName,
                             email:res.result.item.email,
                             phoneNumber:res.result.item.phoneNumber,
                             birthday:res.result.item.birthday,
                             sex:res.result.item.sex,
-                            password:res.result.item.password,
+                            // password:res.result.item.password,
                             enabled:res.result.item.enabled,
-                            remark:res.result.item.remark
+                            remark:res.result.item.remark,
+                            userRoleId:res.result.item.userRoleId,
                         };
                     } else if (res.result.code == 400) {
                         this.$Message.error({
