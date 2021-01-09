@@ -1,17 +1,17 @@
 <template>
-<li class="ivu-menu-submenu ivu-menu-submenu-height" :class="[ opened&&activeMenu==item.value ? 'ivu-menu-opened':'']" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave">
+<li class="ivu-menu-submenu ivu-menu-submenu-height" :class="[ opened&&activeMenu==item.code ? 'ivu-menu-opened':'']" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave">
     <!--<div class="ivu-menu-submenu-title" @click="clickMenu(item)">-->
     <div class="ivu-menu-submenu-title" @click="clickMenu(item)">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
         {{item.name}}
-        <i class="ivu-icon ivu-icon-ios-arrow-down ivu-menu-submenu-title-icon" :class="[ openedDrop ? 'ivu-icon-ios-arrow-down-transform':'']" v-if="item&&item.children&&item.children.length&&item.status"></i>
+        <i class="ivu-icon ivu-icon-ios-arrow-down ivu-menu-submenu-title-icon" :class="[ openedDrop ? 'ivu-icon-ios-arrow-down-transform':'']" v-if="item&&item.children&&item.children.length&&item.enabled"></i>
     </div>
-    <div class="ivu-select-dropdown" :style="dropStyle" :class="[ openedDrop ? 'ivu-select-dropdown-display':'ivu-select-dropdown-none']" v-if="item&&item.children&&item.children.length&&item.status">
+    <div class="ivu-select-dropdown" :style="dropStyle" :class="[ openedDrop ? 'ivu-select-dropdown-display':'ivu-select-dropdown-none']" v-if="item&&item.children&&item.children.length&&item.enabled">
         <ul class="ivu-menu-drop-list" v-for="(data,k) in item.children" :key='k'>
-            <li class="ivu-menu-item-group" v-if="data.status">
+            <li class="ivu-menu-item-group" v-if="data.enabled">
                 <div class="ivu-menu-item-group-title" @click="clickMenu(item,data)">{{data.name}}</div>
                 <ul v-for="(dItem,y) in data.children" :key="y">
-                    <li class="ivu-menu-item" @click="clickMenu(item,data,dItem)" v-if="dItem.status">
+                    <li class="ivu-menu-item" @click="clickMenu(item,data,dItem)" v-if="dItem.enabled">
                         {{dItem.name}}
                     </li>
                 </ul>
@@ -98,7 +98,7 @@ export default {
             return style;
         },
         activeMenu() {
-            return this.$store.state.menuRouter.oneLevel.value; //需要监听的数据
+            return this.$store.state.menuRouter.oneLevel.code; //需要监听的数据
         }
     },
     methods: {
@@ -125,15 +125,15 @@ export default {
             var routerPath = "/";
             if (one) {
                 data['oneLevel'] = one;
-                routerPath = routerPath + one.value;
+                routerPath = routerPath + one.code;
             }
             if (two) {
                 data['twoLevel'] = two;
-                routerPath = routerPath + '/' + two.value;
+                routerPath = routerPath + '/' + two.code;
             }
             if (third) {
                 data['thirdLevel'] = third;
-                routerPath = routerPath + '/' + third.value;
+                routerPath = routerPath + '/' + third.code;
             }
             this.activeIndex = data;
             this.$store.commit('setMenuRouter', data);

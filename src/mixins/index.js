@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 20:12:32
+ * @LastEditTime: 2021-01-08 20:32:30
  */
 export default {
     data() {
       return {
-        // leftMenu:{},
-        menuList: {
+        menuList:{},
+        menuList2: {
           'index': {
             name: '工作台',
             value: 'index',
@@ -102,12 +102,7 @@ export default {
                     name: '流程管理',
                     value: 'flowManager',
                     status: true,
-                  },
-                  // {
-                  //   name: '表单关联管理',
-                  //   value: 'formManager',
-                  //   status: true,
-                  // },    
+                  },   
                 ],
               },
             ],
@@ -121,14 +116,7 @@ export default {
               {
                 name: '新品开发管理',
                 value: 'developNewProducts',
-                status: true,
-                // children: [
-                //   {
-                //     name: '新建新品',
-                //     value: 'addNewProduct',
-                //     status: true,     
-                //   },
-                // ],   
+                status: true,  
               },
               {
                 name: '产品管理',
@@ -141,11 +129,6 @@ export default {
                 value: 'supplierManager',
                 status: true,
               },
-              // {
-              //   name: '客户管理',
-              //   value: 'customerManager',
-              //   status: true,
-              // }
             ]
           },
           'sell': {

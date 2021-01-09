@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 11:10:16
+ * @LastEditTime: 2021-01-09 10:43:36
 -->
 <template>
 <div class="layout">
@@ -15,11 +15,11 @@
         </Header>
         <Layout class="container">
             <!-- 左侧菜单 -->
-            <Sider ref="side1" hide-trigger breakpoint="md" class="container-sider" v-model="isCollapsed" collapsible :collapsed-width="78" v-if="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" :width="150">
+            <Sider ref="side1" hide-trigger breakpoint="md" class="container-sider" v-model="isCollapsed" collapsible :collapsed-width="78" v-if="leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" :width="150">
                 <Menu active-name="typeManager" :theme="theme1" width="auto" :open-names="['1']" :class="menuitemClasses">
                     <div class="title-menu">
                         <Icon type="ios-apps" :style="{verticalAlign: '-0.05em'}" @click.native="collapsedSider" />
-                        <span v-show="!isCollapsed">{{leftMenu&&leftMenu.oneLevel.name}}</span>
+                        <span v-show="!isCollapsed">{{leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.name}}</span>
                     </div>
                     <template v-for="(item,index) in leftMenu&&leftMenu.oneLevel.children">
                         <XSubmenu :item="item" :parentItem="leftMenu" :isCollapsed="isCollapsed">
@@ -28,10 +28,10 @@
                 </Menu>
             </Sider>
             <!-- 右侧内容模块 -->
-            <div :class="[ leftMenu&&leftMenu.oneLevel.name!='index'&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length ? (isCollapsed ? 'marginRight' : 'marginLeft') : 'nomargin']" class="content">
-                <div :class="leftMenu&&leftMenu.oneLevel.value=='index' ? 'index_panel':'content-panel'">
+            <div :class="[ leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.name!='index'&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length ? (isCollapsed ? 'marginRight' : 'marginLeft') : 'nomargin']" class="content">
+                <div :class="leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.code=='index' ? 'index_panel':'content-panel'">
                     <!-- 面包屑导航条 -->
-                    <BreadcrumbNav v-show="leftMenu&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" ref="breadcrumbNav"></BreadcrumbNav>
+                    <BreadcrumbNav v-show="leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" ref="breadcrumbNav"></BreadcrumbNav>
                     <!-- 内容模块 -->
                     <transition>
                         <keep-alive>
@@ -63,6 +63,8 @@ import BreadcrumbNav from "@components/home/menu/breadCrumbNav";
 import XSubmenu from "@components/home/menu/xSubMenu/xSubmenu";
 import Index from "@mixins/index";
 import tokenService from "@service/tokenService";
+import { GetUserRoleMenu } from "@service/basicService";
+const ERP_MENU = 'ERP_MENU';
 
 export default {
     name: "Home",
@@ -97,6 +99,7 @@ export default {
             isCollapsed: false,
             theme1: "light",
             routerAlive: true,
+            sessionApps:{},
         };
     },
     computed: {
@@ -111,11 +114,19 @@ export default {
         },
         leftMenu() {
             //初始化菜单数据
-            if (this.$store.state.menuRouter.oneLevel) {
-                return this.$store.state.menuRouter;
+            if(this.menuList['index']){
+                var activeMenu = this.$store.state.menuRouter;
+                if (activeMenu && activeMenu.oneLevel) {
+                    return  activeMenu;
+                } else {
+                    var data = {};
+                    var active = this.$route.name;
+                    data['oneLevel'] = this.menuList[active];
+                    this.$store.commit('setMenuRouter', data);
+                    return JSON.parse(window.sessionStorage.getItem('activeMenu'));
+                }
             } else {
-                this.$store.commit('setMenuRouter', JSON.parse(window.sessionStorage.getItem('activeMenu')));
-                return JSON.parse(window.sessionStorage.getItem('activeMenu'));
+                return this.menuList2['index'];
             }
         }
     },
@@ -123,18 +134,46 @@ export default {
         collapsedSider() {
             this.$refs.side1.toggleCollapse();
         },
+        async initMenu() {
+            return GetUserRoleMenu().then(res => {
+                if(res.result.code==200){
+                    this.dealMenu(res.result.item.modulesList);
+                    console.log('菜单接已加载')
+                }
+            });
+        },
+        dealMenu(data){
+            for(var i=0;i<data.length;i++){
+                if(data[i]['code']){
+                    var text = data[i]['code'];
+                    this.$set(this.menuList,text,data[i]);
+                }
+            }
+        },
+        //递归函数
+        calleArr: function(data){
+            for(var i=0;i<data.length;i++){
+                data[i]['value'] = data[i].code;
+                data[i]['status'] = data[i].enabled;
+                if(data[i]['children']&&data[i]['children'].length){
+                    this.calleArr(data[i]['children']);
+                }
+            }
+        },
+        async init(){
+            var me = this;
+            me.sessionApps = JSON.parse(sessionStorage.getItem(ERP_MENU));
+            if(me.sessionApps) {
+                me.menuList  = me.sessionApps;
+            } else {
+                await me.initMenu();
+                sessionStorage.setItem(ERP_MENU,JSON.stringify(me.menuList));
+            }
+            me.$loading.hide();
+        }
     },
     created() {
-        this.$loading.hide();
-        var activeMenu = this.$store.state.menuRouter;
-        if (activeMenu && activeMenu.oneLevel) {
-            console.log('已经有菜单了', activeMenu);
-        } else {
-            var data = {};
-            var active = this.$route.name;
-            data['oneLevel'] = this.menuList[active];
-            this.$store.commit('setMenuRouter', data);
-        }
+        this.init();
     }
 };
 </script>

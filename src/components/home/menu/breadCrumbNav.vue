@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 16:56:06
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-16 15:50:21
+ * @LastEditTime: 2021-01-09 10:25:52
 -->
 <template>
 <div class="break-container">
@@ -52,15 +52,15 @@ export default {
             var routerPath = "/";
             if (one) {
                 data['oneLevel'] = one;
-                routerPath = routerPath + one.value;
+                routerPath = routerPath + one.code;
             }
             if (two) {
                 data['twoLevel'] = two;
-                routerPath = routerPath + '/' + two.value;
+                routerPath = routerPath + '/' + two.code;
             }
             if (third) {
                 data['thirdLevel'] = third;
-                routerPath = routerPath + '/' + third.value;
+                routerPath = routerPath + '/' + third.code;
             }
             this.activeIndex = data;
             this.$store.commit('setMenuRouter', data);

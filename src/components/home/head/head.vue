@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-22 19:51:49
+ * @LastEditTime: 2021-01-09 10:54:13
 -->
 <template>
 <div class="head">
@@ -53,6 +53,7 @@ import {
 import YSubmenu from "@/components/home/menu/xSubMenu/ySubmenu";
 const XZX_TOKEN_KEY = "XZX_LOGIN_TOKEN";
 const localStorage = window["localStorage"];
+const sessionStorage = window["sessionStorage"];
 export default {
     name: "Head",
     props: {
@@ -72,6 +73,14 @@ export default {
         Dropdown,
         DropdownMenu,
         DropdownItem
+    },
+    watch:{
+        menuList: {
+            handler(val){
+                debugger
+            },
+            deep:true,
+        }
     },
     data() {
         return {
@@ -111,7 +120,7 @@ export default {
         loginOut() {
             localStorage.removeItem(XZX_TOKEN_KEY);
             localStorage.clear();
-            localStorage.clear();
+            sessionStorage.clear();
             this.$store.commit('clearMenuRouter');
             this.$router.push('/login');
         }

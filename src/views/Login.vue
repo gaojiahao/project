@@ -41,11 +41,11 @@ d<!--
                         <Input class="password" prefix="ios-key" v-model="passWord" type="password" password placeholder="密码6-10位" />
                     </form>
                     <div style="width: 100%;display: flex; margin-top: 20px;">
-                        <Input v-model="code" placeholder="验证码" style="width: 80px;margin-left: 100px;float: left;" />
+                        <Input v-model="code" placeholder="验证码" style="width: 80px;margin-left: 100px;float: left;" @focus="login()"/>
                         <s-identify :identifyCode="identifyCode" @click.native="refreshCode" @set-identifyCode="setIdentifyCode"></s-identify>
                     </div>
                     <div class="login_button">
-                        <Button type="primary" @click="login" @keyup.enter="login">登录</Button>
+                        <Button type="primary" @click="login" @blur.native="login">登录</Button>
                     </div>
                 </template>
             </div>

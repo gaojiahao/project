@@ -1,13 +1,13 @@
 <template>
 <li class="ivu-menu-submenu" :class="[ activeMenu ? 'ivu-menu-opened':'ivu-menu-submenu-color']">
-    <div class="ivu-menu-submenu-title" @click="clickMenu(parentItem&&parentItem.oneLevel,item)" v-if="item&&item.status">
+    <div class="ivu-menu-submenu-title" @click="clickMenu(parentItem&&parentItem.oneLevel,item)" v-if="item&&item.enabled">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
         <span class="ivu-menu-text" v-if="!isCollapsed">{{item.name}}</span>
         <i class="ivu-icon ivu-icon-ios-arrow-down" :class="[(opendedChild||opendedChildCom) ? 'ivu-menu-submenu-title-icon-up' : 'ivu-menu-submenu-title-icon-down']" v-if="item&&item.children&&item.children.length&&!isCollapsed"></i>
     </div>
     <collapse-transition v-if="mode === 'vertical'">
         <ul class="ivu-menu" v-show="opendedChild||opendedChildCom" v-for="(data,k) in item.children" :key="k">
-            <li class="ivu-menu-item ivu-menu-box" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.status">{{data.name}}
+            <li class="ivu-menu-item ivu-menu-box" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.enabled">{{data.name}}
             </li>
         </ul>
     </collapse-transition>
@@ -71,24 +71,24 @@ export default {
         arrowType() {
             let type = 'ivu-menu-submenu-title-icon-down';
 
-            if (this.opened && this.$store.state.menuRouter.twoLevel && (this.$store.state.menuRouter.twoLevel.value == this.item.value)) {
+            if (this.opened && this.$store.state.menuRouter.twoLevel && (this.$store.state.menuRouter.twoLevel.code == this.item.code)) {
                 type = 'ivu-menu-submenu-title-icon-up';
             } else {
-                if (this.$store.state.menuRouter.thirdLevel && this.$store.state.menuRouter.thirdLevel.value) {
+                if (this.$store.state.menuRouter.thirdLevel && this.$store.state.menuRouter.thirdLevel.code) {
                     type = 'ivu-menu-submenu-title-icon-up';
                 }
             }
             return type;
         },
         activeMenu() {
-            if (this.$store.state.menuRouter.twoLevel && (this.$store.state.menuRouter.twoLevel.value == this.item.value)) {
+            if (this.$store.state.menuRouter.twoLevel && (this.$store.state.menuRouter.twoLevel.code == this.item.code)) {
                 return true; //需要监听的数据
             } else {
                 return false;
             }
         },
         opendedChildCom() {
-            if (this.$store.state.menuRouter.twoLevel && this.$store.state.menuRouter.twoLevel.value == this.item.value) {
+            if (this.$store.state.menuRouter.twoLevel && this.$store.state.menuRouter.twoLevel.code == this.item.code) {
 
                 return this.opendedChild ? false : true; //需要监听的数据
             } else {
@@ -102,15 +102,15 @@ export default {
             var routerPath = "/";
             if (one) {
                 data['oneLevel'] = one;
-                routerPath = routerPath + one.value;
+                routerPath = routerPath + one.code;
             }
             if (two) {
                 data['twoLevel'] = two;
-                routerPath = routerPath + '/' + two.value;
+                routerPath = routerPath + '/' + two.code;
             }
             if (third) {
                 data['thirdLevel'] = third;
-                routerPath = routerPath + '/' + third.value;
+                routerPath = routerPath + '/' + third.code;
             }
             this.activeIndex = data;
             this.$store.commit('setMenuRouter', data);
