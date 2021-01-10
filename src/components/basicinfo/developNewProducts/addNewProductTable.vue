@@ -4,19 +4,19 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:55:41
+ * @LastEditTime: 2021-01-09 17:00:05
 -->
 <template>
 <div class="addNewProductTable-container">
     <div>
-        <Table border :columns="columns" :data="data" stripe>
+        <Table border :columns="columns" :data="data" :loading="loading" stripe>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">参考比价</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                <Page :total="pageData.totalPagePruch" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
             </div>
         </div>
     </div>
@@ -33,6 +33,24 @@ export default {
     components: {
         ModalForm,
     },
+    props:{
+        data: {
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        loading:{
+            type: Boolean,
+            default: true,
+        },
+        pageData:{
+            type: Object,
+            default () {
+                return {}
+            }
+        },
+    },
     mixins: [config],
     data() {
         return {
@@ -41,19 +59,23 @@ export default {
             defaultImg: require("@assets/default/logo.png"),
             columns: [{
                     title: '供应商名称',
-                    key: 'name'
+                    key: 'supplierName'
                 },
                 {
                     title: '最小采购量',
-                    key: 'code'
+                    key: 'minQuantity'
                 },
                 {
                     title: '采购单价',
-                    key: 'supplier'
+                    key: 'purchasePrices'
                 },
                 {
                     title: '链接地址',
-                    key: 'developer'
+                    key: 'url'
+                },
+                {
+                    title: '备注',
+                    key: 'remark'
                 },
                 {
                     title: '操作',
@@ -73,43 +95,7 @@ export default {
                     value: 'all',
                 }]
             },
-            data: [{
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }, {
-                name: '供应厂商1',
-                code: '100',
-                supplier: "100",
-                developer: "www.fdafs.com",
-            }],
-            filter: "large"
+            data: [],
         }
     },
     methods: {
@@ -128,9 +114,12 @@ export default {
         save() {
 
         },
-        changePage() {
-
-        }
+        changePage(page){
+            this.$emit('change-page',page);
+        },
+        onPageSizeChange(pagesize){
+            this.$emit('on-page-size-change',pagesize);
+        },
     }
 }
 </script>

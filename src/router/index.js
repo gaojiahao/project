@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 20:54:45
+ * @LastEditTime: 2021-01-09 17:13:26
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -505,6 +505,16 @@ const routes = [
                   level: 2,
                 },
                 component: resolve=>(require(["@views/basicinfo/developNewProducts/addNewProduct"],resolve)),
+              },
+              {
+                path: 'editNewProduct',
+                name: 'editNewProduct',
+                meta:{ 
+                  title:'编辑新品',
+                  group: "developNewProducts",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/editNewProduct"],resolve)),
               },
               {
                 path: 'viewNewProduct',

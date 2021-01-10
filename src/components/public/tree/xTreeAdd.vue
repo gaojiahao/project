@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 15:25:39
+ * @LastEditTime: 2021-01-09 20:17:07
 -->
 <template>
 <div>
@@ -63,6 +63,7 @@ export default {
         },
         calleArr: function(data){
             for(var i in data){
+                debugger
                 if(data[i].parent){ 
                     data[i] = {
                         ...data[i].parent,

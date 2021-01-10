@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 14:47:41
+ * @LastEditTime: 2021-01-09 17:50:06
 -->
 <template>
 <div class="size-content">
@@ -41,6 +41,13 @@ export default {
             default: false
         }
     },
+    watch:{
+        value:{        
+            handler(val){
+                this.list = val;
+            }
+        }
+    },
     data() {
         return {
             list: {
@@ -56,8 +63,8 @@ export default {
             this.list.push('')
         },
         handleInput() {
-            var jsonData = JSON.stringify(this.list);
-            this.$emit('change', jsonData)
+            // var jsonData = JSON.stringify(this.list);
+            this.$emit('change', this.list)
         }
     },
     created() {}

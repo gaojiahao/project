@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 20:05:08
+ * @LastEditTime: 2021-01-09 15:43:34
  */
 import $flyio from '@plugins/ajax';
 //新品开发管理
@@ -35,6 +35,20 @@ export let GetPrepGoodsPage = (data = {}) => {
 export let GetPrepGoodsById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetPrepGoodsById',
+    data: data
+  })
+};
+//添加商品销售信息
+export let CraeteGoodsSupplier = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CraeteGoodsSupplier',
+    data: data
+  })
+};
+//分页查询商品销售信息
+export let GetGoodsSupplierPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetGoodsSupplierPage',
     data: data
   })
 };

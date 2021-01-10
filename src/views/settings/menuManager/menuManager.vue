@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 21:00:00
+ * @LastEditTime: 2021-01-09 17:16:05
 -->
 <template>
 <div>
@@ -96,14 +96,14 @@ export default {
                     this.$nextTick(() => {
                         this.totalPage = res.result.item.totalCount;
                         this.data = res.result.item.items;
-                        this.data = res.result.item.items.map((e,index)=>{
-                            e = {
-                                ...e.parent,
-                                children: e.children
-                            }
-                            this.$delete(e,'parent');
-                            return e;
-                        });
+                        // this.data = res.result.item.items.map((e,index)=>{
+                        //     e = {
+                        //         ...e.parent,
+                        //         children: e.children
+                        //     }
+                        //     this.$delete(e,'parent');
+                        //     return e;
+                        // });
                         this.loading = false;
                     });
                 }

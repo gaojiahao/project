@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 20:12:01
+ * @LastEditTime: 2021-01-09 19:52:57
 -->
 <template>
 <div>
@@ -64,7 +64,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">属性</Divider>
                 <div class="top_tabale">
-                    <XForm :formValidate="propertyFormValidate" :ruleValidate="ruleValidate" :formConfig="property" @save="save" @clear-form-data="clearFormData" ref="formproperty">
+                    <XForm :formValidate="propertyFormValidate" :ruleValidate="ruleValidate" :formConfig="property" @save="save" @clear-form-data="clearFormData" ref="form">
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%">
@@ -81,7 +81,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale">
-                    <XForm :formValidate="detailInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="detailInfo" @save="save" @clear-form-data="clearFormData" ref="formdetailInfo">
+                    <XForm :formValidate="detailInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="detailInfo" @save="save" @clear-form-data="clearFormData" ref="form">
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%">
@@ -114,14 +114,16 @@ import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addN
 import {
     CreatePrepGoods,
     CraeteGoodsSupplier,
-    GetGoodsSupplierPage
+    GetGoodsSupplierPage,
+    GetPrepGoodsById,
+    UpdatePrepGoods
 } from "@service/basicinfoService"
 import {
     Tabs,
     TabPane,
 } from "view-design";
 export default {
-    name: 'addNewProduct',
+    name: 'editNewProduct',
     components: {
         Tabs,
         TabPane,
@@ -168,26 +170,22 @@ export default {
                 howlong:params.productSize.long,
                 width:params.productSize.wide,
                 high:params.productSize.high,
-                volume:params.productSize.volume,
                 packageLong:params.packagingSize.long,
                 packageWidth:params.packagingSize.wide,
                 packageHigh:params.packagingSize.high,
-                packageVolume:params.packagingSize.volume,
             }
             console.log('params',params);
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+            this.$refs['form'].$refs['productInfoFormValidate'].validate((valid) => {
                 if (valid) {
-                    debugger
-                    if (!this.productInfoFormValidate.id) {
+                    if (this.productId) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
-                            CreatePrepGoods(params).then(res => {
+                            UpdatePrepGoods(params).then(res => {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：新建成功！');
+                                    this.$Message.info('温馨提示：更新成功！');
                                     this.productId = res.result.item.id;
-                                    this.$router.push({name:'editNewProduct',query: {id:this.productId}});
-                                    //this.GetGoodsSupplierPage();
+                                    this.GetGoodsSupplierPage();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -273,9 +271,59 @@ export default {
             this.$Message.info({content:'温馨提示：保存成功'});
             this.disabledLog = false;    
             this.tabName = 'logInfo';   
-        }
+        },
+        getFormData(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetPrepGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.prod
+                            this.productInfoFormValidate = {
+                                id: res.result.item.id,
+                                code:res.result.item.code,
+                                name: res.result.item.name,
+                                categoryId: res.result.item.categoryId,
+                                characteristic:res.result.item.characteristic,
+                                brandId:res.result.item.brandId,
+                                brandName:res.result.item.brandName,
+                                isPackage: res.result.item.isPackage,
+                                weight:res.result.item.weight,
+                                productSize:{
+                                    long: res.result.item.howlong,
+                                    wide: res.result.item.width,
+                                    high: res.result.item.high,
+                                    volume: res.result.item.volume,
+                                },
+                                material:res.result.item.material,
+                                packageCost:res.result.item.packageCost,
+                                packageWeight:res.result.item.packageWeight,
+                                packagingSize:{
+                                    long: res.result.item.packageLong,
+                                    wide: res.result.item.packageWidth,
+                                    high: res.result.item.packageHigh,
+                                    volume: res.result.item.packageVolume,
+                                },
+                                features:res.result.item.features,
+                                description:res.result.item.description
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.message
+                            });
+                        }
+                    });
+                });    
+            }
+        },
     },
-    created() {}
+    created() {
+        this.productId = this.$route.query.id;
+        this.getFormData();
+        this.GetGoodsSupplierPage();
+    }
 }
 </script>
 <style lang="less" scoped>

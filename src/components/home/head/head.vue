@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 10:54:13
+ * @LastEditTime: 2021-01-09 14:17:02
 -->
 <template>
 <div class="head">
@@ -77,7 +77,7 @@ export default {
     watch:{
         menuList: {
             handler(val){
-                debugger
+                
             },
             deep:true,
         }

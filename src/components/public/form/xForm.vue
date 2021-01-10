@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 16:37:10
+ * @LastEditTime: 2021-01-09 14:37:14
 -->
 <template>
 <div class="content">
@@ -12,6 +12,7 @@
         <slot name='other'>
         </slot>
         <template v-for="(item, index) in formValidate">
+            <Divider orientation="left" size="small" v-if="index==divisionField.value">{{divisionField.name}}</Divider>
             <!--文本框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="(formConfig[index]&&formConfig[index]['type']=='text')&&!formConfig[index]['hidden']">
                <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
@@ -140,6 +141,13 @@ export default {
                 return {}
             }
         },
+        divisionField:{
+            type: Object,
+            default () {
+                return {}
+            }
+        }
+
     },
     data() {
         return {
