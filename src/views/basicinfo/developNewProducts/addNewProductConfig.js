@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 19:57:17
+ * @LastEditTime: 2021-01-11 09:31:39
  */
 export default {
     data() {
@@ -46,6 +46,13 @@ export default {
       const supplierIdSizeVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
             callback(new Error('请选择供应商名称'));
+        } else {
+          callback();
+        }
+      };
+      const packageCostVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请输入包装成本'));
         } else {
           callback();
         }
@@ -143,9 +150,9 @@ export default {
             name:'商品特点',
             type:'textarea',
           },
-          description:{
+          remark:{
             name:'备注',
-            type:'textarea',
+            type:'textarea',  
           },
         },
         purchase:{
@@ -154,7 +161,7 @@ export default {
             type:'select',
             dataSource:{
               type:'dynamic',
-              url:'/api/GetBrandList',
+              url:'/api/GetSupplierList',
               data:[],
             },
             bind:{
@@ -279,12 +286,13 @@ export default {
           brandName:'',
           isPackage: true,
           weight:'',
-          productSize:'',
+          productSize:{},
           material:'',
           packageCost:'',
           packageWeight:'',
-          packagingSize:'',
+          packagingSize:{},
           features:'',
+          remark:'',
           description:''
         },
         purchaseFormValidate:{
@@ -363,6 +371,7 @@ export default {
             type: 'string',
             message: '请输入包装成本', 
             trigger: 'blur',
+            validator: packageCostVali
           }],
           packagingWeight:[{ 
             required: true,
@@ -442,18 +451,18 @@ export default {
             value:'recommendingOfficer',
             type:'text',
           },
-          status:{
-            name:'状态',
-            value:'status',
-            type:'radio',
-            dataSource:{
-              type:'static',
-              data:[
-                {name:'是',value:'true'},
-                {name:'否',value:'false'}
-              ],
-            },
-          },
+          // status:{
+          //   name:'状态',
+          //   value:'status',
+          //   type:'radio',
+          //   dataSource:{
+          //     type:'static',
+          //     data:[
+          //       {name:'是',value:'true'},
+          //       {name:'否',value:'false'}
+          //     ],
+          //   },
+          // },
           modifyTime:{
             name:'修改时间',
             value:'modifyTime',

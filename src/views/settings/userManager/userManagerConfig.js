@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 15:55:35
+ * @LastEditTime: 2021-01-10 14:41:37
  */
 export default {
   data() {
@@ -152,7 +152,7 @@ export default {
           trigger: 'change' 
         }],
         sex: [{ required: true, message: '请选择性别',validator: sexVali, trigger: 'change' }],
-        enabled: [{ required: true, message: '请选择是否启用',validator: enabledVali, trigger: 'change' }],
+        // enabled: [{ required: true, message: '请选择是否启用',validator: enabledVali, trigger: 'change' }],
         roleId: [{ required: true, message: '请选择所属角色',validator: roleIdVali, trigger: 'change' }],
       },
       filtersConfig:{

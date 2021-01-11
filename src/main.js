@@ -40,6 +40,7 @@ Vue.use(VideoPlayer);
 Vue.use(AudioPlayer);
 Vue.use(FromLoading);
 Vue.use(VueQuillEditor);
+Vue.prototype.$api  = process.env.VUE_APP_API;
 
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {

@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 15:55:54
+ * @LastEditTime: 2021-01-10 20:31:22
 -->
 <template>
 <div class="addNewProductTable-container">
     <div>
         <Table border :columns="columns" :data="data" stripe>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">参考比较</Button>
+                <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">参考比价</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">

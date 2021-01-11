@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 10:43:36
+ * @LastEditTime: 2021-01-10 17:37:36
 -->
 <template>
 <div class="layout">
     <Layout>
         <!-- 顶部菜单 -->
         <Header class="header">
-            <Head :menuList="menuList"></Head>
+            <Head :menuList="menuList" :userRole="userRole"></Head>
         </Header>
         <Layout class="container">
             <!-- 左侧菜单 -->
@@ -65,6 +65,7 @@ import Index from "@mixins/index";
 import tokenService from "@service/tokenService";
 import { GetUserRoleMenu } from "@service/basicService";
 const ERP_MENU = 'ERP_MENU';
+const ERP_ROLE = 'ERP_ROLE';
 
 export default {
     name: "Home",
@@ -100,6 +101,7 @@ export default {
             theme1: "light",
             routerAlive: true,
             sessionApps:{},
+            userRole:''
         };
     },
     computed: {
@@ -137,7 +139,9 @@ export default {
         async initMenu() {
             return GetUserRoleMenu().then(res => {
                 if(res.result.code==200){
+                    this.userRole = res.result.item.roleName;
                     this.dealMenu(res.result.item.modulesList);
+                    window.sessionStorage.setItem('ERP_ROLE', JSON.stringify(res.result.item.roleName));
                     console.log('菜单接已加载')
                 }
             });
@@ -165,6 +169,7 @@ export default {
             me.sessionApps = JSON.parse(sessionStorage.getItem(ERP_MENU));
             if(me.sessionApps) {
                 me.menuList  = me.sessionApps;
+                this.userRole = JSON.parse(window.sessionStorage.getItem('ERP_ROLE'));
             } else {
                 await me.initMenu();
                 sessionStorage.setItem(ERP_MENU,JSON.stringify(me.menuList));

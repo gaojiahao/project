@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 17:17:47
+ * @LastEditTime: 2021-01-10 18:07:33
 -->
 <template>
 <div class="developNewProductsList-container">
@@ -38,7 +38,7 @@
             </template>
         </Table>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <!-- <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm> -->
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
 </div>

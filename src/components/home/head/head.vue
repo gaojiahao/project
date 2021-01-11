@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 14:17:02
+ * @LastEditTime: 2021-01-10 17:26:21
 -->
 <template>
 <div class="head">
@@ -18,7 +18,7 @@
         <li class="right-item right-title" style="padding:0px 10px;">
             <Dropdown>
                 <div href="javascript:void(0)">
-                    {{userInfo.nickName}}
+                    {{userInfo.userName}}
                     <Icon type="md-arrow-dropdown"></Icon>
                 </div>
                 <DropdownMenu slot="list">
@@ -34,7 +34,7 @@
             |
         </li>
         <li class="right-item right-title" style="padding:0px 10px;">
-            {{userInfo.userName}}
+            {{userRole}}
         </li>
     </Menu>
 </div>
@@ -52,6 +52,7 @@ import {
 } from "view-design";
 import YSubmenu from "@/components/home/menu/xSubMenu/ySubmenu";
 const XZX_TOKEN_KEY = "XZX_LOGIN_TOKEN";
+const ERP_ROLE = "ERP_ROLE";
 const localStorage = window["localStorage"];
 const sessionStorage = window["sessionStorage"];
 export default {
@@ -62,7 +63,12 @@ export default {
             default () {
                 return {}
             }
+        },
+        userRole:{
+            type:String,
+            default:''
         }
+
     },
     components: {
         Menu,
@@ -80,6 +86,12 @@ export default {
                 
             },
             deep:true,
+        },
+        userRole:{
+            handler(val){
+                debugger
+            },
+            deep:true
         }
     },
     data() {
@@ -91,7 +103,7 @@ export default {
             },
             theme1: "dark",
             activeIndex: 'index',
-            userInfo: {}
+            userInfo: {},
         };
     },
     methods: {

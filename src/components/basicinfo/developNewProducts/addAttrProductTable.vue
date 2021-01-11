@@ -4,23 +4,26 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 18:04:46
+ * @LastEditTime: 2021-01-11 09:14:39
 -->
 <template>
-<div class="addNewProductTable-container">
-    <div>
-        <Table border :columns="columns" :data="data" :loading="loading" stripe>
-            <template slot-scope="{ row, index }" slot="action">
-                <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">参考比价</Button>
-            </template>
-        </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="pageData.totalPagePruch" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
+<div class="addAttrProductTable-container">
+    <div class="display:block;">
+        <div style="margin-bottom: 10px; padding:10px"  v-for="(item,index) in data">
+            <div style="position: relative;line-height: 32px;font-size: 14px;">
+                <label style="text-align: right;vertical-align: middle;float: left;font-size: 14px;color: #515a6e;line-height: 1;padding: 10px 12px 10px 0;box-sizing: border-box;width: 120px;">{{ item.attributeName }}</label>
+                <Select style="width:200px">
+                    <Option v-for="(dItem,k) in item.valueList" :value="dItem.valueId" :key="dItem.valueId">{{ dItem.valueName }}</Option>
+                </Select>
+            </div>
+        </div>
+        <div style="margin-bottom: 10px; padding:10px;display: inline-block;">
+            <div style="position: relative;line-height: 48px;font-size: 14px;margin-left:120px">
+                <Button @click="clearFormData" style="float: right;">取消</Button>
+                <Button type="primary" @click="save" style="float: right; margin-right:10px">保存</Button>
             </div>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
 </div>
 </template>
 
@@ -95,6 +98,9 @@ export default {
                     value: 'all',
                 }]
             },
+            formValue:{
+                
+            }
         }
     },
     methods: {
@@ -113,17 +119,11 @@ export default {
         save() {
 
         },
-        changePage(page){
-            this.$emit('change-page',page);
-        },
-        onPageSizeChange(pagesize){
-            this.$emit('on-page-size-change',pagesize);
-        },
     }
 }
 </script>
 <style lang="less" scoped>
-.addNewProductTable-container {
+.addAttrProductTable-container {
     margin-top: 16px;
 
     .head {

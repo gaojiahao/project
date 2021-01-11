@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 15:43:34
+ * @LastEditTime: 2021-01-10 21:08:12
  */
 import $flyio from '@plugins/ajax';
 //新品开发管理
@@ -35,6 +35,24 @@ export let GetPrepGoodsPage = (data = {}) => {
 export let GetPrepGoodsById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetPrepGoodsById',
+    data: data
+  })
+};
+export let InsertPic = (data = {}) => {
+  return $flyio.post({
+    url: '/api/InsertPic',
+    data: data
+  })
+};
+export let GetPrepGoodsAttributeById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetPrepGoodsAttributeById',
+    data: data
+  })
+};
+export let UpdatePrepGoodsAttribute = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdatePrepGoodsAttribute',
     data: data
   })
 };

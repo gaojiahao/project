@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 16:32:23
+ * @LastEditTime: 2021-01-10 22:48:15
  */
 export default {
     data() {
@@ -72,9 +72,6 @@ export default {
             { pattern: /^1[3456789]\d{9}$/, message: "手机号码格式不正确", trigger: "blur" }
           ],
           contacts: [{
-
-          }],
-          address: [{
 
           }],
           email: [

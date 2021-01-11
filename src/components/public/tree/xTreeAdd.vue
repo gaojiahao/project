@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 20:17:07
+ * @LastEditTime: 2021-01-10 17:53:16
 -->
 <template>
 <div>
     <Modal v-model="modal" title="分配权限" @on-ok="ok" @on-cancel="cancel" width="800">
-        <Tree :data="datas" show-checkbox multiple @on-check-change="selectChangeAll" ref="tree"></Tree>
+        <Tree :data="datas" show-checkbox multiple @on-check-change="selectChangeAll" ref="tree" :check-strictly="true"></Tree>
     </Modal>
 </div>
 </template>
@@ -63,7 +63,6 @@ export default {
         },
         calleArr: function(data){
             for(var i in data){
-                debugger
                 if(data[i].parent){ 
                     data[i] = {
                         ...data[i].parent,

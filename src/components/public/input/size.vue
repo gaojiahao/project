@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 17:50:06
+ * @LastEditTime: 2021-01-10 17:40:55
 -->
 <template>
 <div class="size-content">
@@ -33,8 +33,10 @@ export default {
     },
     props: {
         value: {
-            type: String,
-            default: ''
+            type: Object,
+            default () {
+                return {}
+            }
         },
         disabled: {
             type: Boolean,
