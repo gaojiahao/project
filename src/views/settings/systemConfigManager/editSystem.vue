@@ -2,22 +2,14 @@
  * @Descripttion: 
  * @version: 1.0.0
  * @Author: gaojiahao
- * @Date: 2020-12-25 11:55:52
- * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 09:52:00
--->
-<!--
- * @Descripttion: 
- * @version: 1.0.0
- * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-24 20:43:53
+ * @LastEditTime: 2021-01-11 14:17:45
 -->
 <template>
 <div class="add_store">
     <div class="top">
-        <Divider orientation="left" size="small">角色信息</Divider>
+        <Divider orientation="left" size="small">系统配置信息</Divider>
         <div class="top_tabale">
             <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
                 <template slot="button">
@@ -36,20 +28,21 @@
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/settings/roleManager/roleManagerConfig";
+import config from "@views/settings/systemConfigManager/addSystemConfig";
 import {
-    UpdateAuthRole,
-    GetUserRoleMenuById
+    CreateSystemConfig,
+    UpdateSysetmConfig,
+    GetSystemConfigById
 } from "@service/settingsService"
 
 export default {
-    name: "EditStore",
+    name: "EditMakePic",
     components: {
         XForm,
     },
     data() {
         return {
-            id:null
+            selectPBind: {},
         }
     },
     mixins: [config],
@@ -61,7 +54,7 @@ export default {
                     if (this.formValidate.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
-                            UpdateAuthRole(params).then(res => {
+                            UpdateSysetmConfig(params).then(res => {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
@@ -75,11 +68,15 @@ export default {
                             });
                         });
                     }
+                } else {
+                    this.$Message.error('保存失败');
                 }
-
             })
         },
-        clearFormData() {},
+        clearFormData() {
+            this.formValidate.id = '';
+            this.$refs['form'].$refs['formValidate'].resetFields();
+        },
         goReturn(){
             this.$router.go(-1);
         }
@@ -88,18 +85,17 @@ export default {
         this.id = this.$route.query.id;
         if(this.id) {
             return new Promise((resolve, reject) => {
-                GetUserRoleMenuById({id:this.id}).then(res => {
+                GetSystemConfigById({id:this.id}).then(res => {
                     if (res.result.code == 200) {
                         this.$FromLoading.hide();
                         this.formValidate = {
                             id: res.result.item.id,
-                            roleName: res.result.item.roleName,
-                            roleCode:res.result.item.roleCode,
-                            enabled:res.result.item.enabled,
-                            isAdmin:res.result.item.isAdmin,
-                            merchantId:res.result.item.merchantId,
-                            moduleIdList:res.result.item.moduleIdList
-                        };
+                            congfigType: res.result.item.congfigType,
+                            name: res.result.item.name,
+                            code: res.result.item.code,
+                            enabled: res.result.item.enabled,
+                            remark: res.result.item.remark,
+                        }
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,

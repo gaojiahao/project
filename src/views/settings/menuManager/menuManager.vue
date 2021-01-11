@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 17:16:05
+ * @LastEditTime: 2021-01-11 19:24:54
 -->
 <template>
-<div>
+<div class="menuManager-container">
     <div class="myTable">
-        <Table row-key="id" :loading="loading" height="695" border :columns="columns" :data="data" highlight-row ref="selection" @on-select="onSelect" @on-current-change="onCurrentChange" stripe>
+        <Table row-key="id" :loading="loading" border :columns="columns" :data="data" highlight-row ref="selection" @on-select="onSelect" @on-current-change="onCurrentChange" stripe>
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">

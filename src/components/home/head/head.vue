@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 17:26:21
+ * @LastEditTime: 2021-01-11 11:10:44
 -->
 <template>
 <div class="head">
@@ -89,7 +89,7 @@ export default {
         },
         userRole:{
             handler(val){
-                debugger
+
             },
             deep:true
         }

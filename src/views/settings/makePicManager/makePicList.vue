@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 19:38:50
+ * @LastEditTime: 2021-01-11 19:23:55
 -->
 <template>
-<div class="storeManager-container">
+<div class="makepiclist-container">
     <div class="myTable">
         <Table border :columns="columns" height="695" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot="header">

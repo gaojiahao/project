@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 14:37:14
+ * @LastEditTime: 2021-01-11 15:56:29
 -->
 <template>
 <div class="content">
@@ -82,6 +82,11 @@
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="(formConfig[index]&&formConfig[index]['type']=='password')&&!formConfig[index]['hidden']">
                 <Input v-model="formValidate[index]" :style="{width:'300px'}" :disabled="formConfig[index]['disabled']" type="password" password :placeholder="formConfig[index]['placeholder']"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
+            </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCustom'">
+                <Select v-model="formValidate[index]" :style="{width:'300px',float: 'left'}" allow-create multiple filterable :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']">
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id">{{ item.name }}</Option>
+                </Select>
             </FormItem>
         </template>
         <slot name='button'>
@@ -231,10 +236,11 @@ export default {
                         this.formValidate[this.formConfig[data.tag].bind.target] = data.label;
                     })
                 }
-                if(this.formConfig[item].type=='select'&&this.formConfig[item].dataSource.type=='dynamic'){
+                if((['select','selectCustom'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
+                    var parmas = this.formConfig[item].dataSource.parmas ? this.formConfig[item].dataSource.parmas:{};
                     await $flyio.post({
                         url: this.formConfig[item].dataSource.url,
-                        data:{ maxResultCount:200}
+                        data:{ ...parmas,maxResultCount:200}
                     }).then((res) => {
                         if(res.result.code==200){
                             if(this.formConfig[item].dataSource.col){

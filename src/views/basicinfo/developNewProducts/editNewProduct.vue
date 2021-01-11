@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 23:49:51
+ * @LastEditTime: 2021-01-11 19:19:36
 -->
 <template>
 <div>
@@ -65,7 +65,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -276,6 +276,7 @@ export default {
                     GetGoodsSupplierPage({goodsId:this.productId,...this.pageDataPruch}).then(res => {
                         if(res.result.code==200){
                             this.$nextTick(() => {
+                                debugger
                                 this.pageDataPruch.totalPagePruch = res.result.item.totalCount;
                                 this.dataPruch = res.result.item.items;
                                 this.loadingPruch = false;
@@ -371,6 +372,37 @@ export default {
         },
         descriptionClear(){
             this.productInfoFormValidate.description='';
+        },
+        UpdatePrepGoodsAttribute(data){
+            var params = {};
+            params.prepGoodsId = this.productId;
+            params.prepGoodsAttributes = [];
+            for(var i in data){
+                var obj = {};
+                obj = {
+                    goodsId:  this.productId,
+                    goodsName: this.productInfoFormValidate.name,
+                    attributeId: data[i].tag,
+                    attributeValueId: data[i].value,
+                }
+                params.prepGoodsAttributes.push(obj);
+            }
+            return new Promise((resolve, reject) => {
+                this.$FromLoading.show();
+                UpdatePrepGoodsAttribute(params).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.$Message.info('温馨提示：保存成功！');
+                        this.GetPrepGoodsAttributeById();
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.message
+                        });
+                        this.$FromLoading.hide();
+                    }
+                });
+            });    
         }
     },
     created() {

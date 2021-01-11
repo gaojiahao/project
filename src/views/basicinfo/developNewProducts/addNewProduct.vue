@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 20:12:01
+ * @LastEditTime: 2021-01-11 16:27:26
 -->
 <template>
 <div>
@@ -156,7 +156,7 @@ export default {
     },
     computed:{
         disabled(){
-            return this.productId ? false : false;
+            return this.productId ? false : true;
         }
     },
     methods: {

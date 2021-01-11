@@ -2,28 +2,21 @@
  * @Descripttion: 
  * @version: 1.0.0
  * @Author: gaojiahao
- * @Date: 2020-12-25 11:55:52
- * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 09:52:00
--->
-<!--
- * @Descripttion: 
- * @version: 1.0.0
- * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-24 20:43:53
+ * @LastEditTime: 2021-01-11 12:00:30
 -->
 <template>
 <div class="add_store">
     <div class="top">
-        <Divider orientation="left" size="small">角色信息</Divider>
+        <Divider orientation="left" size="small">系统配置信息</Divider>
         <div class="top_tabale">
             <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
                             <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
                             <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                         </div>
                     </FormItem>
@@ -36,20 +29,19 @@
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/settings/roleManager/roleManagerConfig";
+import config from "@views/settings/systemConfigManager/addSystemConfig";
 import {
-    UpdateAuthRole,
-    GetUserRoleMenuById
+    CreateSystemConfig
 } from "@service/settingsService"
 
 export default {
-    name: "EditStore",
+    name: "AddSystem",
     components: {
         XForm,
     },
     data() {
         return {
-            id:null
+            selectPBind: {},
         }
     },
     mixins: [config],
@@ -58,13 +50,15 @@ export default {
             var params = this.formValidate;
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
-                    if (this.formValidate.id) {
+                    if (!this.formValidate.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
-                            UpdateAuthRole(params).then(res => {
+                            CreateSystemConfig(params).then(res => {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
+                                    this.$Message.info('温馨提示：新建成功！');
+                                    this.$refs['form'].$refs['formValidate'].resetFields();
+                                    this.$refs['form'].initEL('input');
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -75,40 +69,21 @@ export default {
                             });
                         });
                     }
+                } else {
+                    this.$Message.error('保存失败');
                 }
-
             })
         },
-        clearFormData() {},
+        clearFormData() {
+            this.formValidate.id = '';
+            this.$refs['form'].$refs['formValidate'].resetFields();
+        },
         goReturn(){
             this.$router.go(-1);
         }
     },
     created() {
-        this.id = this.$route.query.id;
-        if(this.id) {
-            return new Promise((resolve, reject) => {
-                GetUserRoleMenuById({id:this.id}).then(res => {
-                    if (res.result.code == 200) {
-                        this.$FromLoading.hide();
-                        this.formValidate = {
-                            id: res.result.item.id,
-                            roleName: res.result.item.roleName,
-                            roleCode:res.result.item.roleCode,
-                            enabled:res.result.item.enabled,
-                            isAdmin:res.result.item.isAdmin,
-                            merchantId:res.result.item.merchantId,
-                            moduleIdList:res.result.item.moduleIdList
-                        };
-                    } else if (res.result.code == 400) {
-                        this.$Message.error({
-                            background: true,
-                            content: res.result.message
-                        });
-                    }
-                });
-            });    
-        }
+
     }
 }
 </script>

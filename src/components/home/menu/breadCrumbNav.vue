@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 16:56:06
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 10:25:52
+ * @LastEditTime: 2021-01-11 15:24:01
 -->
 <template>
 <div class="break-container">
@@ -34,10 +34,40 @@ export default {
     },
     computed: {
         leftMenu() {
-            if (this.$store.state.menuRouter) {
+            if (this.$store.state.menuRouter&&this.$store.state.menuRouter.oneLevel&&this.$store.state.menuRouter.oneLevel.code) {
                 return this.$store.state.menuRouter;
             } else {
-                return JSON.parse(window.sessionStorage.getItem('activeMenu'));
+                var menu = JSON.parse(window.sessionStorage.getItem('activeMenu'));
+                // var obj = {}
+                // if(menu.oneLevel&&menu.oneLevel.code){
+                //     obj={
+                //         meta:{
+                //             title: menu.oneLevel.name
+                //         },
+                //         path: '/'+ menu.oneLevel.code,
+                //         name: menu.oneLevel.name
+                //     }
+                //     if(menu.twoLevel&&menu.twoLevel.code){
+                //         obj={
+                //             meta:{
+                //                 title: menu.twoLevel.name
+                //             },
+                //             path: obj.path + '/' + menu.twoLevel.code,
+                //             name: menu.twoLevel.name
+                //         }    
+                //     }
+                //     if(menu.thirdLevel&&menu.thirdLevel.code){
+                //         obj={
+                //             meta:{
+                //                 title: menu.thirdLevel.name
+                //             },
+                //             path: obj.path + '/' + menu.thirdLevel.code,
+                //             name: menu.thirdLevel.name
+                //         }    
+                //     }
+                // }
+                // this.data.push(obj);
+                return menu;
             }
         }
     },

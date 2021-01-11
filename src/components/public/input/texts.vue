@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 12:18:18
+ * @LastEditTime: 2021-01-11 16:30:35
 -->
 <template>
 <div class="size-content">
     <div class="list" v-for="(item,index) in list" :key="index">
-        <Input v-model="list[index]" placeholder="" style="width: 100px" @on-blur="handleInput" :disabled="disabled" />
+        <Input v-model="list[index]" placeholder="" style="width: 100px" @on-blur="handleInput" :disabled="disabled" /><Icon type="ios-close" style="margin-left:5px" @click="del(index)" />
     </div>
     <div class="list" v-if="!disabled">
         <Button type="primary" shape="circle" icon="md-add" @click.native="add"></Button>
@@ -56,6 +56,11 @@ export default {
         handleInput() {
             var jsonData = this.list.join("|");
             this.$emit('change', jsonData)
+        },
+        del(index){
+            this.list.splice(index, 1);
+            var jsonData = this.list.join("|");
+            this.$emit('change', jsonData)    
         }
     },
     created() {}

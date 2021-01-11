@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 19:27:30
+ * @LastEditTime: 2021-01-11 14:24:05
 -->
 <template>
-<div class="supplierList_container">
+<div class="storeManager-container">
     <div class="myTable">
-        <Table border :loading="loading" height="695" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
+        <Table border :columns="columns" height="695" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">
@@ -35,20 +35,20 @@
             </template>
         </Table>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
 </div>
 </template>
 
 <script>
-import config from "@views/basicinfo/supplierManager/supplierListConfig";
+import config from "@views/settings/systemConfigManager/systemConfigManagerConfig";
 import list from "@mixins/list";
 import {
-    GetSupplierPage,
-    DelSupplier
-} from "@service/basicinfoService"
+    GetSystemConfigPage,
+    DelSystemConfig
+} from "@service/settingsService"
+
 export default {
-    name: "SupplierList",
+    name: "StoreList",
     mixins: [config,list],
     data() {
         return {
@@ -56,22 +56,21 @@ export default {
             showModel: false,
             columns: this.getTableColumn(),
             data: [],
-            isAlibaba:false,
             loading: true,
             pageData:{
                 skipCount: 1,
                 skipTotal: 15,
                 maxResultCount: 15,
-                keyword:'',
+                name:'',
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
         }
     },
     methods: {
-        GetSupplierPage() {
+        GetSystemConfigPage() {
             return new Promise((resolve, reject) => {
-                GetSupplierPage(this.pageData).then(res => {
+                GetSystemConfigPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -85,37 +84,27 @@ export default {
         clearFormData() {
 
         },
-        showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '新建';
-            }
-            this.showModel = flag;
-        },
-        save() {
-
-        },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetSupplierPage();
+            this.GetSystemConfigPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetSupplierPage();
+            this.GetSystemConfigPage();
         },
         goAdd(){
-            this.$router.push({name:'AddSupplier'});
+            this.$router.push({name:'addSystem'});
         },
         goEdit(){
-            if(this.activatedRow.id)
-            this.$router.push({name:'editSupplier',query: {id:this.activatedRow.id}});
+            if(this.activatedRow.id){
+                this.$router.push({name:'editSystem',query: {id:this.activatedRow.id}});
+            }
         },
-        goDetail(id){
-            if(id)
-            this.$router.push({name:'ViewSupplier',query: {id:id}});
+        checkALl(){
+            this.$nextTick(function () {
+                this.columns = this.getTableColumn();
+            })
         },
         changeCoulmns(data){
             let datas = [];
@@ -132,81 +121,47 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetSupplierPage();
-        },
-        checkALl(){
-            this.$nextTick(function () {
-                this.columns = this.getTableColumn();
-            })
+            this.GetSystemConfigPage();
         },
         getTableColumn(){
-            var columns = [
-                // {
-                //     type: 'selection',
-                //     width: 60,
-                //     align: 'center'
-                // },
-                {
+            var data = [{
                     type: 'index',
                     width: 80,
                     align: 'center',
                     title: '序号'
-                }, {
-                    title: '供应商编号',
+                },
+                {
+                    title: '系统配置类型',
+                    key: 'congfigType'
+                }, 
+                {
+                    title: '名称',
+                    key: 'name'
+                },
+                {
+                    title: '编码',
                     key: 'code'
                 },
                 {
-                    title: '供应商名称',
-                    key: 'name',
+                    title: '是否启用',
+                    key: 'enabled',
                     render: (h, params) => {
                         return h("span", {
-                        style: {
-                            display: "inline-block",
-                            color: "#2d8cf0"
-                        },
-                        on:{
-                            click:()=>{
-                                this.goDetail(params.row.id)    
-                            }
-                        }
-                        },params.row.name);
+                            style: {
+                                display: "inline-block",
+                                color: params.row.enabled==true ? "#19be6b": "#ed4014"
+                            },
+                        },params.row.enabled?'是':'否');//  展示的内容
                     }
                 },
-                {
-                    title: '联系电话',
-                    key: 'telePhone'
-                },
-                {
-                    title: '联系人',
-                    key: 'changeUser'
-                },
-                {
-                    title: '地址',
-                    key: 'address'
-                },
-                {
-                    title: '邮箱',
-                    key: 'email'
-                },
-                // {
-                //     title: '状态',
-                //     key: 'status',
-                //     render: (h, params) => {
-                //         return h("span", {
-                //         style: {
-                //             display: "inline-block",
-                //             color: params.row.status=='已审核' ? "#19be6b": "#ed4014"
-                //         },
-                //         },params.row.status);
-                //     }
-                // }, 
                 {
                     title: '创建者',
                     key: 'createdBy'
                 },
                 {
                     title: '创建时间',
-                    key: 'createdOn'
+                    key: 'createdOn',
+                    width: 160
                 },
                 {
                     title: '修改者',
@@ -214,21 +169,19 @@ export default {
                 },
                 {
                     title: '修改时间',
-                    key: 'modifyOn'
-                },
-                // {
-                //     title: '操作',
-                //     slot: 'action',
-                //     align: 'center'
-                // }
-            ];
-            return columns;
+                    key: 'modifyOn',
+                    width: 160
+                }]
+            return data;
+        },
+        change(value){
+            this.activatedIndex = value;
         },
         deleteData(){
             if(this.activatedRow.id){
                 this.loading = true;
                 return new Promise((resolve, reject) => {
-                    DelSupplier({id:this.activatedRow.id}).then(res => {
+                    DelSystemConfig({id:this.activatedRow.id}).then(res => {
                         if (res.result.code == 200) {
                             for(var i=0;i<this.selectedList.length;i++){
                                 for(var j=0;j<this.data.length;j++){
@@ -241,7 +194,7 @@ export default {
                             if(this.data.length<1){
                                 this.pageData.skipCount-1;
                             }
-                            this.GetSupplierPage();
+                            this.GetSystemConfigPage();
                             this.activatedRow = {};
                             this.loading = false;
                         } else if (res.result.code == 400) {
@@ -256,17 +209,21 @@ export default {
             } 
         },
         setFilter(value){
-            this.pageData.keyword = value;
-            this.pageData.skipCount = 1;
-            this.GetSupplierPage(); 
+            this.pageData = {
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                name:value,
+                pageSizeOpts:[15,50,200],
+            },
+            this.GetSystemConfigPage(); 
         }
     },
     created(){
-        this.GetSupplierPage();
+        this.GetSystemConfigPage();
     }
 }
 </script>
 <style lang="less" scoped>
 @import "~@less/list/index.less";
 </style>
-

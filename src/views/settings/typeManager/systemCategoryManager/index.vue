@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 16:48:29
+ * @LastEditTime: 2021-01-11 12:13:39
 -->
 <template>
 <div class="platformManager-container">

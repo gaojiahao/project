@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-06 17:07:34
+ * @LastEditTime: 2021-01-11 14:15:29
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -218,13 +218,18 @@ export default {
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
         BindAttributeCategory(){
+            debugger
             if (this.data.categoryId) {
+                this.data.attributeBinds=this.data.attributeBinds.filter(function (item) {
+                    if(item.isCheck)
+                        return item;
+                }); 
                 return new Promise((resolve, reject) => {
                     this.$FromLoading.show();
                     BindAttributeCategory(this.data).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：新建成功！');
+                            this.$Message.info('温馨提示：保存成功！');
                             this.$emit('get-data');
                         } else if (res.result.code == 400) {
                             this.$Message.error({
@@ -277,6 +282,7 @@ export default {
             });
         },
         GetSystemConfigList() {
+            //return GetSystemConfigList({congfigType:'filetype'}).then(res => {
             return GetSystemConfigList().then(res => {
                 if(res.result.code==200){
                     return res.result.item;  

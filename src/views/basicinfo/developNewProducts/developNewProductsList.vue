@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 18:07:33
+ * @LastEditTime: 2021-01-11 19:12:00
 -->
 <template>
 <div class="developNewProductsList-container">
@@ -19,6 +19,7 @@
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+                        <Button type="primary" size="small" @click="exportData()"><Icon type="ios-download-outline"></Icon>导出</Button>
                         <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
                     </div>
                     <div class="filter-search">
@@ -257,7 +258,8 @@ export default {
                 type: 'index',
                 width: 80,
                 align: 'center',
-                title: '序号'
+                title: '序号',
+                resizable: true,
             },
             {
                 title: '图片',
@@ -284,11 +286,13 @@ export default {
                             }
                         }),
                     ]);
-                }
+                },
+                resizable: true,
             },
             {
                 title: '产品编号',
-                key: 'code'
+                key: 'code',
+                resizable: true,
             },
             {
                 title: '产品名称',
@@ -306,27 +310,33 @@ export default {
                         }
                     }
                     },params.row.name);//  展示的内容
-                }
+                },
+                resizable: true,
             },
             {
                 title: '分类',
-                key: 'categoryId'
+                key: 'categoryName',
+                resizable: true,
             },
             {
-                title:'商户ID',
-                key: 'merchantId'
+                title:'商户',
+                key: 'merchantName',
+                resizable: true,
             },
             {
                 title:'平台名称',
-                key: 'platformName'
+                key: 'platformName',
+                resizable: true,
             },
             {
-                title:'门店ID',
-                key: 'storeId'
+                title:'店铺',
+                key: 'storeName',
+                resizable: true,
             },
             {
                 title:'品牌名称',
-                key: 'brandName'
+                key: 'brandName',
+                resizable: true,
             },
             {
                 title: '状态',
@@ -338,29 +348,35 @@ export default {
                         color: params.row.status=='接受' ? "#19be6b": "#ed4014"
                     },
                     },params.row.status);
-                }
+                },
+                resizable: true,
             },
             {
                 title: '创建时间',
                 key: 'createdOn',
+                resizable: true,
             },
             {
                 title: '创建者',
                 key: 'createdBy',
+                resizable: true,
             },
             {
                 title: '修改时间',
                 key: 'modifyOn',
+                resizable: true,
             },
             {
                 title: '修改者',
                 key: 'modifyBy',
+                resizable: true,
             },
             {
                 title: '操作',
                 slot: 'action',
                 align: 'center',
-                width: 150
+                width: 150,
+                resizable: true,
             }
         ];
             return columns2;
@@ -410,8 +426,14 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             this.GetPrepGoodsPage(); 
+        },
+        exportData(){
+             this.$refs.selection.exportCsv({
+                filename: 'Custom data',
+                columns: this.columns,
+                data: this.data,
+            });    
         }
-        
     },
     created(){
         this.GetPrepGoodsPage();

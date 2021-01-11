@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-04 16:54:15
+ * @LastEditTime: 2021-01-11 14:19:38
  */
 import Fly from "flyio/dist/npm/fly";
 // 请求地址引入
@@ -13,6 +13,7 @@ import tokenService from "@service/tokenService";
 import errHandle from "@plugins/errHandle";
 //错误提示
 import { Message } from "view-design";
+import vueMain from '@/main.js'
 
 let qs = require("querystring");
 // 请求插件引入
@@ -190,6 +191,7 @@ let Rxports = {
               content: "温馨提示："+err.message,
               duration: 3
             });
+            vueMain.$FromLoading.hide();
           // reject(err);
           // console.log("err:", err);
         });

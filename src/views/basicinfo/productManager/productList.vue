@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-09 11:12:14
+ * @LastEditTime: 2021-01-11 19:26:58
 -->
 <template>
-<div class="storeManager-container">
+<div class="productList-container">
     <div class="filter">
         <div class="filter-button">
             
@@ -322,7 +322,7 @@ export default {
     font-size: 12px;
 }
 </style><style lang="less" scoped>
-.storeManager-container {
+.productList-container {
     // margin-top: 16px;
 
     .head {

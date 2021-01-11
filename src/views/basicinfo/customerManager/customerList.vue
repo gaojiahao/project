@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:03:50
+ * @LastEditTime: 2021-01-11 19:26:30
 -->
 <template>
-<div class="storeManager-container">
+<div class="customerList-container">
     <div class="filter">
         <div class="filter-button">
             <Button size="small" type="primary" icon="ios-add" @click.native="goAdd">添加客户</Button>
@@ -236,7 +236,7 @@ export default {
     background-color: #B8D9FD;
 }
 </style><style lang="less" scoped>
-.storeManager-container {
+.customerList-container {
     // margin-top: 16px;
 
     .head {

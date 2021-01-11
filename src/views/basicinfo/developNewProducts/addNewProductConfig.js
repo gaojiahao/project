@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 09:31:39
+ * @LastEditTime: 2021-01-11 16:35:16
  */
 export default {
     data() {
@@ -84,6 +84,16 @@ export default {
           characteristic:{
             name:'特性标签',
             type:'texts',
+            // dataSource:{
+            //   type:'dynamic',
+            //   url:'/api/GetSystemConfigList',
+            //   data:[],
+            //   parmas:{congfigType:'productLabel'},
+            //   col:[
+            //     {k:'name',v:'name'},
+            //     {k:'value',v:'name'}
+            //   ]
+            // },
           },
           brandId:{
             name:'品牌',
@@ -373,10 +383,10 @@ export default {
             trigger: 'blur',
             validator: packageCostVali
           }],
-          packagingWeight:[{ 
+          packageWeight:[{ 
             required: true,
             type: 'number',
-            message: '请输入正确的商品重量', 
+            message: '请输入正确的包装重量', 
             trigger: 'blur',
             transform(value) {
               return Number(value);

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 11:17:26
+ * @LastEditTime: 2021-01-11 10:28:49
  */
 //引用插件
 import Vue from "vue";
@@ -26,6 +26,7 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import router from "./router";
+import vueAudioPlayerUmdMin from "@liripeng/vue-audio-player";
 
 Vue.config.productionTip = false;
 Vue.directive("title", {
@@ -47,8 +48,9 @@ VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
-new Vue({
+let vueMain = new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount("#app");
+export default vueMain;

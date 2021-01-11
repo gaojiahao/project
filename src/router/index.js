@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 17:13:26
+ * @LastEditTime: 2021-01-11 15:26:16
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -464,6 +464,48 @@ const routes = [
               }
             ]
           },
+          {
+            path: "systemConfigManager",
+            name: "systemConfigManager",
+            component: resolve=>(require(["@views/settings/systemConfigManager/index"],resolve)),
+            meta: {
+              title: "系统配置",
+              group: "systemConfigManager",
+            },
+            redirect:'systemConfigManager/systemConfigManager',
+            children:[
+              {
+                path: 'systemConfigManager',
+                name: 'systemConfigManager',
+                meta:{ 
+                  title:'系统配置列表',
+                  group: "systemConfigManager",
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/settings/systemConfigManager/systemConfigManager"],resolve)),
+              },
+              {
+                path: "addSystem",
+                name: "addSystem",
+                component: resolve=>(require(["@views/settings/systemConfigManager/addSystem"],resolve)),
+                meta: {
+                  title: "新建系统配置",
+                  group: "systemConfigManager",
+                  level: 2,
+                },
+              },
+              {
+                path: "editSystem",
+                name: "editSystem",
+                component: resolve=>(require(["@views/settings/systemConfigManager/editSystem"],resolve)),
+                meta: {
+                  title: "编辑系统配置",
+                  group: "systemConfigManager",
+                  level: 2,
+                },
+              },
+            ]
+          }
         ]
       },
       {
@@ -480,7 +522,7 @@ const routes = [
             path: 'developNewProducts',
             name: 'DevelopNewProducts',
             meta:{ 
-              title:'开发新品',
+              title:'新品开发管理',
               group: "developNewProducts",
             },
             component: resolve=>(require(["@views/basicinfo/developNewProducts/index"],resolve)),
@@ -490,7 +532,7 @@ const routes = [
                 path: 'developNewProductsList',
                 name: 'DevelopNewProductsList',
                 meta:{ 
-                  title:'开发新品',
+                  title:'新品开发管理',
                   group: "developNewProducts",
                   level: 1,
                 },
