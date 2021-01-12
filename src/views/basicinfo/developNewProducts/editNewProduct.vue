@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 19:19:36
+ * @LastEditTime: 2021-01-11 22:02:47
 -->
 <template>
 <div>
@@ -276,7 +276,6 @@ export default {
                     GetGoodsSupplierPage({goodsId:this.productId,...this.pageDataPruch}).then(res => {
                         if(res.result.code==200){
                             this.$nextTick(() => {
-                                debugger
                                 this.pageDataPruch.totalPagePruch = res.result.item.totalCount;
                                 this.dataPruch = res.result.item.items;
                                 this.loadingPruch = false;

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 19:31:02
+ * @LastEditTime: 2021-01-11 22:10:56
  */
 export default {
   data() {
@@ -79,6 +79,18 @@ export default {
         }],
       }, 
       filtersConfig:{
+        congfigType:{
+          name:'系统配置类型',
+          type:'select',
+          dataSource:{
+            type:'static',
+            data:[
+              {name:'包装材料',value:'packageMaterial'},
+              {name:'标签',value:'productLabel'},
+              {name:'制图选项',value:'filetype'}
+            ],
+          }
+        },
         name:{
           name:'名称',
           value:'name',

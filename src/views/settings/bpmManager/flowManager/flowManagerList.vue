@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 19:53:51
+ * @LastEditTime: 2021-01-11 20:59:04
 -->
 <template>
-<div class="flowManager-container">
+<div class="erp_table_container">
     <div class="myTable">
         <Table border :loading="loading" height="695" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot="header">

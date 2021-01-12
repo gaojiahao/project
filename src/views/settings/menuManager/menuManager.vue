@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 19:24:54
+ * @LastEditTime: 2021-01-11 20:57:44
 -->
 <template>
-<div class="menuManager-container">
+<div class="erp_table_container">
     <div class="myTable">
         <Table row-key="id" :loading="loading" border :columns="columns" :data="data" highlight-row ref="selection" @on-select="onSelect" @on-current-change="onCurrentChange" stripe>
             <template slot="header">

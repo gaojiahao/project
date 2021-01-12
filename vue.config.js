@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-28 15:35:48
+ * @LastEditTime: 2021-01-12 09:16:03
  */
 const os = require('os');
 const path = require("path");
@@ -59,72 +59,72 @@ module.exports = {
     if (process.env.NODE_ENV === "production") {
       // 为生产环境修改配置...
       config.mode = "production";
-      config.optimization= {
-        minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            parallel: true,
-            exclude: /node_modules/,
-            terserOptions: {
-              ecma: undefined,
-              warnings: false,
-              parse: {},
-              compress: {
-                drop_console: true,
-                drop_debugger: false,
-                pure_funcs: ['console.log'], // 移除console
-              },
-            },
-          }
-        )],
-      };
-      //gzip压缩
-      const productionGzipExtensions = ['html', 'js', 'css']
-      config.plugins.push(
-          new CompressionWebpackPlugin({
-              filename: '[path].gz[query]',
-              algorithm: 'gzip',
-              test: new RegExp(
-                  '\\.(' + productionGzipExtensions.join('|') + ')$'
-              ),
-              threshold: 10240, // 只有大小大于该值的资源会被处理 10240
-              minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
-              deleteOriginalAssets: false // 删除原文件
-          })
-      );
-      config.optimization = {
-        splitChunks: {
-            cacheGroups: {
-                vendor: {
-                    chunks: 'all',
-                    test: /node_modules/,
-                    name: 'vendor',
-                    minChunks: 1,
-                    maxInitialRequests: 5,
-                    minSize: 0,
-                    priority: 100
-                },
-                common: {
-                    chunks: 'all',
-                    test: /[\\/]src[\\/]js[\\/]/,
-                    name: 'common',
-                    minChunks: 2,
-                    maxInitialRequests: 5,
-                    minSize: 0,
-                    priority: 60
-                },
-                styles: {
-                    name: 'styles',
-                    test: /\.(sa|sc|c)ss$/,
-                    chunks: 'all',
-                    enforce: true
-                },
-                runtimeChunk: {
-                    name: 'manifest'
-                }
-            }
-        }
-      }
+      // config.optimization= {
+      //   minimize: true,
+      //   minimizer: [
+      //     new TerserPlugin({
+      //       parallel: true,
+      //       exclude: /node_modules/,
+      //       terserOptions: {
+      //         ecma: undefined,
+      //         warnings: false,
+      //         parse: {},
+      //         compress: {
+      //           drop_console: true,
+      //           drop_debugger: false,
+      //           pure_funcs: ['console.log'], // 移除console
+      //         },
+      //       },
+      //     }
+      //   )],
+      // };
+      // //gzip压缩
+      // const productionGzipExtensions = ['html', 'js', 'css']
+      // config.plugins.push(
+      //     new CompressionWebpackPlugin({
+      //         filename: '[path].gz[query]',
+      //         algorithm: 'gzip',
+      //         test: new RegExp(
+      //             '\\.(' + productionGzipExtensions.join('|') + ')$'
+      //         ),
+      //         threshold: 10240, // 只有大小大于该值的资源会被处理 10240
+      //         minRatio: 0.8, // 只有压缩率小于这个值的资源才会被处理
+      //         deleteOriginalAssets: false // 删除原文件
+      //     })
+      // );
+      // config.optimization = {
+      //   splitChunks: {
+      //       cacheGroups: {
+      //           vendor: {
+      //               chunks: 'all',
+      //               test: /node_modules/,
+      //               name: 'vendor',
+      //               minChunks: 1,
+      //               maxInitialRequests: 5,
+      //               minSize: 0,
+      //               priority: 100
+      //           },
+      //           common: {
+      //               chunks: 'all',
+      //               test: /[\\/]src[\\/]js[\\/]/,
+      //               name: 'common',
+      //               minChunks: 2,
+      //               maxInitialRequests: 5,
+      //               minSize: 0,
+      //               priority: 60
+      //           },
+      //           styles: {
+      //               name: 'styles',
+      //               test: /\.(sa|sc|c)ss$/,
+      //               chunks: 'all',
+      //               enforce: true
+      //           },
+      //           runtimeChunk: {
+      //               name: 'manifest'
+      //           }
+      //       }
+      //   }
+      // }
     } else {
       // 为开发环境修改配置...
       config.mode = "development";

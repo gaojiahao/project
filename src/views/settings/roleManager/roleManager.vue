@@ -4,10 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 20:30:30
+ * @LastEditTime: 2021-01-11 20:58:45
 -->
 <template>
-<div class="roleManager_container">
+<div class="erp_table_container">
     <div class="myTable">
         <Table border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot="header">

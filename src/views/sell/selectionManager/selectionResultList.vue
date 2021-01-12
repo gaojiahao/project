@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:05:16
+ * @LastEditTime: 2021-01-11 20:30:53
 -->
 <template>
 <div class="storeManager-container">
@@ -335,39 +335,6 @@ export default {
     }
 }
 </script>
-
-<style scoped>
->>>.ivu-input {
-    height: 26px;
-}
-
->>>.ivu-btn-small span {
-    font-size: 12px;
-}
-</style><style lang="less" scoped>
-.storeManager-container {
-    // margin-top: 16px;
-
-    .head {
-        height: 30px;
-
-        .select-type {
-            float: left;
-        }
-    }
-
-    .filter {
-        height: 30px;
-        ;
-
-        .filter-button {
-            float: left;
-        }
-
-        .filter-search {
-            float: right;
-            display: flex;
-        }
-    }
-}
+<style lang="less" scoped>
+@import "~@less/list/index.less";
 </style>

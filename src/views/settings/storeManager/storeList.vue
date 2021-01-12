@@ -4,13 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 20:23:48
+ * @LastEditTime: 2021-01-11 20:55:25
 -->
 <template>
-<div class="storeManager-container">
+<div class="erp_table_container">
     <div class="myTable">
-        <Table border :columns="columns" height="695" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange" :draggable="true"
-              @on-drag-drop="onDragDrop">
+        <Table border :columns="columns" height="695" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange" :draggable="true" @on-drag-drop="onDragDrop">
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">

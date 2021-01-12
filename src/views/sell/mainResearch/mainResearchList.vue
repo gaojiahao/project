@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:05:32
+ * @LastEditTime: 2021-01-11 20:30:36
 -->
 <template>
 <div class="storeManager-container">
@@ -375,30 +375,6 @@ export default {
     }
 }
 </script>
-
 <style lang="less" scoped>
-.storeManager-container {
-    margin-top: 16px;
-
-    .head {
-        height: 38px;
-
-        .select-type {
-            float: left;
-        }
-    }
-
-    .filter {
-        height: 38px;
-        ;
-
-        .filter-button {
-            float: left;
-        }
-
-        .filter-search {
-            float: right;
-        }
-    }
-}
+@import "~@less/list/index.less";
 </style>
