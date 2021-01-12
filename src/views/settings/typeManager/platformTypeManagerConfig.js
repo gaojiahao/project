@@ -4,13 +4,20 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 10:29:28
+ * @LastEditTime: 2021-01-12 15:08:30
  */
 export default {
     data() {
       const levelVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
             callback(new Error('请输入分类层级'));
+        } else {
+          callback();
+        }
+      };
+      const platformIdVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请选择平台名称'));
         } else {
           callback();
         }
@@ -28,6 +35,20 @@ export default {
             type:'text',
             disabled:true, 
           },
+          platformId:{
+            name:'平台名称',
+            type:'select',
+            isName:true,
+            dataSource:{
+                type:'dynamic',
+                url:'/api/GetPlatformsList',
+                data:[],
+            },
+            bind:{
+              target: 'platformName',
+              bindValue: 'name'
+            }
+          },
           name:{
             name:'分类名称',
             type:'text',
@@ -40,6 +61,8 @@ export default {
         formValidate: {
           parentId:0,
           parentName:'',
+          platformId:'',
+          platformName:'',
           name: '',
           level: '',
           merchantId:1
@@ -63,6 +86,7 @@ export default {
             trigger: 'blur',
             validator: levelVali,
           }],
+          platformId: [{ required: true, message: '请选择平台名称',validator: platformIdVali, trigger: 'change' }],
         },
         formConfig2:{
           attributeId:{

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 17:13:47
+ * @LastEditTime: 2021-01-12 14:59:34
 -->
 <template>
 <div class="brandManager-container">
@@ -113,7 +113,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -130,7 +130,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -148,7 +148,7 @@ export default {
             this.$refs['form'].initEL('input');
         },
         clearFormData() {
-            this.formValidate.id = '';
+            this.$delete(this.formValidate,'id');
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
         selectItem(id) {
@@ -168,7 +168,7 @@ export default {
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
-                            content: res.result.message
+                            content: res.result.msg
                         });
                     }
                 });
@@ -199,7 +199,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }

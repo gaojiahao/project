@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 16:55:39
+ * @LastEditTime: 2021-01-12 14:53:53
 -->
 <template>
 <div class="propertyManager-container">
@@ -125,7 +125,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -142,7 +142,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -171,7 +171,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -188,7 +188,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -201,7 +201,7 @@ export default {
             })
         },
         clearFormData() {
-            this.formValidate.id = '';
+            this.$delete(this.formValidate,'id');
             this.$refs['form'].$refs['formValidate'].resetFields();
             this.formValidate2.attributeId='';
         },
@@ -279,7 +279,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }
@@ -312,7 +312,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }

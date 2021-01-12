@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 14:15:29
+ * @LastEditTime: 2021-01-12 10:22:51
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -104,7 +104,7 @@ export default {
         },
         categoryId:{
             handler(val){
-                this.platform = '';
+                this.platform = this.firstPlatform;
                 this.GetSystemConfigList();
             }
         },
@@ -196,6 +196,7 @@ export default {
             ],
             filesData: [],
             activeTab: '',
+            firstPlatform:'',
             platform: '',
             titleText: '添加属性',
             showModel: false,
@@ -234,7 +235,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }
@@ -276,14 +277,14 @@ export default {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.platformList = res.result.item;
+                            this.firstPlatform = this.platformList[0]['id'];
                         });
                     }
                 });
             });
         },
         GetSystemConfigList() {
-            //return GetSystemConfigList({congfigType:'filetype'}).then(res => {
-            return GetSystemConfigList().then(res => {
+            return GetSystemConfigList({congfigType:'filetype'}).then(res => {
                 if(res.result.code==200){
                     return res.result.item;  
                 }
@@ -320,7 +321,7 @@ export default {
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
-                            content: res.result.message
+                            content: res.result.msg
                         });
                         this.$FromLoading.hide();
                     }

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 20:56:42
+ * @LastEditTime: 2021-01-12 14:45:34
 -->
 <template>
 <div class="erp_table_container">
@@ -290,7 +290,7 @@ export default {
                 resizable: true,
             },
             {
-                title: '产品编号',
+                title: '产品编码',
                 key: 'code',
                 resizable: true,
             },
@@ -323,16 +323,16 @@ export default {
                 key: 'merchantName',
                 resizable: true,
             },
-            {
-                title:'平台名称',
-                key: 'platformName',
-                resizable: true,
-            },
-            {
-                title:'店铺',
-                key: 'storeName',
-                resizable: true,
-            },
+            // {
+            //     title:'平台名称',
+            //     key: 'platformName',
+            //     resizable: true,
+            // },
+            // {
+            //     title:'店铺',
+            //     key: 'storeName',
+            //     resizable: true,
+            // },
             {
                 title:'品牌名称',
                 key: 'brandName',
@@ -345,9 +345,9 @@ export default {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status=='接受' ? "#19be6b": "#ed4014"
+                        color: params.row.status==1 ? "#19be6b": "#ed4014"
                     },
-                    },params.row.status);
+                    },params.row.status?"已审核":"未审核");
                 },
                 resizable: true,
             },
@@ -409,7 +409,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.loading = false;
                         }

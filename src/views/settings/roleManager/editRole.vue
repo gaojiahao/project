@@ -68,7 +68,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -103,7 +103,7 @@ export default {
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
-                            content: res.result.message
+                            content: res.result.msg
                         });
                     }
                 });

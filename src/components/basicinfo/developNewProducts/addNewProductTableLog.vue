@@ -4,41 +4,48 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 20:31:22
+ * @LastEditTime: 2021-01-12 12:20:21
 -->
 <template>
 <div class="addNewProductTable-container">
     <div>
-        <Table border :columns="columns" :data="data" stripe>
-            <template slot-scope="{ row, index }" slot="action">
-                <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">参考比价</Button>
-            </template>
+        <Table border :columns="columns" :data="data" :loading="loading" stripe>
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                <Page :total="pageData.totalPagePruch" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
             </div>
         </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
 </div>
 </template>
 
 <script>
-import ModalForm from "@components/public/form/modalForm";
 import config from "@views/basicinfo/productManager/productListConfig";
 
 export default {
     name: "AddNewProductTableLog",
-    components: {
-        ModalForm,
+    props:{
+        data: {
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        loading:{
+            type: Boolean,
+            default: true,
+        },
+        pageData:{
+            type: Object,
+            default () {
+                return {}
+            }
+        },
     },
     mixins: [config],
     data() {
         return {
-            titleText: '',
-            showModel: false,
-            defaultImg: require("@assets/default/logo.png"),
             columns: [{
                     title: '操作动作',
                     key: 'name'
@@ -52,53 +59,15 @@ export default {
                     key: 'supplier'
                 },
             ],
-            dataConfig: {
-                'filterList': [{
-                    name: '全部',
-                    value: 'all',
-                }, {
-                    name: '已审核',
-                    value: 'all',
-                }, {
-                    name: '待审核',
-                    value: 'all',
-                }]
-            },
-            data: [{
-                name: '上传商品图',
-                code: '李四',
-                supplier: "2020-05-21",
-            }, {
-                name: '上传商品图',
-                code: '李四',
-                supplier: "2020-05-21",
-            }, {
-                name: '上传商品图',
-                code: '李四',
-                supplier: "2020-05-21",
-            }],
-            filter: "large"
         }
     },
     methods: {
-        clearFormData() {
-
+        changePage(page){
+            this.$emit('change-page-log',page);
         },
-        showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '审核';
-            }
-            this.showModel = flag;
+        onPageSizeChange(pagesize){
+            this.$emit('on-page-size-change-log',pagesize);
         },
-        save() {
-
-        },
-        changePage() {
-
-        }
     }
 }
 </script>

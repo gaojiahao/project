@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-29 15:49:30
+ * @LastEditTime: 2021-01-12 11:34:19
 -->
 <template>
 <div>
@@ -16,7 +16,7 @@
                     <FormItem>
                         <div style="width:100%">
                             <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">重置</Button>
                             <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                         </div>
                     </FormItem>
@@ -63,7 +63,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -79,7 +79,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }

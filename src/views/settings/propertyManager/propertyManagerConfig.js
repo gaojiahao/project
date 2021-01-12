@@ -4,10 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 16:49:46
+ * @LastEditTime: 2021-01-12 10:30:10
  */
 export default {
     data() {
+      const groupNameVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请输入分类层级'));
+        } else {
+          callback();
+        }
+      };
       return {
         formConfig:{
           name:{
@@ -56,7 +63,8 @@ export default {
               required: true,
               type: 'string',
               message: '请输入属性组别',
-              trigger: 'blur'
+              trigger: 'blur',
+              validator: groupNameVali
           }],
         },
         ruleValidate2: {

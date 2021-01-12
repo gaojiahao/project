@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 14:34:57
+ * @LastEditTime: 2021-01-12 19:50:46
 -->
 <template>
 <div class="platformManager-container">
@@ -92,14 +92,19 @@ export default {
             isShowBind:false,
             pageData:{
                 skipCount: 1,
-                skipTotal: 100,
-                maxResultCount: 100,
+                skipTotal: 200,
+                maxResultCount: 200,
                 keyword:''
             },
             systemCategoryData:[],
             nowCategoryData:[],
             platformCategoryData:[],
             nowLoading:true,
+            pageDataEmm:{
+                platformId:'',
+                keyword:'',
+                maxResultCount: 200,
+            },
         }
     },
     computed:{
@@ -141,7 +146,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -158,7 +163,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -196,15 +201,17 @@ export default {
                             parentIndex: res.result.item.parentIndex,
                             id: res.result.item.id,
                         }
+                        this.pageDataEmm.platformId = id;
                         this.isShowAdd = true;
                         this.isShowBind = true;
                         this.$refs.selectPlatformBind.onCler();
                         this.$refs.selectSystemBind.onCler();
                         this.GetCategoryRelatedList();
+                        this.GetEcommerceCategoryList();
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
-                            content: res.result.message
+                            content: res.result.msg
                         });
                     }
                 });
@@ -237,7 +244,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }
@@ -273,7 +280,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }
@@ -306,7 +313,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }
@@ -319,7 +326,8 @@ export default {
             this.GetPlatformsPage();
         },
         setPlatformCategoryFilter(value){
-            this.GetEcommerceCategoryList(value); 
+            this.pageDataEmm.keyword=value;
+            this.GetEcommerceCategoryList(); 
         },
         setSystemCategoryFilter(value){
             this.GetCategoryList(value);
@@ -351,9 +359,10 @@ export default {
                 });
             });
         },
-        GetEcommerceCategoryList(value) {
+        GetEcommerceCategoryList() {
+            debugger
             return new Promise((resolve, reject) => {
-                GetEcommerceCategoryList({keyword:value,maxResultCount:200}).then(res => {
+                GetEcommerceCategoryList(this.pageDataEmm).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.platformCategoryData = res.result.item;
@@ -386,7 +395,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }
@@ -396,7 +405,7 @@ export default {
         },
     },
     created() {
-        this.GetEcommerceCategoryList();
+        // this.GetEcommerceCategoryList();
         this.GetPlatformsPage();
         this.GetCategoryList();
     }

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 20:59:04
+ * @LastEditTime: 2021-01-12 10:24:33
 -->
 <template>
 <div class="erp_table_container">
@@ -259,7 +259,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.loading = false;
                         }

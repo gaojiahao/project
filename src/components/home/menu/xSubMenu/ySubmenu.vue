@@ -1,6 +1,5 @@
 <template>
 <li class="ivu-menu-submenu ivu-menu-submenu-height" :class="[ opened&&activeMenu==item.code ? 'ivu-menu-opened':'']" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave">
-    <!--<div class="ivu-menu-submenu-title" @click="clickMenu(item)">-->
     <div class="ivu-menu-submenu-title" @click="clickMenu(item)">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
         {{item.name}}
@@ -130,6 +129,10 @@ export default {
             if (two) {
                 data['twoLevel'] = two;
                 routerPath = routerPath + '/' + two.code;
+            } else {
+                if(data['oneLevel']['code']!='index'){
+                    return ;
+                }
             }
             if (third) {
                 data['thirdLevel'] = third;

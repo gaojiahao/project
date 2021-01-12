@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 18:04:46
+ * @LastEditTime: 2021-01-12 14:12:25
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -83,18 +83,6 @@ export default {
                     align: 'center'
                 }
             ],
-            dataConfig: {
-                'filterList': [{
-                    name: '全部',
-                    value: 'all',
-                }, {
-                    name: '已审核',
-                    value: 'all',
-                }, {
-                    name: '待审核',
-                    value: 'all',
-                }]
-            },
         }
     },
     methods: {
@@ -102,13 +90,7 @@ export default {
 
         },
         showPop(flag, row) {
-            if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '审核';
-            }
-            this.showModel = flag;
+            
         },
         save() {
 

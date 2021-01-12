@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 11:33:53
+ * @LastEditTime: 2021-01-12 10:51:24
 -->
 <template>
 <div>
@@ -18,7 +18,7 @@
                             <FormItem>
                                 <div style="width:100%"> 
                                     <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                    <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!productId">重置</Button>
+                                    <Button type="primary" @click="clearFormData" style="float: left; margin-left:10px" v-if="!productInfoFormValidate.id">重置</Button>
                                     <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>
@@ -50,11 +50,10 @@
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
                 <!--上传的配置要传入-->
-                    <!-- <AddNewProductTableUploadPic></AddNewProductTableUploadPic>
+                    <AddNewProductTableUploadPic></AddNewProductTableUploadPic>
                     <AddNewProductTableUploadVideo></AddNewProductTableUploadVideo>
                     <AddNewProductTableUpload3D></AddNewProductTableUpload3D>
-                    <AddNewProductTableUploadMusic></AddNewProductTableUploadMusic> -->
-                    <UploadPic></UploadPic>
+                    <AddNewProductTableUploadMusic></AddNewProductTableUploadMusic>
                     <div style="width:100%">
                         <Button type="primary" @click="saveUpload" style="float: left;">保存</Button>
                         <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
@@ -64,17 +63,35 @@
         </TabPane>
         <TabPane label="属性" name="propertyInfo" :disabled="disabled">
             <div class="top">
-                <!-- <Divider orientation="left" size="small">属性</Divider> -->
+                <Divider orientation="left" size="small">属性</Divider>
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute"></AddAttrProductTable>
+                    <XForm :formValidate="propertyFormValidate" :ruleValidate="ruleValidate" :formConfig="property" @save="save" @clear-form-data="clearFormData" ref="formproperty">
+                        <template slot="button">
+                            <FormItem>
+                                <div style="width:100%">
+                                    <Button type="primary" @click="saveProperty" style="float: left;">保存</Button>
+                                    <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                </div>
+                            </FormItem>
+                        </template>
+                    </XForm>
                 </div>
             </div>
         </TabPane>
         <TabPane label="详细描述" name="detailInfo" :disabled="disabled">
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
-                <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description"></NewHtmlEditor>
+                <div class="top_tabale">
+                    <XForm :formValidate="detailInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="detailInfo" @save="save" @clear-form-data="clearFormData" ref="formdetailInfo">
+                        <template slot="button">
+                            <FormItem>
+                                <div style="width:100%">
+                                    <Button type="primary" @click="saveDetailInfo" style="float: left;">保存</Button>
+                                    <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                </div>
+                            </FormItem>
+                        </template>
+                    </XForm>
                 </div>
             </div>
         </TabPane>
@@ -95,17 +112,10 @@ import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProdu
 import AddNewProductTableUpload3D from "@components/basicinfo/developNewProducts/addNewProductTableUpload3D";
 import AddNewProductTableUploadMusic from "@components/basicinfo/developNewProducts/addNewProductTableUploadMusic";
 import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addNewProductTableLog";
-import UploadPic from "@components/basicinfo/developNewProducts/uploadPic";
-import NewHtmlEditor from "@components/basicinfo/developNewProducts/newHtmlEditor";
-import AddAttrProductTable from "@components/basicinfo/developNewProducts/addAttrProductTable";
 import {
     CreatePrepGoods,
     CraeteGoodsSupplier,
-    GetGoodsSupplierPage,
-    GetPrepGoodsById,
-    UpdatePrepGoods,
-    GetPrepGoodsAttributeById,
-    UpdatePrepGoodsAttribute
+    GetGoodsSupplierPage
 } from "@service/basicinfoService"
 import {
     Tabs,
@@ -122,10 +132,7 @@ export default {
         AddNewProductTableUploadVideo,
         AddNewProductTableUpload3D,
         AddNewProductTableUploadMusic,
-        AddNewProductTableLog,
-        UploadPic,
-        NewHtmlEditor,
-        AddAttrProductTable
+        AddNewProductTableLog
     },
     mixins: [config],
     data(){
@@ -145,9 +152,7 @@ export default {
                 pageSizeOpts:[5,50,200],
                 totalPagePruch:0
             },
-            loadingPruch:true,
-            dataProp:[],
-            loadingProp:true
+            loadingPruch:true
         }
     },
     computed:{
@@ -159,9 +164,6 @@ export default {
         clearFormData() {
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
-        descriptionClear(){
-            this.productInfoFormValidate.description = '';
-        },
         save() {
             var params = this.productInfoFormValidate;
             params = {
@@ -169,32 +171,17 @@ export default {
                 howlong:params.productSize.long,
                 width:params.productSize.wide,
                 high:params.productSize.high,
+                volume:params.productSize.volume,
                 packageLong:params.packagingSize.long,
                 packageWidth:params.packagingSize.wide,
                 packageHigh:params.packagingSize.high,
+                packageVolume:params.packagingSize.volume,
             }
             console.log('params',params);
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
-                    if (this.productId) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            UpdatePrepGoods(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
-                                    this.productId = res.result.item.id;
-                                    this.GetGoodsSupplierPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    } else  {
+                    debugger
+                    if (!this.productInfoFormValidate.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
                             CreatePrepGoods(params).then(res => {
@@ -202,9 +189,8 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.productId = res.result.item.id;
-                                    debugger
-                                    this.GetGoodsSupplierPage();
-                                    this.GetPrepGoodsAttributeById();
+                                    // this.$router.push({name:'editNewProduct',query: {id:this.productId}});
+                                    //this.GetGoodsSupplierPage();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -253,45 +239,6 @@ export default {
                 }
             })
         },
-        saveDescription(value){
-            this.productInfoFormValidate.description = value;
-            var params = this.productInfoFormValidate;
-            params = {
-                id:this.productId,
-                ...params,
-                howlong:params.productSize.long,
-                width:params.productSize.wide,
-                high:params.productSize.high,
-                packageLong:params.packagingSize.long,
-                packageWidth:params.packagingSize.wide,
-                packageHigh:params.packagingSize.high,
-                description:value,
-            }
-            console.log('params',params);
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    if (this.productId) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            UpdatePrepGoods(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })    
-        },
         GetGoodsSupplierPage() {
             if(this.productId){
                 return new Promise((resolve, reject) => {
@@ -301,20 +248,6 @@ export default {
                                 this.pageDataPruch.totalPagePruch = res.result.item.totalCount;
                                 this.dataPruch = res.result.item.items;
                                 this.loadingPruch = false;
-                            });
-                        }
-                    });
-                });
-            }
-        },
-        GetPrepGoodsAttributeById() {
-            if(this.productId){
-                return new Promise((resolve, reject) => {
-                    GetPrepGoodsAttributeById({id:this.productId}).then(res => {
-                        if(res.result.code==200){
-                            this.$nextTick(() => {
-                                this.dataProp = res.result.item.attributesList;
-                                this.loadingProp = false;
                             });
                         }
                     });
@@ -344,101 +277,13 @@ export default {
             this.disabledLog = false;    
             this.tabName = 'logInfo';   
         },
-        getFormData(){
-            this.id = this.$route.query.id;
-            if(this.id) {
-                return new Promise((resolve, reject) => {
-                    GetPrepGoodsById({id:this.id}).then(res => {
-                        if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.prod
-                            this.productInfoFormValidate = {
-                                id: res.result.item.id,
-                                code:res.result.item.code,
-                                name: res.result.item.name,
-                                categoryId: res.result.item.categoryId,
-                                characteristic:res.result.item.characteristic,
-                                brandId:res.result.item.brandId,
-                                brandName:res.result.item.brandName,
-                                isPackage: res.result.item.isPackage,
-                                weight:res.result.item.weight,
-                                productSize:{
-                                    long: res.result.item.howlong,
-                                    wide: res.result.item.width,
-                                    high: res.result.item.high,
-                                    volume: res.result.item.volume,
-                                },
-                                material:res.result.item.material,
-                                packageCost:res.result.item.packageCost,
-                                packageWeight:res.result.item.packageWeight,
-                                packagingSize:{
-                                    long: res.result.item.packageLong,
-                                    wide: res.result.item.packageWidth,
-                                    high: res.result.item.packageHigh,
-                                    volume: res.result.item.packageVolume,
-                                },
-                                features:res.result.item.features,
-                                remark:res.result.item.remark,
-                                description:res.result.item.description,
-                            }
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.msg
-                            });
-                        }
-                    });
-                });    
-            }
-        },
-        descriptionClear(){
-            this.productInfoFormValidate.description='';
-        },
-        UpdatePrepGoodsAttribute(data){
-            var params = {};
-            params.prepGoodsId = this.productId;
-            params.prepGoodsAttributes = [];
-            for(var i in data){
-                var obj = {};
-                obj = {
-                    goodsId:  this.productId,
-                    goodsName: this.productInfoFormValidate.name,
-                    attributeId: data[i].tag,
-                    attributeValueId: data[i].value,
-                }
-                params.prepGoodsAttributes.push(obj);
-            }
-            return new Promise((resolve, reject) => {
-                this.$FromLoading.show();
-                UpdatePrepGoodsAttribute(params).then(res => {
-                    if (res.result.code == 200) {
-                        this.$FromLoading.hide();
-                        this.$Message.info('温馨提示：保存成功！');
-                        this.GetPrepGoodsAttributeById();
-                    } else if (res.result.code == 400) {
-                        this.$Message.error({
-                            background: true,
-                            content: res.result.msg
-                        });
-                        this.$FromLoading.hide();
-                    }
-                });
-            });    
-        },
         goReturn(){
             this.$router.go(-1);
         },
     },
-    created() {
-        this.getFormData();
-        this.GetGoodsSupplierPage();
-        this.GetPrepGoodsAttributeById();
-    }
+    created() {}
 }
 </script>
 <style lang="less" scoped>
 @import "~@less/form.less";
-.top_tabale1{
-    background-color: #FFFFFF;
-}
 </style>

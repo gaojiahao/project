@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 12:13:39
+ * @LastEditTime: 2021-01-12 15:00:29
 -->
 <template>
 <div class="platformManager-container">
@@ -138,7 +138,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -155,7 +155,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -197,6 +197,7 @@ export default {
         },
         clearFormData() {
             // this.isShowAdd = false;
+            this.$delete(this.formValidate,'id');
             this.isShowBind = false;
             this.$refs['form'].$refs['formValidate'].resetFields();
             this.formValidate.parentId=0;
@@ -250,7 +251,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }

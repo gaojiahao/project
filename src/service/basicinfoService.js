@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 21:08:12
+ * @LastEditTime: 2021-01-12 11:58:26
  */
 import $flyio from '@plugins/ajax';
 //新品开发管理
@@ -53,6 +53,12 @@ export let GetPrepGoodsAttributeById = (data = {}) => {
 export let UpdatePrepGoodsAttribute = (data = {}) => {
   return $flyio.post({
     url: '/api/UpdatePrepGoodsAttribute',
+    data: data
+  })
+};
+export let GetOperationLogPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetOperationLogPage',
     data: data
   })
 };

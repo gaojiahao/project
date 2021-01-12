@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 22:02:47
+ * @LastEditTime: 2021-01-12 12:30:18
 -->
 <template>
 <div>
@@ -18,7 +18,7 @@
                             <FormItem>
                                 <div style="width:100%"> 
                                     <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                    <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                    <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>
                         </template>
@@ -78,7 +78,7 @@
             </div>
         </TabPane>
         <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-            <AddNewProductTableLog></AddNewProductTableLog>
+            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
     
@@ -104,7 +104,8 @@ import {
     GetPrepGoodsById,
     UpdatePrepGoods,
     GetPrepGoodsAttributeById,
-    UpdatePrepGoodsAttribute
+    UpdatePrepGoodsAttribute,
+    GetOperationLogPage
 } from "@service/basicinfoService"
 import {
     Tabs,
@@ -146,7 +147,17 @@ export default {
             },
             loadingPruch:true,
             dataProp:[],
-            loadingProp:true
+            loadingProp:true,
+            pageDataLog:{
+                skipCount: 1,
+                skipTotal: 5,
+                maxResultCount: 5,
+                keyword:'',
+                pageSizeOpts:[5,50,200],
+                totalPagePruch:0
+            },
+            dataLog:[],
+            loadingLog:true
         }
     },
     computed:{
@@ -185,7 +196,26 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });
+                    } else  {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreatePrepGoods(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：新建成功！');
+                                    this.productId = res.result.item.id;
+                                    // this.$router.push({name:'editNewProduct',query: {id:this.productId}});
+                                    //this.GetGoodsSupplierPage();
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -218,7 +248,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -258,7 +288,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -362,7 +392,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                         }
                     });
@@ -396,19 +426,45 @@ export default {
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
-                            content: res.result.message
+                            content: res.result.msg
                         });
                         this.$FromLoading.hide();
                     }
                 });
             });    
-        }
+        },
+        goReturn(){
+            this.$router.go(-1);
+        },
+        GetOperationLogPage(){
+            if(this.productId){
+                return new Promise((resolve, reject) => {
+                    GetOperationLogPage({goodsId:this.productId}).then(res => {
+                        if(res.result.code==200){
+                            this.$nextTick(() => {
+                                this.dataLog = res.result.item.items;
+                                this.loadingLog = false;
+                            });
+                        }
+                    });
+                });
+            }    
+        },
+        changePageLog(page){
+            this.pageDataLog.skipCount = page;
+            this.GetOperationLogPage();
+        },
+        onPageSizeChangeLog(pagesize){
+            this.pageDataLog.maxResultCount = pagesize;
+            this.GetOperationLogPage();
+        },
     },
     created() {
         this.productId = this.$route.query.id;
         this.getFormData();
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
+        this.GetOperationLogPage();
     }
 }
 </script>

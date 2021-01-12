@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 16:48:39
+ * @LastEditTime: 2021-01-12 19:19:36
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <TypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @edit="edit" @del="sureDeleteConfirm" @set-filter="setFilter"></TypeManagerList>
+            <PlatFormTypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @edit="edit" @del="sureDeleteConfirm" @set-filter="setFilter" @set-platform-filter="setEcommerceCategoryFilter"></PlatFormTypeManagerList>
         </div>
         <div class="right">
             <div class="item" v-show="isShowAdd">
@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import config from "@views/settings/typeManager/typeManagerConfig";
-import TypeManagerList from "@components/settings/typeManager/typeManagerList";
+import config from "@views/settings/typeManager/platformTypeManagerConfig";
+import PlatFormTypeManagerList from "@components/settings/typeManager/platFormTypeManagerList.vue";
 import XForm from "@components/public/form/xForm";
 import {
     GetEcommerceCategoryList,
@@ -50,7 +50,7 @@ export default {
     name: "TypeManager",
     mixins: [config],
     components: {
-        TypeManagerList,
+        PlatFormTypeManagerList,
         XForm,
     },
     data() {
@@ -74,6 +74,7 @@ export default {
                 keyword:'',
                 totalPage:0,
                 pageSizeOpts:[10,50,200],
+                platFormId:'',
             },
         }
     },
@@ -129,7 +130,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -146,7 +147,7 @@ export default {
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
-                                        content: res.result.message
+                                        content: res.result.msg
                                     });
                                     this.$FromLoading.hide();
                                 }
@@ -188,6 +189,7 @@ export default {
         },
         clearFormData() {
             // this.isShowAdd = false;
+            this.$delete(this.formValidate,'id');
             this.isShowBind = false;
             this.$refs['form'].$refs['formValidate'].resetFields();
             this.formValidate.parentId=0;
@@ -200,6 +202,8 @@ export default {
             this.formValidate = {
                 parentId: data.parentId,
                 parentName :parentName,
+                platformId: data.platformId,
+                platformName: data.platformName,
                 name: data.name,
                 level: data.level,
                 id: data.id,
@@ -241,7 +245,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.$FromLoading.hide();
                         }
@@ -261,6 +265,10 @@ export default {
             this.pageAttrData.maxResultCount = pagesize;
             this.GetAttributeCategoryPage();
         },
+        setEcommerceCategoryFilter(value){
+            this.pageData.platFormId = value;
+            this.GetEcommerceCategoryList();
+        }
     },
     created() {
         this.GetEcommerceCategoryList();

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 21:00:05
+ * @LastEditTime: 2021-01-12 09:55:21
 -->
 <template>
 <div class="erp_table_container">
@@ -35,7 +35,7 @@
             </template>
         </Table>
     </div>
-    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setSeniorFilter" @show-filter="showFilter"></SeniorFilter>
 </div>
 </template>
 
@@ -132,7 +132,14 @@ export default {
                 },
                 {
                     title: '系统配置类型',
-                    key: 'congfigType'
+                    key: 'congfigType',
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                            },
+                        },this.getName(params.row.congfigType));//  展示的内容
+                    }
                 }, 
                 {
                     title: '名称',
@@ -200,7 +207,7 @@ export default {
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
-                                content: res.result.message
+                                content: res.result.msg
                             });
                             this.loading = false;
                         }
@@ -216,6 +223,25 @@ export default {
                 name:value,
                 pageSizeOpts:[15,50,200],
             },
+            this.GetSystemConfigPage(); 
+        },
+        getName(value){
+            var name = '';
+            if(value=='productLabel'){
+                name='特性标签';
+            } else if(value=='packageMaterial'){
+                name="包装材质";
+            } else if(value=='filetype'){
+                name="制图选项"
+            }
+            return name;
+        },
+        setSeniorFilter(data){
+            this.pageData = {
+                ...this.pageData,
+                congfigType:data.congfigType,
+            },
+            this.$delete(this.pageData,'name');
             this.GetSystemConfigPage(); 
         }
     },

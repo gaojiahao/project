@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 16:35:16
+ * @LastEditTime: 2021-01-12 14:45:16
  */
 export default {
     data() {
@@ -24,8 +24,20 @@ export default {
       };
       const productSizeVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
-            callback(new Error('请输入商品尺寸'));
+          callback(new Error('请输入商品尺寸'));
         } else {
+          if(!value.long){
+            callback(new Error('请输入商品长度'));
+          }
+          if(!value.wide){
+            callback(new Error('请输入商品宽度'));
+          }
+          if(!value.high){
+            callback(new Error('请输入商品高度'));
+          }
+          if(!value.volume){
+            callback(new Error('请输入商品体积'));
+          }
           callback();
         }
       };
@@ -40,6 +52,18 @@ export default {
         if (value == ''||value === undefined) {
             callback(new Error('请输入包装尺寸'));
         } else {
+          if(!value.long){
+            callback(new Error('请输入包装长度'));
+          }
+          if(!value.wide){
+            callback(new Error('请输入包装宽度'));
+          }
+          if(!value.high){
+            callback(new Error('请输入包装高度'));
+          }
+          if(!value.volume){
+            callback(new Error('请输入包装体积'));
+          }
           callback();
         }
       };
@@ -57,10 +81,24 @@ export default {
           callback();
         }
       };
+      const weightVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请输入商品重量'));
+        } else {
+          callback();
+        }
+      };
+      const packageWeightVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请输入包装重量'));
+        } else {
+          callback();
+        }
+      };
       return {
         productInfo:{
           code:{
-            name:'商品编号',
+            name:'产品编码',
             type:'text',
           },
           name:{
@@ -80,6 +118,10 @@ export default {
                 {k:'value',v:'id'}
               ]
             },
+            bind:{
+              target: 'categoryName',
+              bindValue: 'name'
+            }
           },
           characteristic:{
             name:'特性标签',
@@ -135,12 +177,15 @@ export default {
             name:'包装材料',
             type:'select',
             dataSource:{
-              type:'static',
-              data:[
-                {name:'积木',value:1},
-                {name:'灯',value:2}
-              ],
-            }
+              type:'dynamic',
+              url:'/api/GetSystemConfigList',
+              data:[],
+              parmas:{congfigType:'packageMaterial'},
+              col:[
+                {k:'name',v:'name'},
+                {k:'value',v:'id'}
+              ]
+            },
           }, 
           packageCost:{
             name:'包装成本',
@@ -291,6 +336,7 @@ export default {
           code:'',
           name: '',
           categoryId: '',
+          categoryName:'',
           characteristic:'',
           brandId:'',
           brandName:'',
@@ -361,7 +407,8 @@ export default {
             trigger: 'blur',
             transform(value) {
               return Number(value);
-            }
+            },
+            validator: weightVali
           }],
           productSize: [{ 
             required: true, 
@@ -390,7 +437,8 @@ export default {
             trigger: 'blur',
             transform(value) {
               return Number(value);
-            }
+            },
+            validator: packageWeightVali
           }],
           packagingSize: [{ 
             required: true, 
@@ -441,16 +489,6 @@ export default {
               ],
             },
           },
-          supplier:{
-            name:'产商',
-            value:'supplier',
-            type:'text',
-          },
-          supplierNum:{
-            name:'产商货号',
-            value:'supplierNum',
-            type:'text',
-          },
           createTime:{
             name:'创建时间',
             value:'createTime',
@@ -461,18 +499,18 @@ export default {
             value:'recommendingOfficer',
             type:'text',
           },
-          // status:{
-          //   name:'状态',
-          //   value:'status',
-          //   type:'radio',
-          //   dataSource:{
-          //     type:'static',
-          //     data:[
-          //       {name:'是',value:'true'},
-          //       {name:'否',value:'false'}
-          //     ],
-          //   },
-          // },
+          status:{
+            name:'状态',
+            value:'status',
+            type:'radio',
+            dataSource:{
+              type:'static',
+              data:[
+                {name:'已审核',value:'true'},
+                {name:'未审核',value:'false'}
+              ],
+            },
+          },
           modifyTime:{
             name:'修改时间',
             value:'modifyTime',
