@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 15:08:30
+ * @LastEditTime: 2021-01-13 18:56:48
  */
 export default {
     data() {
@@ -55,7 +55,7 @@ export default {
           },
           level:{
             name:'分类层级',
-            type:'text',
+            type:'number',
           },
         },
         formValidate: {
@@ -81,10 +81,9 @@ export default {
           }],
           level: [{
             required: true,
-            type: 'string',
-            message: '请输入分类层级',
-            trigger: 'blur',
-            validator: levelVali,
+            message: '请输入正确的分类层级',
+            trigger: 'change',
+            pattern: /^[0-9]\d*$/,
           }],
           platformId: [{ required: true, message: '请选择平台名称',validator: platformIdVali, trigger: 'change' }],
         },

@@ -5,12 +5,23 @@
             <Icon type="md-apps" />
             <span class="text">当前分类</span>
         </div>
-        <div class="right">
+    </div>
+    <div class="head">
+        <div class="left">
             <Button type="primary" icon="md-add" size="small" @click.native="add">新建
             </Button>
+            <Button type="success" icon="md-add" size="small" @click.native="append">新建子类
+            </Button>
+            <Button type="info" icon="ios-create-outline" size="small" @click.native="edit">编辑
+            </Button>
+            <Button type="error" icon="ios-close" size="small" @click.native="remove">删除
+            </Button>
         </div>
-        <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
     </div>
+    <div style="margin:0 5px">
+        <Input search clearable placeholder="" size="small" style="padding:5px" @on-search="onSearch" @on-clear="onCler" />
+    </div>
+    <Divider />
     <div class="content">
         <Spin fix v-if="loading">
             <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
@@ -18,12 +29,7 @@
         </Spin>
         <template v-else>
             <template v-if="data.length">
-                <Tree :data="data" :render="renderContent" @on-select-change="onSelectChange" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()">
-                    <template slot="contextMenu">
-                        <DropdownItem @click.native="append">添加</DropdownItem>
-                        <DropdownItem @click.native="edit">编辑</DropdownItem>
-                        <DropdownItem @click.native="remove($event)" style="color: #ed4014">删除</DropdownItem>
-                    </template>
+                <Tree :data="data" :render="renderContent" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()" ref="tree">
                 </Tree>
             </template>
             <template v-else>
@@ -79,100 +85,8 @@ export default {
     },
     data() {
         return {
-            data: [
-            //{
-            //     id: '1',
-            //     title: '电子器元件',
-            //     loading: false,
-            //     parentId: '',
-            //     code:'dzqyj',
-            //     contextmenu: true,
-            //     children: [{
-            //         id: 'a',
-            //         title: '玩具类',
-            //         loading: false,
-            //         parentId: '1',
-            //         code:'wjl',
-            //         contextmenu: true,
-            //         children: [{
-            //             id: 'a-1',
-            //             title: '积木类',
-            //             loading: false,
-            //             parentId: 'a',
-            //             code:'jml',
-            //             contextmenu: true,
-            //             children: [{
-            //                 id: 'a-1-1',
-            //                 title: '木质积木',
-            //                 loading: false,
-            //                 parentId: 'a-1',
-            //                 code:'mzjm',
-            //                 contextmenu: true,
-            //             }, {
-            //                 id: 'a-1-2',
-            //                 title: 'pvc积木',
-            //                 loading: false,
-            //                 parentId: 'a-1',
-            //                 code:'pvcjm',
-            //                 contextmenu: true,
-            //             }]
-            //         }, {
-            //             id: 'a-2',
-            //             title: '遥控类',
-            //             loading: false,
-            //             parentId: 'a',
-            //             code:'ykl',
-            //             contextmenu: true,
-            //         }]
-            //     }, ]
-            // },
-            // {
-            //     id: '2',
-            //     title: '积木玩具类',
-            //     loading: false,
-            //     parentId: '',
-            //     code:'dzqyj2',
-            //     contextmenu: true,
-            //     children: [{
-            //         id: 'a1',
-            //         title: '玩具类',
-            //         loading: false,
-            //         parentId: '2',
-            //         code:'wjl2',
-            //         contextmenu: true,
-            //         children: [{
-            //             id: 'a-11',
-            //             title: '积木类',
-            //             loading: false,
-            //             parentId: 'a1',
-            //             code:'jml2',
-            //             contextmenu: true,
-            //             children: [{
-            //                 id: 'a-1-1',
-            //                 title: '木质积木',
-            //                 loading: false,
-            //                 parentId: 'a-11',
-            //                 code:'mzjm2',
-            //                 contextmenu: true,
-            //             }, {
-            //                 id: 'a-1-21',
-            //                 title: 'pvc积木',
-            //                 loading: false,
-            //                 parentId: 'a-11',
-            //                 code:'pvcjm2',
-            //                 contextmenu: true,
-            //             }]
-            //         }, {
-            //             id: 'a-21',
-            //             title: '遥控类',
-            //             loading: false,
-            //             parentId: 'a1',
-            //             code:'ykl2',
-            //             contextmenu: true,
-            //         }]
-            //     }, ]
-            // }
-            ],
+            data: [],
+            selectItem:{}
         }
     },
     methods: {
@@ -183,6 +97,17 @@ export default {
                 style: {
                     display: 'inline-block',
                     width: '100%'
+                },
+                on: {
+                    click: () => {
+                    if (!node.node.selected)
+                        this.$refs.tree.handleSelect(node.nodeKey); //手动选择树节点
+                        this.selectItem = {
+                            root:root,
+                            node:node,
+                            data:data
+                        }
+                    }
                 }
             }, [
                 h('span', [
@@ -203,62 +128,78 @@ export default {
                         marginRight: '32px'
                     }
                 }, [
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-add'
-                        }),
-                        style: {
-                            marginRight: '8px'
-                        },
-                        on: {
-                            click: (e) => { this.append(e,data) }
-                        }
-                    }),
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-create-outline'
-                        }),
-                        style: {
-                            marginRight: '8px'
-                        },
-                        on: {
-                            click: (e) => {
-                                debugger
-                                this.edit(e,root,node,data) 
-                            }
-                        }
-                    }),
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-remove'
-                        }),
-                        on: {
-                            click: (e) => { this.remove(e,root, node, data) }
-                        }
-                    })
+                    // h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-add'
+                    //     }),
+                    //     style: {
+                    //         marginRight: '8px'
+                    //     },
+                    //     on: {
+                    //         click: (e) => { this.append(e,data) }
+                    //     }
+                    // }),
+                    // h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-create-outline'
+                    //     }),
+                    //     style: {
+                    //         marginRight: '8px'
+                    //     },
+                    //     on: {
+                    //         click: (e) => {
+                    //             debugger
+                    //             this.edit(e,root,node,data) 
+                    //         }
+                    //     }
+                    // }),
+                    // h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-remove'
+                    //     }),
+                    //     on: {
+                    //         click: (e) => { this.remove(e,root, node, data) }
+                    //     }
+                    // })
                 ])
             ]);
         },
         add() {
             this.$emit('show-add');
         },
-        onSelectChange(index){
-            this.$emit('select-item', index);
+        // onSelectChange(index){
+        //     this.$emit('select-item', index);
+        // },
+        // append(e,data) {
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('show-add',data);
+        // },
+        // edit(e,root,node,data){
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('edit', root,node,data);
+        // },
+        // remove(e,root, node, data) {
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('del',root, node, data)
+        // },
+        append() {
+            if(this.selectItem){
+                this.$emit('show-add-child',this.selectItem.data);
+            }
         },
-        append(e,data) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('show-add',data);
+        edit(){
+            if(this.selectItem){
+                this.$emit('edit', this.selectItem.root,this.selectItem.node,this.selectItem.data);
+            }
         },
-        edit(e,root,node,data){
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('edit', root,node,data);
-        },
-        remove(e,root, node, data) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('del',root, node, data)
+        remove() {
+            if(this.selectItem){
+                this.$emit('del',this.selectItem.root, this.selectItem.node, this.selectItem.data);
+                this.selectItem = {};
+            }
         },
         handleContextMenu(e,data) {
             this.contextData = data;
@@ -282,9 +223,9 @@ export default {
 
     .head {
         width: 100%;
-        height: 80px;
-    background: #ffffff;
-        line-height: 40px;
+        height: 32px;
+        background: #ffffff;
+        line-height: 32px;
 
         .left {
             float: left;
@@ -325,6 +266,9 @@ export default {
     }
     .demo-tree-render /deep/ .ivu-tree-title{
         width: 100%;
+    }
+    .ivu-divider-horizontal{
+        margin: 0;
     }
 }
 </style>

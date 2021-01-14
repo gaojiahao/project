@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 10:30:10
+ * @LastEditTime: 2021-01-13 19:51:54
  */
 export default {
     data() {
@@ -23,7 +23,7 @@ export default {
           },
           groupName:{
             name:'属性组别',
-            type:'text',
+            type:'number',
           },
         },
         formConfig2:{
@@ -61,10 +61,9 @@ export default {
           }],
           groupName: [{
               required: true,
-              type: 'string',
               message: '请输入属性组别',
-              trigger: 'blur',
-              validator: groupNameVali
+              trigger: 'change',
+              pattern: /^[0-9]\d*$/,
           }],
         },
         ruleValidate2: {

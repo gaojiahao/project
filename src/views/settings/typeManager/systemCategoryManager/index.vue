@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 15:00:29
+ * @LastEditTime: 2021-01-13 17:03:33
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <TypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @edit="edit" @del="sureDeleteConfirm" @set-filter="setFilter"></TypeManagerList>
+            <TypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @show-add-child="showAddChild" @edit="edit" @del="sureDeleteConfirm" @set-filter="setFilter"></TypeManagerList>
         </div>
         <div class="right">
             <div class="item" v-show="isShowAdd">
@@ -133,7 +133,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.GetCategoryList();
-                                    this.$refs['form'].$refs['formValidate'].resetFields();
+                                    this.clearFormData();
                                     this.$refs['form'].initEL('input');
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
@@ -184,9 +184,17 @@ export default {
                 }, 1000);
             }
         },
-        showAdd(data) {
-            this.$delete(this.formValidate,'id');
+        showAdd() {
             this.$refs['form'].$refs['formValidate'].resetFields();
+            this.$delete(this.formValidate,'id');
+            this.isShowAdd = true;
+            this.isShowBind = false;
+            this.formValidate.parentId= 0;
+            this.$refs['form'].initEL('input');
+        },
+        showAddChild(data) {
+            this.$refs['form'].$refs['formValidate'].resetFields();
+            this.$delete(this.formValidate,'id');
             this.isShowAdd = true;
             this.isShowBind = false;
             if(data.id){
@@ -227,6 +235,7 @@ export default {
             this.isShowBind = true;
         },
         sureDeleteConfirm (root, node, data,flag) {
+            if (data.id) {
             this.$Modal.confirm({
                 title: '温馨提示',
                 content: '数据删除后将无法恢复！',
@@ -237,6 +246,7 @@ export default {
                     flag ? this.deletesData() : this.deleteData(root, node, data);
                 },
             });
+            }
         },
         deleteData(root, node, data) {
             if (data.id) {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 20:57:44
+ * @LastEditTime: 2021-01-13 19:55:56
 -->
 <template>
 <div class="erp_table_container">
@@ -76,7 +76,7 @@ export default {
                 skipCount: 1,
                 skipTotal: 15,
                 maxResultCount: 15,
-                name:'',
+                keyword:'',
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
@@ -304,6 +304,7 @@ export default {
                                 this.pageData.skipCount-1;
                             }
                             this.getMenuList();
+                            this.activatedRow = {};
                             this.loading = false;
                         } else if (res.result.code == 400) {
                             this.$Message.error({
@@ -321,7 +322,7 @@ export default {
                 skipCount: 1,
                 skipTotal: 15,
                 maxResultCount: 15,
-                name:value,
+                keyword:value,
                 pageSizeOpts:[15,50,200],
             };
             this.getMenuList(); 

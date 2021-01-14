@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 10:22:51
+ * @LastEditTime: 2021-01-13 15:01:23
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -209,6 +209,7 @@ export default {
             this.activeTab = name;
         },
         add() {
+            debugger
             this.data.categoryId = this.data.categoryId?this.data.categoryId:this.$parent.formValidate.id;
             this.data.attributeBinds.push({
                 ...this.formValidate2,

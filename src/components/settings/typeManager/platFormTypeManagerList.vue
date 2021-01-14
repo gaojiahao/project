@@ -5,21 +5,31 @@
             <Icon type="md-apps" />
             <span class="text">当前分类</span>
         </div>
-        <div class="right">
+    </div>
+    <div class="head">
+        <div class="left">
             <Button type="primary" icon="md-add" size="small" @click.native="add">新建
+            </Button>
+            <Button type="success" icon="md-add" size="small" @click.native="append">新建子类
+            </Button>
+            <Button type="info" icon="ios-create-outline" size="small" @click.native="edit">编辑
+            </Button>
+            <Button type="error" icon="ios-close" size="small" @click.native="remove">删除
             </Button>
         </div>
     </div>
     <div style="display: flex;">
+        <div style="width:34px;line-height:34px;margin-left:10px"><span>平台:</span></div>
         <div>
             <Select v-model="platFormId" :style="{width:'100px',float: 'left',padding:'5px'}" clearable  filterable @on-select="onChange" size="small">
-                <Option v-for="item in platformList" :value="item.id" :key="item.id" :tag="index">{{ item.name }}</Option>
+                <Option v-for="item in platformList" :value="item.id" :key="item.id">{{ item.name }}</Option>
             </Select>
         </div>
         <div>
-            <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
+            <Input search clearable placeholder="" size="small" style="padding:5px;width: 200px" @on-search="onSearch" @on-clear="onCler" />
         </div>
     </div>
+    <Divider />
     <div class="content">
         <Spin fix v-if="loading">
             <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
@@ -27,12 +37,7 @@
         </Spin>
         <template v-else>
             <template v-if="data.length">
-                <Tree :data="data" :render="renderContent" @on-select-change="onSelectChange" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()">
-                    <template slot="contextMenu">
-                        <DropdownItem @click.native="append">添加</DropdownItem>
-                        <DropdownItem @click.native="edit">编辑</DropdownItem>
-                        <DropdownItem @click.native="remove($event)" style="color: #ed4014">删除</DropdownItem>
-                    </template>
+                <Tree :data="data" :render="renderContent" @on-select-change="onSelectChange" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()" ref="tree">
                 </Tree>
             </template>
             <template v-else>
@@ -96,7 +101,8 @@ export default {
         return {
             data: [],
             platFormId:'',
-            platformList:[]
+            platformList:[],
+            selectItem:{}
         }
     },
     methods: {
@@ -106,7 +112,19 @@ export default {
             return h('span', {
                 style: {
                     display: 'inline-block',
-                    width: '100%'
+                    width: '100%',
+                    cursor: "pointer",
+                },
+                on: {
+                    click: () => {
+                    if (!node.node.selected)
+                        this.$refs.tree.handleSelect(node.nodeKey); //手动选择树节点
+                        this.selectItem = {
+                            root:root,
+                            node:node,
+                            data:data
+                        }
+                    }
                 }
             }, [
                 h('span', [
@@ -127,39 +145,38 @@ export default {
                         marginRight: '32px'
                     }
                 }, [
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-add'
-                        }),
-                        style: {
-                            marginRight: '8px'
-                        },
-                        on: {
-                            click: (e) => { this.append(e,data) }
-                        }
-                    }),
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-create-outline'
-                        }),
-                        style: {
-                            marginRight: '8px'
-                        },
-                        on: {
-                            click: (e) => {
-                                debugger
-                                this.edit(e,root,node,data) 
-                            }
-                        }
-                    }),
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-remove'
-                        }),
-                        on: {
-                            click: (e) => { this.remove(e,root, node, data) }
-                        }
-                    })
+                    // h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-add'
+                    //     }),
+                    //     style: {
+                    //         marginRight: '8px'
+                    //     },
+                    //     on: {
+                    //         click: (e) => { this.append(e,data) }
+                    //     }
+                    // }),
+                    // h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-create-outline'
+                    //     }),
+                    //     style: {
+                    //         marginRight: '8px'
+                    //     },
+                    //     on: {
+                    //         click: (e) => {
+                    //             this.edit(e,root,node,data) 
+                    //         }
+                    //     }
+                    // }),
+                    // h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-remove'
+                    //     }),
+                    //     on: {
+                    //         click: (e) => { this.remove(e,root, node, data) }
+                    //     }
+                    // })
                 ])
             ]);
         },
@@ -169,23 +186,36 @@ export default {
         onSelectChange(index){
             this.$emit('select-item', index);
         },
-        append(e,data) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('show-add',data);
+        // append(e,data) {
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('show-add',data);
+        // },
+        // edit(e,root,node,data){
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('edit', root,node,data);
+        // },
+        // remove(e,root, node, data) {
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('del',root, node, data)
+        // },
+        append() {
+            if(this.selectItem){
+                this.$emit('show-add-child',this.selectItem.data);
+            }
         },
-        edit(e,root,node,data){
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('edit', root,node,data);
+        edit(){
+            if(this.selectItem){
+                this.$emit('edit', this.selectItem.root,this.selectItem.node,this.selectItem.data);
+            }
         },
-        remove(e,root, node, data) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('del',root, node, data)
-        },
-        handleContextMenu(e,data) {
-            this.contextData = data;
+        remove() {
+            if(this.selectItem){
+                this.$emit('del',this.selectItem.root, this.selectItem.node, this.selectItem.data);
+                this.selectItem = {};
+            }
         },
         onSearch(value){
             this.$emit('set-filter',value);
@@ -221,9 +251,9 @@ export default {
 
     .head {
         width: 100%;
-        height: 40px;
-    background: #ffffff;
-        line-height: 40px;
+        height: 32px;
+        background: #ffffff;
+        line-height: 32px;
 
         .left {
             float: left;
@@ -264,6 +294,9 @@ export default {
     }
     .demo-tree-render /deep/ .ivu-tree-title{
         width: 100%;
+    }
+    .ivu-divider-horizontal{
+        margin: 0;
     }
 }
 </style>

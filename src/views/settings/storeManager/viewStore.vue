@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 16:08:17
+ * @LastEditTime: 2021-01-13 10:18:29
 -->
 <template>
 <div class="edit_store">
@@ -30,7 +30,7 @@
                 <div class="top">
                     <Divider orientation="left" size="small">选择系统类目</Divider>
                     <div class="top_tabale">
-                        <SystemCategoryBind :loading="loading" @select-system-bind="selectSystemBind" @set-filter="setSystemCategoryFilter" ref="selectSystemBind" :data="systemCategoryData" :formData="formValidate.storeBinds"></SystemCategoryBind>
+                        <SystemCategoryBind type="view" :loading="loading" @select-system-bind="selectSystemBind" @set-filter="setSystemCategoryFilter" ref="selectSystemBind" :data="systemCategoryData" :formData="formValidate.storeBinds"></SystemCategoryBind>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 16:33:04
+ * @LastEditTime: 2021-01-13 19:58:55
  */
 export default {
   data() {
@@ -68,6 +68,7 @@ export default {
       ruleValidate: {
         name: [{
             required: true,
+            type: 'string',
             message: '请输入菜单名称',
             trigger: 'blur'
         }],
@@ -77,6 +78,12 @@ export default {
             message: '请输入路由地址',
             trigger: 'blur'
         }],
+        code: [{
+          required: true,
+          type: 'string',
+          message: '请输入标签',
+          trigger: 'blur'
+      }],
       },
       filtersConfig:{
         name:{

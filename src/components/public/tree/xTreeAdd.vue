@@ -4,12 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 17:53:16
+ * @LastEditTime: 2021-01-13 20:26:50
 -->
 <template>
 <div>
     <Modal v-model="modal" title="分配权限" @on-ok="ok" @on-cancel="cancel" width="800">
-        <Tree :data="datas" show-checkbox multiple @on-check-change="selectChangeAll" ref="tree" :check-strictly="true"></Tree>
+        <div style="overflow-y: scroll;height: 600px;position: relative;">
+            <Tree :data="datas" show-checkbox multiple @on-check-change="selectChangeAll" ref="tree" :check-strictly="true"></Tree>
+        </div>
     </Modal>
 </div>
 </template>
@@ -55,7 +57,6 @@ export default {
     },
     methods: {
         selectChangeAll(selectedAll1, selectedItem) {
-            console.log(selectedAll1);
             this.selected = [];
             for(var i=0;i<selectedAll1.length;i++){
                 this.selected.push(selectedAll1[i].id);
@@ -78,6 +79,7 @@ export default {
                 }
                 if(this.roleAuthData.indexOf(data[i]['id'])!=-1){
                     data[i]['checked'] = true;
+                    data[i]['expand'] = true;
                 }
                 if(data[i].children){
                     this.calleArr(data[i].children);

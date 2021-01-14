@@ -5,12 +5,23 @@
             <Icon type="md-apps" />
             <span class="text">当前属性</span>
         </div>
-        <div class="right">
+    </div>
+    <div class="head">
+        <div class="left">
             <Button type="primary" icon="md-add" size="small" @click.native="add">新建
             </Button>
+            <Button type="success" icon="md-add" size="small" @click.native="appendChild">新建子类
+            </Button>
+            <Button type="info" icon="ios-create-outline" size="small" @click.native="edit">编辑
+            </Button>
+            <Button type="error" icon="ios-close" size="small" @click.native="remove">删除
+            </Button>
         </div>
-        <Input search clearable placeholder="" size="small" style="padding:5px;" @on-search="onSearch" @on-clear="onCler" />
     </div>
+    <div style="margin:0 5px">
+        <Input search clearable placeholder="" size="small" style="padding:5px" @on-search="onSearch" @on-clear="onCler" />
+    </div>
+    <Divider />
     <div class="content">
         <Spin fix v-if="loading">
             <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
@@ -18,12 +29,7 @@
         </Spin>
         <template v-else>
             <template v-if="data.length">
-                <Tree :data="data" :render="renderContent" @on-select-change="onSelectChange" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()">
-                    <template slot="contextMenu">
-                        <DropdownItem @click.native="append">添加</DropdownItem>
-                        <DropdownItem @click.native="edit">编辑</DropdownItem>
-                        <DropdownItem @click.native="remove($event)" style="color: #ed4014">删除</DropdownItem>
-                    </template>
+                <Tree :data="data" :render="renderContent" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()" ref="tree">
                 </Tree>
             </template>
             <template v-else>
@@ -80,6 +86,7 @@ export default {
     data() {
         return {
             data: [],
+            selectItem:{}
         }
     },
     methods: {
@@ -90,6 +97,17 @@ export default {
                 style: {
                     display: 'inline-block',
                     width: '100%'
+                },
+                on: {
+                    click: () => {
+                    if (!node.node.selected)
+                        this.$refs.tree.handleSelect(node.nodeKey); //手动选择树节点
+                        this.selectItem = {
+                            root:root,
+                            node:node,
+                            data:data
+                        }
+                    }
                 }
             }, 
             [
@@ -111,98 +129,118 @@ export default {
                         marginRight: '32px'
                     }
                 }, [
-                    data.attributesValues ?
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-add'
-                        }),
-                        style: {
-                            marginRight: '8px'
-                        },
-                        on: {
-                            click: (e) => { this.appendChild(e,root,node,data) }
-                        }
-                    }):'',
-                    data.attributesValues ?
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-create-outline'
-                        }),
-                        style: {
-                            marginRight: '8px'
-                        },
-                        on: {
-                            click: (e) => {
-                                this.edit(e,root,node,data)
-                            }
-                        }
-                    }):h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-create-outline'
-                        }),
-                        style: {
-                            marginRight: '8px'
-                        },
-                        on: {
-                            click: (e) => {
-                                this.editChild(e,root,node,data)
-                            }
-                        }
-                    }),
-                    data.attributesValues ?
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-remove'
-                        }),
-                        on: {
-                            click: (e) => { this.remove(e,root, node, data) }
-                        }
-                    }):h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-remove'
-                        }),
-                        on: {
-                            click: (e) => { this.removeChild(e,root, node, data) }
-                        }
-                    })
+                    // data.attributesValues ?
+                    // h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-add'
+                    //     }),
+                    //     style: {
+                    //         marginRight: '8px'
+                    //     },
+                    //     on: {
+                    //         click: (e) => { this.appendChild(e,root,node,data) }
+                    //     }
+                    // }):'',
+                    // data.attributesValues ?
+                    // h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-create-outline'
+                    //     }),
+                    //     style: {
+                    //         marginRight: '8px'
+                    //     },
+                    //     on: {
+                    //         click: (e) => {
+                    //             this.edit(e,root,node,data)
+                    //         }
+                    //     }
+                    // }):h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-create-outline'
+                    //     }),
+                    //     style: {
+                    //         marginRight: '8px'
+                    //     },
+                    //     on: {
+                    //         click: (e) => {
+                    //             this.editChild(e,root,node,data)
+                    //         }
+                    //     }
+                    // }),
+                    // data.attributesValues ?
+                    // h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-remove'
+                    //     }),
+                    //     on: {
+                    //         click: (e) => { this.remove(e,root, node, data) }
+                    //     }
+                    // }):h('Button', {
+                    //     props: Object.assign({}, this.buttonProps, {
+                    //         icon: 'ios-remove'
+                    //     }),
+                    //     on: {
+                    //         click: (e) => { this.removeChild(e,root, node, data) }
+                    //     }
+                    // })
                 ])
             ]);
         },
         add() {
             this.$emit('show-add');
         },
-        onSelectChange(index){
-            this.$emit('select-item', index);
-        },
+        // onSelectChange(index){
+        //     this.$emit('select-item', index);
+        // },
         append(e,data) {
             e.stopPropagation();
             e.preventDefault();
             this.$emit('show-add',data);
         },
-        appendChild(e,root,node,data){
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('show-add-child',root,node,data);
+        // appendChild(e,root,node,data){
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('show-add-child',root,node,data);
+        // },
+        // edit(e,root,node,data){
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('edit', root,node,data);
+        // },
+        // editChild(e,root,node,data){
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('edit-child', root,node,data);
+        // },
+        // remove(e,root, node, data) {
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('del',root, node, data)
+        // },
+        // removeChild(e,root, node, data) {
+        //     e.stopPropagation();
+        //     e.preventDefault();
+        //     this.$emit('del-child',root, node, data)
+        // },
+        appendChild(){
+            if(this.selectItem.data.attributesValues){
+                this.$emit('show-add-child',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+            }
         },
-        edit(e,root,node,data){
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('edit', root,node,data);
+        edit(){
+            if(this.selectItem.data.attributesValues){
+                this.$emit('edit',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+            } else {
+                this.$emit('edit-child',this.selectItem.root,this.selectItem.node,this.selectItem.data); 
+            }  
         },
-        editChild(e,root,node,data){
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('edit-child', root,node,data);
-        },
-        remove(e,root, node, data) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('del',root, node, data)
-        },
-        removeChild(e,root, node, data) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.$emit('del-child',root, node, data)
+        remove() {
+            if(this.selectItem.data.attributesValues){
+                this.$emit('del',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+            } else {
+                this.$emit('del-child',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+            }
+            this.selectItem = {};
         },
         handleContextMenu(e,data) {
             this.contextData = data;
@@ -226,9 +264,9 @@ export default {
 
     .head {
         width: 100%;
-        height: 80px;
+        height: 32px;
     background: #ffffff;
-        line-height: 40px;
+        line-height: 32px;
 
         .left {
             float: left;
@@ -269,6 +307,9 @@ export default {
     }
     .demo-tree-render /deep/ .ivu-tree-title{
         width: 100%;
+    }
+    .ivu-divider-horizontal{
+        margin: 0;
     }
 }
 </style>

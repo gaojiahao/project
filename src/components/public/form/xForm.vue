@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 15:56:29
+ * @LastEditTime: 2021-01-13 17:49:30
 -->
 <template>
 <div class="content">
@@ -15,10 +15,13 @@
             <Divider orientation="left" size="small" v-if="index==divisionField.value">{{divisionField.name}}</Divider>
             <!--文本框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="(formConfig[index]&&formConfig[index]['type']=='text')&&!formConfig[index]['hidden']">
-               <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
+               <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" :maxlength="formConfig[index]['length']||20"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
+            </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="(formConfig[index]&&formConfig[index]['type']=='number')&&!formConfig[index]['hidden']">
+               <Input v-model="formValidate[index]" type="number" :number="true" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" ></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <!--数值控件-->
-            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='number'">
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='numbers'">
                 <InputNumber v-model="formValidate[index]" :style="{width:'200px'}" :editable="formConfig[index]['disabled']" :precision="formConfig[index]['precision']" v-show="!formConfig[index]['hidden']"></InputNumber><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <!--单选框-->
@@ -212,9 +215,9 @@ export default {
             document.onkeypress = function (e) {
                 var e = event || e;
                 var idx = inputGroupArr.indexOf(e.srcElement);
-                console.log(e, e.keyCode, e.srcElement, e.which);
+                // console.log(e, e.keyCode, e.srcElement, e.which);
                 if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
-                    console.log(idx)
+                    // console.log(idx)
                     if (idx == iGlength - 1) { //表明已经是最后一个输入框
                         buttonGroup.focus();
                     } else {

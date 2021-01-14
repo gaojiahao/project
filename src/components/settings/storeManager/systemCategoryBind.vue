@@ -4,21 +4,21 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-06 17:43:42
+ * @LastEditTime: 2021-01-13 16:16:42
 -->
 <template>
 <div class="content">
     <div style="margin:0 5px; padding:10px 0">
         <Input search clearable placeholder="" size="small" @on-search="onSearch" @on-clear="onCler" />
     </div>
-    <div class="list">
+    <div :class="[type=='add'? 'list':'list_view']">
         <Spin fix v-if="loading">
             <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
             <div>Loading</div>
         </Spin>
         <template v-else>
             <template v-if="systemCategoryData.length">
-                <Tree ref="tree" :data="systemCategoryData" :render="renderContent" show-checkbox  multiple @on-check-change="checkChange"></Tree>
+                <Tree ref="tree" :data="systemCategoryData" :render="renderContent" show-checkbox  multiple @on-check-change="checkChange" ></Tree>
             </template>
             <template v-else>
                 暂无数据
@@ -40,6 +40,10 @@ export default {
             default () {
                 return []
             } 
+        },
+        type:{
+            type:String,
+            default:''
         }
     },
     data() {
@@ -120,8 +124,13 @@ export default {
         calleArr: function(data){
             for(var i in data){
                 for(var j=0;j<this.formData.length;j++){
+                    if(this.type=='view'){
+                        data[i]['disabled'] = true;    
+                    }
                     if(this.formData[j]['categoryId']==data[i]['id']){
                         data[i]['checked'] = true;
+                        if(data[i].children&&data[i].children.length)
+                            data[i]['expand'] = true;
                     }    
                 }
                 if(data[i].children&&data[i].children.length){
@@ -149,6 +158,11 @@ export default {
     .list{
         overflow-y: scroll;
         height: 451px;
+        position: relative;    
+    }
+    .list_view{
+        overflow-y: scroll;
+        height: 495px;
         position: relative;    
     }
 }

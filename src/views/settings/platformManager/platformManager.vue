@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 19:50:46
+ * @LastEditTime: 2021-01-13 15:27:41
 -->
 <template>
 <div class="platformManager-container">
@@ -183,7 +183,7 @@ export default {
             this.$refs.selectSystemBind.clear();
         },
         clearFormData() {
-            this.formValidate.id = '';
+            this.$delete(this.formValidate,'id');
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
         selectItem(id) {
@@ -360,7 +360,6 @@ export default {
             });
         },
         GetEcommerceCategoryList() {
-            debugger
             return new Promise((resolve, reject) => {
                 GetEcommerceCategoryList(this.pageDataEmm).then(res => {
                     if(res.result.code==200){

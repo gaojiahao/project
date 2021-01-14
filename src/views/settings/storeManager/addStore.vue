@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-09 19:33:05
+ * @LastEditTime: 2021-01-13 10:27:56
 -->
 <template>
 <div class="add_store">
@@ -32,7 +32,7 @@
                 <div class="top">
                     <Divider orientation="left" size="small">选择系统类目绑定</Divider>
                     <div class="top_tabale">
-                        <SystemCategoryBind :loading="loading" @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind>
+                        <SystemCategoryBind type="add" :loading="loading" @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind>
                     </div>
                 </div>
             </div>

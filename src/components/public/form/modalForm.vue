@@ -4,17 +4,20 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 15:57:16
+ * @LastEditTime: 2021-01-13 20:00:11
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
         <template v-for="(item, index) in formValidate">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="(formConfig[index]&&formConfig[index]['type']=='text')&&!formConfig[index]['hidden']">
-                <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']"></Input>
+                <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" :maxlength="formConfig[index]['length']||20"></Input>
+            </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="(formConfig[index]&&formConfig[index]['type']=='number')&&!formConfig[index]['hidden']">
+               <Input v-model="formValidate[index]" type="number" :number="true" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" ></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <!--数值控件-->
-            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='number'">
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='numbers'">
                 <InputNumber v-model="formValidate[index]" :style="{width:'200px'}" :editable="formConfig[index]['disabled']" :precision="formConfig[index]['precision']" v-show="!formConfig[index]['hidden']"></InputNumber><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
@@ -53,6 +56,14 @@
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTimes'">
                 <DatePicker v-model="formValidate[index]" @on-change="formValidate[index]=$event" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px" :disabled="formConfig[index]['disabled']"></DatePicker>
+            </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectMultiField'">
+                <!-- <Select v-model="formValidate[index]" filterable multiple :disabled="formConfig[index]['disabled']" style="{width:'400px',float: 'left'}">
+                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select> -->
+                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable :disabled="formConfig[index]['disabled']" :label-in-value='true' v-show="!formConfig[index]['hidden']" @on-select="onChange">
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id">{{ item.name }}</Option>
+                </Select>
             </FormItem>
         </template>
     </Form>
@@ -185,35 +196,45 @@ export default {
                 // console.log(e, e.keyCode, e.srcElement, e.which);
             }
         },
-        initForm(){
+        //for循环异步处理
+        async initForm(){
             for(var item in this.formConfig){
                 var form = this;
                 
-                if(this.formConfig[item].bind&&this.formConfig[item].bind.length){
-                    form.$on('value-change-' + item,function(value){
-                        for(var i=0;i<this.formConfig[item].bind.length;i++){
-                            this.formValidate[this.formConfig[item].bind[i].target] = value;
-                        }
+                if(this.formConfig[item].bind&&this.formConfig[item].bind.bindValue){
+                    var valueField = this.formConfig[item].bind.bindValue;
+                    form.$on('value-change-' + item,function(data){
+                        this.formValidate[this.formConfig[data.tag].bind.target] = data.label;
                     })
                 }
-                if(this.formConfig[item].type=='select'&&this.formConfig[item].dataSource.type=='dynamic'){
-                    $flyio.post({
+                if((['select','selectCustom'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
+                    var parmas = this.formConfig[item].dataSource.parmas ? this.formConfig[item].dataSource.parmas:{};
+                    await $flyio.post({
                         url: this.formConfig[item].dataSource.url,
-                        data:{ maxResultCount:200}
+                        data:{ ...parmas,maxResultCount:200}
                     }).then((res) => {
                         if(res.result.code==200){
-                            var data = res.result.item.map((e,index)=>{
-                                e.value = e.id;
-                                return e;
-                            });
+                            if(this.formConfig[item].dataSource.col){
+                                var data = res.result.item.map((e,index)=>{
+                                    for(var i=0;i<this.formConfig[item].dataSource.col.length;i++){
+                                        e[this.formConfig[item].dataSource.col[i]['k']] = e[this.formConfig[item].dataSource.col[i]['v']];
+                                    }
+                                    return e;
+                                });    
+                            } else {
+                                var data = res.result.item.map((e,index)=>{
+                                    e.value = e.id;
+                                    return e;
+                                });
+                            }
                             this.formConfig[item].dataSource.data = data;
                         }
                     })
                 }
-            }
+            }   
         },
         onChange(data){
-            this.$emit('value-change-'+data.tag,data.label);
+            this.$emit('value-change-'+data.tag,data);
         }
     },
     mounted() {

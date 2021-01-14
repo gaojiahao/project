@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 20:58:45
+ * @LastEditTime: 2021-01-13 20:10:11
 -->
 <template>
 <div class="erp_table_container">
@@ -189,7 +189,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetStorePage();
+            this.AuthRolePage();
         },
         deleteData(){
             if(this.activatedRow.id){
@@ -209,6 +209,7 @@ export default {
                                 this.pageData.skipCount-1;
                             }
                             this.AuthRolePage();
+                            this.activatedRow = {};
                             this.loading = false;
                         } else if (res.result.code == 400) {
                             this.$Message.error({

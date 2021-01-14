@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 12:30:18
+ * @LastEditTime: 2021-01-14 09:27:24
 -->
 <template>
 <div>
@@ -177,9 +177,11 @@ export default {
                 howlong:params.productSize.long,
                 width:params.productSize.wide,
                 high:params.productSize.high,
+                volume:params.productSize.volume,
                 packageLong:params.packagingSize.long,
                 packageWidth:params.packagingSize.wide,
                 packageHigh:params.packagingSize.high,
+                packageVolume:params.packagingSize.volume,
             }
             console.log('params',params);
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
@@ -268,10 +270,11 @@ export default {
                 howlong:params.productSize.long,
                 width:params.productSize.wide,
                 high:params.productSize.high,
+                volume:params.productSize.volume,
                 packageLong:params.packagingSize.long,
                 packageWidth:params.packagingSize.wide,
                 packageHigh:params.packagingSize.high,
-                description:value,
+                packageVolume:params.packagingSize.volume,
             }
             console.log('params',params);
             this.$refs['form'].$refs['formValidate'].validate((valid) => {

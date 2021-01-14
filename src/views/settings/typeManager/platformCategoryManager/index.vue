@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 19:19:36
+ * @LastEditTime: 2021-01-13 17:16:11
 -->
 <template>
 <div class="platformManager-container">
     <div class="platformManager-container-panel">
         <div class="left">
-            <PlatFormTypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @edit="edit" @del="sureDeleteConfirm" @set-filter="setFilter" @set-platform-filter="setEcommerceCategoryFilter"></PlatFormTypeManagerList>
+            <PlatFormTypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @show-add-child="showAddChild" @edit="edit" @del="sureDeleteConfirm" @set-filter="setFilter" @set-platform-filter="setEcommerceCategoryFilter" ref="list"></PlatFormTypeManagerList>
         </div>
         <div class="right">
             <div class="item" v-show="isShowAdd">
@@ -125,7 +125,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.GetEcommerceCategoryList();
-                                    this.$refs['form'].$refs['formValidate'].resetFields();
+                                    this.clearFormData();
                                     this.$refs['form'].initEL('input');
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
@@ -181,6 +181,16 @@ export default {
             this.$refs['form'].$refs['formValidate'].resetFields();
             this.isShowAdd = true;
             this.isShowBind = false;
+            this.formValidate.platformId = this.$refs.list.platFormId;
+            this.formValidate.parentId= 0;
+            this.$refs['form'].initEL('input');
+        },
+        showAddChild(data) {
+            this.$refs['form'].$refs['formValidate'].resetFields();
+            this.$delete(this.formValidate,'id');
+            this.isShowAdd = true;
+            this.isShowBind = false;
+            this.formValidate.platformId = this.$refs.list.platFormId;
             if(data.id){
                 this.formValidate.parentName = data.name;
                 this.formValidate.parentId = data.id;
@@ -216,11 +226,11 @@ export default {
                 totalPage:0,
                 pageSizeOpts:[10,50,200],
             },
-            this.GetAttributeCategoryPage();
             this.isShowAdd = true;
             this.isShowBind = true;
         },
         sureDeleteConfirm (root, node, data,flag) {
+            if (data.id) {
             this.$Modal.confirm({
                 title: '温馨提示',
                 content: '数据删除后将无法恢复！',
@@ -231,6 +241,7 @@ export default {
                     flag ? this.deletesData() : this.deleteData(root, node, data);
                 },
             });
+            }
         },
         deleteData(root, node, data) {
             if (data.id) {
