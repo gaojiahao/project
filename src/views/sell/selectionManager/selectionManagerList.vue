@@ -4,33 +4,38 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 20:30:46
+ * @LastEditTime: 2021-01-15 10:16:58
 -->
 <template>
-<div class="storeManager-container">
-    <div class="filter">
-        <div class="filter-button">
-            <Button size="small" icon="md-refresh" @click="refresh">刷新</Button>
-        </div>
-        <div class="filter-search">
-            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)">高级筛选</Button>
-            <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
-        </div>
-    </div>
-    <div>
-        <Table border :columns="columns" :data="data" stripe ref="selection" :loading="loading" >
+<div class="erp_table_container">
+    <div class="myTable">
+        <Table border :columns="columns" height="695" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange" :draggable="true">
+            <template slot="header">
+                <div class="filter">
+                    <div class="filter-button">
+                        <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
+                        <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+                        <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+                        <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
+                    </div>
+                    <div class="filter-search">
+                        <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
+                    </div>
+                </div>    
+            </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true)">选品</Button>
-                <Button type="warning" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true,row)">选品</Button>
+            </template>
+            <template slot="footer">
+                <div class="footer_page">
+                    <div class="footer_page_right">
+                        <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
+                    </div>
+                </div>
             </template>
         </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="100" :current=1 @on-change="changePage"></Page>
-            </div>
-        </div>
     </div>
-    <SelectionModel :titleText="titleText" :formValidate="formValidate" :showModel='showModel' @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></SelectionModel>
+    <SelectionModel :titleText="titleText" :formValidate="formValidate" :showModel='showModel' @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form" :data="selectData"></SelectionModel>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
@@ -41,8 +46,13 @@ import SelectionModel from "@components/sell/selectionManager/selectionModel";
 import SeniorFilter from "@components/public/filter/seniorFilter";
 import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
 import ImageModel from "@components/public/model/imageModel";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
-
+import list from "@mixins/list";
+import {
+    GetGoodsSelectionPage,
+    CreateGoodsSelection
+} from "@service/sellService"
+const XZX_TOKEN_KEY = "XZX_LOGIN_TOKEN";
+const localStorage = window["localStorage"];
 export default {
     name: "SelectionManagerList",
     components: {
@@ -51,7 +61,7 @@ export default {
         AutoCompleteSearch,
         ImageModel
     },
-    mixins: [config],
+    mixins: [list],
     data() {
         return {
             titleText: '',
@@ -60,267 +70,246 @@ export default {
             showModel2: false,
             loading : false,
             showFilterModel:false,
-            srcData:{},
-            visible:false,
-            columns: [
-                {
-                    type: 'index',
-                    width: 80,
-                    align: 'center',
-                    title: '序号'
-                }, {
-                    title: '图片',
-                    key: 'img',
-                    align: 'center',
-                    render: (h, params) => {
-                        return h('div', [
-                            h('img', {
-                                attrs: {
-                                    src: params.img || require("@assets/default/logo.png")
-                                },
-                                style: {
-                                    width: '40px',
-                                    height: '40px'
-                                },
-                                on: {
-                                    click:()=>{
-                                        this.srcData = {
-                                            imgName: '图片预览',
-                                            src: params.img || require("@assets/default/logo.png")
-                                        }
-                                        this.visible = true;
-                                    }
-                                }
-                            }),
-                        ]);
-                    }
-                },
-                {
-                    title: '产品名称',
-                    key: 'productName',
-                    render: (h, params) => {
-                        return h("span", {// 创建的标签名
-                        // 执行的一些列样式或者事件等操作
-                        style: {
-                            display: "inline-block",
-                            color: "#2d8cf0"
-                        },
-                        on:{
-                            click:()=>{// 这里给了他一个打印事件，下面有展示图
-                                this.goDetail(params.row.id)    
-                            }
-                        }
-                        },params.row.productName);//  展示的内容
-                    }
-                },
-                {
-                    title: '分类',
-                    key: 'type'
-                },
-                {
-                    title: 'SKU',
-                    key: 'sku'
-                },
-                {
-                    title: '颜色',
-                    key: 'color'
-                },
-                {
-                    title: '厂商',
-                    key: 'supplier'
-                },
-                {
-                    title: '厂商货号',
-                    key: 'supplierNum'
-                },
-                {
-                    title: '创建时间',
-                    key: 'createTime',
-                    width: 100
-                },
-                {
-                    title: '推荐人员',
-                    key: 'recommendingOfficer',
-                    width: 100
-                },
-                {
-                    title: '状态',
-                    key: 'status',
-                    render: (h, params) => {
-                        const row = params.row;
-                        const color = row.status === 1 ? 'success' : 'error';
-                        const text = row.status === 1 ? '已选' : '未选';
-
-                        return h('Tag', {
-                            props: {
-                                type: 'dot',
-                                color: color
-                            }
-                        }, text);
-                    }
-                },
-                {
-                    title: '操作',
-                    slot: 'action',
-                    align: 'center',
-                }
-            ],
-            data: [{
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: 1,
-                },
-                {
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: 1,
-                },
-                {
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: 0,
-                },
-                {
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: 1,
-                }, {
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: 1,
-                },
-                {
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: 1,
-                }, {
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: 1,
-                },
-                {
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: 1,
-                },
-                {
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: 1,
-                }
-            ],
-            filter: "large",
-            formValidate:{
-                productNum:'商品1',
-                productName:'商品名称',
-                status:'',
-                comment:''
-            }
+            columns: this.getTableColumn(),
+            data: [],
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            formValidate:{},
+            totalPage:0,
+            selectData:{},
+            filtersConfig:{}
         }
     },
     methods: {
-        clearFormData() {
-
+        GetGoodsSelectionPage() {
+            return new Promise((resolve, reject) => {
+                GetGoodsSelectionPage(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPage = res.result.item.totalCount;
+                            this.data = res.result.item.items;
+                            this.loading = false;
+                        });
+                    }
+                });
+            });
         },
         showPop(flag, row) {
             if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
+                this.selectData = row;
                 this.titleText = '是否选品';
             }
             this.showModel = flag;
         },
-        showPop2(flag, row) {
-            if (row && row.id) {
-                this.formValidate2['id'] = row.id;
-                this.titleText2 = '编辑';
-            } else {
-                this.titleText2 = '审核';
+        save(data) {
+            var params = {};
+            var userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY))['userInfo'];
+            params = {
+                goodsName:this.selectData.goodsName,
+                goodsId:this.selectData.goodsId,
+                goodsCode:this.selectData.goodsCode,
+                status:this.selectData.status,
+                isSelect:data.isSelect,
+                remark:data.remark,
+                isMain:data.isMain,
             }
-            this.showModel2 = flag;
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    return new Promise((resolve, reject) => {
+                        this.$FromLoading.show();
+                        CreateGoodsSelection(params).then(res => {
+                            if (res.result.code == 200) {
+                                this.$FromLoading.hide();
+                                this.$Message.info('温馨提示：保存成功！');
+                                this.GetGoodsSelectionPage();
+                            } else if (res.result.code == 400) {
+                                this.$Message.error({
+                                    background: true,
+                                    content: res.result.msg
+                                });
+                                this.$FromLoading.hide();
+                            }
+                        });
+                    });   
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         },
-        save() {
-
+        clearFormData(){
+            this.selectData = {};
         },
-        changePage() {
-
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetGoodsSelectionPage();
         },
-        clearFormData2() {},
-        deleteData() {},
-        refresh() {
+        refresh(){
             this.loading = true;
-            setTimeout(() => {
-                this.loading = false;
-            }, 1000);
+            this.pageData.skipCount=1;
+            this.GetGoodsSelectionPage();
         },
-        showFilter(flag) {
-            this.showFilterModel = flag;
+        goDetail(id){
+            if(id)
+            this.$router.push({name:'viewFinishProduct',query: {id:id}});
         },
-        setFilter() {},
+        changeCoulmns(data){
+            let datas = [];
+            let columns = this.getTableColumn();
+            datas.push(columns[0]);
+            data.forEach(col => {
+                for(var i=0;i<columns.length;i++){
+                    if(col == columns[i].key){
+                        datas.push(columns[i]);
+                    }
+                }
+            });
+            this.columns = datas;
+        },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetGoodsSelectionPage();
+        },
+        getTableColumn(){
+            var columns2 = [
+            {
+                type: 'index',
+                width: 60,
+                align: 'center',
+                title: '序号',
+                resizable: true,
+            },
+            {
+                title: '图片',
+                key: 'img',
+                align: 'center',
+                render: (h, params) => {
+                    return h('div', [
+                        h('img', {
+                            attrs: {
+                                src: params.img || require("@assets/default/logo.png")
+                            },
+                            style: {
+                                width: '30px',
+                                height: '30px'
+                            },
+                            on: {
+                                click:()=>{
+                                    this.srcData = {
+                                        imgName: '图片预览',
+                                        src: params.img || require("@assets/default/logo.png")
+                                    }
+                                    this.showImageModel(true);
+                                }
+                            }
+                        }),
+                    ]);
+                },
+                width: 80,
+                resizable: true,
+            },
+            {
+                title: '商品编码',
+                key: 'goodsCode',
+                resizable: true,
+                width: 318,
+            },
+            {
+                title: '商品名称',
+                key: 'goodsName',
+                render: (h, params) => {
+                    return h("span", {
+                    style: {
+                        display: "inline-block",
+                        color: "#2d8cf0"
+                    },
+                    on:{
+                        click:()=>{
+                            this.goDetail(params.row.id)    
+                        }
+                    }
+                    },params.row.goodsName);
+                },
+                width: 350,
+                resizable: true,
+            },
+            {
+                title: '状态',
+                key: 'status',
+                render: (h, params) => {
+                    return h("span", {
+                    style: {
+                        display: "inline-block",
+                        color: params.row.status==1 ? "#19be6b": "#ed4014"
+                    },
+                    },params.row.status == 1 ?"通过":params.row.status == 0 ? '未审核':"未通过");
+                },
+                width: 200,
+                resizable: true,
+            },
+            {
+                title: '创建时间',
+                key: 'createdOn',
+                resizable: true,
+                width: 200,
+            },
+            {
+                title: '创建者',
+                key: 'createdBy',
+                resizable: true,
+                width: 80,
+            },
+            {
+                title: '修改时间',
+                key: 'modifyOn',
+                resizable: true,
+                width: 200,
+            },
+            {
+                title: '修改者',
+                key: 'modifyBy',
+                resizable: true,
+                width: 80,
+            },
+            {
+                title: '操作',
+                slot: 'action',
+                align: 'center',
+                width: 150,
+                resizable: true,
+            }
+        ];
+            return columns2;
+        },
+        checkALl(){
+            this.$nextTick(function () {
+                this.columns = this.getTableColumn();
+            })
+        },
+        setFilter(value){
+            this.pageData = {
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:value,
+                pageSizeOpts:[15,50,200],
+            },
+            this.GetGoodsSelectionPage(); 
+        },
+        exportData(){
+             this.$refs.selection.exportCsv({
+                filename: 'Custom data',
+                columns: this.columns,
+                data: this.data,
+            });    
+        }
+    },
+    created(){
+        this.GetGoodsSelectionPage();
     }
 }
 </script>

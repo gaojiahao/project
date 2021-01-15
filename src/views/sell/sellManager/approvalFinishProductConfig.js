@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 12:10:24
+ * @LastEditTime: 2021-01-14 19:42:14
  */
 export default {
     data() {
@@ -45,7 +45,8 @@ export default {
           imgUrl:{
             name:'商品图片',
             type:'uploadImage',
-            length: 3
+            length: 3,
+            disabled:true
           },
           urlOne:{
             name:'参考链接',
@@ -78,7 +79,25 @@ export default {
             trigger: 'change',
             validator: categoryIdVali,
           }],
-        }, 
+        },
+        approvalConfig:{
+          reviewRemark:{
+            name:'推荐审核意见',
+            type:'textarea',
+          },
+        },
+        approvalValidate: {
+          reviewType:'aaaaa',
+          relatedId:'',
+          reviewResult:1,
+          resultName:'fdsa',
+          reviewBefore:2,
+          beforeName:'fdas',
+          reviewRemark:'',
+        },
+        approvalRuleValidate: {
+
+        }
       }
     }
   }

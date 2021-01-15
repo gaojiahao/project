@@ -97,7 +97,7 @@ export default {
             return style;
         },
         activeMenu() {
-            return this.$store.state.menuRouter.oneLevel.code; //需要监听的数据
+            return this.$store.state.menuRouter&&this.$store.state.menuRouter.oneLevel&&this.$store.state.menuRouter.oneLevel.code; //需要监听的数据
         }
     },
     methods: {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 12:10:24
+ * @LastEditTime: 2021-01-14 14:49:10
  */
 export default {
     data() {
@@ -45,7 +45,8 @@ export default {
           imgUrl:{
             name:'商品图片',
             type:'uploadImage',
-            length: 3
+            length: 3,
+            disabled:true
           },
           urlOne:{
             name:'参考链接',

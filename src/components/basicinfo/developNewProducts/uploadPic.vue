@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 20:22:27
+ * @LastEditTime: 2021-01-15 15:26:51
 -->
 <template>
 <div>
@@ -18,10 +18,10 @@
             <div v-for="(item,index) in uploadList" class="left demo-upload">
                 <div class="demo-upload-list">
                     <template v-if="item.status === 'finished'">
-                        <img :src="item.filePath">
+                        <img :src="baseUrl + item.filePath">
                         <div class="demo-upload-list-cover">
                             <Icon type="ios-eye-outline" @click.native="handleView(item.fileName,index)"></Icon>
-                            <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                            <Icon type="ios-trash-outline" @click.native="handleRemove(index)"></Icon>
                         </div>
                     </template>
                     <template v-else>
@@ -43,6 +43,9 @@
                     <Button type="primary" size="small" @click="nextPic">下一张</Button>
                 </div>
             </Modal>
+        </div>
+        <div style="width:100%">
+            <Button type="primary" @click="save" style="float: left;">保存</Button>
         </div>
     </div>
 </div>
@@ -74,6 +77,33 @@ export default {
                 return []
             }
         },
+        length: {
+            type:Number,
+            default:3,
+        },
+        formValue:{
+            type: Array,
+            default () {
+                return []
+            }
+        }
+    },
+    watch:{
+        formValue:{
+            handler(val){
+                this.uploadList = [];
+                for(var i=0;i<val.length;i++){
+                    var obj={};
+                    obj= {
+                        status:'finished',
+                        filePath:val[i],
+                    }
+                    if(obj.filePath){
+                        this.uploadList.push(obj);
+                    }
+                }
+            }
+        }
     },
     data() {
         return {
@@ -83,10 +113,12 @@ export default {
             uploadList: [],
             indexPic: 0,
             uploadUrl:'',
-            headers:{},
+            headers:{
+                // 'Content-Type':'multipart/form-data'
+            },
             data:{
                 'BusinessType':''
-            }
+            },
         }
     },
     methods: {
@@ -95,14 +127,20 @@ export default {
             this.visible = true;
             this.indexPic = index;
         },
-        handleRemove(file) {
-            const fileList = this.$refs.upload.fileList;
-            this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+        handleRemove(index) {
+            this.uploadList.splice(index, 1);
         },
         handleSuccess(res, file) {
             debugger
-            console.log(file)
-            this.handleInput(file);
+            if(res.result.code==200){
+                file.filePath = res.result.item[0]['filePath'];
+                this.handleInput(file);
+            } else {
+                this.$Notice.warning({
+                title: '上传失败',
+                desc: res.result.msg
+            });    
+            }
         },
         handleFormatError(file) {
             this.$Notice.warning({
@@ -117,18 +155,16 @@ export default {
             });
         },
         handleBeforeUpload() {
-            const check = this.uploadList.length < 5;
+            const check = this.uploadList.length < this.length;
             if (!check) {
                 this.$Notice.warning({
-                    title: 'Up to five pictures can be uploaded.'
+                    title: '已达到图片最大上传数！'
                 });
             }
             return check;
         },
         handleInput(data) {
-            for(var i=0;data.length;i++){
-                this.uploadList.push(data[i]); 
-            }
+            this.uploadList.push(data); 
             this.$emit('change', this.uploadList);
         },
         prePic(){
@@ -142,13 +178,13 @@ export default {
             if(this.indexPic == this.uploadList.length-1 ){
                 this.$Message.info({content:'温馨提示：已到最一张！'});         
             }      
-        }
-    },
-    mounted() {
-        this.uploadList = this.$refs.upload.fileList;
+        },
+        save() {
+            this.$emit('save',this.uploadList);
+        },
     },
     created(){
-        this.uploadUrl = this.$api?this.$api:'cbapi.com';
+        this.uploadUrl = this.$upload_url?this.$upload_url:'localhost:8080';
         this.headers['Utoken'] =  tokenService.getToken();
         this.baseUrl = 'http://cbapi.com/'
     }

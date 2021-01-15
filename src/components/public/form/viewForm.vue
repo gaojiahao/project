@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 16:23:17
+ * @LastEditTime: 2021-01-14 14:46:59
 -->
 <template>
 <div class="content">
@@ -47,7 +47,7 @@
             </FormItem>
             <!--图片上传-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='uploadImage'">
-                <UploadImg v-model="formValidate[index]" disabled v-show="!formConfig[index]['hidden']"></UploadImg>
+                <UploadImg v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" :disabled="formConfig[index]['disabled']"></UploadImg>
             </FormItem>
             <!--文本域-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='textarea'">

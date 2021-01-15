@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 10:28:49
+ * @LastEditTime: 2021-01-15 11:21:14
  */
 //引用插件
 import Vue from "vue";
@@ -41,7 +41,7 @@ Vue.use(VideoPlayer);
 Vue.use(AudioPlayer);
 Vue.use(FromLoading);
 Vue.use(VueQuillEditor);
-Vue.prototype.$api  = process.env.VUE_APP_API;
+Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL;
 
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {

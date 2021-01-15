@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 14:45:34
+ * @LastEditTime: 2021-01-14 15:12:58
 -->
 <template>
 <div class="erp_table_container">
@@ -64,104 +64,7 @@ export default {
             showModel2: false,
             showResearh: false,
             columns: this.getTableColumn(),
-            data: [
-                // {
-                //     id:'fds',
-                //     img: '',
-                //     type: '玩具',
-                //     sku: 'PD00026',
-                //     color: "蓝色",
-                //     productName: "积木",
-                //     supplier: "厂商1",
-                //     supplierNum: "0001",
-                //     createTime: "2020-11-06",
-                //     recommendingOfficer: '李四',
-                //     status: "接受",
-                //     modifyTime:"2020-11-06",
-                //     modifyer:"李四",
-                //     creater:"王五"
-                // },
-                // {
-                //     id:1,
-                //     img: '',
-                //     type: '玩具',
-                //     sku: 'PD00026',
-                //     color: "蓝色",
-                //     productName: "积木",
-                //     supplier: "厂商1",
-                //     supplierNum: "0001",
-                //     createTime: "2020-11-06",
-                //     recommendingOfficer: '李四',
-                //     status: "不接受",
-                //     modifyTime:"2020-11-06",
-                //     modifyer:"李四",
-                //     creater:"王五"
-                // },
-                // {
-                //     id:2,
-                //     img: '',
-                //     type: '玩具',
-                //     sku: 'PD00026',
-                //     color: "蓝色",
-                //     productName: "积木",
-                //     supplier: "厂商1",
-                //     supplierNum: "0001",
-                //     createTime: "2020-11-06",
-                //     recommendingOfficer: '李四',
-                //     status: "接受",
-                //     modifyTime:"2020-11-06",
-                //     modifyer:"李四",
-                //     creater:"王五"
-                // },
-                // {
-                //     id:3,
-                //     img: '',
-                //     type: '玩具',
-                //     sku: 'PD00026',
-                //     color: "蓝色",
-                //     productName: "积木",
-                //     supplier: "厂商1",
-                //     supplierNum: "0001",
-                //     createTime: "2020-11-06",
-                //     recommendingOfficer: '李四',
-                //     status: "接受",
-                //     modifyTime:"2020-11-06",
-                //     modifyer:"李四",
-                //     creater:"王五"
-                // },
-                // {
-                //     id:4,
-                //     img: '',
-                //     type: '玩具',
-                //     sku: 'PD00026',
-                //     color: "蓝色",
-                //     productName: "积木",
-                //     supplier: "厂商1",
-                //     supplierNum: "0001",
-                //     createTime: "2020-11-06",
-                //     recommendingOfficer: '李四',
-                //     status: "接受",
-                //     modifyTime:"2020-11-06",
-                //     modifyer:"李四",
-                //     creater:"王五"
-                // }, 
-                // {
-                //     id:5,
-                //     img: '',
-                //     type: '玩具',
-                //     sku: 'PD00026',
-                //     color: "蓝色",
-                //     productName: "积木",
-                //     supplier: "厂商1",
-                //     supplierNum: "0001",
-                //     createTime: "2020-11-06",
-                //     recommendingOfficer: '李四',
-                //     status: "接受",
-                //     modifyTime:"2020-11-06",
-                //     modifyer:"李四",
-                //     creater:"王五"
-                // },
-            ],
+            data: [],
             pageData:{
                 skipCount: 1,
                 skipTotal: 15,
@@ -256,7 +159,7 @@ export default {
             var columns2 = [
             {
                 type: 'index',
-                width: 80,
+                width: 60,
                 align: 'center',
                 title: '序号',
                 resizable: true,
@@ -287,12 +190,14 @@ export default {
                         }),
                     ]);
                 },
+                width: 80,
                 resizable: true,
             },
             {
                 title: '产品编码',
                 key: 'code',
                 resizable: true,
+                width: 220,
             },
             {
                 title: '产品名称',
@@ -311,17 +216,20 @@ export default {
                     }
                     },params.row.name);//  展示的内容
                 },
+                width: 220,
                 resizable: true,
             },
             {
                 title: '分类',
                 key: 'categoryName',
                 resizable: true,
+                width: 120,
             },
             {
                 title:'商户',
                 key: 'merchantName',
                 resizable: true,
+                width: 110,
             },
             // {
             //     title:'平台名称',
@@ -337,6 +245,7 @@ export default {
                 title:'品牌名称',
                 key: 'brandName',
                 resizable: true,
+                width: 138,
             },
             {
                 title: '状态',
@@ -350,26 +259,31 @@ export default {
                     },params.row.status?"已审核":"未审核");
                 },
                 resizable: true,
+                width: 100,
             },
             {
                 title: '创建时间',
                 key: 'createdOn',
                 resizable: true,
+                width: 180,
             },
             {
                 title: '创建者',
                 key: 'createdBy',
                 resizable: true,
+                width: 80,
             },
             {
                 title: '修改时间',
                 key: 'modifyOn',
                 resizable: true,
+                width: 180,
             },
             {
                 title: '修改者',
                 key: 'modifyBy',
                 resizable: true,
+                width: 80,
             },
             {
                 title: '操作',

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 12:05:36
+ * @LastEditTime: 2021-01-14 14:50:24
 -->
 <template>
     <div class="addFinishProduct">
@@ -32,10 +32,11 @@ import XForm from "@components/public/form/xForm";
 import config from "@views/sell/sellManager/addFinishProductConfig";
 import {
     CreateRecommendGoods,
-    UpdateRecommendGoods
+    UpdateRecommendGoods,
+    GetRecommendGoodsById
 } from "@service/sellService"
 export default {
-    name: "AddFinishProduct",
+    name: "EditFinishProduct",
     components: {
         XForm,
     },
@@ -74,6 +75,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
+                                    this.$router.go(-1);
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -96,9 +98,37 @@ export default {
         goReturn(){
             this.$router.go(-1);
         },
+        getFormData(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetRecommendGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formValidate = {
+                                id: res.result.item.id,
+                                code: res.result.item.code,
+                                name: res.result.item.name,
+                                categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                imgUrl: res.result.item.imgUrl,
+                                urlOne: res.result.item.urlOne,
+                                remark: res.result.item.remark,
+                                merchantId: res.result.item.merchantId
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
     },
     created() {
-
+        this.getFormData();
     }
 }
 </script>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 09:20:20
+ * @LastEditTime: 2021-01-15 14:25:05
  */
 export default {
     data() {
@@ -124,6 +124,23 @@ export default {
               bindValue: 'name'
             }
           },
+          // categoryId:{
+          //   name:'分类',
+          //   type:'selectCascade',
+          //   dataSource:{
+          //     type:'dynamic',
+          //     url:'/api/GetCategoryList',
+          //     data:[],
+          //     col:[
+          //       {k:'name',v:'name'},
+          //       {k:'value',v:'id'}
+          //     ]
+          //   },
+          //   bind:{
+          //     target: 'categoryName',
+          //     bindValue: 'name'
+          //   }
+          // },
           characteristic:{
             name:'特性标签',
             type:'texts',
@@ -338,6 +355,9 @@ export default {
           name: '',
           categoryId: '',
           categoryName:'',
+          imgOne:'',
+          imgTwo:'',
+          imgThree:'',
           characteristic:'',
           brandId:'',
           brandName:'',

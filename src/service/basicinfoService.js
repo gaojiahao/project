@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 11:58:26
+ * @LastEditTime: 2021-01-14 20:15:33
  */
 import $flyio from '@plugins/ajax';
 //新品开发管理
@@ -104,6 +104,13 @@ export let GetSupplierPage = (data = {}) => {
 export let GetSupplierById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetSupplierById',
+    data: data
+  })
+};
+//获取销售推品数据到新品开发
+export let GetSelectionReviewById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetSelectionReviewById',
     data: data
   })
 };

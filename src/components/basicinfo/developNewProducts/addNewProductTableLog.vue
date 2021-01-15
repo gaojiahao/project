@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 12:20:21
+ * @LastEditTime: 2021-01-15 15:17:44
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -48,15 +48,15 @@ export default {
         return {
             columns: [{
                     title: '操作动作',
-                    key: 'name'
+                    key: 'behavior'
                 },
                 {
                     title: '操作人',
-                    key: 'code'
+                    key: 'createdBy'
                 },
                 {
                     title: '操作时间',
-                    key: 'supplier'
+                    key: 'createdOn'
                 },
             ],
         }

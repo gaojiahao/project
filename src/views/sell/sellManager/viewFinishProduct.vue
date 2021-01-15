@@ -4,40 +4,39 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 12:05:36
+ * @LastEditTime: 2021-01-14 14:51:39
 -->
 <template>
     <div class="addFinishProduct">
         <div class="top">
             <Divider orientation="left" size="small">推品信息</Divider>
             <div class="top_tabale">
-                <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
                     <template slot="button">
                         <FormItem>
                             <div style="width:100%">
-                                <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">重置</Button>
                                 <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                             </div>
                         </FormItem>
                     </template>
-                </XForm>
+                </ViewForm>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import XForm from "@components/public/form/xForm";
-import config from "@views/sell/sellManager/addFinishProductConfig";
+import ViewForm from "@components/public/form/viewForm";
+import config from "@views/sell/sellManager/viewFinishProductConfig";
 import {
     CreateRecommendGoods,
-    UpdateRecommendGoods
+    UpdateRecommendGoods,
+    GetRecommendGoodsById
 } from "@service/sellService"
 export default {
-    name: "AddFinishProduct",
+    name: "EditFinishProduct",
     components: {
-        XForm,
+        ViewForm,
     },
     data() {
         return {
@@ -96,9 +95,36 @@ export default {
         goReturn(){
             this.$router.go(-1);
         },
+        getFormData(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetRecommendGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formValidate = {
+                                id: res.result.item.id,
+                                code: res.result.item.code,
+                                name: res.result.item.name,
+                                categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                imgUrl: res.result.item.imgUrl,
+                                urlOne: res.result.item.urlOne,
+                                remark: res.result.item.remark,
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
     },
     created() {
-
+        this.getFormData();
     }
 }
 </script>

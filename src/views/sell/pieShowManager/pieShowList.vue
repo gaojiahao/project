@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 20:06:29
+ * @LastEditTime: 2021-01-15 11:08:47
 -->
 <template>
 <div class="erp_table_container">
@@ -13,9 +13,6 @@
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">
-                        <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
-                        <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-                        <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
@@ -27,8 +24,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" size="small" style="margin-right: 5px" @click="goNewProduct(row.id)" v-if="row.status==1">开发</Button>
-                <Button type="success" size="small" style="margin-right: 5px" @click="goApproval(row.id)" v-if="row.status==0">审核</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true,row)" v-if="row.status!=1">派店</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -39,33 +35,41 @@
             </template>
         </Table>
     </div>
+    <SelectionModel :titleText="titleText" :formValidate="formValidate" :showModel='showModel' @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form" :data="selectData"></SelectionModel>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
-    <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
+    <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
 
 <script>
-import ModalForm from "@components/public/form/modalForm";
-import config from "@views/sell/sellManager/sellConfig";
+import SelectionModel from "@components/sell/selectionManager/selectionModel";
+import SeniorFilter from "@components/public/filter/seniorFilter";
+import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
+import ImageModel from "@components/public/model/imageModel";
 import list from "@mixins/list";
 import {
-    GetRecommendGoodsPage,
-    DelRecommendGoods
+    CreatePieShop,
+    GetPieShopPage
 } from "@service/sellService"
-
+const XZX_TOKEN_KEY = "XZX_LOGIN_TOKEN";
+const localStorage = window["localStorage"];
 export default {
-    name: "SellList",
+    name: "PieShowList",
     components: {
-        ModalForm,
+        SelectionModel,
+        SeniorFilter,
+        AutoCompleteSearch,
+        ImageModel
     },
-    mixins: [config,list],
+    mixins: [list],
     data() {
         return {
             titleText: '',
             titleText2: '',
             showModel: false,
             showModel2: false,
+            loading : false,
+            showFilterModel:false,
             columns: this.getTableColumn(),
             data: [],
             pageData:{
@@ -75,13 +79,16 @@ export default {
                 keyword:'',
                 pageSizeOpts:[15,50,200],
             },
+            formValidate:{},
             totalPage:0,
+            selectData:{},
+            filtersConfig:{}
         }
     },
     methods: {
-        GetRecommendGoodsPage() {
+        GetPieShopPage() {
             return new Promise((resolve, reject) => {
-                GetRecommendGoodsPage(this.pageData).then(res => {
+                GetPieShopPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -92,53 +99,63 @@ export default {
                 });
             });
         },
-        clearFormData() {
-
-        },
         showPop(flag, row) {
             if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '开发';
+                this.selectData = row;
+                this.titleText = '是否选品';
             }
             this.showModel = flag;
         },
-        save() {
-
+        save(data) {
+            var params = {};
+            var userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY))['userInfo'];
+            params = {
+                goodsName:this.selectData.goodsName,
+                goodsId:this.selectData.goodsId,
+                goodsCode:this.selectData.goodsCode,
+                status:this.selectData.status,
+                isSelect:data.isSelect,
+                remark:data.remark,
+                isMain:data.isMain,
+            }
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    return new Promise((resolve, reject) => {
+                        this.$FromLoading.show();
+                        CreatePieShop(params).then(res => {
+                            if (res.result.code == 200) {
+                                this.$FromLoading.hide();
+                                this.$Message.info('温馨提示：保存成功！');
+                                this.GetPieShopPage();
+                            } else if (res.result.code == 400) {
+                                this.$Message.error({
+                                    background: true,
+                                    content: res.result.msg
+                                });
+                                this.$FromLoading.hide();
+                            }
+                        });
+                    });   
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
+        },
+        clearFormData(){
+            this.selectData = {};
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetRecommendGoodsPage();
+            this.GetPieShopPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetRecommendGoodsPage();
-        },
-        clearFormData2() {},
-        goAdd(){
-            this.$router.push({name:'addFinishProduct'});
-        },
-        goEdit(){
-            if(this.activatedRow.id&&this.activatedRow.status==0){
-                this.$router.push({name:'editFinishProduct',query: {id:this.activatedRow.id}});
-            }
+            this.GetPieShopPage();
         },
         goDetail(id){
             if(id)
             this.$router.push({name:'viewFinishProduct',query: {id:id}});
-        },
-        goApproval(id){
-            if(id)
-            this.$router.push({name:'approvalFinishProduct',query: {id:id}});
-        },
-        goNewProduct(id){
-            if(id)
-            this.$router.push({name:'sellNewProduct',query: {id:id}});    
-        },
-        showResearchModel(flag){
-            this.$router.push({name:'ResearchDevelopNewProducts'}); 
         },
         changeCoulmns(data){
             let datas = [];
@@ -155,7 +172,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetRecommendGoodsPage();
+            this.GetPieShopPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -197,13 +214,13 @@ export default {
             },
             {
                 title: '商品编码',
-                key: 'code',
+                key: 'goodsCode',
                 resizable: true,
-                width: 200,
+                width: 318,
             },
             {
                 title: '商品名称',
-                key: 'name',
+                key: 'goodsName',
                 render: (h, params) => {
                     return h("span", {
                     style: {
@@ -215,31 +232,13 @@ export default {
                             this.goDetail(params.row.id)    
                         }
                     }
-                    },params.row.name);
+                    },params.row.goodsName);
                 },
-                width: 200,
+                width: 350,
                 resizable: true,
             },
             {
-                title: '分类',
-                key: 'categoryName',
-                resizable: true,
-                width: 100
-            },
-            {
-                title: '参考链接',
-                key: 'urlOne',
-                resizable: true,
-                width: 150
-            },
-            {
-                title:'商户',
-                key: 'merchantName',
-                resizable: true,
-                width: 148
-            },
-            {
-                title: '审核状态',
+                title: '状态',
                 key: 'status',
                 render: (h, params) => {
                     return h("span", {
@@ -247,16 +246,16 @@ export default {
                         display: "inline-block",
                         color: params.row.status==1 ? "#19be6b": "#ed4014"
                     },
-                    },params.row.status == 1 ?"通过":params.row.status == 0 ? '未审核':"未通过");
+                    },params.row.status == 1 ? '已派店':"未派店");
                 },
-                width: 110,
+                width: 200,
                 resizable: true,
             },
             {
                 title: '创建时间',
                 key: 'createdOn',
                 resizable: true,
-                width: 180,
+                width: 200,
             },
             {
                 title: '创建者',
@@ -268,7 +267,7 @@ export default {
                 title: '修改时间',
                 key: 'modifyOn',
                 resizable: true,
-                width: 180,
+                width: 200,
             },
             {
                 title: '修改者',
@@ -291,37 +290,6 @@ export default {
                 this.columns = this.getTableColumn();
             })
         },
-        deleteData(){
-            if(this.activatedRow.id){
-                this.loading = true;
-                return new Promise((resolve, reject) => {
-                    DelRecommendGoods({id:this.activatedRow.id}).then(res => {
-                        if (res.result.code == 200) {
-                            for(var i=0;i<this.selectedList.length;i++){
-                                for(var j=0;j<this.data.length;j++){
-                                    if(this.selectedList[i].id==this.data[j].id){
-                                        this.data.splice(j, 1);   
-                                    }
-                                }
-                            }
-                            this.$Message.info('温馨提示：删除成功！');
-                            if(this.data.length<1){
-                                this.pageData.skipCount-1;
-                            }
-                            this.GetRecommendGoodsPage();
-                            this.activatedRow = {};
-                            this.loading = false;
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.msg
-                            });
-                            this.loading = false;
-                        }
-                    });
-                });
-            } 
-        },
         setFilter(value){
             this.pageData = {
                 skipCount: 1,
@@ -330,7 +298,7 @@ export default {
                 keyword:value,
                 pageSizeOpts:[15,50,200],
             },
-            this.GetRecommendGoodsPage(); 
+            this.GetPieShopPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -341,7 +309,7 @@ export default {
         }
     },
     created(){
-        this.GetRecommendGoodsPage();
+        this.GetPieShopPage();
     }
 }
 </script>

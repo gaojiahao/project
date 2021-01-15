@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 17:49:30
+ * @LastEditTime: 2021-01-14 20:45:27
 -->
 <template>
 <div class="content">
@@ -51,7 +51,7 @@
             </FormItem>
             <!--图片上传-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='uploadImage'">
-                <UploadImg v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></UploadImg>
+                <UploadImg v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" :length="formConfig[index]['length']" v-show="!formConfig[index]['hidden']" ></UploadImg>
             </FormItem>
             <!--文本域-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='textarea'">
@@ -91,6 +91,9 @@
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCascade'">
+                <SelectCascade v-model="formValidate[index]" :formConfig="formConfig[index]" v-show="!formConfig[index]['hidden']" ></SelectCascade>
+            </FormItem>
         </template>
         <slot name='button'>
             <FormItem>
@@ -113,6 +116,7 @@ import Size from '@components/public/input/size';
 import SelectorSingle from '@components/public/xSelect/selectorSingle';
 import SelectorMulti from '@components/public/xSelect/selectorMulti';
 import DistributionPeople from "@components/charting/distributionPeople";
+import SelectCascade from "@components/public/xSelect/selectCascade";
 import $flyio from '@plugins/ajax'
 
 export default {
@@ -124,7 +128,8 @@ export default {
         Size,
         SelectorSingle,
         SelectorMulti,
-        DistributionPeople
+        DistributionPeople,
+        SelectCascade
     },
     props: {
         titleText: {

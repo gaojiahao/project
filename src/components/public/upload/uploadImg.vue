@@ -12,7 +12,7 @@
             <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
         </template>
     </div>
-    <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" action="//jsonplaceholder.typicode.com/posts/" style="display: inline-block;width:58px;" v-if="!disabled">
+     <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:60px;" v-if="!disabled">
         <div style="width: 58px;height:58px;line-height: 58px;">
             <Icon type="ios-camera" size="20"></Icon>
         </div>
@@ -29,6 +29,8 @@ import {
     Upload,
     Progress,
 } from "view-design";
+import tokenService from "@service/tokenService";
+
 export default {
     components: {
         Upload,
@@ -48,6 +50,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false
+        },
+        length: {
+            type:Number,
+            default: 9
         }
     },
     watch:{
@@ -62,7 +68,10 @@ export default {
             defaultList: [],
             imgName: '',
             visible: false,
-            uploadList: []
+            uploadList: [],
+            headers:{
+                'Content-Type':'multipart/form-data'
+            },
         }
     },
     methods: {
@@ -75,8 +84,6 @@ export default {
             this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
         },
         handleSuccess(res, file) {
-            file.url = 'https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843';
-            file.name = '7eb99afb9d5f317c912f08b5212fd69a';
             this.handleInput(file);
         },
         handleFormatError(file) {
@@ -92,25 +99,28 @@ export default {
             });
         },
         handleBeforeUpload() {
-            const check = this.uploadList.length < 5;
+            const check = this.uploadList.length < this.length;
             if (!check) {
                 this.$Notice.warning({
-                    title: 'Up to five pictures can be uploaded.'
+                    title: '温馨提示：已达到最大上传数！'
                 });
             }
             return check;
         },
-        handleInput(e) {
-            this.uploadList.push(e)
+        handleInput(data) {
+            for(var i=0;data.length;i++){
+                this.uploadList.push(data[i]); 
+            }
             this.$emit('change', this.uploadList)
         }
     },
     created(){
-        this.uploadList = this.value;    
+        this.uploadList = this.value;  
+        this.uploadUrl = this.$api?this.$api:'cbapi.com';
+        this.uploadUrl = 'localhost:8080';
+        this.headers['Utoken'] =  tokenService.getToken();
+        this.baseUrl = 'http://cbapi.com/'  
     },
-    mounted() {
-        // this.uploadList = this.$refs.upload.fileList;
-    }
 }
 </script>
 

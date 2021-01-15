@@ -4,33 +4,77 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-19 17:05:32
+ * @LastEditTime: 2021-01-15 10:40:36
  */
 export default {
     data() {
+      const isMainVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+          if(value==false){
+            callback();   
+          } else {
+            callback(new Error('请选择是否主推'));
+          }
+        } else {
+          callback();
+        }
+      };
+      const isSelectVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+          if(value==false){
+            callback();   
+          } else {
+            callback(new Error('请选择选品状态'));
+          }
+        } else {
+          callback();
+        }
+      };
+      const remarkVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请输入备注'));
+        } else {
+          callback();
+        }
+      };
       return {
-        formConfig:{
-          purchasePrice:{
-            name:'被委派人',
-            type:'select',
-            dataSource:{
-              type:'static',
-              data:[
-                {name:'李四',value:'001'},
-                {name:'王五',value:'002'}
-              ],
-            }
-          },
-        },
+        // formConfig:{
+        //   purchasePrice:{
+        //     name:'被委派人',
+        //     type:'select',
+        //     dataSource:{
+        //       type:'static',
+        //       data:[
+        //         {name:'李四',value:'001'},
+        //         {name:'王五',value:'002'}
+        //       ],
+        //     }
+        //   },
+        // },
         formValidate: {
-          purchasePrice:'',
+          isSelect:true,
+          isMain:true,
+          remark:'',
         },
         ruleValidate: {
-          purchasePrice: [{
+          isSelect: [{
             required: true,
-            type: 'string',
-            message: '请选择被委派人',
-            trigger: 'change'
+            message: '请选择选品状态',
+            trigger: 'change',
+            validator: isSelectVali,
+          }],
+          isMain: [{
+            required: true,
+            message: '请选择是否主推',
+            trigger: 'change',
+            validator: isMainVali,
+          }],
+          remark: [{
+            required: true,
+            type:'string',
+            message: '请输入备注',
+            trigger: 'blur',
+            validator: remarkVali,
           }],
         }, 
         filtersConfig:{
@@ -54,7 +98,6 @@ export default {
               value:'producName',
               type:'text',
             },
-
             status:{
               name:'状态',
               value:'status',

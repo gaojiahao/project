@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-08 14:30:33
+ * @LastEditTime: 2021-01-15 10:16:24
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -12,32 +12,45 @@
         <div class="firstItem">
             <label class="" style="width: 120px;font-size: 16px;font-weight: 600;">基本信息：</label>
         </div>
-        <FormItem label="商品名称：" prop="productName" >
-            {{formValidate.productName}}
+        <FormItem label="商品名称：">
+            {{data.goodsName}}
         </FormItem>
-        <FormItem label="选取状态：" prop="status">
-            <RadioGroup v-model="formValidate.status">
-                <Radio label="true">
+        <FormItem label="选取状态：" prop="isSelect">
+            <RadioGroup v-model="formValidate.isSelect">
+                <Radio :label="true">
                     是
                 </Radio>
-                <Radio label="false">
+                <Radio :label="false">
                     否
                 </Radio>
             </RadioGroup>
         </FormItem>
-        <FormItem label="备注：" prop="comment">
-                <Input v-model="formValidate.comment" type="textarea" :autosize="{minRows: 5,maxRows: 10}" :style="{width:'400px'}" />
-            </FormItem>
+        <FormItem label="是否主推：" prop="isMain">
+            <RadioGroup v-model="formValidate.isMain">
+                <Radio :label="true">
+                    是
+                </Radio>
+                <Radio :label="false">
+                    否
+                </Radio>
+            </RadioGroup>
+        </FormItem>
+        <FormItem label="备注：" prop="remark">
+            <Input v-model="formValidate.remark" type="textarea" :autosize="{minRows: 5,maxRows: 10}" :style="{width:'400px'}" />
+        </FormItem>
     </Form>
     <div slot="footer">
-        <Button type="primary" @click="handleSubmit('formValidate')">确认提交</Button>
+        <Button @click="cancel">取消</Button>
+        <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
     </div>
 </Modal>
 </template>
 
 <script>
+import config from "@views/sell/selectionManager/selectionResultListConfig";
 export default {
     name: 'ModalForm',
+    mixins: [config],
     props: {
         titleText: {
             type: String,
@@ -49,35 +62,23 @@ export default {
                 return {}
             }
         },
-        ruleValidate: {
-            type: Object,
-            default () {
-                return {}
-            }
-        },
-        formConfig: {
-            type: Object,
-            default () {
-                return {}
-            }
-        },
         showModel: {
             type: Boolean,
             default: false,
         },
+        data:{
+            type:Object,
+            default () {
+                return {}
+            }
+        }
     },
     data() {
         return {
-            data: {},
             show: false
         }
     },
     watch: {
-        formConfig: {
-            handler(val) {
-
-            }
-        },
         showModel: {
             handler(val) {
                 this.show = val
@@ -102,7 +103,7 @@ export default {
         handleSubmit(name) {
             this.$refs[name].validate((valid) => {
                 if (valid) {
-                    this.$emit('save');
+                    this.$emit('save',this.formValidate);
                     this.$emit('show-pop', false);
                     this.$emit('clear-form-data');
                 } else {

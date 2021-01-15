@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 15:26:16
+ * @LastEditTime: 2021-01-15 10:53:00
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -588,6 +588,16 @@ const routes = [
                 },
                 component: resolve=>(require(["@views/basicinfo/developNewProducts/researchDevelopNewProducts"],resolve)),
               },
+              {
+                path: 'sellNewProduct',
+                name: 'sellNewProduct',
+                meta:{ 
+                  title:'新建新品',
+                  group: "developNewProducts",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/sellNewProduct"],resolve)),
+              },
             ]
           },
           {
@@ -772,7 +782,7 @@ const routes = [
             name: 'SellManager',
             redirect:'sellManager/sellList',
             meta:{ 
-              title:'销售推品列表',
+              title:'销售推品',
               group: "sellManager",
             },
             component: resolve=>(require(["@views/sell/sellManager/index"],resolve)),
@@ -781,19 +791,73 @@ const routes = [
                 path: 'sellList',
                 name: 'sellList',
                 meta:{ 
-                  title:'销售推品列表',
-                  group: "sellList",
+                  title:'销售推品',
+                  group: "sellManager",
+                  level: 1,
                 },
                 component: resolve=>(require(["@views/sell/sellManager/sellList"],resolve)),
               },
               {
                 path: 'addFinishProduct',
-                name: 'AddFinishProduct',
+                name: 'addFinishProduct',
                 meta:{ 
-                  title:'新建新品',
-                  group: "addFinishProduct",
+                  title:'新建推品',
+                  group: "sellManager",
+                  level: 2,
                 },
                 component: resolve=>(require(["@views/sell/sellManager/addFinishProduct"],resolve)),
+              },
+              {
+                path: 'editFinishProduct',
+                name: 'editFinishProduct',
+                meta:{ 
+                  title:'编辑推品',
+                  group: "sellManager",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/sell/sellManager/editFinishProduct"],resolve)),
+              },
+              {
+                path: 'viewFinishProduct',
+                name: 'viewFinishProduct',
+                meta:{ 
+                  title:'查看推品',
+                  group: "sellManager",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/sell/sellManager/viewFinishProduct"],resolve)),
+              },
+              {
+                path: 'approvalFinishProduct',
+                name: 'approvalFinishProduct',
+                meta:{ 
+                  title:'推品审核',
+                  group: "sellManager",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/sell/sellManager/approvalFinishProduct"],resolve)),
+              },
+            ]
+          },
+          {
+            path: 'pieShowManager',
+            name: 'pieShowManager',
+            redirect:'pieShowManager/pieShowList',
+            meta:{ 
+              title:'产品派店',
+              group: "pieShowManager",
+            },
+            component: resolve=>(require(["@views/sell/pieShowManager/index"],resolve)),
+            children:[
+              {
+                path: 'pieShowList',
+                name: 'pieShowList',
+                meta:{ 
+                  title:'产品派店',
+                  group: "产品派店",
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/sell/pieShowManager/pieShowList"],resolve)),
               },
             ]
           },

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 09:25:59
+ * @LastEditTime: 2021-01-15 15:32:21
 -->
 <template>
 <div>
@@ -49,16 +49,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                <!--上传的配置要传入-->
-                    <!-- <AddNewProductTableUploadPic></AddNewProductTableUploadPic>
-                    <AddNewProductTableUploadVideo></AddNewProductTableUploadVideo>
-                    <AddNewProductTableUpload3D></AddNewProductTableUpload3D>
-                    <AddNewProductTableUploadMusic></AddNewProductTableUploadMusic> -->
-                    <UploadPic></UploadPic>
-                    <div style="width:100%">
-                        <Button type="primary" @click="saveUpload" style="float: left;">保存</Button>
-                        <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                    </div>
+                    <UploadPic :length="3" :value="[productInfoFormValidate.imgOne,productInfoFormValidate.imgTwo,productInfoFormValidate.imgThree]" @save="saveUpload"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -105,7 +96,8 @@ import {
     GetPrepGoodsById,
     UpdatePrepGoods,
     GetPrepGoodsAttributeById,
-    UpdatePrepGoodsAttribute
+    UpdatePrepGoodsAttribute,
+    GetOperationLogPage
 } from "@service/basicinfoService"
 import {
     Tabs,
@@ -187,6 +179,7 @@ export default {
                                     this.$Message.info('温馨提示：更新成功！');
                                     this.productId = res.result.item.id;
                                     this.GetGoodsSupplierPage();
+                                    this.GetOperationLogPage();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -204,9 +197,9 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.productId = res.result.item.id;
-                                    debugger
                                     this.GetGoodsSupplierPage();
                                     this.GetPrepGoodsAttributeById();
+                                    this.GetOperationLogPage();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -240,6 +233,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.GetGoodsSupplierPage();
+                                    this.GetOperationLogPage();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -279,6 +273,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
+                                    this.GetOperationLogPage();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -331,10 +326,39 @@ export default {
             this.pageDataPruch.maxResultCount = pagesize;
             this.GetGoodsSupplierPage();
         },
-        saveUpload(){
-            this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledProperty = false;
-            this.tabName = 'propertyInfo';        
+        saveUpload(data){
+            var params = this.productInfoFormValidate;
+            params = {
+                ...params,
+                id:this.productId,
+                howlong:params.productSize.long,
+                width:params.productSize.wide,
+                high:params.productSize.high,
+                volume:params.productSize.volume,
+                packageLong:params.packagingSize.long,
+                packageWidth:params.packagingSize.wide,
+                packageHigh:params.packagingSize.high,
+                packageVolume:params.packagingSize.volume,
+                imgOne:data[0]&&data[0].filePath||'',
+                imgTwo:data[1]&&data[1].filePath||'',
+                imgThree:data[2]&&data[2].filePath||'',
+            }
+            return new Promise((resolve, reject) => {
+                this.$FromLoading.show();
+                UpdatePrepGoods(params).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.$Message.info('温馨提示：保存成功！');
+                        this.GetOperationLogPage();
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.msg
+                        });
+                        this.$FromLoading.hide();
+                    }
+                });
+            });       
         },
         saveProperty(){
             this.$Message.info({content:'温馨提示：保存成功'});
@@ -359,6 +383,10 @@ export default {
                                 code:res.result.item.code,
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                imgOne:res.result.item.imgOne,
+                                imgTwo:res.result.item.imgTwo,
+                                imgThree:res.result.item.imgThree,
                                 characteristic:res.result.item.characteristic,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
@@ -417,6 +445,7 @@ export default {
                         this.$FromLoading.hide();
                         this.$Message.info('温馨提示：保存成功！');
                         this.GetPrepGoodsAttributeById();
+                        this.GetOperationLogPage();
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
@@ -425,10 +454,25 @@ export default {
                         this.$FromLoading.hide();
                     }
                 });
-            });    
+            }); 
+               
         },
         goReturn(){
             this.$router.go(-1);
+        },
+        GetOperationLogPage(){
+            if(this.productId){
+                return new Promise((resolve, reject) => {
+                    GetOperationLogPage({goodsId:this.productId}).then(res => {
+                        if(res.result.code==200){
+                            this.$nextTick(() => {
+                                this.dataLog = res.result.item.items;
+                                this.loadingLog = false;
+                            });
+                        }
+                    });
+                });
+            }    
         },
     },
     created() {
