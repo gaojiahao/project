@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 10:53:00
+ * @LastEditTime: 2021-01-16 10:15:53
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -967,6 +967,48 @@ const routes = [
                 },
                 component: resolve=>(require(["@views/examine/appointStoreExamine/productAppointStore"],resolve)),
               }
+            ]
+          },
+          {
+            path: 'recommendExamine',
+            name: 'recommendExamine',
+            meta:{ 
+              title:'侵权审核',
+              group: 'recommendExamine',
+            },
+            component: resolve=>(require(["@views/examine/recommendExamine/index"],resolve)),
+            redirect:'recommendExamine/recommendExamineList',
+            children:[
+              {
+                path: 'recommendExamineList',
+                name: 'recommendExamineList',
+                meta:{ 
+                  title:'侵权审核列表',
+                  group: 'recommendExamine',
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/examine/recommendExamine/recommendExamineList"],resolve)),
+              },
+              {
+                path: 'addRecommendExamine',
+                name: 'addRecommendExamine',
+                meta:{ 
+                  title:'侵权审核',
+                  group: 'recommendExamine',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/examine/recommendExamine/addRecommendExamine"],resolve)),
+              },
+              {
+                path: 'viewRecommendExamine',
+                name: 'viewRecommendExamine',
+                meta:{ 
+                  title:'查看侵权审核',
+                  group: 'recommendExamine',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/examine/recommendExamine/viewRecommendExamine"],resolve)),
+              },
             ]
           },
           {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 15:01:23
+ * @LastEditTime: 2021-01-15 19:23:46
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -19,7 +19,7 @@
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="pageAttrData.totalPage" :current="pageAttrData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageAttrData.pageSizeOpts" :page-size="pageAttrData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
+                <Page :total="pageAttrData.totalPage" :transfer="true" :current="pageAttrData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageAttrData.pageSizeOpts" :page-size="pageAttrData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
             </div>
         </div>
     </TabPane>
@@ -209,7 +209,6 @@ export default {
             this.activeTab = name;
         },
         add() {
-            debugger
             this.data.categoryId = this.data.categoryId?this.data.categoryId:this.$parent.formValidate.id;
             this.data.attributeBinds.push({
                 ...this.formValidate2,
@@ -220,7 +219,6 @@ export default {
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
         BindAttributeCategory(){
-            debugger
             if (this.data.categoryId) {
                 this.data.attributeBinds=this.data.attributeBinds.filter(function (item) {
                     if(item.isCheck)

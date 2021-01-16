@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 16:24:59
+ * @LastEditTime: 2021-01-16 10:51:11
 -->
 <template>
 <div class="erp_table_container">
@@ -24,7 +24,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true,row)">选品</Button>
+                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)">审核</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -35,41 +35,26 @@
             </template>
         </Table>
     </div>
-    <SelectionModel :titleText="titleText" :formValidate="formValidate" :showModel='showModel' @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form" :data="selectData"></SelectionModel>
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
 
 <script>
-import SelectionModel from "@components/sell/selectionManager/selectionModel";
-import SeniorFilter from "@components/public/filter/seniorFilter";
-import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
-import ImageModel from "@components/public/model/imageModel";
+import config from "@views/examine/recommendExamine/productConfig";
 import list from "@mixins/list";
 import {
-    GetGoodsSelectionPage,
-    CreateGoodsSelection
-} from "@service/sellService"
-const XZX_TOKEN_KEY = "XZX_LOGIN_TOKEN";
-const localStorage = window["localStorage"];
+    GetGoodsReviewPage 
+} from "@service/tortExamineService"
+
 export default {
-    name: "SelectionManagerList",
-    components: {
-        SelectionModel,
-        SeniorFilter,
-        AutoCompleteSearch,
-        ImageModel
-    },
-    mixins: [list],
+    name: "RecommendExamineList",
+    mixins: [config,list],
     data() {
         return {
             titleText: '',
-            titleText2: '',
             showModel: false,
-            showModel2: false,
-            loading : false,
-            showFilterModel:false,
             columns: this.getTableColumn(),
             data: [],
             pageData:{
@@ -79,39 +64,13 @@ export default {
                 keyword:'',
                 pageSizeOpts:[15,50,200],
             },
-            formValidate:{},
             totalPage:0,
-            selectData:{},
-            filtersConfig:{
-                goodsCode:{
-                    name:'商品编号',
-                    value:'goodsCode',
-                    type:'text',
-                },
-                goodsName:{
-                    name:'产品名称',
-                    value:'goodsName',
-                    type:'text',
-                },  
-                status:{
-                    name:'状态',
-                    value:'status',
-                    type:'radio',
-                    dataSource:{
-                        type:'static',
-                        data:[
-                        {name:'是',value:'true'},
-                        {name:'否',value:'false'}
-                        ],
-                    },
-                },
-            }
         }
     },
     methods: {
-        GetGoodsSelectionPage() {
+        GetGoodsReviewPage () {
             return new Promise((resolve, reject) => {
-                GetGoodsSelectionPage(this.pageData).then(res => {
+                GetGoodsReviewPage (this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -125,13 +84,18 @@ export default {
         showPop(flag, row) {
             if (row && row.id) {
                 this.selectData = row;
-                this.titleText = '是否选品';
+                this.titleText = '派店';
             }
             this.showModel = flag;
         },
+        goTortExamine(row) {
+            this.$router.push({name:'addTortExamine',query: {id:row.id}});    
+        },
+        goViewTortExamine(row){
+            this.$router.push({path:'/examine/tortExamine/viewTortExamine',query: {id:row.id}});        
+        },
         save(data) {
             var params = {};
-            var userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY))['userInfo'];
             params = {
                 goodsName:this.selectData.goodsName,
                 goodsId:this.selectData.goodsId,
@@ -145,11 +109,11 @@ export default {
                 if (valid) {
                     return new Promise((resolve, reject) => {
                         this.$FromLoading.show();
-                        CreateGoodsSelection(params).then(res => {
+                        CreatePieShop(params).then(res => {
                             if (res.result.code == 200) {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
-                                this.GetGoodsSelectionPage();
+                                this.GetGoodsReviewPage();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({
                                     background: true,
@@ -169,12 +133,12 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetGoodsSelectionPage();
+            this.GetGoodsReviewPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetGoodsSelectionPage();
+            this.GetGoodsReviewPage();
         },
         goDetail(id){
             if(id)
@@ -195,7 +159,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetGoodsSelectionPage();
+            this.GetGoodsReviewPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -214,7 +178,7 @@ export default {
                     return h('div', [
                         h('img', {
                             attrs: {
-                                src: params.img || require("@assets/default/logo.png")
+                                src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
                             },
                             style: {
                                 width: '30px',
@@ -224,7 +188,7 @@ export default {
                                 click:()=>{
                                     this.srcData = {
                                         imgName: '图片预览',
-                                        src: params.img || require("@assets/default/logo.png")
+                                        src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
                                     }
                                     this.showImageModel(true);
                                 }
@@ -236,29 +200,58 @@ export default {
                 resizable: true,
             },
             {
-                title: '商品编码',
-                key: 'goodsCode',
+                title: '产品编码',
+                key: 'code',
                 resizable: true,
-                width: 318,
+                width: 220,
             },
             {
-                title: '商品名称',
-                key: 'goodsName',
+                title: '产品名称',
+                key: 'name',
                 render: (h, params) => {
-                    return h("span", {
+                    return h("span", {// 创建的标签名
+                    // 执行的一些列样式或者事件等操作
                     style: {
                         display: "inline-block",
                         color: "#2d8cf0"
                     },
                     on:{
-                        click:()=>{
+                        click:()=>{// 这里给了他一个打印事件，下面有展示图
                             this.goDetail(params.row.id)    
                         }
                     }
-                    },params.row.goodsName);
+                    },params.row.name);//  展示的内容
                 },
-                width: 350,
+                width: 220,
                 resizable: true,
+            },
+            {
+                title: '分类',
+                key: 'categoryName',
+                resizable: true,
+                width: 120,
+            },
+            {
+                title:'商户',
+                key: 'merchantName',
+                resizable: true,
+                width: 110,
+            },
+            // {
+            //     title:'平台名称',
+            //     key: 'platformName',
+            //     resizable: true,
+            // },
+            // {
+            //     title:'店铺',
+            //     key: 'storeName',
+            //     resizable: true,
+            // },
+            {
+                title:'品牌名称',
+                key: 'brandName',
+                resizable: true,
+                width: 138,
             },
             {
                 title: '状态',
@@ -267,18 +260,18 @@ export default {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status==1 ? "#19be6b": "#ed4014"
+                        color: params.row.tortStatus==1 ? "#19be6b": "#ed4014"
                     },
-                    },params.row.status == 1 ?"通过":params.row.status == 0 ? '未审核':"未通过");
+                    },params.row.tortStatus==1 ?"已审核":"未审核");
                 },
-                width: 200,
                 resizable: true,
+                width: 100,
             },
             {
                 title: '创建时间',
                 key: 'createdOn',
                 resizable: true,
-                width: 200,
+                width: 180,
             },
             {
                 title: '创建者',
@@ -290,7 +283,7 @@ export default {
                 title: '修改时间',
                 key: 'modifyOn',
                 resizable: true,
-                width: 200,
+                width: 180,
             },
             {
                 title: '修改者',
@@ -321,7 +314,7 @@ export default {
                 keyword:value,
                 pageSizeOpts:[15,50,200],
             },
-            this.GetGoodsSelectionPage(); 
+            this.GetGoodsReviewPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -330,9 +323,10 @@ export default {
                 data: this.data,
             });    
         }
+        
     },
     created(){
-        this.GetGoodsSelectionPage();
+        this.GetGoodsReviewPage();
     }
 }
 </script>

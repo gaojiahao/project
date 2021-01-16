@@ -4,102 +4,90 @@
  * @Author: gaojiahao
  * @Date: 2021-01-12 20:59:44
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 20:57:21
+ * @LastEditTime: 2021-01-16 09:03:50
 -->
 <template>
-    <Cascader :data="data" v-model="value1"></Cascader>
+    <Cascader :data="data" v-model="value1" change-on-select :render-format="format" @on-change="onChange" trigger="hover"></Cascader>
 </template>
-<script>
+<script;>
 import $flyio from '@plugins/ajax';
 
 export default {
     name:"SelectCascade",
+    model: {
+        prop: 'value',
+        event: 'change'
+    },
     props: {
+        value: {
+            type: Number,
+            default: null
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
         formConfig: {
             type: Object,
             default () {
                 return {}
+            }
+        },
+        name:{
+            type:String,
+            default:''
+        }
+    },
+    watch:{
+        value:{
+            handler(val){
+                this.value1.push(val)
             }
         }
     },
     data () {
         return {
             value1: [],
-             data: [
-                 //{
-            //     value: 'beijing',
-            //     label: '北京',
-            //     children: [
-            //         {
-            //             value: 'gugong',
-            //             label: '故宫'
-            //         },
-            //         {
-            //             value: 'tiantan',
-            //             label: '天坛'
-            //         },
-            //         {
-            //             value: 'wangfujing',
-            //             label: '王府井'
-            //         }
-            //     ]
-            // }, {
-            //     value: 'jiangsu',
-            //     label: '江苏',
-            //     children: [
-            //         {
-            //             value: 'nanjing',
-            //             label: '南京',
-            //             children: [
-            //                 {
-            //                     value: 'fuzimiao',
-            //                     label: '夫子庙',
-            //                 }
-            //             ]
-            //         },
-            //         {
-            //             value: 'suzhou',
-            //             label: '苏州',
-            //             children: [
-            //                 {
-            //                     value: 'zhuozhengyuan',
-            //                     label: '拙政园',
-            //                 },
-            //                 {
-            //                     value: 'shizilin',
-            //                     label: '狮子林',
-            //                 }
-            //             ]
-            //         }
-            //     ],
-            // }
-            ]
+            data: [],
         }
     },
     methods:{
+        format(labels, selectedData) {
+            const index = labels.length - 1;
+            const data = selectedData[index] || false;
+            if (data && data.code) {
+                return labels[index] + ' - ' + data.code;
+            }
+            return labels[index];
+        },
+        calleArr: function(data){
+            for(var i=0;i<data.length;i++){
+                data[i]['value'] = data[i].id;
+                data[i]['label'] = data[i].name;
+                if(data[i]['children']&&data[i]['children'].length){
+                    this.calleArr(data[i]['children']);
+                }
+            }
+        },
+        onChange(value, selectedData){
+            var length = value.length;
+            var data = {
+                label: selectedData[length-1]['label'],
+                tag: this.name,
+                value: selectedData[length-1]['id'],
+            };
+            this.$emit('change', data['value']);
+            this.$parent.$parent.$parent.onChange(data);
+        },
         async init(){
-            debugger
             var parmas = this.formConfig.dataSource.parmas ? this.formConfig.dataSource.parmas:{};
             await $flyio.post({
                 url: this.formConfig.dataSource.url,
                 data:{ ...parmas,maxResultCount:200}
             }).then((res) => {
                 if(res.result.code==200){
-                    debugger
-                    // if(this.formConfig[item].dataSource.col){
-                    //     var data = res.result.item.map((e,index)=>{
-                    //         for(var i=0;i<this.formConfig[item].dataSource.col.length;i++){
-                    //             e[this.formConfig[item].dataSource.col[i]['k']] = e[this.formConfig[item].dataSource.col[i]['v']];
-                    //         }
-                    //         return e;
-                    //     });    
-                    // } else {
-                    //     var data = res.result.item.map((e,index)=>{
-                    //         e.value = e.id;
-                    //         return e;
-                    //     });
-                    // }
                     this.data = res.result.item;
+                    this.calleArr(this.data);
                 }
             })  
         },

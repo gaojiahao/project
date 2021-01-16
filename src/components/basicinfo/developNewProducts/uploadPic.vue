@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 15:26:51
+ * @LastEditTime: 2021-01-15 17:25:19
 -->
 <template>
 <div>
@@ -30,7 +30,7 @@
                 </div>
                 <div style="width:120px">{{item.fileName}}</div>
             </div>
-            <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:78px;">
+            <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:78px;">
                 <div style="width: 120px;height:120px;line-height: 120px;">
                     <Icon type="ios-camera" size="30"></Icon>
                 </div>
@@ -186,7 +186,7 @@ export default {
     created(){
         this.uploadUrl = this.$upload_url?this.$upload_url:'localhost:8080';
         this.headers['Utoken'] =  tokenService.getToken();
-        this.baseUrl = 'http://cbapi.com/'
+        this.baseUrl = this.$base_url;
     }
 
 }

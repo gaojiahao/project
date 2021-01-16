@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 11:08:47
+ * @LastEditTime: 2021-01-16 09:30:44
 -->
 <template>
 <div class="erp_table_container">
@@ -35,37 +35,37 @@
             </template>
         </Table>
     </div>
-    <SelectionModel :titleText="titleText" :formValidate="formValidate" :showModel='showModel' @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form" :data="selectData"></SelectionModel>
+    <!-- <SelectionModel :titleText="titleText" :formValidate="formValidate" :showModel='showModel' @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form" :data="selectData"></SelectionModel> -->
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
 
 <script>
-import SelectionModel from "@components/sell/selectionManager/selectionModel";
+import ModalForm from "@components/public/form/modalForm"
 import SeniorFilter from "@components/public/filter/seniorFilter";
 import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
 import ImageModel from "@components/public/model/imageModel";
+import config from '@views/sell/pieShowManager/pieShowManagerConfig'
 import list from "@mixins/list";
 import {
     CreatePieShop,
     GetPieShopPage
 } from "@service/sellService"
-const XZX_TOKEN_KEY = "XZX_LOGIN_TOKEN";
-const localStorage = window["localStorage"];
+
 export default {
     name: "PieShowList",
     components: {
-        SelectionModel,
+        ModalForm,
         SeniorFilter,
         AutoCompleteSearch,
         ImageModel
     },
-    mixins: [list],
+    mixins: [config,list],
     data() {
         return {
             titleText: '',
-            titleText2: '',
             showModel: false,
             showModel2: false,
             loading : false,
@@ -79,7 +79,6 @@ export default {
                 keyword:'',
                 pageSizeOpts:[15,50,200],
             },
-            formValidate:{},
             totalPage:0,
             selectData:{},
             filtersConfig:{}
@@ -102,21 +101,20 @@ export default {
         showPop(flag, row) {
             if (row && row.id) {
                 this.selectData = row;
-                this.titleText = '是否选品';
+                this.titleText = '派店';
             }
             this.showModel = flag;
         },
-        save(data) {
+        save() {
             var params = {};
-            var userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY))['userInfo'];
             params = {
                 goodsName:this.selectData.goodsName,
                 goodsId:this.selectData.goodsId,
-                goodsCode:this.selectData.goodsCode,
-                status:this.selectData.status,
-                isSelect:data.isSelect,
-                remark:data.remark,
-                isMain:data.isMain,
+                storeId:this.formValidate.storeId,
+                storeName:this.formValidate.storeName,
+                platformId:this.formValidate.platformId,
+                platformName:this.formValidate.platformName,
+                remark:this.formValidate.remark,
             }
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
@@ -126,6 +124,7 @@ export default {
                             if (res.result.code == 200) {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
+                                this.$refs['form'].$refs['formValidate'].resetFields();
                                 this.GetPieShopPage();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({

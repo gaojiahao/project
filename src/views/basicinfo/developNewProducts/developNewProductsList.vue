@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 15:12:58
+ * @LastEditTime: 2021-01-15 16:17:51
 -->
 <template>
 <div class="erp_table_container">
@@ -172,7 +172,7 @@ export default {
                     return h('div', [
                         h('img', {
                             attrs: {
-                                src: params.img || require("@assets/default/logo.png")
+                                src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
                             },
                             style: {
                                 width: '30px',
@@ -182,7 +182,7 @@ export default {
                                 click:()=>{
                                     this.srcData = {
                                         imgName: '图片预览',
-                                        src: params.img || require("@assets/default/logo.png")
+                                        src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
                                     }
                                     this.showImageModel(true);
                                 }

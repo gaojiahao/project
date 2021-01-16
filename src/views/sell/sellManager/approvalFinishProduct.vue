@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 19:52:01
+ * @LastEditTime: 2021-01-16 09:32:40
 -->
 <template>
     <div class="addFinishProduct">
@@ -146,7 +146,6 @@ export default {
             var params = this.approvalValidate;
             this.$refs['approvalForm'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
-                    debugger
                     if (params.relatedId) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();

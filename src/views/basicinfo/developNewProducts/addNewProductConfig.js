@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 14:25:05
+ * @LastEditTime: 2021-01-15 19:28:42
  */
 export default {
     data() {
@@ -107,26 +107,9 @@ export default {
             type:'text',
             disabled: false
           },
-          categoryId:{
-            name:'分类',
-            type:'select',
-            dataSource:{
-              type:'dynamic',
-              url:'/api/GetCategoryList',
-              data:[],
-              col:[
-                {k:'name',v:'name'},
-                {k:'value',v:'id'}
-              ]
-            },
-            bind:{
-              target: 'categoryName',
-              bindValue: 'name'
-            }
-          },
           // categoryId:{
           //   name:'分类',
-          //   type:'selectCascade',
+          //   type:'select',
           //   dataSource:{
           //     type:'dynamic',
           //     url:'/api/GetCategoryList',
@@ -141,6 +124,23 @@ export default {
           //     bindValue: 'name'
           //   }
           // },
+          categoryId:{
+            name:'分类',
+            type:'selectCascade',
+            dataSource:{
+              type:'dynamic',
+              url:'/api/GetCategoryList',
+              data:[],
+              col:[
+                {k:'name',v:'name'},
+                {k:'value',v:'id'}
+              ]
+            },
+            bind:{
+              target: 'categoryName',
+              bindValue: 'name'
+            }
+          },
           characteristic:{
             name:'特性标签',
             type:'texts',

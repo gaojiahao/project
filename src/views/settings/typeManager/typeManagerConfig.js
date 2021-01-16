@@ -4,13 +4,20 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 19:50:42
+ * @LastEditTime: 2021-01-15 19:25:16
  */
 export default {
     data() {
       const levelVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
             callback(new Error('请输入分类层级'));
+        } else {
+          callback();
+        }
+      };
+      const categoryIdVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请选择属性'));
         } else {
           callback();
         }
@@ -73,9 +80,10 @@ export default {
               url:'/api/GetAttributeList',
               data:[],
             },
-            bind:[
-              {target: 'attributeName',bindValue: 'name'},
-            ]
+            bind:{
+              target: 'attributeName',
+              bindValue: 'name'
+            }
           },
         },
         formValidate2: {
@@ -83,10 +91,11 @@ export default {
           attributeId:'',
         },
         ruleValidate2: {
-          attributeName: [{
-              required: true,
-              message: '请输入属性',
-              trigger: 'change'
+          attributeId: [{
+            required: true,
+            message: '请选择属性',
+            trigger: 'change',
+            validator: categoryIdVali,
           }],
         },
       }
