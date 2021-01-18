@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 10:15:53
+ * @LastEditTime: 2021-01-16 15:52:23
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -569,6 +569,16 @@ const routes = [
                 component: resolve=>(require(["@views/basicinfo/developNewProducts/viewNewProduct"],resolve)),
               },
               {
+                path: 'examineNewProduct',
+                name: 'examineNewProduct',
+                meta:{ 
+                  title:'审核新品',
+                  group: "examineNewProduct",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/examineNewProduct"],resolve)),
+              },
+              {
                 path:"viewResearch",
                 name:"viewResearch",
                 component: resolve=>(require(["@views/basicinfo/developNewProducts/viewResearch"],resolve)),
@@ -973,7 +983,7 @@ const routes = [
             path: 'recommendExamine',
             name: 'recommendExamine',
             meta:{ 
-              title:'侵权审核',
+              title:'推品审核',
               group: 'recommendExamine',
             },
             component: resolve=>(require(["@views/examine/recommendExamine/index"],resolve)),
@@ -983,7 +993,7 @@ const routes = [
                 path: 'recommendExamineList',
                 name: 'recommendExamineList',
                 meta:{ 
-                  title:'侵权审核列表',
+                  title:'推品审核',
                   group: 'recommendExamine',
                   level: 1,
                 },
@@ -993,7 +1003,7 @@ const routes = [
                 path: 'addRecommendExamine',
                 name: 'addRecommendExamine',
                 meta:{ 
-                  title:'侵权审核',
+                  title:'审核',
                   group: 'recommendExamine',
                   level: 2,
                 },
@@ -1003,7 +1013,7 @@ const routes = [
                 path: 'viewRecommendExamine',
                 name: 'viewRecommendExamine',
                 meta:{ 
-                  title:'查看侵权审核',
+                  title:'查看审核',
                   group: 'recommendExamine',
                   level: 2,
                 },

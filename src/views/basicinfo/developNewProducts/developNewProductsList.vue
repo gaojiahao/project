@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 16:17:51
+ * @LastEditTime: 2021-01-16 16:16:54
 -->
 <template>
 <div class="erp_table_container">
@@ -28,6 +28,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
+                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.saleStatus==0">审核</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel()">调研</Button>
             </template>
             <template slot="footer">
@@ -135,6 +136,9 @@ export default {
             if(id)
             this.$router.push({name:'ViewNewProduct',query: {id:id}});
         },
+        goTortExamine(row) {
+            this.$router.push({name:'examineNewProduct',query: {id:row.id}});    
+        },
         showResearchModel(flag){
             this.$router.push({name:'ResearchDevelopNewProducts'}); 
         },
@@ -225,12 +229,12 @@ export default {
                 resizable: true,
                 width: 120,
             },
-            {
-                title:'商户',
-                key: 'merchantName',
-                resizable: true,
-                width: 110,
-            },
+            // {
+            //     title:'商户',
+            //     key: 'merchantName',
+            //     resizable: true,
+            //     width: 110,
+            // },
             // {
             //     title:'平台名称',
             //     key: 'platformName',
@@ -260,6 +264,20 @@ export default {
                 },
                 resizable: true,
                 width: 100,
+            },
+            {
+                title: '销售状态',
+                key: 'saleStatus',
+                render: (h, params) => {
+                    return h("span", {
+                    style: {
+                        display: "inline-block",
+                        color: params.row.saleStatus==1 ? "#19be6b":  params.row.saleStatus==2 ?"#ff9900" : "#ed4014"
+                    },
+                    },params.row.saleStatus==1 ? "已通过": params.row.saleStatus==2 ? "未通过" : "待审核");
+                },
+                resizable: true,
+                width: 110,
             },
             {
                 title: '创建时间',

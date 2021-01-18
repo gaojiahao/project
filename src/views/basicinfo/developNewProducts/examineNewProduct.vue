@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 14:51:18
+ * @LastEditTime: 2021-01-16 16:06:15
 -->
 <template>
 <div>
@@ -57,12 +57,13 @@
     <div class="top">
         <Divider orientation="left" size="small">审核建议</Divider>
         <div class="top_tabale">
-            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2">
+            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
-                            <Button type="primary" @click="" style="float: left;">同意</Button>
-                            <Button @click="close" style="float: left; margin-left:10px">不同意</Button>   
+                            <Button type="primary" @click="save(true)" style="float: left;">同意</Button>
+                            <Button @click="save(false)" style="float: left; margin-left:10px">不同意</Button>
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>   
                         </div>
                     </FormItem>
                 </template>
@@ -76,13 +77,16 @@
 import ViewForm from "@components/public/form/viewForm";
 import XForm from "@components/public/form/xForm";
 import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
-import config2 from "@views/examine/tortExamine/addTortExamineConfig";
+import config2 from "@views/basicinfo/developNewProducts/examineNewProductConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
 import AddNewProductTableUpload3D from "@components/basicinfo/developNewProducts/addNewProductTableUpload3D";
 import AddNewProductTableUploadMusic from "@components/basicinfo/developNewProducts/addNewProductTableUploadMusic";
 import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addNewProductTableLog";
+import UploadPic from "@components/basicinfo/developNewProducts/uploadPic";
+import NewHtmlEditor from "@components/basicinfo/developNewProducts/newHtmlEditor";
+import AddAttrProductTable from "@components/basicinfo/developNewProducts/addAttrProductTable";
 import {
     CreatePrepGoods,
     CraeteGoodsSupplier,
@@ -92,35 +96,34 @@ import {
     GetPrepGoodsAttributeById,
     UpdatePrepGoodsAttribute,
     GetOperationLogPage
-} from "@service/basicinfoService";
-
+} from "@service/basicinfoService"
+import {
+    CreateReviewAction
+} from "@service/tortExamineService";
 import {
     Tabs,
     TabPane,
 } from "view-design";
 export default {
-    name: 'addTortExamine',
+    name: 'editNewProduct',
     components: {
         Tabs,
         TabPane,
         ViewForm,
-        XForm,
         AddNewProductTable,
         AddNewProductTableUploadPic,
         AddNewProductTableUploadVideo,
         AddNewProductTableUpload3D,
         AddNewProductTableUploadMusic,
         AddNewProductTableLog,
+        UploadPic,
+        NewHtmlEditor,
+        AddAttrProductTable,
+        XForm
     },
     mixins: [config,config2],
-    computed:{
-        disabled(){
-            return this.productId ? false : false;
-        }
-    },
     data(){
         return{
-            platForm: '亚马逊',
             tabName:'basicInfo',
             divisionField:{
                 value:'material',
@@ -151,7 +154,13 @@ export default {
             loadingLog:true
         }
     },
+    computed:{
+        disabled(){
+            return this.productId ? false : false;
+        }
+    },
     methods: {
+        clearFormData() {},
         GetGoodsSupplierPage() {
             if(this.productId){
                 return new Promise((resolve, reject) => {
@@ -196,7 +205,6 @@ export default {
                     GetPrepGoodsById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.prod
                             this.productInfoFormValidate = {
                                 id: res.result.item.id,
                                 code:res.result.item.code,
@@ -261,11 +269,39 @@ export default {
             this.pageDataLog.maxResultCount = pagesize;
             this.GetOperationLogPage();
         },
-        goResearch(row){
-            this.$router.push({name:'viewResearch',query: {id:row.id}}); 
-        },
-        close(){
-            this.$router.go(-1)
+        save(status){
+            debugger
+            var params = this.formValidate2;
+            params = {
+                ...params,
+                relatedId: this.productInfoFormValidate.id,
+                reviewResult:0,
+                reviewBefore: this.productInfoFormValidate.status,
+                isPass: status
+            }
+            this.$refs['examine'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    if (params.relatedId) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreateReviewAction(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：审核成功！');
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });
+                    }
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         }
     },
     created() {

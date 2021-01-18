@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 10:55:00
+ * @LastEditTime: 2021-01-16 14:21:45
 -->
 <template>
 <div class="erp_table_container">
@@ -24,7 +24,6 @@
                 </div>  
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">审核</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="goResearch(row)">查看调研</Button>
             </template>
             <template slot="footer">

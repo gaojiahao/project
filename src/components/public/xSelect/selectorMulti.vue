@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-07 10:39:02
+ * @LastEditTime: 2021-01-16 13:18:34
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">

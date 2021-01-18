@@ -4,114 +4,33 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 10:29:14
+ * @LastEditTime: 2021-01-16 15:44:48
 -->
 <template>
 <div>
-    <Tabs type="card" :animated="false">
-        <TabPane label="基本信息">
-            <div class="top-title">
-                基本信息
-            </div>
-            <div class="top">
-                <ViewForm :formValidate="formValidate.productInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.productInfo.field">
-                    <template slot="button">
-                        <div style="width:100%">
-                            
-                        </div>
-                    </template>
-                </ViewForm>
-            </div>
-            <div class="top-title">
-                其他信息
-            </div>
-            <div class="top">
-                <ViewForm :formValidate="formValidate.otherInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.otherInfo.field">
-                    <template slot="button">
-                        <div style="width:100%">
-                        </div>
-                    </template>
-                </ViewForm>
-            </div>
-        </TabPane>
-        <TabPane label="销售信息">
-            <AddNewProductTable></AddNewProductTable>
-            <div class="top-title">
-                采购信息
-            </div>
-            <div class="top">
-                <ViewForm :formValidate="formValidate.purchase" :ruleValidate="ruleValidate" :formConfig="formConfig.purchase.field">
-                    <template slot="button">
-                        <div style="width:100%">
-                        </div>
-                    </template>
-                </ViewForm>
-            </div>
-        </TabPane>
-        <TabPane label="制作文件">
-            <div class="top-title">
-                文件上传
-            </div>
-            <div class="top" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                <!--上传的配置要传入-->
-                <AddNewProductTableUploadPic></AddNewProductTableUploadPic>
-                <AddNewProductTableUploadVideo></AddNewProductTableUploadVideo>
-                <AddNewProductTableUpload3D></AddNewProductTableUpload3D>
-                <AddNewProductTableUploadMusic></AddNewProductTableUploadMusic>
-            </div>
-        </TabPane>
-        <TabPane label="属性">
-            <div class="top-title">
-                属性
-            </div>
-            <div class="top">
-                <ViewForm :formValidate="formValidate.property" :ruleValidate="ruleValidate" :formConfig="formConfig.property.field">
-                    <template slot="button">
-                        <div style="width:100%">
-                        </div>
-                    </template>
-                </ViewForm>
-            </div>
-        </TabPane>
-        <TabPane label="详细描述">
-            <div class="top-title">
-                属性
-            </div>
-            <div class="top">
-                <ViewForm :formValidate="formValidate.detailInfo" :ruleValidate="ruleValidate" :formConfig="formConfig.detailInfo.field">
-                    <template slot="button">
-                        <div style="width:100%">
-                        </div>
-                    </template>
-                </ViewForm>
-            </div>
-        </TabPane>
-        <TabPane label="日志文件">
-            <AddNewProductTableLog></AddNewProductTableLog>
-        </TabPane>
-        <Button @click="goResearch" size="small" slot="extra" type="warning">查看调研</Button>
-    </Tabs>
-    <div>
-        <div class="top-title">
-            审核建议
-        </div>
+    <div class="addFinishProduct">
         <div class="top">
-            <div style="height:40px;width:100%;padding:10px">
-                <div style="float:left">
-                    平台：
-                    <RadioGroup v-model="platForm">
-                        <Radio label="亚马逊" border></Radio>
-                        <Radio label="ebay" border></Radio>
-                        <Radio label="速卖通" border></Radio>
-                    </RadioGroup>
-                </div>
+            <Divider orientation="left" size="small">推品信息</Divider>
+            <div class="top_tabale">
+                <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" ref="form">
+                    <template slot="button">
+                        <FormItem>
+                        </FormItem>
+                    </template>
+                </ViewForm>
             </div>
-            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2">
+        </div>
+    </div>
+    <div class="top">
+        <Divider orientation="left" size="small">审核建议</Divider>
+        <div class="top_tabale">
+            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
-                            <Button type="primary" @click="" style="float: left;">提交审核</Button>
-                            <Button @click="close" style="float: left; margin-left:10px">关闭</Button>   
+                            <Button type="primary" @click="save(true)" style="float: left;">同意</Button>
+                            <Button @click="save(false)" style="float: left; margin-left:10px">不同意</Button>
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>   
                         </div>
                     </FormItem>
                 </template>
@@ -124,77 +43,105 @@
 <script>
 import ViewForm from "@components/public/form/viewForm";
 import XForm from "@components/public/form/xForm";
-import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
+import config from "@views/sell/sellManager/viewFinishProductConfig";
 import config2 from "@views/examine/recommendExamine/addRecommendConfig";
-import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
-import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
-import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
-import AddNewProductTableUpload3D from "@components/basicinfo/developNewProducts/addNewProductTableUpload3D";
-import AddNewProductTableUploadMusic from "@components/basicinfo/developNewProducts/addNewProductTableUploadMusic";
-import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addNewProductTableLog";
+import {
+    CreateRecommendGoods,
+    UpdateRecommendGoods,
+    GetRecommendGoodsById
+} from "@service/sellService"
+import {
+    CreateReviewAction
+} from "@service/tortExamineService";
 
 import {
     Tabs,
     TabPane,
 } from "view-design";
 export default {
-    name: 'AddRecommendExamine',
+    name: 'addRecommendExamine',
     components: {
-        Tabs,
-        TabPane,
         ViewForm,
-        XForm,
-        AddNewProductTable,
-        AddNewProductTableUploadPic,
-        AddNewProductTableUploadVideo,
-        AddNewProductTableUpload3D,
-        AddNewProductTableUploadMusic,
-        AddNewProductTableLog,
+        XForm
     },
     mixins: [config,config2],
     data(){
         return{
-            platForm: '亚马逊'
+            platForm: '亚马逊',
         }
     },
     methods: {
-        goResearch(row){
-            this.$router.push({name:'viewResearch',query: {id:row.id}}); 
+        getFormData(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetRecommendGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formValidate = {
+                                id: res.result.item.id,
+                                code: res.result.item.code,
+                                name: res.result.item.name,
+                                categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                imgUrl: res.result.item.imgUrl,
+                                urlOne: res.result.item.urlOne,
+                                remark: res.result.item.remark,
+                                status: res.result.item.status,
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
         },
-        close(){
-            this.$router.go(-1)
+        goReturn(){
+            this.$router.go(-1);
+        },
+        save(status){
+            debugger
+            var params = this.formValidate2;
+            params = {
+                ...params,
+                relatedId: this.formValidate.id,
+                reviewResult:0,
+                reviewBefore: this.formValidate.status,
+                isPass: status
+            }
+            this.$refs['examine'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    if (params.relatedId) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreateReviewAction(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：审核成功！');
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });
+                    }
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         }
     },
-    created() {}
+    created() {
+        this.getFormData();
+    }
 }
 </script>
-
-<style scoped>
->>>.ivu-tabs-bar {
-    margin-bottom: 0;
-}
-</style><style lang="less" scoped>
-.top {
-    flex: 1;
-    background-color: #ffffff;
-    border: 1px solid #dcdee2;
-    border-color: #e8eaec;
-    transition: all 0.2s ease-in-out;
-    margin-bottom: 10px;
-}
-
-.top-title {
-background: #ffffff;
-    border: 1px solid #dcdee2;
-    border-color: #e8eaec;
-    transition: all 0.2s ease-in-out;
-    text-align: left;
-    padding: 5px;
-}
-
-.bottom {
-    transition: all 0.2s ease-in-out;
-    display: flex;
-    flex-direction: row;
-}
+<style lang="less" scoped>
+@import "~@less/form.less";
 </style>

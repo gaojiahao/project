@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 09:30:44
+ * @LastEditTime: 2021-01-16 11:28:49
 -->
 <template>
 <div class="erp_table_container">
@@ -213,13 +213,13 @@ export default {
             },
             {
                 title: '商品编码',
-                key: 'goodsCode',
+                key: 'code',
                 resizable: true,
                 width: 318,
             },
             {
                 title: '商品名称',
-                key: 'goodsName',
+                key: 'name',
                 render: (h, params) => {
                     return h("span", {
                     style: {
@@ -231,7 +231,7 @@ export default {
                             this.goDetail(params.row.id)    
                         }
                     }
-                    },params.row.goodsName);
+                    },params.row.name);
                 },
                 width: 350,
                 resizable: true,
