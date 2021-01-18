@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 11:13:06
+ * @LastEditTime: 2021-01-18 12:03:58
 -->
 <template>
 <div>
@@ -39,11 +39,14 @@
 import config from "@views/charting/chartingDelegation/productAppointStoreConfig";
 import ViewForm from "@components/public/form/viewForm";
 import XForm from "@components/public/form/xForm";
-
 import {
     Tabs,
     TabPane,
 } from "view-design";
+import {
+    GetPrepGoodsById,
+} from "@service/basicinfoService";
+
 export default {
     name: 'Appoint',
     components: {
@@ -58,10 +61,37 @@ export default {
         }
     },
     methods: {
+        getFormData(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetPrepGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formValidate = {
+                                id: res.result.item.id,
+                                code:res.result.item.code,
+                                name: res.result.item.name,
+                                categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                productImg:[{name:'',url:res.result.item.imgOne},{name:'',url:res.result.item.imgTwo},{name:'',url:res.result.item.imgThree}]
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
         clearFormData() {},
         save() {},
     },
-    created(){ }
+    created(){ 
+        this.getFormData();
+    }
 }
 </script>
 

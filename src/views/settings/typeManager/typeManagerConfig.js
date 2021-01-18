@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 14:20:13
+ * @LastEditTime: 2021-01-18 17:50:50
  */
 export default {
     data() {
@@ -73,22 +73,41 @@ export default {
         formConfig2:{
           attributeId:{
             name:'属性',
-            type:'select',
+            type:'selectorMulti',
             isName:true,
             dataSource:{
               type:'dynamic',
               url:'/api/GetAttributeList',
               data:[],
+              col:[
+                {k:'name',v:'name'},
+                {k:'value',v:'id'}
+              ]
             },
             bind:{
               target: 'attributeName',
               bindValue: 'name'
-            }
+            },
+            proertyContext: {
+              "dataSourceCols": [
+                {
+                  "title": "id",
+                  "key": "value",
+                  "hidden": true
+                },
+                {
+                  "title": "名称",
+                  "key": "name"
+                },
+              ]
+            },
+            valueField: "id",  //值字段
+            displayField: "name", //显示字段
           },
         },
         formValidate2: {
           attributeName: '',
-          attributeId:'',
+          attributeId:[],
         },
         ruleValidate2: {
           attributeId: [{

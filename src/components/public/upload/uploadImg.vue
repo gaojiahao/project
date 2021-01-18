@@ -2,10 +2,10 @@
 <div>
     <div class="demo-upload-list" v-for="item in uploadList">
         <template v-if="item.status === 'finished'">
-            <img :src="item.url">
+            <img :src="baseUrl + item.filePath">
             <div class="demo-upload-list-cover">
                 <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+                <Icon type="ios-trash-outline" @click.native="handleRemove(item)" v-if="!disabled"></Icon>
             </div>
         </template>
         <template v-else>
@@ -17,9 +17,12 @@
             <Icon type="ios-camera" size="20"></Icon>
         </div>
     </Upload>
-    <Modal title="View Image" v-model="visible">
-        <!--<img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">-->
-        <img :src="'https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843'" v-if="visible" style="width: 100%">
+    <Modal :title="uploadList&&uploadList[indexPic]&&uploadList[indexPic].fileName" v-model="visible" fullscreen>
+        <img :src="baseUrl + uploadList[indexPic].filePath" v-if="visible" style="width: 100%">
+        <div slot="footer">
+            <Button type="primary" size="small" @click="prePic">上一张</Button>
+            <Button type="primary" size="small" @click="nextPic">下一张</Button>
+        </div>
     </Modal>
 </div>
 </template>
@@ -59,15 +62,26 @@ export default {
     watch:{
         value:{
             handler(val){
-                this.uploadList = val;
+                this.uploadList = [];
+                for(var i=0;i<val.length;i++){
+                    var obj={};
+                    obj= {
+                        status:'finished',
+                        filePath:val[i].url,
+                    }
+                    if(obj.filePath){
+                        this.uploadList.push(obj);
+                    }
+                }
             }
         }    
     },
     data() {
         return {
             defaultList: [],
-            imgName: '',
             visible: false,
+            indexPic: 0,
+            imgName: '',
             uploadList: [],
             headers:{
                 'Content-Type':'multipart/form-data'
@@ -112,14 +126,22 @@ export default {
                 this.uploadList.push(data[i]); 
             }
             this.$emit('change', this.uploadList)
-        }
+        },
+        prePic(){
+            this.indexPic = (this.indexPic - 1) > -1 ? this.indexPic - 1 : 0;
+            if(this.indexPic ==0 ){
+                this.$Message.info({content:'温馨提示：已到第一张！'});         
+            }
+        },
+        nextPic(){
+            this.indexPic = (this.indexPic + 1) < this.uploadList.length-1 ? this.indexPic + 1 : this.uploadList.length-1; 
+            if(this.indexPic == this.uploadList.length-1 ){
+                this.$Message.info({content:'温馨提示：已到最一张！'});         
+            }      
+        },
     },
     created(){
-        this.uploadList = this.value;  
-        this.uploadUrl = this.$api?this.$api:'cbapi.com';
-        this.uploadUrl = 'localhost:8080';
-        this.headers['Utoken'] =  tokenService.getToken();
-        this.baseUrl = 'http://cbapi.com/'  
+        this.baseUrl = this.$base_url;
     },
 }
 </script>

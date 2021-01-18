@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 09:55:03
+ * @LastEditTime: 2021-01-18 12:22:14
 -->
 <template>
 <div class="erp_table_container">
     <div class="myTable">
-        <Table border :columns="columns" height="695" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange" :draggable="true">
+        <Table border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange" :draggable="true">
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">
@@ -275,7 +275,7 @@ export default {
             },
             {
                 title: '创建者',
-                key: 'createdBy',
+                key: 'createdName',
                 resizable: true,
                 width: 80,
             },
@@ -287,7 +287,7 @@ export default {
             },
             {
                 title: '修改者',
-                key: 'modifyBy',
+                key: 'modifyName',
                 resizable: true,
                 width: 80,
             },

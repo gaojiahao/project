@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 11:06:25
+ * @LastEditTime: 2021-01-18 14:29:34
 -->
 <template>
 <div class="size-content">
@@ -14,13 +14,15 @@
     <div class="box" v-for="(item,index) in data" :key="index">
         <div class="list">
             <span style="float:left; line-height:34px">制作类型：</span>
-            <Select v-model="item.type" :style="{width:'200px',float: 'left'}" clearable>
+            <Select v-model="item.type" :style="{width:'200px',float: 'left'}" clearable filterable>
                 <Option v-for="item in typeList" :value="item.value" :key="item.value" >{{ item.name }}</Option>
             </Select>
         </div>
         <div class="list">
             <span style="float:left; line-height:34px">人员：</span>
-            <SelectorSingle v-model="item.people" :config="people"></SelectorSingle>
+            <Select v-model="item.type" :style="{width:'200px',float: 'left'}" clearable filterable>
+                <Option v-for="item in peopleList" :value="item.value" :key="item.value" >{{ item.name }}</Option>
+            </Select>
         </div>
         <div class="list">
             <span style="line-height:34px">时间：</span>
@@ -35,6 +37,11 @@
 
 <script>
 import SelectorSingle from "@components/public/xSelect/selectorSingle";
+import {
+    GetFileRelationList,
+    GetUserInfoList
+} from "@service/settingsService";
+
 export default {
     name: "DistributionPeople",
     components: {
@@ -54,48 +61,18 @@ export default {
         disabled: {
             type: Boolean,
             default: false
+        },
+        parmas: {
+            type: Array,
+            default () {
+                return []
+            }
         }
     },
     data() {
         return {
-            typeList:[
-                {name:'psd',value:'psd'},
-                {name:'视频',value:'video'},
-                {name:'3D建模',value:'3d'},
-            ],
-            people:{
-                name: 'psd',
-                type:'selectorMulti',
-                dataSource: {
-                    data:[
-                      {id:'1',platform:'李四',url:"美工组",comment:"无"},
-                      {id:'2',platform:'王五',url:"美工组",comment:"无1"},
-                      {id:'3',platform:'马六',url:"美工组",comment:"无2"}
-                    ]
-                  },
-                  proertyContext: {
-                    "dataSourceCols": [
-                      {
-                        "title": "id",
-                        "key": "id"
-                      },
-                      {
-                        "title": "人员",
-                        "key": "platform"
-                      },
-                      {
-                        "title": "部门",
-                        "key": "url"
-                      },
-                      {
-                        "title": "备注",
-                        "key": "comment"
-                      },
-                    ]
-                  },
-                  valueField: "id",  //值字段
-                  displayField: "platform", //显示字段
-            },
+            typeList:[],
+            peopleList:[],
             data:[
                 {
                     type:'',
@@ -128,10 +105,41 @@ export default {
         },
         del(index){
             this.$delete(this.data,index);
-        }
+        },
+        GetFileRelationList(){
+            var me = this;
+            var params={
+                categoryId:this.parmas[0],
+                platformId:this.parmas[1],
+            }
+            return GetFileRelationList({categoryId:this.categoryId,platformId:this.platform}).then(res => {
+                if (res.result.code == 200) {
+                    var data = res.result.item;
+                    for(var i=0;i<data.length;i++){
+                        data[i]['name'] = data[i]['fileTypeName'];
+                        data[i]['value'] = data[i]['id'];
+                    }
+                    this.typeList = data;
+                }
+            }).catch(e =>{console.log(e)}); 
+        },
+        GetUserInfoList(a){
+            return GetUserInfoList().then(res => {
+                if (res.result.code == 200) {
+                    var data = res.result.item;
+                    for(var i=0;i<data.length;i++){
+                        data[i]['name'] = data[i]['userName'];
+                        data[i]['value'] = data[i]['id'];
+                    }
+                    this.peopleList = data;
+                }
+            }).catch(e =>{console.log(e)}); 
+        },
     },
     created() {
         this.handleInput(this.data);
+        this.GetFileRelationList();
+        this.GetUserInfoList();
     }
 
 }

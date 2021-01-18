@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 15:12:02
+ * @LastEditTime: 2021-01-18 10:49:33
  */
 export default {
   data() {
@@ -58,52 +58,15 @@ export default {
         }],
       },
       filtersConfig:{
-        productType:{
-          name:'分类',
-          value:'productType',
-          type:'select',
-          dataSource:{
-            type:'static',
-            data:[
-              {name:'积木',value:'001'},
-              {name:'灯',value:'002'}
-            ],
-          },
-        },
-        sku:{
-          name:'SKU',
-          value:'sku',
-          type:'text',
-        },  
-        color:{
-          name:'颜色',
-          value:'color',
-          type:'text',
-        },
         producName:{
           name:'产品名称',
           value:'producName',
-          type:'text',
-        },
-        supplier:{
-          name:'产商',
-          value:'supplier',
-          type:'text',
-        },
-        supplierNum:{
-          name:'产商货号',
-          value:'supplierNum',
           type:'text',
         },
         createTime:{
           name:'创建时间',
           value:'createTime',
           type:'dateTime',
-        },
-        recommendingOfficer:{
-          name:'推荐人员',
-          value:'recommendingOfficer',
-          type:'text',
         },
         status:{
           name:'状态',

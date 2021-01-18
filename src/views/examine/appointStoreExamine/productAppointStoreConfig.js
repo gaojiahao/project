@@ -4,77 +4,109 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-20 19:55:26
+ * @LastEditTime: 2021-01-18 14:58:06
  */
 export default {
     data() {
       return {
-        formConfig:{
-            productCode:{
-                name:'产品货号',
-                type:'text',
-            },
-            productType:{
-                name:'商品分类',
-                type:'text',
-            },
-            productImg:{
-                name:'产品图片',
-                type:'uploadImage'
-            },
-            productName:{
-                name:'产品名称',
-                type:'text'
-            },
-            selectionPeople:{
-                name:'选品人员',
-                type:'table'    
-            },
-            unSelectionPeople:{
-                name:'未选人员',
-                type:'table'    
-            },
-            appointStorePeople:{
-                name:'派店人员',
-                type:'table'    
-            },
-        },
-        formValidate: {
-            productCode:'PD00001',
-            productType:'玩具',
-            productImg:[
-                {"name":"7eb99afb9d5f317c912f08b5212fd69a","url":"https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843"},
-                {"name":"7eb99afb9d5f317c912f08b5212fd69a","url":"https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843"}],
-            productName:'积木'
-        },
-        ruleValidate: {
-
-        },
         formConfig2:{
-            shenhe:{
-                name:'审核意见',
-                type:'textarea',
+            reviewRemark:{
+              name:'备注',
+              type:'textarea',
             },
-            status:{
-                name:'',
-                value:'status',
-                type:'radio',
-                dataSource:{
-                  type:'static',
-                  data:[
-                    {name:'通过',value:'true'},
-                    {name:'不通过',value:'false'}
-                  ],
-                },
-              },
-        },
-        formValidate2: {
-            shenhe:'',
-            status:''
-        },
-        ruleValidate2: {
-
-        },
+          },
+          formValidate2: {
+            reviewType:'recommendGoodsReview',
+            relatedId:'',
+            isPass:'',
+            reviewResult:0,
+            reviewBefore:'',  //审核前 放的当前产品状态
+            reviewRemark:''  //
+          },
+          ruleValidate2: {
+            reviewRemark: [{
+                required: true,
+                type: 'string',
+                message: '请输入审核意见',
+                trigger: 'blur'
+            }],
+          }, 
+        filtersConfig:{
+          productType:{
+            name:'分类',
+            value:'productType',
+            type:'select',
+            dataSource:{
+              type:'static',
+              data:[
+                {name:'积木',value:'001'},
+                {name:'灯',value:'002'}
+              ],
+            },
+          },
+          sku:{
+            name:'SKU',
+            value:'sku',
+            type:'text',
+          },  
+          color:{
+            name:'颜色',
+            value:'color',
+            type:'text',
+          },
+          producName:{
+            name:'产品名称',
+            value:'producName',
+            type:'text',
+          },
+          supplier:{
+            name:'产商',
+            value:'supplier',
+            type:'text',
+          },
+          supplierNum:{
+            name:'产商货号',
+            value:'supplierNum',
+            type:'text',
+          },
+          createTime:{
+            name:'创建时间',
+            value:'createTime',
+            type:'dateTime',
+          },
+          recommendingOfficer:{
+            name:'推荐人员',
+            value:'recommendingOfficer',
+            type:'text',
+          },
+          status:{
+            name:'状态',
+            value:'status',
+            type:'radio',
+            dataSource:{
+              type:'static',
+              data:[
+                {name:'已审核',value:'true'},
+                {name:'未审核',value:'false'}
+              ],
+            },
+          },
+          modifyTime:{
+            name:'修改时间',
+            value:'modifyTime',
+            type:'dateTime',
+          },
+          creater:{
+            name:'创建者',
+            value:'creater',
+            type:'text',
+          },
+          modifyer:{
+            name:'修改者',
+            value:'modifyer',
+            type:'text',
+          },
+        }
       }
     }
   }

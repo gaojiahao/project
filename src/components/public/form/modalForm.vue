@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 14:19:24
+ * @LastEditTime: 2021-01-18 17:59:25
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -48,7 +48,7 @@
             </FormItem>
             <!--多项选择器-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectorMulti'">
-                <SelectorMulti v-model="formValidate[index]" :config="formConfig[index]"></SelectorMulti>
+                <SelectorMulti v-model="formValidate[index]" :config="formConfig[index]" ref="selectorMulti"></SelectorMulti>
             </FormItem>
             <!--文本域-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='textarea'">
@@ -66,7 +66,7 @@
                 </Select>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCustom'">
-                <Select v-model="formValidate[index]" :style="{width:'300px',float: 'left'}" multiple filterable :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']">
+                <Select v-model="formValidate[index]" :style="{width:'300px',float: 'left'}" multiple filterable :disabled="formConfig[index]['disabled']" :label-in-value="true" v-show="!formConfig[index]['hidden']">
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
@@ -166,10 +166,9 @@ export default {
         initEL(type) {
             var controls = this.$el.getElementsByTagName(type);
             for (var i = 0; i < controls.length; i++) {
-                if (i == 0 && controls[i].type == 'text') { //第一个输入框获取焦点
+                if (i == 0 && controls[i].type == 'text') {
                     setTimeout(() => {
                         controls[0].focus();
-                        // console.log(controls[0]);
                     }, 1000);
                 }
             }
@@ -177,28 +176,21 @@ export default {
         initClick() {
             this.initEL('input');
             var inputGroup = this.$el.getElementsByTagName("input");
-            // for(var i=0;i<inputGroup.length;i++){
-            //     console.log(inputGroup[i].value)
-            // }
             var inputGroupArr = Array.from(this.$el.getElementsByTagName("input"));
             var buttonGroup = this.$el.getElementsByTagName("button")[0];
             var iGlength = inputGroupArr.length;
             var model_box = document.getElementsByClassName("model_box")[0];
             model_box.onkeypress = function (e) {
                 var e = event || e;
-                // console.log(inputGroupArr.indexOf(e.srcElement));
                 var idx = inputGroupArr.indexOf(e.srcElement);
-                // console.log(e, e.keyCode, e.srcElement, e.which);
                 if ((e.keyCode == 13 || e.which == 13) && idx > -1) {
-                    // console.log(idx)
-                    if (idx == iGlength - 1) { //表明已经是最后一个输入框
+                    if (idx == iGlength - 1) {
                         buttonGroup.focus();
                     } else {
                         inputGroup[idx + 1].focus();
                     }
                     e.preventDefault();
                 }
-                // console.log(e, e.keyCode, e.srcElement, e.which);
             }
         },
         //for循环异步处理
@@ -210,9 +202,23 @@ export default {
                     var valueField = this.formConfig[item].bind.bindValue;
                     form.$on('value-change-' + item,function(data){
                         this.formValidate[this.formConfig[data.tag].bind.target] = data.label;
+                        if(form.formConfig[data.tag]['bindOtherField']){
+                            for(var i=0;i<form.formConfig[data.tag]['bindOtherField'].length;i++){
+                                if(form.formConfig[data.tag]['bindOtherField'][i]['name']){
+                                    form.formConfig[data.tag]['bindOtherField'][i]['parmas']['keyword'] = data.label;
+                                    form.$emit('bind-change-'+form.formConfig[data.tag]['bindOtherField'][i]['name'],form.formConfig[data.tag]['bindOtherField'][i]['name'],form.formConfig[data.tag]['bindOtherField'][i]['parmas']);
+                                }
+                            }
+                        }
                     })
                 }
                 if((['select','selectCustom'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
+                    //绑定数据源改变
+                    form.$on('bind-change-' + item,function(data){
+                        //还未写完的参数查询
+                        form.loadData(data,parmas);
+                    })
+                    //加载数据源配置
                     var parmas = this.formConfig[item].dataSource.parmas ? this.formConfig[item].dataSource.parmas:{};
                     await $flyio.post({
                         url: this.formConfig[item].dataSource.url,
@@ -240,7 +246,31 @@ export default {
         },
         onChange(data){
             this.$emit('value-change-'+data.tag,data);
-        }
+        },
+        async loadData(config,params){
+            var parmas = params ? params:{};
+            await $flyio.post({
+                url: config.dataSource.url,
+                data:{ ...parmas,maxResultCount:200}
+            }).then((res) => {
+                if(res.result.code==200){
+                    if(config.dataSource.col){
+                        var data = res.result.item.map((e,index)=>{
+                            for(var i=0;i<config.dataSource.col.length;i++){
+                                e[config.dataSource.col[i]['k']] = e[config.dataSource.col[i]['v']];
+                            }
+                            return e;
+                        });    
+                    } else {
+                        var data = res.result.item.map((e,index)=>{
+                            e.value = e.id;
+                            return e;
+                        });
+                    }
+                    config.dataSource.data = data;
+                }
+            })    
+        },
     },
     mounted() {
         this.initClick();

@@ -4,302 +4,329 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 20:29:07
+ * @LastEditTime: 2021-01-18 14:55:45
 -->
 <template>
-<div class="storeManager-container">
-    <div class="filter">
-        <div class="filter-button">
-            
-        </div>
-        <div class="filter-search">
-             <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
-            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
-            <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
-        </div>
-    </div>
-    <div>
-        <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe>
+<div class="erp_table_container">
+    <div class="myTable">
+        <Table border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange" :draggable="true">
+            <template slot="header">
+                <div class="filter">
+                    <div class="filter-button">
+                        <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
+                        <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+                        <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+                        <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
+                    </div>
+                    <div class="filter-search">
+                        <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
+                    </div>
+                </div>    
+            </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)" v-if="row.status='未派'">审核</Button>
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goResearch(row)" v-else-if="row.status='已派'">查看</Button>
+                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)">审核</Button>
+            </template>
+            <template slot="footer">
+                <div class="footer_page">
+                    <div class="footer_page_right">
+                        <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
+                    </div>
+                </div>
             </template>
         </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
-            </div>
-        </div>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
 
 <script>
-import ModalForm from "@components/public/form/modalForm";
-import SeniorFilter from "@components/public/filter/seniorFilter";
-import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
-import ImageModel from "@components/public/model/imageModel";
-import config from "@views/basicinfo/productManager/productListConfig";
+import config from "@views/examine/appointStoreExamine/productAppointStoreConfig";
+import list from "@mixins/list";
+import {
+    GetGoodsReviewPage 
+} from "@service/tortExamineService";
 
 export default {
     name: "AppointStoreExamineList",
-    components: {
-        ModalForm,
-        SeniorFilter,
-        AutoCompleteSearch,
-        ImageModel
-    },
-    mixins: [config],
+    mixins: [config,list],
     data() {
         return {
             titleText: '',
+            titleText2: '',
             showModel: false,
-            defaultImg: require("@assets/default/logo.png"),
-            loading : true,
-            showFilterModel:false,
-            srcData:{},
-            visible:false,
-            columns: [{
-                    type: 'index',
-                    width: 80,
-                    align: 'center',
-                    title: '序号'
-                }, {
-                    title: '图片',
-                    key: 'img',
-                    align: 'center',
-                    render: (h, params) => {
-                        return h('div', [
-                            h('img', {
-                                attrs: {
-                                    src: params.img || require("@assets/default/logo.png")
-                                },
-                                style: {
-                                    width: '40px',
-                                    height: '40px'
-                                },
-                                on: {
-                                    click:()=>{
-                                        this.srcData = {
-                                            imgName: '图片预览',
-                                            src: params.img || require("@assets/default/logo.png")
-                                        }
-                                        this.visible = true;
-                                    }
-                                }
-                            }),
-                        ]);
-                    }
-                },
-                {
-                    title: '名称',
-                    key: 'name',
-                    render: (h, params) => {
-                        return h("span", {// 创建的标签名
-                        // 执行的一些列样式或者事件等操作
-                        style: {
-                            display: "inline-block",
-                            color: "#2d8cf0"
-                        },
-                        on:{
-                            click:()=>{// 这里给了他一个打印事件，下面有展示图
-                                this.goDetail(params.row.id)    
-                            }
-                        }
-                        },params.row.name);//  展示的内容
-                    }
-                },
-                {
-                    title: '商品编号',
-                    key: 'code'
-                },
-                {
-                    title: '供应商',
-                    key: 'supplier'
-                },
-                {
-                    title: '开发人员',
-                    key: 'developer'
-                },
-                {
-                    title: '分类',
-                    key: 'type'
-                },
-                {
-                    title: '特性标签',
-                    key: 'label'
-                },
-                {
-                    title: '包装材料',
-                    key: 'packingMaterial'
-                },
-                {
-                    title: '平均成本',
-                    key: 'averageCost'
-                },
-                {
-                    title: '状态',
-                    key: 'status',
-                    render: (h, params) => {
-                        return h("span", {// 创建的标签名
-                        // 执行的一些列样式或者事件等操作
-                        style: {
-                            display: "inline-block",
-                            color: params.row.status=='已派' ? "#19be6b": "#ed4014"
-                        },
-                        },params.row.status);//  展示的内容
-                    }
-                }, 
-                {
-                    title: '创建时间',
-                    key: 'createTime'
-                }, {
-                    title: '操作',
-                    slot: 'action',
-                    align: 'center',
-                    width:200
-                }
-            ],
-            dataConfig: {
-                'filterList': [{
-                    name: '全部',
-                    value: 'all',
-                }, {
-                    name: '已审核',
-                    value: 'all',
-                }, {
-                    name: '待审核',
-                    value: 'all',
-                }]
+            columns: this.getTableColumn(),
+            data: [],
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
             },
-            data: [{
-                img: "",
-                name: '积木',
-                code: 'XFDSFDF1',
-                supplier: "供应商1",
-                developer: "李四",
-                type: "玩具类",
-                label: "普货",
-                packingMaterial: '顺丰袋45*45',
-                averageCost: '￥126.66',
-                status: "已派",
-                createTime: "2020-11-06",
-            }, {
-                img: "",
-                name: '积木',
-                code: 'XFDSFDF1',
-                supplier: "供应商1",
-                developer: "李四",
-                type: "玩具类",
-                label: "普货",
-                packingMaterial: '顺丰袋45*45',
-                averageCost: '￥126.66',
-                status: "未派",
-                createTime: "2020-11-06",
-            }, {
-                img: "",
-                name: '积木',
-                code: 'XFDSFDF1',
-                supplier: "供应商1",
-                developer: "李四",
-                type: "玩具类",
-                label: "普货",
-                packingMaterial: '顺丰袋45*45',
-                averageCost: '￥126.66',
-                status: "已派",
-                createTime: "2020-11-06",
-            }, {
-                img: "",
-                name: '积木',
-                code: 'XFDSFDF1',
-                supplier: "供应商1",
-                developer: "李四",
-                type: "玩具类",
-                label: "普货",
-                packingMaterial: '顺丰袋45*45',
-                averageCost: '￥126.66',
-                status: "已派",
-                createTime: "2020-11-06",
-            }, {
-                img: "",
-                name: '积木',
-                code: 'XFDSFDF1',
-                supplier: "供应商1",
-                developer: "李四",
-                type: "玩具类",
-                label: "普货",
-                packingMaterial: '顺丰袋45*45',
-                averageCost: '￥126.66',
-                status: "已派",
-                createTime: "2020-11-06",
-            }, {
-                img: "",
-                name: '积木',
-                code: 'XFDSFDF1',
-                supplier: "供应商1",
-                developer: "李四",
-                type: "玩具类",
-                label: "普货",
-                packingMaterial: '顺丰袋45*45',
-                averageCost: '￥126.66',
-                status: "已派",
-                createTime: "2020-11-06",
-            }, {
-                img: "",
-                name: '积木',
-                code: 'XFDSFDF1',
-                supplier: "供应商1",
-                developer: "李四",
-                type: "玩具类",
-                label: "普货",
-                packingMaterial: '顺丰袋45*45',
-                averageCost: '￥126.66',
-                status: "已派",
-                createTime: "2020-11-06",
-            }],
-            filter: "large"
+            totalPage:0,
         }
     },
     methods: {
-        clearFormData() {
-
+        GetGoodsReviewPage () {
+            return new Promise((resolve, reject) => {
+                GetGoodsReviewPage (this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPage = res.result.item.totalCount;
+                            this.data = res.result.item.items;
+                            this.loading = false;
+                        });
+                    }
+                });
+            });
         },
         showPop(flag, row) {
             if (row && row.id) {
-                this.formValidate['id'] = row.id;
-                this.titleText = '编辑';
-            } else {
-                this.titleText = '审核';
+                this.selectData = row;
+                this.titleText = '派店';
             }
             this.showModel = flag;
         },
-        save() {
-
+        goTortExamine(row) {
+            this.$router.push({name:'productAppointStore',query: {id:row.id}});    
         },
-        changePage() {
-
+        goViewTortExamine(row){
+            this.$router.push({name:'viewSelectionExamine',query: {id:row.id}});        
         },
-        goResearch(row){
-            this.$router.push({path:'/sell/mainResearch/researchResult/researchResultList',query: {id:row.id||123}})
+        save(data) {
+            var params = {};
+            params = {
+                goodsName:this.selectData.goodsName,
+                goodsId:this.selectData.goodsId,
+                goodsCode:this.selectData.goodsCode,
+                status:this.selectData.status,
+                isSelect:data.isSelect,
+                remark:data.remark,
+                isMain:data.isMain,
+            }
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    return new Promise((resolve, reject) => {
+                        this.$FromLoading.show();
+                        CreatePieShop(params).then(res => {
+                            if (res.result.code == 200) {
+                                this.$FromLoading.hide();
+                                this.$Message.info('温馨提示：保存成功！');
+                                this.GetGoodsReviewPage();
+                            } else if (res.result.code == 400) {
+                                this.$Message.error({
+                                    background: true,
+                                    content: res.result.msg
+                                });
+                                this.$FromLoading.hide();
+                            }
+                        });
+                    });   
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         },
-        refresh() {
+        clearFormData(){
+            this.selectData = {};
+        },
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetGoodsReviewPage();
+        },
+        refresh(){
             this.loading = true;
-            setTimeout(() => {
-                this.loading = false;
-            }, 1000);
+            this.pageData.skipCount=1;
+            this.GetGoodsReviewPage();
         },
-        showFilter(flag) {
-            this.showFilterModel = flag;
+        goDetail(id){
+            if(id)
+            this.$router.push({name:'viewFinishProduct',query: {id:id}});
         },
-        setFilter() {},
+        changeCoulmns(data){
+            let datas = [];
+            let columns = this.getTableColumn();
+            datas.push(columns[0]);
+            data.forEach(col => {
+                for(var i=0;i<columns.length;i++){
+                    if(col == columns[i].key){
+                        datas.push(columns[i]);
+                    }
+                }
+            });
+            this.columns = datas;
+        },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetGoodsReviewPage();
+        },
+        getTableColumn(){
+            var columns2 = [
+            {
+                type: 'index',
+                width: 60,
+                align: 'center',
+                title: '序号',
+                resizable: true,
+            },
+            {
+                title: '图片',
+                key: 'img',
+                align: 'center',
+                render: (h, params) => {
+                    return h('div', [
+                        h('img', {
+                            attrs: {
+                                src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                            },
+                            style: {
+                                width: '30px',
+                                height: '30px'
+                            },
+                            on: {
+                                click:()=>{
+                                    this.srcData = {
+                                        imgName: '图片预览',
+                                        src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                                    }
+                                    this.showImageModel(true);
+                                }
+                            }
+                        }),
+                    ]);
+                },
+                width: 80,
+                resizable: true,
+            },
+            {
+                title: '产品编码',
+                key: 'code',
+                resizable: true,
+                width: 220,
+            },
+            {
+                title: '产品名称',
+                key: 'name',
+                render: (h, params) => {
+                    return h("span", {// 创建的标签名
+                    // 执行的一些列样式或者事件等操作
+                    style: {
+                        display: "inline-block",
+                        color: "#2d8cf0"
+                    },
+                    on:{
+                        click:()=>{// 这里给了他一个打印事件，下面有展示图
+                            this.goDetail(params.row.id)    
+                        }
+                    }
+                    },params.row.name);//  展示的内容
+                },
+                width: 220,
+                resizable: true,
+            },
+            {
+                title: '分类',
+                key: 'categoryName',
+                resizable: true,
+                width: 120,
+            },
+            {
+                title:'商户',
+                key: 'merchantName',
+                resizable: true,
+                width: 110,
+            },
+            // {
+            //     title:'平台名称',
+            //     key: 'platformName',
+            //     resizable: true,
+            // },
+            // {
+            //     title:'店铺',
+            //     key: 'storeName',
+            //     resizable: true,
+            // },
+            {
+                title:'品牌名称',
+                key: 'brandName',
+                resizable: true,
+                width: 138,
+            },
+            {
+                title: '状态',
+                key: 'status',
+                render: (h, params) => {
+                    return h("span", {
+                    style: {
+                        display: "inline-block",
+                        color: params.row.tortStatus==1 ? "#19be6b": "#ed4014"
+                    },
+                    },params.row.tortStatus==1 ?"已审核":"未审核");
+                },
+                resizable: true,
+                width: 100,
+            },
+            {
+                title: '创建时间',
+                key: 'createdOn',
+                resizable: true,
+                width: 180,
+            },
+            {
+                title: '创建者',
+                key: 'createdName',
+                resizable: true,
+                width: 80,
+            },
+            {
+                title: '修改时间',
+                key: 'modifyOn',
+                resizable: true,
+                width: 180,
+            },
+            {
+                title: '修改者',
+                key: 'modifyName',
+                resizable: true,
+                width: 80,
+            },
+            {
+                title: '操作',
+                slot: 'action',
+                align: 'center',
+                width: 150,
+                resizable: true,
+            }
+        ];
+            return columns2;
+        },
+        checkALl(){
+            this.$nextTick(function () {
+                this.columns = this.getTableColumn();
+            })
+        },
+        setFilter(value){
+            this.pageData = {
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:value,
+                pageSizeOpts:[15,50,200],
+            },
+            this.GetGoodsReviewPage(); 
+        },
+        exportData(){
+             this.$refs.selection.exportCsv({
+                filename: 'Custom data',
+                columns: this.columns,
+                data: this.data,
+            });    
+        }
     },
     created(){
-        setTimeout(() => {
-            this.loading = false;
-        }, 1000);
+        this.GetGoodsReviewPage();
     }
 }
 </script>

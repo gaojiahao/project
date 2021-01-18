@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 13:18:34
+ * @LastEditTime: 2021-01-18 18:05:51
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
@@ -28,7 +28,7 @@
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
             </div>
         </div>
     </Modal>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import $flyio from '@plugins/ajax';
+
 export default {
     name: 'XSelect',
     model: {
@@ -44,8 +46,10 @@ export default {
     },
     props:{
         value: {
-            type: String,
-            default: ''
+            type: Array,
+           default () {
+                return []
+            }
         },
         config: {
             type: Object,
@@ -54,15 +58,38 @@ export default {
             }
         },
     },
+    watch:{
+        config:{
+            handler(val){
+                this.data = this.config.dataSource.data;
+                this.columns = [];
+                this.columns.push({
+                    type: 'selection',
+                    width: 60,
+                    align: 'center'
+                },{
+                    title: '序号',
+                    slot: 'number',
+                    type: 'index',
+                    width: 80,
+                    align: 'center'
+                },);
+                this.config.proertyContext['dataSourceCols'].forEach(col => {
+                    if(!col.hidden){
+                        this.columns.push(col);
+                    }
+                });
+            },
+            deep:true,
+            immediate:true
+        }
+    },
     data() {
         return {
             isCheck: false,
             placeholder: '',
             checkText: '平台名称',
             columns: [],
-            data: [
-                
-            ],   //this.getData() 数据应该从数据源url获取
             show: false,
             titleText: '选择',
             fullscreen: false,
@@ -70,6 +97,15 @@ export default {
             disabled:false,
             name:'',
             selectedList:[],
+            data: [],
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
         }
     },
     methods: {
@@ -93,13 +129,15 @@ export default {
                 this.name = this.name ? this.name + ',' + col[this.config.displayField] : col[this.config.displayField];
                 v = v + col[this.config.valueField]+',';
             });
-            this.$emit('change', v);
+            this.$emit('change', this.selectedList);
         },
         ok() {
             this.setvalue();    
         },
         clear(){
-            this.name = '';
+            this.selectedList = [];
+            this.name ='';
+            this.$refs.selection.selectAll(false);
         },
         cancel() {
             this.clear();
@@ -122,25 +160,42 @@ export default {
         onSelectAll(selection){
             this.selectedList = selection;
         },
+        async init(){
+            if((['selectorMulti'].indexOf(this.config.type)!=-1)&&this.config.dataSource.type=='dynamic'){
+                var parmas = this.config.dataSource.parmas ? this.config.dataSource.parmas:{};
+                await $flyio.post({
+                    url: this.config.dataSource.url,
+                    data:{ ...this.pageData}
+                }).then((res) => {
+                    if(res.result.code==200){
+                        if(this.config.dataSource.col){
+                            var data = res.result.item.map((e,index)=>{
+                                for(var i=0;i<this.config.dataSource.col.length;i++){
+                                    e[this.config.dataSource.col[i]['k']] = e[this.config.dataSource.col[i]['v']];
+                                }
+                                return e;
+                            });    
+                        } else {
+                            var data = res.result.item.map((e,index)=>{
+                                e.value = e.id;
+                                return e;
+                            });
+                        }
+                        this.totalPage = res.result.item.totalCount;
+                        this.data = data;
+                    }
+                })        
+            }
+        },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.init();
+        },
     },
     created(){
         this.hidden = this.config.hidden;
         this.disabled = this.config.disabled;
-        this.columns.push({
-            type: 'selection',
-            width: 60,
-            align: 'center'
-        },{
-            title: '序号',
-            slot: 'number',
-            type: 'index',
-            width: 80,
-            align: 'center'
-        },);
-        this.config.proertyContext['dataSourceCols'].forEach(col => {
-            this.columns.push(col);
-        });
-        this.data = this.config.dataSource.data;
+        this.init();
         this.titleText = this.titleText+'-'+this.config.name;
     },
 }

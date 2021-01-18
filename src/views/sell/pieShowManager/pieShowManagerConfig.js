@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 09:23:40
+ * @LastEditTime: 2021-01-18 09:43:29
  */
 export default {
   data() {
@@ -36,7 +36,10 @@ export default {
           bind:{
             target: 'platformName',
             bindValue: 'name'
-          }
+          },
+          bindOtherField:[
+            {name:'storeId',type:'dataSource',parmas:{keyword:''}}
+          ]
         },
         storeId:{
           name:'店铺名称',
@@ -46,6 +49,7 @@ export default {
               type:'dynamic',
               url:'/api/GetStoreList',
               data:[],
+              parmas:{}
           },
           bind:{
             target: 'storeName',

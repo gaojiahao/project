@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 12:26:50
+ * @LastEditTime: 2021-01-18 18:03:24
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -209,14 +209,25 @@ export default {
             this.activeTab = name;
         },
         add() {
-            debugger
             this.data.categoryId = this.data.categoryId?this.data.categoryId:this.$parent.formValidate.id;
-            this.data.attributeBinds.push({
-                ...this.formValidate2,
-                categoryId: this.$parent.formValidate.id,
-                categoryName: this.$parent.formValidate.name,
-                isCheck: true
-            });
+            for(var i=0;i<this.formValidate2.attributeId.length;i++){
+                this.data.attributeBinds.push({
+                    attributeId:this.formValidate2.attributeId[i]['value'],
+                    attributeName:this.formValidate2.attributeId[i]['name'],
+                    categoryId: this.$parent.formValidate.id,
+                    categoryName: this.$parent.formValidate.name,
+                    isCheck: true
+                });
+            }
+            // this.data.attributeBinds.push({
+            //     ...this.formValidate2,
+            //     categoryId: this.$parent.formValidate.id,
+            //     categoryName: this.$parent.formValidate.name,
+            //     isCheck: true
+            // });
+            for(var i=0;i<this.$refs['form'].$refs["selectorMulti"].length;i++){
+                this.$refs['form'].$refs["selectorMulti"][i].clear();
+            }
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
         BindAttributeCategory(){
