@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 14:51:18
+ * @LastEditTime: 2021-01-18 20:13:51
 -->
 <template>
 <div>
@@ -24,7 +24,6 @@
         </TabPane>
         <TabPane label="销售信息" name="sellInfo" :disabled="disabled">
             <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
-
         </TabPane>
         <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
             <div class="top">
@@ -57,12 +56,23 @@
     <div class="top">
         <Divider orientation="left" size="small">审核建议</Divider>
         <div class="top_tabale">
-            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2">
+            <div style="height:40px;width:100%;padding:10px">
+                <RadioGroup v-model="platform" @on-change="onChange">
+                    平台：
+                    <template v-for="(ditem,dIndex) in platformList">
+                        <Radio :label="ditem.id" :key="ditem.id">
+                            {{ditem.name}}
+                        </Radio>
+                    </template>
+                </RadioGroup>
+            </div>
+            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
-                            <Button type="primary" @click="" style="float: left;">同意</Button>
-                            <Button @click="close" style="float: left; margin-left:10px">不同意</Button>   
+                            <Button type="primary" @click="save(true)" style="float: left;">同意</Button>
+                            <Button @click="save(false)" style="float: left; margin-left:10px">不同意</Button>   
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button> 
                         </div>
                     </FormItem>
                 </template>
@@ -83,16 +93,21 @@ import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProdu
 import AddNewProductTableUpload3D from "@components/basicinfo/developNewProducts/addNewProductTableUpload3D";
 import AddNewProductTableUploadMusic from "@components/basicinfo/developNewProducts/addNewProductTableUploadMusic";
 import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addNewProductTableLog";
+import UploadPic from "@components/basicinfo/developNewProducts/uploadPic";
+import NewHtmlEditor from "@components/basicinfo/developNewProducts/newHtmlEditor";
+import AddAttrProductTable from "@components/basicinfo/developNewProducts/addAttrProductTable";
 import {
-    CreatePrepGoods,
-    CraeteGoodsSupplier,
     GetGoodsSupplierPage,
     GetPrepGoodsById,
-    UpdatePrepGoods,
     GetPrepGoodsAttributeById,
-    UpdatePrepGoodsAttribute,
     GetOperationLogPage
 } from "@service/basicinfoService";
+import {
+    GetPlatformsList,
+} from "@service/settingsService";
+import {
+    CreateGoodsTort,
+} from "@service/tortExamineService";
 
 import {
     Tabs,
@@ -111,6 +126,9 @@ export default {
         AddNewProductTableUpload3D,
         AddNewProductTableUploadMusic,
         AddNewProductTableLog,
+        UploadPic,
+        NewHtmlEditor,
+        AddAttrProductTable
     },
     mixins: [config,config2],
     computed:{
@@ -118,9 +136,15 @@ export default {
             return this.productId ? false : false;
         }
     },
+    watch:{
+        platform:{
+            handler(val){
+
+            }
+        }
+    },
     data(){
         return{
-            platForm: '亚马逊',
             tabName:'basicInfo',
             divisionField:{
                 value:'material',
@@ -148,7 +172,10 @@ export default {
                 totalPagePruch:0
             },
             dataLog:[],
-            loadingLog:true
+            loadingLog:true,
+            platform: '',
+            platformList:[],
+            firstPlatform:'',
         }
     },
     methods: {
@@ -266,6 +293,61 @@ export default {
         },
         close(){
             this.$router.go(-1)
+        },
+        GetPlatformsList() {
+            return new Promise((resolve, reject) => {
+                GetPlatformsList(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.platformList = res.result.item;
+                            this.firstPlatform = this.platformList[0]['id'];
+                        });
+                    }
+                });
+            });
+        },
+        onChange(e){
+
+        },
+        save(status){
+            var params = {};
+            var platformName = '';
+            for(var i=0;i<this.platformList.length;i++){
+                if(this.platform==this.platformList[i]['id']){
+                    platformName = this.platformList[i]['name']
+                }
+            };
+            params = {
+                goodsId:this.productId,
+                platformId: this.platform,
+                platformName: platformName,
+                reason:this.formValidate2.reason,
+                isTort: this.formValidate2.isTort,
+                remark: status
+            }
+            this.$refs['examine'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    if (params.goodsId) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreateGoodsTort(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：审核成功！');
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });
+                    }
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         }
     },
     created() {
@@ -274,6 +356,7 @@ export default {
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
+        this.GetPlatformsList();
     }
 }
 </script>

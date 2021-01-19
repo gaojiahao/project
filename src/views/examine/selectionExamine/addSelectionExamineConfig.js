@@ -3,70 +3,34 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 19:34:17
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-01-18 20:44:44
  */
 export default {
-    data() {
-      return {
-        formConfig2:{
-          examine:{
-            name:'审核状态',
-            type:'radio',
-            dataSource:{
-              data:[
-                { name:'通过',value:'1'},
-                { name:'不通过',value:'0'},
-                { name:'强制委派',value:'2'},
-              ]
-            }
-          },
-          isMainSell:{
-            name:'是否主推',
-            type:'radio',
-            dataSource:{
-              data:[
-                { name:'是',value:'1'},
-                { name:'否',value:'0'},
-              ]
-            }
-          },
-          reason:{
-            name:'原因',
-            type:'select',
-            dataSource:{
-              data:[
-                { name:'不够大卖',value:'001'},
-                { name:'调研之后没有利润',value:'002'},
-                { name:'其他',value:'003'},
-              ]
-            }
-          },
-          opinion:{
-            name:'备注',
-            type:'textarea',
-          },
+  data() {
+    return {
+      formConfig2:{
+        reviewRemark:{
+          name:'备注',
+          type:'textarea',
         },
-        formValidate2: {
-          examine:'',
-          isMainSell:'',
-          reason:'',
-          opinion:'',
-        },
-        ruleValidate2: {
-          examine: [{
+      },
+      formValidate2: {
+        reviewType:'recommendGoodsReview',
+        relatedId:'',
+        isPass:'',
+        reviewResult:0,
+        reviewBefore:'',  //审核前 放的当前产品状态
+        reviewRemark:''  //
+      },
+      ruleValidate2: {
+        reviewRemark: [{
             required: true,
             type: 'string',
-            message: '是否侵权',
-            trigger: 'change'
-          }],
-          opinion: [{
-              required: true,
-              type: 'string',
-              message: '请输入备注',
-              trigger: 'blur'
-          }],
-        }, 
-      }
+            message: '请输入审核意见',
+            trigger: 'blur'
+        }],
+      }, 
     }
   }
+}

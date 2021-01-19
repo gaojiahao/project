@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 17:25:19
+ * @LastEditTime: 2021-01-18 20:20:12
 -->
 <template>
 <div>
@@ -131,7 +131,6 @@ export default {
             this.uploadList.splice(index, 1);
         },
         handleSuccess(res, file) {
-            debugger
             if(res.result.code==200){
                 file.filePath = res.result.item[0]['filePath'];
                 this.handleInput(file);

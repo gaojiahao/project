@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 16:06:15
+ * @LastEditTime: 2021-01-18 20:20:22
 -->
 <template>
 <div>
@@ -270,7 +270,6 @@ export default {
             this.GetOperationLogPage();
         },
         save(status){
-            debugger
             var params = this.formValidate2;
             params = {
                 ...params,

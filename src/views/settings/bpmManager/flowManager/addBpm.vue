@@ -546,7 +546,6 @@
                 this.$Message.warning('力导图每次产生的布局是不一样的');
             },
             zoomAdd() {
-                debugger
                 if (this.zoom >= 1) {
                     return
                 }

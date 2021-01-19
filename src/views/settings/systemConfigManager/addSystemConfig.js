@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 12:02:21
+ * @LastEditTime: 2021-01-18 19:16:51
  */
 export default {
   data() {
@@ -12,15 +12,16 @@ export default {
       formConfig:{
         congfigType:{
           name:'系统配置类型',
-          type:'select',
-          dataSource:{
-            type:'static',
-            data:[
-              {name:'包装材料',value:'packageMaterial'},
-              {name:'标签',value:'productLabel'},
-              {name:'制图选项',value:'filetype'}
-            ],
-          }
+          type:'text',
+          // type:'select',
+          // dataSource:{
+          //   type:'static',
+          //   data:[
+          //     {name:'包装材料',value:'packageMaterial'},
+          //     {name:'标签',value:'productLabel'},
+          //     {name:'制图选项',value:'filetype'}
+          //   ],
+          // }
         },
         name:{
           name:'名称',

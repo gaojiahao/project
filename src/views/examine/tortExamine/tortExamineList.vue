@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 12:22:14
+ * @LastEditTime: 2021-01-18 20:38:40
 -->
 <template>
 <div class="erp_table_container">
@@ -45,7 +45,7 @@
 import config from "@views/examine/tortExamine/productConfig";
 import list from "@mixins/list";
 import {
-    GetGoodsReviewPage 
+    GetGoodsTortReviewPage 
 } from "@service/tortExamineService"
 
 export default {
@@ -68,9 +68,9 @@ export default {
         }
     },
     methods: {
-        GetGoodsReviewPage () {
+        GetGoodsTortReviewPage () {
             return new Promise((resolve, reject) => {
-                GetGoodsReviewPage (this.pageData).then(res => {
+                GetGoodsTortReviewPage (this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -113,7 +113,7 @@ export default {
                             if (res.result.code == 200) {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
-                                this.GetGoodsReviewPage();
+                                this.GetGoodsTortReviewPage();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({
                                     background: true,
@@ -133,12 +133,12 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetGoodsReviewPage();
+            this.GetGoodsTortReviewPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetGoodsReviewPage();
+            this.GetGoodsTortReviewPage();
         },
         goDetail(id){
             if(id)
@@ -159,7 +159,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetGoodsReviewPage();
+            this.GetGoodsTortReviewPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -255,7 +255,7 @@ export default {
             },
             {
                 title: '状态',
-                key: 'status',
+                key: 'tortStatus',
                 render: (h, params) => {
                     return h("span", {
                     style: {
@@ -314,7 +314,7 @@ export default {
                 keyword:value,
                 pageSizeOpts:[15,50,200],
             },
-            this.GetGoodsReviewPage(); 
+            this.GetGoodsTortReviewPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -326,7 +326,7 @@ export default {
         
     },
     created(){
-        this.GetGoodsReviewPage();
+        this.GetGoodsTortReviewPage();
     }
 }
 </script>

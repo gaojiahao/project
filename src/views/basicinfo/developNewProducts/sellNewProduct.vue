@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 20:24:06
+ * @LastEditTime: 2021-01-18 20:20:30
 -->
 <template>
 <div>
@@ -204,7 +204,6 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.productId = res.result.item.id;
-                                    debugger
                                     this.GetGoodsSupplierPage();
                                     this.GetPrepGoodsAttributeById();
                                 } else if (res.result.code == 400) {

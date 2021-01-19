@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 09:55:21
+ * @LastEditTime: 2021-01-18 19:18:45
 -->
 <template>
 <div class="erp_table_container">
@@ -138,7 +138,7 @@ export default {
                             style: {
                                 display: "inline-block",
                             },
-                        },this.getName(params.row.congfigType));//  展示的内容
+                        },params.row.congfigType);//  展示的内容
                     }
                 }, 
                 {

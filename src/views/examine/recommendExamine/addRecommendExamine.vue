@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 15:44:48
+ * @LastEditTime: 2021-01-18 20:19:49
 -->
 <template>
 <div>
@@ -103,7 +103,6 @@ export default {
             this.$router.go(-1);
         },
         save(status){
-            debugger
             var params = this.formValidate2;
             params = {
                 ...params,

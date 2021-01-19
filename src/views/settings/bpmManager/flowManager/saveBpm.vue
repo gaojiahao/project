@@ -214,7 +214,6 @@ export default {
                     this.isShow['AddButtonModal'] = true;
                 },
                 openAddCondition: (type, info) => {
-                    debugger
                     if(this.dataAddCondition[info.id]){
                         this.selectAddCondition = this.dataAddCondition[info.id];
                     } else {
