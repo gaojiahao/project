@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 20:50:48
+ * @LastEditTime: 2021-01-19 11:15:52
 -->
 <template>
 <div>
@@ -56,12 +56,13 @@
     <div class="top">
         <Divider orientation="left" size="small">审核建议</Divider>
         <div class="top_tabale">
-            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2">
+            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
-                            <Button type="primary" @click="" style="float: left;">提交审核</Button>
-                            <Button @click="close" style="float: left; margin-left:10px">关闭</Button>   
+                            <Button type="primary" @click="save(true)" style="float: left;">同意</Button>
+                            <Button @click="save(false)" style="float: left; margin-left:10px">不同意</Button>
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>   
                         </div>
                     </FormItem>
                 </template>
@@ -91,6 +92,9 @@ import {
     GetPrepGoodsAttributeById,
     GetOperationLogPage
 } from "@service/basicinfoService";
+import {
+    CreateReviewAction
+} from "@service/tortExamineService";
 
 import {
     Tabs,
@@ -196,8 +200,7 @@ export default {
                     GetPrepGoodsById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.prod
-                            this.productInfoFormValidate = {
+                            this.formValidate = {
                                 id: res.result.item.id,
                                 code:res.result.item.code,
                                 name: res.result.item.name,
@@ -268,10 +271,12 @@ export default {
             this.$router.go(-1)
         },
         save(status){
+            debugger
+            var selectionId = this.$route.query.selectionId;
             var params = this.formValidate2;
             params = {
                 ...params,
-                relatedId: this.formValidate.id,
+                relatedId: selectionId,
                 reviewResult:0,
                 reviewBefore: this.formValidate.status,
                 isPass: status

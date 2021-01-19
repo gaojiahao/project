@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 14:29:34
+ * @LastEditTime: 2021-01-19 09:47:42
 -->
 <template>
 <div class="size-content">
@@ -14,13 +14,13 @@
     <div class="box" v-for="(item,index) in data" :key="index">
         <div class="list">
             <span style="float:left; line-height:34px">制作类型：</span>
-            <Select v-model="item.type" :style="{width:'200px',float: 'left'}" clearable filterable>
+            <Select v-model="item.fileType" :style="{width:'200px',float: 'left'}" clearable filterable>
                 <Option v-for="item in typeList" :value="item.value" :key="item.value" >{{ item.name }}</Option>
             </Select>
         </div>
         <div class="list">
             <span style="float:left; line-height:34px">人员：</span>
-            <Select v-model="item.type" :style="{width:'200px',float: 'left'}" clearable filterable>
+            <Select v-model="item.userId" :style="{width:'200px',float: 'left'}" clearable filterable>
                 <Option v-for="item in peopleList" :value="item.value" :key="item.value" >{{ item.name }}</Option>
             </Select>
         </div>
@@ -75,8 +75,8 @@ export default {
             peopleList:[],
             data:[
                 {
-                    type:'',
-                    people:'',
+                    fileType:'',
+                    userId:'',
                     date:''
                 }
             ]
@@ -94,8 +94,8 @@ export default {
     methods: {
         add() {
             this.data.push({
-                type:'',
-                people:'',
+                fileType:'',
+                userId:'',
                 date:''
             });
         },

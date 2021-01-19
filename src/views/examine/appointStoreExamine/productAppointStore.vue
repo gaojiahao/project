@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 15:27:52
+ * @LastEditTime: 2021-01-19 10:40:46
 -->
 <template>
 <div>
@@ -218,10 +218,12 @@ export default {
             this.$router.go(-1);
         },
         save(status){
+            var pieShopId = this.$route.query.pieShopId;
             var params = this.formValidate2;
+            debugger
             params = {
                 ...params,
-                relatedId: this.formValidate.id,
+                relatedId: pieShopId,
                 reviewResult:0,
                 reviewBefore: this.formValidate.status,
                 isPass: status

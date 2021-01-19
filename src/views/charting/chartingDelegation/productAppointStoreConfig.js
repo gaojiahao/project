@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 12:25:53
+ * @LastEditTime: 2021-01-19 10:13:51
  */
 export default {
     data() {
@@ -73,7 +73,7 @@ export default {
               ],
             },
           },
-          shenhe:{
+          remark:{
             name:'制作意见',
             type:'textarea',
           }
@@ -81,7 +81,7 @@ export default {
         formValidate2: {
           data:[],
           morePic:'',
-          shenhe:''
+          remark:''
         },
         ruleValidate2: {
 

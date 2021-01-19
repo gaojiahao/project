@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 20:13:51
+ * @LastEditTime: 2021-01-19 09:40:06
 -->
 <template>
 <div>
@@ -334,6 +334,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：审核成功！');
+                                    this.goReturn();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,

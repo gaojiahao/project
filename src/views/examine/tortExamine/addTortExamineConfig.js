@@ -4,13 +4,24 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 20:15:54
+ * @LastEditTime: 2021-01-19 09:42:15
  */
 export default {
   data() {
     const isTortSizeVali = (rule, value, callback) => {
       if (value == ''||value === undefined) {
+        if(value===false){
+          callback();   
+        } else {
           callback(new Error('请选择是否侵权'));
+        }
+      } else {
+        callback();
+      }
+    };
+    const reasonVali = (rule, value, callback) => {
+      if (value == ''||value === undefined) {
+          callback(new Error('请选择原因'));
       } else {
         callback();
       }
@@ -61,6 +72,12 @@ export default {
           message: '是否侵权',
           trigger: 'change',
           validator: isTortSizeVali
+        }],
+        reason: [{
+          required: true,
+          message: '请选择原因',
+          trigger: 'change',
+          validator: reasonVali
         }],
         opinion: [{
             required: true,

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 14:58:06
+ * @LastEditTime: 2021-01-19 10:46:19
  */
 export default {
     data() {
@@ -16,7 +16,7 @@ export default {
             },
           },
           formValidate2: {
-            reviewType:'recommendGoodsReview',
+            reviewType:'pieShopReview',
             relatedId:'',
             isPass:'',
             reviewResult:0,

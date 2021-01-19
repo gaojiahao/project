@@ -15,7 +15,7 @@
         <List :border="false" :split="false">
             <ListItem>
                 <div style="padding:0 10px 0 28px; width: 100%; text-align: left; font-weight:600">
-                    <span class="default">名称</span>
+                    <span class="default">平台名称</span>&nbsp|&nbsp<span class="default">品牌名称</span>
                 </div>
             </ListItem>
         </List>
@@ -28,7 +28,7 @@
                 <List :border="false" :split="false" v-for="(item,index) in list" :key="index">
                     <ListItem>
                         <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==item.id ? 'active':'']" @click="select(item.id)">
-                            <span class="default">{{item.name}}</span>
+                            <span class="default">{{item.platformId}}</span>&nbsp|&nbsp<span class="default">{{item.name}}</span>
                             <span style="float:right">
                                 <Icon type="md-close" @click.native="del($event,item.id)" />
                             </span>

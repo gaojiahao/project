@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 12:03:58
+ * @LastEditTime: 2021-01-19 10:25:26
 -->
 <template>
 <div>
@@ -46,6 +46,9 @@ import {
 import {
     GetPrepGoodsById,
 } from "@service/basicinfoService";
+import {
+    CreateFileDistribution,
+} from "@service/tortExamineService";
 
 export default {
     name: 'Appoint',
@@ -87,7 +90,71 @@ export default {
             }
         },
         clearFormData() {},
-        save() {},
+        goReturn(){
+            this.$router.go(-1);
+        },
+        save() {
+            debugger
+            var data = this.formValidate2.data;
+            var params = [];
+            for(var i=0;i<data.length;i++){
+                var obj={};
+                obj={
+                    fileType: data[i].fileType,
+                    userId: data[i].userId,
+                    remark: this.formValidate2.remark,
+                    startTime: data[i].date[0],
+                    endTime: data[i].date[1],
+                    goodsId: this.formValidate.id,
+                    goodsName: this.formValidate.name,
+                };
+                // params.push(obj);
+                this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                    if (valid) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreateFileDistribution(obj).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：保存成功！');
+                                    this.goReturn();
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });   
+                    } else {
+                        this.$Message.error('保存失败');
+                    }
+                })
+            }
+            
+            // this.$refs['form'].$refs['formValidate'].validate((valid) => {
+            //     if (valid) {
+            //         return new Promise((resolve, reject) => {
+            //             this.$FromLoading.show();
+            //             CreateFileDistribution(params).then(res => {
+            //                 if (res.result.code == 200) {
+            //                     this.$FromLoading.hide();
+            //                     this.$Message.info('温馨提示：保存成功！');
+            //                 } else if (res.result.code == 400) {
+            //                     this.$Message.error({
+            //                         background: true,
+            //                         content: res.result.msg
+            //                     });
+            //                     this.$FromLoading.hide();
+            //                 }
+            //             });
+            //         });   
+            //     } else {
+            //         this.$Message.error('保存失败');
+            //     }
+            // })
+        },
     },
     created(){ 
         this.getFormData();

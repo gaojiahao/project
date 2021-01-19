@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 10:16:24
+ * @LastEditTime: 2021-01-19 11:08:40
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -13,7 +13,7 @@
             <label class="" style="width: 120px;font-size: 16px;font-weight: 600;">基本信息：</label>
         </div>
         <FormItem label="商品名称：">
-            {{data.goodsName}}
+            {{data.name}}
         </FormItem>
         <FormItem label="选取状态：" prop="isSelect">
             <RadioGroup v-model="formValidate.isSelect">

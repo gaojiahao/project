@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 20:23:26
+ * @LastEditTime: 2021-01-19 11:08:55
 -->
 <template>
 <div class="erp_table_container">
@@ -130,12 +130,13 @@ export default {
             this.showModel = flag;
         },
         save(data) {
+            debugger
             var params = {};
             var userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY))['userInfo'];
             params = {
-                goodsName:this.selectData.goodsName,
-                goodsId:this.selectData.goodsId,
-                goodsCode:this.selectData.goodsCode,
+                goodsName:this.selectData.name,
+                goodsId:this.selectData.id,
+                goodsCode:this.selectData.code,
                 status:this.selectData.status,
                 isSelect:data.isSelect,
                 remark:data.remark,

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-14 14:54:25
+ * @LastEditTime: 2021-01-19 14:51:12
 -->
 <template>
 <div>
@@ -33,13 +33,19 @@
             </div>
         </div>
     </div>
+    <div class="top">
+        <Divider orientation="left" size="small">制作信息</Divider>
+        <div class="top_tabale">
+            <ChartingFullCalendar></ChartingFullCalendar>
+        </div>
+    </div>
 </div>
 </template>
 
 <script>
 import config from "@views/charting/chartingManager/productAppointStoreConfig";
-const viewForm = ()=>import("@components/public/form/viewForm");
-const xForm = ()=>import("@components/public/form/xForm");
+import ViewForm from "@components/public/form/viewForm";
+import ChartingFullCalendar from "@components/charting/chartingFullCalendar";
 
 import {
     Tabs,
@@ -50,7 +56,8 @@ export default {
     components: {
         Tabs,
         TabPane,
-        ViewForm:viewForm,
+        ViewForm,
+        ChartingFullCalendar
     },
     mixins: [config],
     data(){
@@ -184,6 +191,7 @@ export default {
                 },
             ],
             loading: true,
+            isSelectPeople:'',
         }
     },
     methods: {

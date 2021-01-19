@@ -4,159 +4,86 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 20:29:34
+ * @LastEditTime: 2021-01-19 11:43:52
 -->
 <template>
-<div class="storeManager-container">
-    <div class="filter">
-        <div class="filter-button">
-            
-        </div>
-        <div class="filter-search">
-            <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
-            <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
-            <AutoCompleteSearch :filtersConfig="filtersConfig"></AutoCompleteSearch>
-            <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
-        </div>
-    </div>
-    <div  class="myTable">
-        <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
+<div class="erp_table_container">
+    <div class="myTable">
+        <Table border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange" :draggable="true">
+            <template slot="header">
+                <div class="filter">
+                    <div class="filter-button">
+                        <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
+                        <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+                        <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+                        <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
+                    </div>
+                    <div class="filter-search">
+                        <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
+                    </div>
+                </div>    
+            </template>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.status=='未审核'">制图审核</Button>
                 <Button type="success" size="small" style="margin-right: 5px" @click="goViewTortExamine(row)" v-if="row.status=='已审核'">查看</Button>
             </template>
+            <template slot="footer">
+                <div class="footer_page">
+                    <div class="footer_page_right">
+                        <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
+                    </div>
+                </div>
+            </template>
         </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
-            </div>
-        </div>
     </div>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
-    <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
+    <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
 
 <script>
 import config from "@views/examine/selectionExamine/productConfig";
 import list from "@mixins/list";
+import {
+    GetPrepGoodsPage,
+} from "@service/basicinfoService"
 
 export default {
     name: "ChartingExamineList",
     mixins: [config,list],
     data() {
         return {
-            titleText: '',
-            titleText2: '',
             showModel: false,
-            showModel2: false,
-            showResearh: false,
             columns: this.getTableColumn(),
-            data: [
-                {
-                    id:'fds',
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "未审核",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-                {
-                    id:1,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "未审核",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-                {
-                    id:2,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "已审核",
-                    result:"不通过",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-                {
-                    id:3,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "已审核",
-                    result:"通过",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-                {
-                    id:4,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "已审核",
-                    result:"不通过",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                }, 
-                {
-                    id:5,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "蓝色",
-                    productName: "积木",
-                    supplier: "厂商1",
-                    supplierNum: "0001",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '李四',
-                    status: "已审核",
-                    result:"强制委派",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-            ],
+            data: [],
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
         }
     },
     methods: {
+        GetPrepGoodsPage() {
+            return new Promise((resolve, reject) => {
+                GetPrepGoodsPage(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPage = res.result.item.totalCount;
+                            this.data = res.result.item.items;
+                            this.loading = false;
+                        });
+                    }
+                });
+            });
+        },
+        goDetail(id){
+            if(id)
+            this.$router.push({name:'viewChartingDelegation',query: {id:id}});
+        },
         clearFormData() {
 
         },
@@ -181,12 +108,21 @@ export default {
                 this.$router.push({name:'AddNewProduct',query: {id:this.activatedRow.id}});
             }
         },
-         goDetail(id){
+        goDetail(id){
             if(id)
             this.$router.push({name:'ViewNewProduct',query: {id:id}});
         },
         showResearchModel(flag){
             this.$router.push({name:'ResearchDevelopNewProducts'}); 
+        },
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetPrepGoodsPage();
+        },
+        refresh(){
+            this.loading = true;
+            this.pageData.skipCount=1;
+            this.GetPrepGoodsPage();
         },
         changeCoulmns(data){
             let datas = [];
@@ -334,15 +270,29 @@ export default {
         ];
             return columns2;
         },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetPrepGoodsPage();
+        },
         checkALl(){
             this.$nextTick(function () {
                 this.columns = this.getTableColumn();
             })
-        }
+        },
+        setFilter(value){
+            this.pageData = {
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:value,
+                pageSizeOpts:[15,50,200],
+            },
+            this.GetPrepGoodsPage(); 
+        },
         
     },
     created(){
-
+        this.GetPrepGoodsPage(); 
     }
 }
 </script>

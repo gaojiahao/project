@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 09:13:35
+ * @LastEditTime: 2021-01-19 11:15:03
 -->
 <template>
 <div class="erp_table_container">
@@ -24,7 +24,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.tortStatus==0">审核</Button>
+                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.selectionStatus==0">审核</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -90,7 +90,7 @@ export default {
             this.showModel = flag;
         },
         goTortExamine(row) {
-            this.$router.push({name:'addSelectionExamine',query: {id:row.id}});    
+            this.$router.push({name:'addSelectionExamine',query: {id:row.id,selectionId:row.selectionId}});    
         },
         save(data) {
             var params = {};
@@ -253,14 +253,14 @@ export default {
             },
             {
                 title: '状态',
-                key: 'status',
+                key: 'selectionStatus',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.tortStatus==1 ? "#19be6b": "#ed4014"
+                        color: params.row.selectionStatus==1 ? "#19be6b": "#ed4014"
                     },
-                    },params.row.tortStatus==1 ?"已审核":"未审核");
+                    },params.row.selectionStatus==1 ?"已审核":"未审核");
                 },
                 resizable: true,
                 width: 100,

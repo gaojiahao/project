@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 11:28:49
+ * @LastEditTime: 2021-01-19 10:49:24
 -->
 <template>
 <div class="erp_table_container">
@@ -53,6 +53,9 @@ import {
     CreatePieShop,
     GetPieShopPage
 } from "@service/sellService"
+import {
+    GetPrepGoodsPage,
+} from "@service/basicinfoService"
 
 export default {
     name: "PieShowList",
@@ -85,9 +88,9 @@ export default {
         }
     },
     methods: {
-        GetPieShopPage() {
+        GetPrepGoodsPage() {
             return new Promise((resolve, reject) => {
-                GetPieShopPage(this.pageData).then(res => {
+                GetPrepGoodsPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -108,8 +111,8 @@ export default {
         save() {
             var params = {};
             params = {
-                goodsName:this.selectData.goodsName,
-                goodsId:this.selectData.goodsId,
+                goodsName:this.selectData.name,
+                goodsId:this.selectData.id,
                 storeId:this.formValidate.storeId,
                 storeName:this.formValidate.storeName,
                 platformId:this.formValidate.platformId,
@@ -125,7 +128,7 @@ export default {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
                                 this.$refs['form'].$refs['formValidate'].resetFields();
-                                this.GetPieShopPage();
+                                this.GetPrepGoodsPage();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({
                                     background: true,
@@ -145,12 +148,12 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetPieShopPage();
+            this.GetPrepGoodsPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetPieShopPage();
+            this.GetPrepGoodsPage();
         },
         goDetail(id){
             if(id)
@@ -171,7 +174,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetPieShopPage();
+            this.GetPrepGoodsPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -258,7 +261,7 @@ export default {
             },
             {
                 title: '创建者',
-                key: 'createdBy',
+                key: 'createdName',
                 resizable: true,
                 width: 80,
             },
@@ -270,7 +273,7 @@ export default {
             },
             {
                 title: '修改者',
-                key: 'modifyBy',
+                key: 'modifyName',
                 resizable: true,
                 width: 80,
             },
@@ -297,7 +300,7 @@ export default {
                 keyword:value,
                 pageSizeOpts:[15,50,200],
             },
-            this.GetPieShopPage(); 
+            this.GetPrepGoodsPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -308,7 +311,7 @@ export default {
         }
     },
     created(){
-        this.GetPieShopPage();
+        this.GetPrepGoodsPage();
     }
 }
 </script>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 14:55:45
+ * @LastEditTime: 2021-01-19 10:52:47
 -->
 <template>
 <div class="erp_table_container">
@@ -24,7 +24,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)">审核</Button>
+                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.pieShopStatus==0">审核</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -45,7 +45,7 @@
 import config from "@views/examine/appointStoreExamine/productAppointStoreConfig";
 import list from "@mixins/list";
 import {
-    GetGoodsReviewPage 
+    GetPieShopReviewPage 
 } from "@service/tortExamineService";
 
 export default {
@@ -69,9 +69,9 @@ export default {
         }
     },
     methods: {
-        GetGoodsReviewPage () {
+        GetPieShopReviewPage () {
             return new Promise((resolve, reject) => {
-                GetGoodsReviewPage (this.pageData).then(res => {
+                GetPieShopReviewPage (this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -90,7 +90,7 @@ export default {
             this.showModel = flag;
         },
         goTortExamine(row) {
-            this.$router.push({name:'productAppointStore',query: {id:row.id}});    
+            this.$router.push({name:'productAppointStore',query: {id:row.id,pieShopId:row.pieShopId}});    
         },
         goViewTortExamine(row){
             this.$router.push({name:'viewSelectionExamine',query: {id:row.id}});        
@@ -114,7 +114,7 @@ export default {
                             if (res.result.code == 200) {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
-                                this.GetGoodsReviewPage();
+                                this.GetPieShopReviewPage();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({
                                     background: true,
@@ -134,12 +134,12 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetGoodsReviewPage();
+            this.GetPieShopReviewPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetGoodsReviewPage();
+            this.GetPieShopReviewPage();
         },
         goDetail(id){
             if(id)
@@ -160,7 +160,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetGoodsReviewPage();
+            this.GetPieShopReviewPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -256,14 +256,14 @@ export default {
             },
             {
                 title: '状态',
-                key: 'status',
+                key: 'pieShopStatus',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.tortStatus==1 ? "#19be6b": "#ed4014"
+                        color: params.row.pieShopStatus==1 ? "#19be6b": "#ed4014"
                     },
-                    },params.row.tortStatus==1 ?"已审核":"未审核");
+                    },params.row.pieShopStatus==1 ?"已通过": params.row.pieShopStatus==2 ? "不通过" : "未审核");
                 },
                 resizable: true,
                 width: 100,
@@ -315,7 +315,7 @@ export default {
                 keyword:value,
                 pageSizeOpts:[15,50,200],
             },
-            this.GetGoodsReviewPage(); 
+            this.GetPieShopReviewPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -326,7 +326,7 @@ export default {
         }
     },
     created(){
-        this.GetGoodsReviewPage();
+        this.GetPieShopReviewPage();
     }
 }
 </script>

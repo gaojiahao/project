@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 10:45:21
+ * @LastEditTime: 2021-01-19 11:43:23
 -->
 <template>
 <div class="erp_table_container">
@@ -80,10 +80,6 @@ export default {
                     }
                 });
             });
-        },
-        goDetail(id){
-            if(id)
-            this.$router.push({name:'viewChartingDelegation',query: {id:id}});
         },
         showPop(flag, row) {
             if (row && row.id) {
