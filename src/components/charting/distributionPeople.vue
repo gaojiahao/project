@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 09:47:42
+ * @LastEditTime: 2021-01-20 09:19:20
 -->
 <template>
 <div class="size-content">
@@ -26,7 +26,7 @@
         </div>
         <div class="list">
             <span style="line-height:34px">时间：</span>
-            <DatePicker v-model="item.date" @on-change="item.date=$event" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px"></DatePicker>
+            <DatePicker v-model="item.date" @on-change="item.date=$event" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px" :transfer="true"></DatePicker>
         </div>
         <div class="list">
             <Icon type="md-close" style="line-height:34px" @click.native="del(index)"/>

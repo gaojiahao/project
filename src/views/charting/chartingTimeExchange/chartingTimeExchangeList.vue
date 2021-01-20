@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 14:37:14
+ * @LastEditTime: 2021-01-20 11:21:08
 -->
 <template>
 <div class="erp_table_container">
@@ -191,7 +191,7 @@ export default {
             return columns2;
         },
         goChangeTime(id){
-            this.$router.push({name:'changeTime'});
+            this.$router.push({name:'changeTime',query: {id:id}});
         },
         clearFormData(){
             this.selectData = {};

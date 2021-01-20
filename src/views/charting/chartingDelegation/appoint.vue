@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 10:25:26
+ * @LastEditTime: 2021-01-20 09:26:23
 -->
 <template>
 <div>
@@ -94,7 +94,6 @@ export default {
             this.$router.go(-1);
         },
         save() {
-            debugger
             var data = this.formValidate2.data;
             var params = [];
             for(var i=0;i<data.length;i++){
@@ -107,6 +106,7 @@ export default {
                     endTime: data[i].date[1],
                     goodsId: this.formValidate.id,
                     goodsName: this.formValidate.name,
+                    status:1,
                 };
                 // params.push(obj);
                 this.$refs['form'].$refs['formValidate'].validate((valid) => {
