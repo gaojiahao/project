@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 15:52:23
+ * @LastEditTime: 2021-01-21 15:36:49
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1123,6 +1123,26 @@ const routes = [
                   group: 'mainResearchExamine',
                 },
                 component: resolve=>(require(["@views/examine/mainResearchExamine/mainResearchExamineList"],resolve)),
+              },
+              {
+                path: 'addMainResearchExamine',
+                name: 'addMainResearchExamine',
+                meta:{ 
+                  title:'主推审核',
+                  group: 'mainResearchExamine',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/examine/mainResearchExamine/addMainResearchExamine"],resolve)),
+              },
+              {
+                path: 'viewMainResearchExamine',
+                name: 'viewMainResearchExamine',
+                meta:{ 
+                  title:'查看主推审核',
+                  group: 'mainResearchExamine',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/examine/mainResearchExamine/viewMainResearchExamine"],resolve)),
               },
             ]
           },

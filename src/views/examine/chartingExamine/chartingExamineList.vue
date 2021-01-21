@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 11:43:52
+ * @LastEditTime: 2021-01-21 15:38:47
 -->
 <template>
 <div class="erp_table_container">
@@ -24,8 +24,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.status=='未审核'">制图审核</Button>
-                <Button type="success" size="small" style="margin-right: 5px" @click="goViewTortExamine(row)" v-if="row.status=='已审核'">查看</Button>
+                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.tortStatus==0">审核</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -36,23 +35,25 @@
             </template>
         </Table>
     </div>
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
 </template>
 
 <script>
-import config from "@views/examine/selectionExamine/productConfig";
+import config from "@views/examine/tortExamine/productConfig";
 import list from "@mixins/list";
 import {
-    GetPrepGoodsPage,
-} from "@service/basicinfoService"
+    GetGoodsTortReviewPage 
+} from "@service/tortExamineService"
 
 export default {
     name: "ChartingExamineList",
     mixins: [config,list],
     data() {
         return {
+            titleText: '',
             showModel: false,
             columns: this.getTableColumn(),
             data: [],
@@ -67,9 +68,9 @@ export default {
         }
     },
     methods: {
-        GetPrepGoodsPage() {
+        GetGoodsTortReviewPage () {
             return new Promise((resolve, reject) => {
-                GetPrepGoodsPage(this.pageData).then(res => {
+                GetGoodsTortReviewPage (this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -80,55 +81,73 @@ export default {
                 });
             });
         },
-        goDetail(id){
-            if(id)
-            this.$router.push({name:'viewChartingDelegation',query: {id:id}});
-        },
-        clearFormData() {
-
+        showPop(flag, row) {
+            if (row && row.id) {
+                this.selectData = row;
+                this.titleText = '派店';
+            }
+            this.showModel = flag;
         },
         goTortExamine(row) {
-            this.$router.push({name:'addSelectionExamine',query: {id:row.id}});    
+            this.$router.push({name:'addTortExamine',query: {id:row.id}});    
         },
         goViewTortExamine(row){
-            this.$router.push({name:'viewSelectionExamine',query: {id:row.id}});        
+            this.$router.push({path:'/examine/tortExamine/viewTortExamine',query: {id:row.id}});        
         },
-        save() {
-
-        },
-        changePage() {
-
-        },
-        clearFormData2() {},
-        goAdd(){
-            this.$router.push({name:'AddNewProduct'});
-        },
-        goEdit(){
-            if(this.activatedRow.id){
-                this.$router.push({name:'AddNewProduct',query: {id:this.activatedRow.id}});
+        save(data) {
+            var params = {};
+            params = {
+                goodsName:this.selectData.goodsName,
+                goodsId:this.selectData.goodsId,
+                goodsCode:this.selectData.goodsCode,
+                status:this.selectData.status,
+                isSelect:data.isSelect,
+                remark:data.remark,
+                isMain:data.isMain,
             }
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    return new Promise((resolve, reject) => {
+                        this.$FromLoading.show();
+                        CreatePieShop(params).then(res => {
+                            if (res.result.code == 200) {
+                                this.$FromLoading.hide();
+                                this.$Message.info('温馨提示：保存成功！');
+                                this.GetGoodsTortReviewPage();
+                            } else if (res.result.code == 400) {
+                                this.$Message.error({
+                                    background: true,
+                                    content: res.result.msg
+                                });
+                                this.$FromLoading.hide();
+                            }
+                        });
+                    });   
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         },
-        goDetail(id){
-            if(id)
-            this.$router.push({name:'ViewNewProduct',query: {id:id}});
-        },
-        showResearchModel(flag){
-            this.$router.push({name:'ResearchDevelopNewProducts'}); 
+        clearFormData(){
+            this.selectData = {};
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetPrepGoodsPage();
+            this.GetGoodsTortReviewPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetPrepGoodsPage();
+            this.GetGoodsTortReviewPage();
+        },
+        goDetail(id){
+            if(id)
+            this.$router.push({name:'viewFinishProduct',query: {id:id}});
         },
         changeCoulmns(data){
             let datas = [];
             let columns = this.getTableColumn();
             datas.push(columns[0]);
-            datas.push(columns[1]);
             data.forEach(col => {
                 for(var i=0;i<columns.length;i++){
                     if(col == columns[i].key){
@@ -138,19 +157,20 @@ export default {
             });
             this.columns = datas;
         },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetGoodsTortReviewPage();
+        },
         getTableColumn(){
             var columns2 = [
             {
-                type: 'selection',
+                type: 'index',
                 width: 60,
-                align: 'center'
+                align: 'center',
+                title: '序号',
+                resizable: true,
             },
             {
-                type: 'index',
-                width: 80,
-                align: 'center',
-                title: '序号'
-            }, {
                 title: '图片',
                 key: 'img',
                 align: 'center',
@@ -158,28 +178,36 @@ export default {
                     return h('div', [
                         h('img', {
                             attrs: {
-                                src: params.img || require("@assets/default/logo.png")
+                                src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
                             },
                             style: {
-                                width: '40px',
-                                height: '40px'
+                                width: '30px',
+                                height: '30px'
                             },
                             on: {
                                 click:()=>{
                                     this.srcData = {
                                         imgName: '图片预览',
-                                        src: params.img || require("@assets/default/logo.png")
+                                        src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
                                     }
                                     this.showImageModel(true);
                                 }
                             }
                         }),
                     ]);
-                }
+                },
+                width: 80,
+                resizable: true,
+            },
+            {
+                title: '产品编码',
+                key: 'code',
+                resizable: true,
+                width: 220,
             },
             {
                 title: '产品名称',
-                key: 'productName',
+                key: 'name',
                 render: (h, params) => {
                     return h("span", {// 创建的标签名
                     // 执行的一些列样式或者事件等操作
@@ -192,87 +220,80 @@ export default {
                             this.goDetail(params.row.id)    
                         }
                     }
-                    },params.row.productName);//  展示的内容
-                }
+                    },params.row.name);//  展示的内容
+                },
+                width: 220,
+                resizable: true,
             },
             {
                 title: '分类',
-                key: 'type'
+                key: 'categoryName',
+                resizable: true,
+                width: 165,
+            },
+            // {
+            //     title:'平台名称',
+            //     key: 'platformName',
+            //     resizable: true,
+            // },
+            // {
+            //     title:'店铺',
+            //     key: 'storeName',
+            //     resizable: true,
+            // },
+            {
+                title:'品牌名称',
+                key: 'brandName',
+                resizable: true,
+                width: 193,
             },
             {
-                title: 'SKU',
-                key: 'sku'
-            },
-            {
-                title: '颜色',
-                key: 'color'
-            },
-            {
-                title: '厂商',
-                key: 'supplier'
-            },
-            {
-                title: '厂商货号',
-                key: 'supplierNum'
-            },
-            {
-                title: '推荐人员',
-                key: 'recommendingOfficer',
-            },
-            {
-                title: '审核状态',
-                key: 'status',
+                title: '状态',
+                key: 'tortStatus',
                 render: (h, params) => {
-                    return h("span", {// 创建的标签名
-                    // 执行的一些列样式或者事件等操作
+                    return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status=='已审核' ? "#19be6b": "#ed4014"
+                        color: params.row.tortStatus==1 ? "#19be6b": "#ed4014"
                     },
-                    },params.row.status);//  展示的内容
-                }
+                    },params.row.tortStatus==1 ?"已审核":"未审核");
+                },
+                resizable: true,
+                width: 100,
             },
             {
                 title: '创建时间',
-                key: 'createTime',
-            },
-            {
-                title: '修改时间',
-                key: 'modifyTime',
+                key: 'createdOn',
+                resizable: true,
+                width: 180,
             },
             {
                 title: '创建者',
-                key: 'creater',
+                key: 'createdName',
+                resizable: true,
+                width: 80,
+            },
+            {
+                title: '修改时间',
+                key: 'modifyOn',
+                resizable: true,
+                width: 180,
             },
             {
                 title: '修改者',
-                key: 'modifyer',
-            },
-            {
-                title: '审核结果',
-                key: 'result',
-                render: (h, params) => {
-                    return h("span", {// 创建的标签名
-                    // 执行的一些列样式或者事件等操作
-                    style: {
-                        display: "inline-block",
-                        color: params.row.result=='通过' ? "#19be6b": "#ed4014"
-                    },
-                    },params.row.result);//  展示的内容
-                }
+                key: 'modifyName',
+                resizable: true,
+                width: 80,
             },
             {
                 title: '操作',
                 slot: 'action',
                 align: 'center',
-                width: 150
+                width: 150,
+                resizable: true,
             }
         ];
             return columns2;
-        },
-        onPageSizeChange(pagesize){
-            this.pageData.maxResultCount = pagesize;
-            this.GetPrepGoodsPage();
         },
         checkALl(){
             this.$nextTick(function () {
@@ -287,12 +308,19 @@ export default {
                 keyword:value,
                 pageSizeOpts:[15,50,200],
             },
-            this.GetPrepGoodsPage(); 
+            this.GetGoodsTortReviewPage(); 
         },
+        exportData(){
+             this.$refs.selection.exportCsv({
+                filename: 'Custom data',
+                columns: this.columns,
+                data: this.data,
+            });    
+        }
         
     },
     created(){
-        this.GetPrepGoodsPage(); 
+        this.GetGoodsTortReviewPage();
     }
 }
 </script>

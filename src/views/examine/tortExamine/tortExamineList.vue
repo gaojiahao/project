@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 09:42:48
+ * @LastEditTime: 2021-01-21 15:18:21
 -->
 <template>
 <div class="erp_table_container">
@@ -229,13 +229,7 @@ export default {
                 title: '分类',
                 key: 'categoryName',
                 resizable: true,
-                width: 120,
-            },
-            {
-                title:'商户',
-                key: 'merchantName',
-                resizable: true,
-                width: 110,
+                width: 165,
             },
             // {
             //     title:'平台名称',
@@ -251,7 +245,7 @@ export default {
                 title:'品牌名称',
                 key: 'brandName',
                 resizable: true,
-                width: 138,
+                width: 193,
             },
             {
                 title: '状态',
