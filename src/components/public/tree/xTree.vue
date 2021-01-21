@@ -1,178 +1,184 @@
+<!--
+ * @Descripttion: 
+ * @version: 1.0.0
+ * @Author: gaojiahao
+ * @Date: 2020-11-04 20:23:09
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-01-21 15:03:27
+-->
 <template>
-<Tree :data="data5" :render="renderContent" class="demo-tree-render" show-checkbox multiple @on-check-change="selectChangeAll"></Tree>
+<div class="x_tree" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
+    <div class="ivu-input-wrapper box" style="">
+        <input type="text" :placeholder="[isCheck ? '':placeholder]" class="ivu-input " disabled :value="name">
+    </div>
+    <Icon type="md-add-circle" style="color: green; font-size:24px;vertical-align: middle; line-height:34px" @click.native="showModel()" v-if="!disabled"/>
+    <div class="ivu-form-item-error-tip" v-show="isCheck">请选择{{checkText}}</div>
+    <Modal v-model="show" title="分配权限" @on-ok="ok" @on-cancel="cancel" :fullscreen="fullscreen">
+        <p slot="header" style="color:#999;">
+            <span>{{titleText}}</span>
+            <Icon type="ios-expand" @click.native="fullModel()" class="ivu-modal-full" />
+        </p>
+        <div style="">
+            <Input v-model="searchValue" search enter-button placeholder="" size="small" style="width: 200px" @on-search="initData" clearable />
+        </div>
+        <div style="overflow-y: scroll;height: 600px;position: relative;">
+            <Tree :data="datas" @on-select-change="onSelectChange" ref="tree"></Tree>
+        </div>
+    </Modal>
+</div>
 </template>
 
 <script>
+import {
+    AuthModuleList,
+} from "@service/settingsService"
+import $flyio from '@plugins/ajax'
+
 export default {
     name: 'XTree',
+    model: {
+        prop: 'value',
+        event: 'change'
+    },
+    props:{
+        value: {
+            type: String,
+            default: ''
+        },
+        config: {
+            type: Object,
+            default () {
+                return {}
+            }
+        },
+    },
     data() {
         return {
-            data5: [{
-                title: '菜单',
-                expand: true,
-                render: (h, {
-                    root,
-                    node,
-                    data
-                }) => {
-                    return h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%'
-                        }
-                    }, [
-                        h('span', [
-                            h('Icon', {
-                                props: {
-                                    type: 'ios-folder-outline'
-                                },
-                                style: {
-                                    marginRight: '8px'
-                                }
-                            }),
-                            h('span', data.title)
-                        ]),
-                        h('span', {
-                            style: {
-                                display: 'inline-block',
-                                float: 'right',
-                                marginRight: '32px'
-                            }
-                        }, [
-                            h('Button', {
-                                props: Object.assign({}, this.buttonProps, {
-                                    icon: 'ios-add',
-                                    type: 'primary'
-                                }),
-                                style: {
-                                    width: '64px'
-                                },
-                                on: {
-                                    click: () => {
-                                        this.append(data)
-                                    }
-                                }
-                            })
-                        ])
-                    ]);
-                },
-                children: [{
-                        title: '基础信息',
-                        expand: true,
-                        children: [{
-                                title: '分类管理',
-                                expand: true
-                            },
-                            {
-                                title: '熟悉管理',
-                                expand: true
-                            }
-                        ]
-                    },
-                    {
-                        title: '产品管理',
-                        expand: true,
-                        children: [{
-                                title: '销售推品',
-                                expand: true
-                            },
-                            {
-                                title: '开发新品',
-                                expand: true
-                            }
-                        ]
-                    }
-                ]
-            }],
-            buttonProps: {
-                type: 'default',
-                size: 'small',
-            }
+            datas:[],
+            show: false,
+            titleText: '选择',
+            checkText: '分类名称',
+            placeholder: '',
+            fullscreen: false,
+            hidden: false,
+            disabled:false,
+            name:'',
+            selected:{},
+            menuData:[],
+            searchValue:'',
+            isCheck:false
+        }
+    },
+    computed:{
+        // isCheck(){
+        //     return this.value ? false:true;
+        // }
+    },
+    watch:{
+        config:{
+            handler(val){
+                this.datas = val['dataSource']['data'];
+                this.calleArr(this.datas);
+            },
+            deep:true,
+        },
+        value:{
+            handler(val){
+
+            },
+            deep:true,
+            immediate:true,
         }
     },
     methods: {
-        renderContent(h, {
-            root,
-            node,
-            data
-        }) {
-            return h('span', {
-                style: {
-                    display: 'inline-block',
-                    width: '100%'
-                }
-            }, [
-                h('span', [
-                    h('Icon', {
-                        props: {
-                            type: 'ios-paper-outline'
-                        },
-                        style: {
-                            marginRight: '8px'
-                        }
-                    }),
-                    h('span', data.title)
-                ]),
-                h('span', {
-                    style: {
-                        display: 'inline-block',
-                        float: 'right',
-                        marginRight: '32px'
+        showModel() {
+            this.show = true;
+        },
+        fullModel() {
+            this.fullscreen = this.fullscreen ? false : true;
+        },
+        calleArr: function(data){
+            for(var i in data){
+                if(data[i].parent){ 
+                    data[i] = {
+                        ...data[i].parent,
+                        title: data[i].parent.name,
+                        children: data[i].children ? data[i].children:[]
+                    };
+                    this.$delete(data[i],'parent');
+                } else {
+                    if(this.value == data[i].id){
+                        this.name = data[i].name;
                     }
-                }, [
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-add'
-                        }),
-                        style: {
-                            marginRight: '8px'
-                        },
-                        on: {
-                            click: () => {
-                                this.append(data)
-                            }
-                        }
-                    }),
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-remove'
-                        }),
-                        on: {
-                            click: () => {
-                                this.remove(root, node, data)
-                            }
-                        }
-                    })
-                ])
-            ]);
+                    data[i] = {
+                        ...data[i],
+                        title:data[i].name
+                    }
+                }
+                // if(this.roleAuthData.indexOf(data[i]['id'])!=-1){
+                //     data[i]['checked'] = true;
+                //     data[i]['expand'] = true;
+                // }
+                if(data[i].children){
+                    this.calleArr(data[i].children);
+                }
+            }
         },
-        append(data) {
-            const children = data.children || [];
-            children.push({
-                title: 'appended node',
-                expand: true
-            });
-            this.$set(data, 'children', children);
+        cancel(){
+            this.$emit('show-modal',false);
+            this.AuthModuleList();
+            this.selected=[];
         },
-        remove(root, node, data) {
-            const parentKey = root.find(el => el === node).parent;
-            const parent = root.find(el => el.nodeKey === parentKey).node;
-            const index = parent.children.indexOf(data);
-            parent.children.splice(index, 1);
+        ok(){
+            this.name = this.selected.name;
+            this.$emit('change',this.selected.id);
         },
-        selectChangeAll(selectedAll, selectedItem) {
-            console.log(selectedAll, selectedItem)
+        initData(){
+            var parmas = {};
+            parmas[this.config.dataSource.params] = this.searchValue;
+
+            $flyio.post({
+                url: this.config.dataSource.url,
+                data:{ ...parmas}
+            }).then((res) => {
+                if(res.result.code==200){
+                    this.datas = res.result.item;
+                    this.calleArr(this.datas);
+                }
+            })   
+        },
+        onSelectChange(selectedAll,selectedItem){
+            this.selected=selectedItem;    
         }
+    },
+    created() {
+        
     }
 }
 </script>
-
-<style scoped>
-.demo-tree-render .ivu-tree-title {
-    width: 100%;
+<style lang="less" scoped>
+.x_tree {
+    .ivu-form-item-error {
+        .ivu-input-wrapper {
+            .ivu-input-error {
+                border: 1px solid #ed4014;
+            }
+        }
+    }
+    .box{
+        width: 200px; float: left;line-height:32px
+    }
 }
-</style><style lang="less" scoped>
-.ivu-tree /deep/ {
-    width: 600px;
+.ivu-modal-full {
+    z-index: 1;
+    font-size: 14px;
+    float: right;
+    margin-right: 20px;
+    margin-top: 4px;
+}
+</style><style scoped>
+>>>.ivu-table th,
+>>>.ivu-table td {
+    height: 28px;
 }
 </style>

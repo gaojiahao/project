@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 19:28:42
+ * @LastEditTime: 2021-01-21 14:53:39
  */
 export default {
     data() {
@@ -109,7 +109,7 @@ export default {
           },
           // categoryId:{
           //   name:'分类',
-          //   type:'select',
+          //   type:'selectCascade',
           //   dataSource:{
           //     type:'dynamic',
           //     url:'/api/GetCategoryList',
@@ -126,11 +126,12 @@ export default {
           // },
           categoryId:{
             name:'分类',
-            type:'selectCascade',
+            type:'tree',
             dataSource:{
               type:'dynamic',
               url:'/api/GetCategoryList',
               data:[],
+              params:'keyword',
               col:[
                 {k:'name',v:'name'},
                 {k:'value',v:'id'}

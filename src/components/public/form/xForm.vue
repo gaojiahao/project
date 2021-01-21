@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 12:06:06
+ * @LastEditTime: 2021-01-21 11:43:14
 -->
 <template>
 <div class="content">
@@ -94,6 +94,9 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCascade'">
                 <SelectCascade :name="index" v-model="formValidate[index]" :formConfig="formConfig[index]" v-show="!formConfig[index]['hidden']" ></SelectCascade>
             </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='tree'">
+                <XTree :name="index" v-model="formValidate[index]" :config="formConfig[index]" v-show="!formConfig[index]['hidden']" ></XTree>
+            </FormItem>
         </template>
         <slot name='button'>
             <FormItem>
@@ -117,6 +120,7 @@ import SelectorSingle from '@components/public/xSelect/selectorSingle';
 import SelectorMulti from '@components/public/xSelect/selectorMulti';
 import DistributionPeople from "@components/charting/distributionPeople";
 import SelectCascade from "@components/public/xSelect/selectCascade";
+import XTree from "@components/public/tree/xTree";
 import $flyio from '@plugins/ajax'
 
 export default {
@@ -129,7 +133,8 @@ export default {
         SelectorSingle,
         SelectorMulti,
         DistributionPeople,
-        SelectCascade
+        SelectCascade,
+        XTree
     },
     props: {
         titleText: {
@@ -244,7 +249,7 @@ export default {
                         this.formValidate[this.formConfig[data.tag].bind.target] = data.label;
                     })
                 }
-                if((['select','selectCustom'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
+                if((['select','selectCustom','tree'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
                     var parmas = this.formConfig[item].dataSource.parmas ? this.formConfig[item].dataSource.parmas:{};
                     await $flyio.post({
                         url: this.formConfig[item].dataSource.url,
