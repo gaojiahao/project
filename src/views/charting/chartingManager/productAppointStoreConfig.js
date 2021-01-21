@@ -4,53 +4,112 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-12 11:13:20
+ * @LastEditTime: 2021-01-21 09:47:32
  */
 export default {
-    data() {
-      return {
-        formConfig:{
-          productCode:{
-              name:'产品货号',
-              type:'text',
-          },
-          productType:{
-              name:'商品分类',
-              type:'text',
-          },
-          productName:{
-              name:'产品名称',
-              type:'text'
-          },
-          shenhe:{
-            name:'制作意见',
-            type:'textarea',
-            disabled:true,
-          },
-        },
-        formValidate: {
-          productCode:'PD00001',
-          productType:'玩具',
-          productName:'积木',
-          shenhe:"fdsfadsfdasfasd"
-        },
-        ruleValidate: {
-
-        },
-        formConfig2:{
-          id:{
-            name:'id',
-            type:'text',
-            hidden: true
-          },
-        },
-        formValidate2: {
-          id:"",
-          data:{},
-        },
-        ruleValidate2: {
-
-        },
+  data() {
+    const imgVali = (rule, value, callback) => {
+      if (!value.length) {
+        callback(new Error('请上传文件'));
+      } else {
+        callback();
       }
+    };
+    return {
+      formConfig:{
+        code:{
+          name:'产品货号',
+          type:'text',
+        },
+        categoryId:{
+          name:'分类',
+          type:'text',
+          hidden:true
+        },
+        categoryName:{
+          name:'分类',
+          type:'text',
+        },
+        productImg:{
+            name:'产品图片',
+            type:'uploadImage',
+            disabled: true
+        },
+        name:{
+            name:'产品名称',
+            type:'text'
+        },
+        // selectionPeople:{
+        //     name:'选品人员',
+        //     type:'table'    
+        // },
+        // unSelectionPeople:{
+        //     name:'未选人员',
+        //     type:'table'    
+        // },
+        // appointStorePeople:{
+        //     name:'派店人员',
+        //     type:'table'    
+        // },
+      },
+      formValidate: {
+        code:'',
+        name:'',
+        categoryId:'',
+        productImg:[],
+      },
+      ruleValidate: {
+
+      },
+      formConfig3:{
+        fileType:{
+          name:"制作类型",
+          type:"text",
+        },
+        userId:{
+          name:'制作人员',
+          type:'text',
+        },
+        remark:{
+          name:'制作意见',
+          type:'textarea',
+        },
+        startTime:{
+          name:'开始时间',
+          type:'dateTime',
+        },
+        endTime:{
+          name:'结束时间',
+          type:'dateTime',
+        },
+      },
+      formValidate3: {
+        fileType:'',
+        userId:'',
+        remark: '',
+        startTime:'',
+        endTime:'',
+      },
+      ruleValidate3: {
+        
+      },
+      formConfig2:{
+        img:{
+          name:"文件",
+          type:"uploadImage",
+        },
+      },
+      formValidate2:{
+        img:[]
+      },
+      ruleValidate2: {
+        img: [{ 
+          required: true, 
+          message: '请上传文件', 
+          trigger: 'change',
+          validator: imgVali
+        }],  
+      },
     }
   }
+}

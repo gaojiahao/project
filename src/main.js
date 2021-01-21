@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 10:55:46
+ * @LastEditTime: 2021-01-20 17:19:23
  */
 //引用插件
 import Vue from "vue";
@@ -41,10 +41,10 @@ Vue.use(VideoPlayer);
 Vue.use(AudioPlayer);
 Vue.use(FromLoading);
 Vue.use(VueQuillEditor);
-// Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL||'localhost:8080';
-// Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://cbapi.com/';
-Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL||'192.168.1.23:8073';
-Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://192.168.1.23:8073/';
+Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL||'localhost:8080';
+Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://cbapi.com/';
+// Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL||'192.168.1.23:8073';
+// Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://192.168.1.23:8073/';
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)

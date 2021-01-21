@@ -1,23 +1,24 @@
 <template>
 <div>
-    <div class="demo-upload-list" v-for="item in uploadList">
+    <div class="demo-upload-list" v-for="(item,index) in uploadList">
         <template v-if="item.status === 'finished'">
             <img :src="baseUrl + item.filePath">
             <div class="demo-upload-list-cover">
-                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
-                <Icon type="ios-trash-outline" @click.native="handleRemove(item)" v-if="!disabled"></Icon>
+                <Icon type="ios-eye-outline" @click.native="handleView(item.fileName,index)"></Icon>
+                <Icon type="ios-trash-outline" @click.native="handleRemove(index)" v-if="!disabled"></Icon>
             </div>
         </template>
         <template v-else>
             <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
         </template>
     </div>
-     <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="2048" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:60px;" v-if="!disabled">
+     <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:60px;" v-if="!disabled">
         <div style="width: 58px;height:58px;line-height: 58px;">
             <Icon type="ios-camera" size="20"></Icon>
         </div>
     </Upload>
     <Modal :title="uploadList&&uploadList[indexPic]&&uploadList[indexPic].fileName" v-model="visible" fullscreen>
+        <!--<img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">-->
         <img :src="baseUrl + uploadList[indexPic].filePath" v-if="visible" style="width: 100%">
         <div slot="footer">
             <Button type="primary" size="small" @click="prePic">上一张</Button>
@@ -50,60 +51,78 @@ export default {
                 return []
             }
         },
-        disabled: {
-            type: Boolean,
-            default: false
-        },
         length: {
             type:Number,
-            default: 9
+            default:3,
+        },
+        formValue:{
+            type: Array,
+            default () {
+                return []
+            }
+        },
+        disabled:{
+            type:Boolean,
+            default:false
         }
     },
     watch:{
-        value:{
+        formValue:{
             handler(val){
                 this.uploadList = [];
                 for(var i=0;i<val.length;i++){
                     var obj={};
                     obj= {
                         status:'finished',
-                        filePath:val[i].url,
+                        filePath:val[i],
                     }
                     if(obj.filePath){
                         this.uploadList.push(obj);
                     }
                 }
             }
-        }    
+        }   
     },
     data() {
         return {
             defaultList: [],
-            visible: false,
-            indexPic: 0,
             imgName: '',
+            visible: false,
             uploadList: [],
+            indexPic: 0,
+            uploadUrl:'',
             headers:{
-                'Content-Type':'multipart/form-data'
+                // 'Content-Type':'multipart/form-data'
+            },
+            data:{
+                'BusinessType':''
             },
         }
     },
     methods: {
-        handleView(name) {
+        handleView(name,index) {
             this.imgName = name;
             this.visible = true;
+            this.indexPic = index;
         },
-        handleRemove(file) {
-            const fileList = this.$refs.upload.fileList;
-            this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+        handleRemove(index) {
+            this.uploadList.splice(index, 1);
         },
         handleSuccess(res, file) {
-            this.handleInput(file);
+            if(res.result.code==200){
+                file.filePath = res.result.item[0]['filePath'];
+                this.handleInput(file);
+            } else {
+                this.$Notice.warning({
+                title: '上传失败',
+                desc: res.result.msg
+            });    
+            }
         },
         handleFormatError(file) {
             this.$Notice.warning({
-                title: 'The file format is incorrect',
-                desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
+                title: '上传文件格式错误',
+                desc: '文件 ' + file.name + '不是图片格式'
             });
         },
         handleMaxSize(file) {
@@ -116,16 +135,14 @@ export default {
             const check = this.uploadList.length < this.length;
             if (!check) {
                 this.$Notice.warning({
-                    title: '温馨提示：已达到最大上传数！'
+                    title: '已达到图片最大上传数！'
                 });
             }
             return check;
         },
         handleInput(data) {
-            for(var i=0;data.length;i++){
-                this.uploadList.push(data[i]); 
-            }
-            this.$emit('change', this.uploadList)
+            this.uploadList.push(data); 
+            this.$emit('change', this.uploadList);
         },
         prePic(){
             this.indexPic = (this.indexPic - 1) > -1 ? this.indexPic - 1 : 0;
@@ -139,8 +156,13 @@ export default {
                 this.$Message.info({content:'温馨提示：已到最一张！'});         
             }      
         },
+        save() {
+            this.$emit('save',this.uploadList);
+        },
     },
     created(){
+        this.uploadUrl = this.$upload_url?this.$upload_url:'localhost:8080';
+        this.headers['Utoken'] =  tokenService.getToken();
         this.baseUrl = this.$base_url;
     },
 }

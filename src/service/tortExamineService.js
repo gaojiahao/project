@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-01-14 10:49:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 11:51:41
+ * @LastEditTime: 2021-01-21 09:44:16
  */
 import $flyio from '@plugins/ajax';
 //分页获取产品审核/销售审核/侵权审核
@@ -45,6 +45,12 @@ export let GetFileDistributionPage = (data = {}) => {
     data: data
   })
 };
+export let GetFileDistributionById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetFileDistributionById',
+    data: data
+  })
+};
 //侵权审核
 export let CreateGoodsTort = (data = {}) => {
   return $flyio.post({
@@ -75,6 +81,37 @@ export let GetGoodsSelectionReviewPage = (data = {}) => {
 export let GetPieShopReviewPage = (data = {}) => {
   return $flyio.post({
     url: '/api/GetPieShopReviewPage',
+    data: data
+  })
+};
+//美工制图
+export let CreateGoodsFile = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateGoodsFile',
+    data: data
+  })
+};
+export let UpdateGoodsFile = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateGoodsFile',
+    data: data
+  })
+};
+export let DelGoodsFile = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelGoodsFile',
+    data: data
+  })
+};
+export let GetGoodsFilePage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetGoodsFilePage',
+    data: data
+  })
+};
+export let GetGoodsFileById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetGoodsFileById',
     data: data
   })
 };

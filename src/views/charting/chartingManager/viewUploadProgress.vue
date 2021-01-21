@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-12 12:11:28
+ * @LastEditTime: 2021-01-21 10:11:47
 -->
 <template>
 <div>
     <div class="top">
         <Divider orientation="left" size="small">基本信息</Divider>
         <div class="top_tabale">
-            <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+            <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData">
                 <template slot="button">
                     <div style="width:100%">   
                     </div>
@@ -20,6 +20,32 @@
         </div>
     </div>
     <div class="top">
+        <Divider orientation="left" size="small">制作信息</Divider>
+        <div class="top_tabale">
+            <ViewForm :formValidate="formValidate3" :ruleValidate="ruleValidate3" :formConfig="formConfig3">
+                <template slot="button">
+                    <div style="width:100%">   
+                    </div>
+                </template>
+            </ViewForm>
+        </div>
+    </div>
+    <div class="top">
+        <Divider orientation="left" size="small">上传</Divider>
+        <div class="top_tabale">
+            <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form">
+                <template slot="button">
+                    <div style="width:100%">
+                        <FormItem>
+                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                        </FormItem>
+                    </div>
+                </template>
+            </ViewForm>
+        </div>
+    </div>
+    <!-- <div class="top">
         <Divider orientation="left" size="small">上传文件</Divider>
         <div class="top_tabale">
             <div class="myTable">
@@ -37,35 +63,41 @@
                 </div>
                 <template slot="button">
                     <div style="line-height:32px height:32px; display:flex">
-                        
+                        <div style="width:100%">
+                            <Button type="primary" size="small" @click="save" style="float: left;">保存</Button>
+                            <Button size="small" @click="cancel" style="float: left; margin-left:10px">取消</Button>
+                        </div>
                     </div>
                 </template>
             </XForm>
         </div>
-    </div>
+    </div> -->
 </div>
 </template>
 
 <script>
-import config from "@views/charting/chartingManager/viewProductAppointStoreConfig";
-const viewForm = ()=>import("@components/public/form/viewForm");
-const xForm = ()=>import("@components/public/form/xForm");
-const multUpload = ()=>import("@components/charting/multUpload");
+import config2 from "@views/charting/chartingManager/productAppointStoreConfig";
+import ViewForm from "@components/public/form/viewForm";
 
+import {
+    GetFileDistributionById,
+    CreateGoodsFile
+} from "@service/tortExamineService";
+import {
+    GetPrepGoodsById,
+} from "@service/basicinfoService";
 import {
     Tabs,
     TabPane,
 } from "view-design";
 export default {
-    name: 'ViewUploadProgress',
+    name: 'UploadProgress',
     components: {
         Tabs,
         TabPane,
-        ViewForm:viewForm,
-        XForm:xForm,
-        MultUpload:multUpload
+        ViewForm,
     },
-    mixins: [config],
+    mixins: [config2],
     data(){
         return{
             dataConfig:[
@@ -150,23 +182,108 @@ export default {
                 },
             ],
             config:{
-                disabled:true,
+                disabled:false,
             },
             loading: true,
             isForm: false
         }
     },
     methods: {
+        getFormData(){
+            this.id = this.$route.query.goodsId;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetPrepGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formValidate = {
+                                id: res.result.item.id,
+                                code:res.result.item.code,
+                                name: res.result.item.name,
+                                categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                productImg:[{name:'',url:res.result.item.imgOne},{name:'',url:res.result.item.imgTwo},{name:'',url:res.result.item.imgThree}]
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
+        GetFileDistributionById(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetFileDistributionById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formValidate3 = {
+                                id: res.result.item.id,
+                                fileType: res.result.item.fileType,
+                                remark: res.result.item.remark,
+                                startTime: res.result.item.startTime,
+                                endTime: res.result.item.endTime,
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }    
+        },
         clearFormData() {
             this.formValidate2 = {
                 id:"",
                 data:[],
             }
         },
+        goReturn(){
+            this.$router.go(-1);
+        },
         save() {
-            this.$Message.info({content:'温馨提示：保存成功'});
-            this.clearFormData();
-            this.showForm(false);    
+            var params = [];
+            for(var i=0;i<this.formValidate2.img.length;i++){
+                var obj = {}
+                obj = {
+                    name: this.formValidate2.img[i].name,
+                    suffix: '',
+                    fileType: this.formValidate3.fileType,
+                    fileTypeName:'',
+                    fileSize: this.formValidate2.img[i].size,
+                    fileUrl: this.formValidate2.img[i].filePath,
+                    status:1,
+                    goodsId: this.formValidate.id,
+                };
+                this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                    if (valid) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreateGoodsFile(obj).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：保存成功！');
+                                    this.goReturn();
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });   
+                    } else {
+                        this.$Message.error('保存失败');
+                    }
+                })   
+            }   
         },
         cancel(){
             this.clearFormData();
@@ -182,17 +299,14 @@ export default {
         }
     },
     created() {
+        this.getFormData();
+        this.GetFileDistributionById();
         setTimeout(() => {
             this.loading = false;
         }, 1000);
     }
 }
 </script>
-<style scoped>
->>>.ivu-form-item-content {
-    flex-direction: column;
-}
-</style>
 <style lang="less" scoped>
 @import  "~@less/form.less";
 .myTable{

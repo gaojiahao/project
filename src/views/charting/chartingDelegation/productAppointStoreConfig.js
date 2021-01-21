@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 10:13:51
+ * @LastEditTime: 2021-01-20 19:49:25
  */
 export default {
     data() {
@@ -49,9 +49,7 @@ export default {
           code:'',
           name:'',
           categoryId:'',
-          productImg:[
-              {"name":"7eb99afb9d5f317c912f08b5212fd69a","url":"https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843"},
-              {"name":"7eb99afb9d5f317c912f08b5212fd69a","url":"https://img.jbzj.com/file_images/article/201806/201862785813429.png?201852785843"}],
+          productImg:[],
         },
         ruleValidate: {
 

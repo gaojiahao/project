@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-20 09:26:23
+ * @LastEditTime: 2021-01-20 16:06:57
 -->
 <template>
 <div>
@@ -106,7 +106,7 @@ export default {
                     endTime: data[i].date[1],
                     goodsId: this.formValidate.id,
                     goodsName: this.formValidate.name,
-                    status:1,
+                    // status:1,
                 };
                 // params.push(obj);
                 this.$refs['form'].$refs['formValidate'].validate((valid) => {
