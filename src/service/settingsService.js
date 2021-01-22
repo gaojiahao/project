@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 09:18:29
+ * @LastEditTime: 2021-01-21 19:30:56
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -497,6 +497,80 @@ export let GetWorkflowClausePage = (data = {}) => {
 export let GetWorkflowClauseById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetWorkflowClauseById',
+    data: data
+  })
+};
+//物流管理
+export let CreateLogistics = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateLogistics',
+    data: data
+  })
+};
+export let UpdateLogistics = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateLogistics',
+    data: data
+  })
+};
+export let DelLogistics = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelLogistics',
+    data: data
+  })
+};
+export let GetLogisticsPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetLogisticsPage',
+    data: data
+  })
+};
+export let GetLogisticsList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetLogisticsList',
+    data: data
+  })
+};
+export let GetLogisticsById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetLogisticsById',
+    data: data
+  })
+};
+//模板管理
+export let CreateFreightTemplate = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateFreightTemplate',
+    data: data
+  })
+};
+export let UpdateFreightTemplate = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateFreightTemplate',
+    data: data
+  })
+};
+export let DelFreightTemplate = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelFreightTemplate',
+    data: data
+  })
+};
+export let GetFreightTemplatePage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetFreightTemplatePage',
+    data: data
+  })
+};
+export let GetFreightTemplateList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetFreightTemplateList',
+    data: data
+  })
+};
+export let GetFreightTemplateById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetFreightTemplateById',
     data: data
   })
 };

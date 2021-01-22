@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 17:59:25
+ * @LastEditTime: 2021-01-21 16:07:32
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -37,7 +37,7 @@
             </FormItem>
             <!--图片上传-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='uploadImage'">
-                <UploadImg v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></UploadImg>
+                <UploadImg v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" :length="formConfig[index]['length']" v-show="!formConfig[index]['hidden']" ></UploadImg>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
                 <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker> 

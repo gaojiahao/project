@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 19:58:55
+ * @LastEditTime: 2021-01-21 16:41:24
  */
 export default {
   data() {
@@ -17,14 +17,17 @@ export default {
         linkUrl:{
           name:'路由地址',
           type:'text',
+          length:50
         },
         icon:{
           name:'菜单图标',
           type:'uploadImage',
+          length:1,
         },
         code:{
           name:'标签',
           type:'text',
+          length:50
         },
         isMenu:{
           name:'是否菜单',

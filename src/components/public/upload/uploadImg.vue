@@ -55,33 +55,29 @@ export default {
             type:Number,
             default:3,
         },
-        formValue:{
-            type: Array,
-            default () {
-                return []
-            }
-        },
         disabled:{
             type:Boolean,
             default:false
         }
     },
     watch:{
-        formValue:{
+        value:{
             handler(val){
                 this.uploadList = [];
                 for(var i=0;i<val.length;i++){
                     var obj={};
                     obj= {
+                        ...val[i],
                         status:'finished',
-                        filePath:val[i],
                     }
                     if(obj.filePath){
                         this.uploadList.push(obj);
                     }
                 }
-            }
-        }   
+            },
+            deep:true,
+            immediate:true
+        },  
     },
     data() {
         return {
