@@ -555,7 +555,13 @@
 					this.type = d.prop,
 					this.text = d.name,
 					this.width = s,
-					this.height = u
+					this.height = u,
+					this.participants = [],
+					this.parPolicies = {},
+					this.outerParticipants = [],
+					this.buttons = [],
+					this.rules = [],
+					this.permissions = []
 				}
 				return et(t, [{
 					key: "angle",
@@ -857,9 +863,9 @@
 					key: "toJSON",
 					value: function() {
 						return {
-							id: this.id,
-							startId: this.start.id,
-							endId: this.end.id,
+							edgeid: this.id,
+							sourse: this.start.id,
+							target: this.end.id,
 							startAt: this.startAt,
 							endAt: this.endAt,
 							data: this.data
@@ -1090,9 +1096,9 @@
 						var e = this,
 						n = [];
 						return t.forEach((function(t) {
-							var i = t.startId,
+							var i = t.sourse,
 							r = void 0 === i ? "": i,
-							o = t.endId,
+							o = t.target,
 							s = void 0 === o ? "": o,
 							a = t.startAt,
 							u = void 0 === a ? [0, 0] : a,

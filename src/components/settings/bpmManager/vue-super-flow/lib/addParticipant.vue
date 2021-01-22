@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 10:02:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-24 14:22:32
+ * @LastEditTime: 2021-01-22 20:08:57
 -->
 <template>
     <Modal v-model="visble" :title="title" @on-ok="ok" @on-cancel="cancel" width="800" draggable >
@@ -24,7 +24,7 @@
                     </div> 
                     <ul class="ivu-transfer-list-content">
                         <li class="ivu-transfer-list-content-item" v-for="(item,index) in roleList" @click="select(item)">
-                            <span>[角色] {{item.name}}</span>
+                            <span>[角色] {{item.roleName}}</span>
                         </li>
                     </ul>
                 </div>
@@ -64,9 +64,9 @@
                         </div>
                     </div> 
                     <ul class="ivu-transfer-list-content">
-                        <li class="ivu-transfer-list-content-item" v-for="(item,index) in selectAddParticipant.config">
-                            <span v-if="item.type=='user'">[员工] {{item.name}}</span>
-                            <span v-else-if="item.type=='role'">[角色] {{item.name}}</span>
+                        <li class="ivu-transfer-list-content-item" v-for="(item,index) in selectAddParticipant">
+                            <span v-if="item.type==2">[员工] {{item.roleName}}</span>
+                            <span v-else-if="item.type==1">[角色] {{item.roleName}}</span>
                             <span style="float:right">
                                 <Icon type="md-close" @click.native="del($event,index)" />
                             </span>
@@ -78,6 +78,10 @@
     </Modal>   
 </template>
 <script>
+import {
+    AuthRoleList
+} from "@service/settingsService";
+
 export default {
     name: 'AddParticipant',
     props:{
@@ -89,13 +93,11 @@ export default {
             type: String,
             default: '添加参与者'
         },
-        selectAddParticipant:{
+        nodeSetting:{
             type:Object,
             default () {
-                return {
-                        
-                }
-            }           
+                return {}
+            }
         },
     },
     watch:{
@@ -103,6 +105,12 @@ export default {
             handler(val){
                 this.visble = val;
             }
+        },
+        nodeSetting:{
+            handler(val){
+                this.selectAddParticipant = this.nodeSetting['participants'];
+            },
+            deep:true,
         },
         // roleList:{
         //     handler(val){
@@ -158,66 +166,66 @@ export default {
         return {
             visble: false,
             roleList:[
-                {
-                    name:'开发人员',
-                    value:'dsfa',
-                    type:'role'
-                },
-                {
-                    name:'销售人员',
-                    value:'dsfa13',
-                    type:'role'
-                },
-                {
-                    name:'开发主管',
-                    value:'dsfa13243',
-                    type:'role'
-                },
-                {
-                    name:'销售主管1',
-                    value:'rewqr',
-                    type:'role'
-                },
-                {
-                    name:'销售主管2',
-                    value:'rewqr432',
-                    type:'role'
-                },
-                {
-                    name:'销售主管3',
-                    value:'rewqr432',
-                    type:'role'
-                },
-                {
-                    name:'销售主管4',
-                    value:'rewqr567',
-                    type:'role'
-                },
-                {
-                    name:'销售主管4sdf',
-                    value:'rewqr567234',
-                    type:'role'
-                },
-                {
-                    name:'销售主管4654',
-                    value:'rewqr567sg',
-                    type:'role'
-                },
-                {
-                    name:'销售主管47',
-                    value:'rewqr567te',
-                    type:'role'
-                },
-                {
-                    name:'销售主管46',
-                    value:'rewqr567qw',
-                    type:'role'
-                },
-                {
-                    name:'销售主管478',
-                    value:'rewqr567z',
-                    type:'role'
-                }
+                // {
+                //     name:'开发人员',
+                //     value:'dsfa',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售人员',
+                //     value:'dsfa13',
+                //     type:'role'
+                // },
+                // {
+                //     name:'开发主管',
+                //     value:'dsfa13243',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售主管1',
+                //     value:'rewqr',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售主管2',
+                //     value:'rewqr432',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售主管3',
+                //     value:'rewqr432',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售主管4',
+                //     value:'rewqr567',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售主管4sdf',
+                //     value:'rewqr567234',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售主管4654',
+                //     value:'rewqr567sg',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售主管47',
+                //     value:'rewqr567te',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售主管46',
+                //     value:'rewqr567qw',
+                //     type:'role'
+                // },
+                // {
+                //     name:'销售主管478',
+                //     value:'rewqr567z',
+                //     type:'role'
+                // }
             ],
             userList:[
                 {
@@ -241,7 +249,8 @@ export default {
                     type:'user'
                 }
             ],
-            selectList:[]
+            selectList:[],
+            selectAddParticipant:[],
         }
     },
     methods:{
@@ -250,32 +259,42 @@ export default {
             this.$emit('show','AddParticipantModal',false);
         },
         ok(){
-            this.$emit('save',this.selectAddParticipant.nodeId,this.selectAddParticipant);
+            this.$emit('save',this.selectAddParticipant);
             this.$emit('show','AddParticipantModal',false);
         },
         del(e,index){
-            this.selectAddParticipant.config.splice(index, 1);   
+            this.selectAddParticipant.splice(index, 1);   
         },
         select(item){
             var flag = false
-            for(var j=0;j<this.selectAddParticipant.config.length;j++){
-                if(item.value == this.selectAddParticipant.config[j].value) {
+            for(var j=0;j<this.selectAddParticipant.length;j++){
+                if(item.id == this.selectAddParticipant[j].id) {
                     flag = true
                     break;
                 }
             }
             if(!flag){
-                this.selectAddParticipant.config.push(item);
+                var obj = {
+                    // ...item,
+                    participantId:item.id,
+                    roleName:item.roleName,
+                    type:1 //角色类型    
+                };
+                this.selectAddParticipant.push(obj);
             }
-        }
+        },
+        AuthRoleList(){
+            return new Promise((resolve, reject) => {
+                AuthRoleList().then(res => {
+                    if (res.result.code == 200) {
+                        this.roleList = res.result.item;
+                    }
+                });
+            });
+        },
     },
-    mounted(){
-        console.log(this.selectAddParticipant.nodeId);
-    },
-    updated() {
-        this.$nextTick(function(){
-            console.log(this.selectAddParticipant.nodeId); 
-        })   
+    created(){
+        this.AuthRoleList();
     },
 }
 </script>

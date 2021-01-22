@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 10:02:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-23 16:06:04
+ * @LastEditTime: 2021-01-22 18:58:47
 -->
 <template>
     <Modal
@@ -14,7 +14,7 @@
         @on-cancel="cancel"
         width="800"
         draggable >
-        <Table border :loading="loading" highlight-row :columns="columns" :data="selectDataAuthData&&selectDataAuthData.config" stripe ref="selection" @on-current-change="onCurrentChange"></Table>
+        <Table border :loading="loading" highlight-row :columns="columns" :data="selectDataAuthData" stripe ref="selection" @on-current-change="onCurrentChange"></Table>
     </Modal>   
 </template>
 <script>
@@ -30,11 +30,9 @@ export default {
             default: '添加数据权限'
         },
         selectDataAuthData:{
-            type:Object,
+            type:Array,
             default () {
-                return {
-                    
-                }
+                return []
             }           
         },
     },
@@ -44,6 +42,12 @@ export default {
                 this.visble = val;
             }
         },
+        nodeSetting:{
+            handler(val){
+                this.formData = this.nodeSetting['parPolicies'];
+            },
+            deep:true,
+        },
     },
     data () {
         return {
@@ -52,19 +56,19 @@ export default {
             columns: [
                 {
                     title: '字段名称',
-                    key: 'fieldName',
+                    key: 'fNameText',
                     render: (h, params) => {
                         return h("span", {
                         style: {
                             display: "inline-block",
                             color: "#2d8cf0"
                         },
-                        },params.row.fieldName);
+                        },params.row.fNameText);
                     }
                 },
                 {
                     title: '字段值',
-                    key: 'fieldCode',
+                    key: 'fName',
                 },
                 {
                     title: '字段类型',
@@ -72,16 +76,16 @@ export default {
                 },
                 {
                     title: '可见',
-                    key: 'hidden',
+                    key: 'isVisible',
                     align: 'center',
                     render: (h, params) => {
                         return h('Checkbox', {
                             props: {
-                                value:this.selectDataAuthData['config'][params.index][params.column.key]
+                                value:this.selectDataAuthData[params.index][params.column.key]
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.selectDataAuthData['config'][params.index][params.column.key] = event;
+                                    this.selectDataAuthData[params.index][params.column.key] = event;
                                 }
                             }
                         });
@@ -89,16 +93,16 @@ export default {
                 },
                 {
                     title: '可写',
-                    key: 'edit',
+                    key: 'isEditable',
                     align: 'center',
                     render: (h, params) => {
                         return h('Checkbox', {
                             props: {
-                                value:this.selectDataAuthData['config'][params.index][params.column.key]
+                                value:this.selectDataAuthData[params.index][params.column.key]
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.selectDataAuthData['config'][params.index][params.column.key] = event;
+                                    this.selectDataAuthData[params.index][params.column.key] = event;
                                 }
                             }
                         });
@@ -111,11 +115,11 @@ export default {
                     render: (h, params) => {
                         return h('Checkbox', {
                             props: {
-                                value: this.selectDataAuthData['config'][params.index][params.column.key]
+                                value: this.selectDataAuthData[params.index][params.column.key]
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.selectDataAuthData['config'][params.index][params.column.key] = event;
+                                    this.selectDataAuthData[params.index][params.column.key] = event;
                                 }
                             }
                         });
@@ -126,30 +130,30 @@ export default {
                 nodeId:'',
                 config: [
                     {
-                        id:'fds',
-                        fieldName: '姓名',
-                        fieldCode: "name",
+                        fId:1,
+                        fNameText: '姓名',
+                        fName: "name",
                         type: '文本',
-                        edit: false,
-                        hidden:false,
+                        isEditable: false,
+                        isVisible:false,
                         required:false
                     },
                     {
-                        id:'fds2',
-                        fieldName: '性别',
-                        fieldCode: "sex",
+                        fId:'fds2',
+                        fNameText: '性别',
+                        fName: "sex",
                         type: '文本',
-                        edit: false,
-                        hidden:false,
+                        isEditable: false,
+                        isVisible:false,
                         required:false
                     },
                     {
                         id:'fds3',
-                        fieldName: '年龄',
-                        fieldCode: "age",
+                        fNameText: '年龄',
+                        fName: "age",
                         type: '文本',
-                        edit: false,
-                        hidden:false,
+                        isEditable: false,
+                        isVisible:false,
                         required:false
                     },
                 ],
@@ -162,7 +166,7 @@ export default {
             this.$emit('show','AddDataAuthModal',false);
         },
         ok(){
-            this.$emit('save',this.selectDataAuthData.nodeId,this.selectDataAuthData);
+            this.$emit('save',this.selectDataAuthData);
             this.$emit('show','AddDataAuthModal',false);
         },
         onCurrentChange(){}

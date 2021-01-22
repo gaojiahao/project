@@ -53,7 +53,7 @@
                 </div>
             </template>
         </super-flow>
-        <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form>
+        <!-- <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form> -->
     </div>
     <SiderPanel :show="isShow['ShowPanel']" @show="showModal">
         <div slot="info">
@@ -61,8 +61,8 @@
         </div>
     </SiderPanel>
     <NameModal :show="isShow['NameModal']" :title="nameModalTitle" :nodeSetting="nodeSetting" @show="showModal"></NameModal>
-    <ParticipantDecisionModal :show="isShow['ParticipantDecisionModal']" :nodeSetting="nodeSetting" :data="participantDecisionData" @show="showModal" @save="saveParticipantDecision"></ParticipantDecisionModal>
-    <AddParticipant :show="isShow['AddParticipantModal']" @show="showModal" :selectAddParticipant="selectAddParticipant" @save="saveAddParticipant"></AddParticipant>
+    <ParticipantDecisionModal :show="isShow['ParticipantDecisionModal']" :nodeSetting="nodeSetting" :formData="selectParticipantDecision" :data="participantDecisionData" @show="showModal" @save="saveParticipantDecision"></ParticipantDecisionModal>
+    <AddParticipant :show="isShow['AddParticipantModal']" @show="showModal" :selectAddParticipant="selectAddParticipant" :nodeSetting="nodeSetting" @save="saveAddParticipant"></AddParticipant>
     <AddDataAuth :show="isShow['AddDataAuthModal']" @show="showModal" :selectDataAuthData="selectDataAuthData" @save="saveDataAuth"></AddDataAuth>
     <AddButton :show="isShow['AddButtonModal']" @show="showModal" :selectDataAddButton="selectDataAddButton" @save="saveAddButton"></AddButton>
     <AddCondition :show="isShow['AddConditionModal']" :formSettings="formSettings" @show="showModal" :selectAddCondition="selectAddCondition" @save="saveAddCondition"></AddCondition>
@@ -85,6 +85,10 @@ import AddParticipant from '@components/settings/bpmManager/vue-super-flow/lib/a
 import AddDataAuth from '@components/settings/bpmManager/vue-super-flow/lib/addDataAuth';
 import AddButton from '@components/settings/bpmManager/vue-super-flow/lib/addButton';
 import AddCondition from '@components/settings/bpmManager/vue-super-flow/lib/addCondition';
+import {
+    CreateWorkflow,
+    GetWorkflowById
+} from "@service/settingsService"
 
 import list from './nodeList'
 export default {
@@ -124,65 +128,64 @@ export default {
                 },
                 openParticipantDecision: (type, info) => {
                     this.selectNode(info);
+                    if(this.nodeSetting['parPolicies']&&this.nodeSetting['parPolicies']['noParPolicy']){
+                        this.selectParticipantDecision = this.nodeSetting['parPolicies'];
+                    } else {
+                        this.selectParticipantDecision = {
+                            noParPolicy:'',
+                            dupParPolicy:'',
+                            participatedParPolicy:''
+                        }
+                    }
                     this.isShow['ParticipantDecisionModal'] = true;
                 },
                 openAddParticipant: (type, info) => {
-                    if(this.dataAddParticipant[info.id]){
-                        this.selectAddParticipant = this.dataAddParticipant[info.id];
-                    } else {
-                        this.selectAddParticipant = {
-                            nodeId:info.id,
-                            config: []
-                        }
-                    }
+                    this.selectNode(info);
                     this.isShow['AddParticipantModal'] = true;
                 },
                 openAddDataAuth: (type, info) => {
-                    if(this.dataAuthData[info.id]){
-                        this.selectDataAuthData = this.dataAuthData[info.id];
+                    this.selectNode(info);
+                    if(this.nodeSetting['permissions'].length){
+                        this.selectDataAuthData = this.nodeSetting['permissions'];
                     } else {
-                        this.selectDataAuthData = {
-                            nodeId:info.id,
-                            config: [
-                                {
-                                    id:'fds',
-                                    fieldName: '姓名',
-                                    fieldCode: "name",
-                                    type: '文本',
-                                    edit: false,
-                                    hidden:false,
-                                    required:false
-                                },
-                                {
-                                    id:'fds2',
-                                    fieldName: '性别',
-                                    fieldCode: "sex",
-                                    type: '文本',
-                                    edit: false,
-                                    hidden:false,
-                                    required:false
-                                },
-                                {
-                                    id:'fds3',
-                                    fieldName: '年龄',
-                                    fieldCode: "age",
-                                    type: '文本',
-                                    edit: false,
-                                    hidden:false,
-                                    required:false
-                                },
-                            ],
-                        }
+                        this.selectDataAuthData =  [
+                            {
+                                fId:1,
+                                fNameText: '姓名',
+                                fName: "name",
+                                type: '文本',
+                                isEditable: false,
+                                isVisible:false,
+                                required:false
+                            },
+                            {
+                                fId:'fds2',
+                                fNameText: '性别',
+                                fName: "sex",
+                                type: '文本',
+                                isEditable: false,
+                                isVisible:false,
+                                required:false
+                            },
+                            {
+                                id:'fds3',
+                                fNameText: '年龄',
+                                fName: "age",
+                                type: '文本',
+                                isEditable: false,
+                                isVisible:false,
+                                required:false
+                            },
+                        ];
                     }
                     this.isShow['AddDataAuthModal'] = true;
                 },
                 openAddButton: (type, info) => {
-                    if(this.dataAddButton[info.id]){
-                        this.selectDataAddButton = this.dataAddButton[info.id];
+                    this.selectNode(info);
+                    if(this.nodeSetting['buttons'].length){
+                        this.selectDataAddButton = this.nodeSetting['buttons'];
                     } else {
-                        this.selectDataAddButton = {
-                            nodeId:info.id,
-                            config: [
+                        this.selectDataAddButton = [
                                 {
                                     name: '同意',
                                     value: "agree",
@@ -208,19 +211,16 @@ export default {
                                     value: "transfer",
                                     action: false
                                 },
-                            ],
-                        }
+                            ];
                     }
                     this.isShow['AddButtonModal'] = true;
                 },
                 openAddCondition: (type, info) => {
-                    if(this.dataAddCondition[info.id]){
-                        this.selectAddCondition = this.dataAddCondition[info.id];
+                    this.selectNode(info);
+                    if(this.nodeSetting['rules'].length){
+                        this.selectAddCondition = this.nodeSetting['rules'];
                     } else {
-                        this.selectAddCondition = {
-                            nodeId:info.id,
-                            config: []
-                        }
+                        this.selectAddCondition = []
                     }
                     this.isShow['AddConditionModal'] = true;
                 },
@@ -441,13 +441,14 @@ export default {
             },
             participantDecisionData:{},
             dataAuthData:{},
-            selectDataAuthData:{},
+            selectDataAuthData:[],
             dataAddButton:{},
-            selectDataAddButton:{},
+            selectDataAddButton:[],
             dataAddCondition:{},
-            selectAddCondition:{},
+            selectAddCondition:[],
             dataAddParticipant:{},
-            selectAddParticipant:{}
+            selectAddParticipant:{},
+            selectParticipantDecision:{}
 
         }
     },
@@ -515,28 +516,55 @@ export default {
         },
         //保存工作流数据
         save() {
+            debugger
+            var params= {};
+            params.id = "";
+            params.clauseId = this.$route.query.id; //流程id
+            params.chanrtJson = {};
+            var a = this.$refs.superFlow.graph.toJSON();
+            debugger
+            params.chanrtJson = {
+                origin: a.origin,
+                nodes: a.nodeList,
+                edges: a.linkList, 
+            };
             var json = {};
-            let a = (JSON.stringify(this.$refs.superFlow.graph.toJSON(), null, 2));
-            let arr = Object.values(this.participantDecisionData);
-            let arr2 = Object.values(this.dataAuthData);
-            let arr3 = Object.values(this.dataAddButton);
-            let arr4 = Object.values(this.dataAddCondition);
-            let arr5 = Object.values(this.dataAddParticipant);
-            json = {
-                ...this.$refs.superFlow.graph.toJSON(),
-                participantDecision: arr,
-                addParticipant: arr5,
-                authData: arr2,
-                addButton: arr3,
-                addCondition: arr4,
+            // let a = (JSON.stringify(this.$refs.superFlow.graph.toJSON(), null, 2));
+            // console.log(a);
+
+            if (!params.id) {
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    CreateWorkflow(params).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：保存成功！');
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
+            } else {
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    UpdateStore(params).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：更新成功！');
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
             }
-            console.log(a);
-            console.log(JSON.stringify(arr));
-            console.log(JSON.stringify(arr2));
-            console.log(JSON.stringify(arr3));
-            console.log(JSON.stringify(arr4));
-            console.log(JSON.stringify(arr5));
-            console.log(JSON.stringify(json));
         },
         //暂时没用
         docMousemove({
@@ -690,11 +718,12 @@ export default {
             this.selectNode(data);
         },
         selectNode(data){
-            this.$nextTick(() => {
-                this.nodeSetting = {
-                    ...data
-                };
-            })
+            // this.$nextTick(() => {
+            //     this.nodeSetting = {
+            //         ...data
+            //     };
+            // })
+            this.nodeSetting = data;
         },
         lineMousedown(data){
             this.selectLine(data);
@@ -737,20 +766,25 @@ export default {
         showModal(name,flag){
             this.isShow[name] = flag;
         },
-        saveParticipantDecision(id,data){
-            this.$set(this.participantDecisionData,id,data);
+        saveParticipantDecision(data){
+            this.$set(this.nodeSetting, 'parPolicies', data);
+            // this.$set(this.participantDecisionData,id,data);
         },
-        saveDataAuth(id,data){
-            this.$set(this.dataAuthData,id,data);
+        saveDataAuth(data){
+            this.$set(this.nodeSetting, 'permissions', data);
+            // this.$set(this.dataAuthData,id,data);
         },
-        saveAddButton(id,data){
-            this.$set(this.dataAddButton,id,data);    
+        saveAddButton(data){
+            this.$set(this.nodeSetting, 'buttons', data);
+            // this.$set(this.dataAddButton,id,data);    
         },
-        saveAddCondition(id,data){
-            this.$set(this.dataAddCondition,id,data);
+        saveAddCondition(data){
+            this.$set(this.nodeSetting, 'rules', data);
+            // this.$set(this.dataAddCondition,id,data);
         },
-        saveAddParticipant(id,data){
-            this.$set(this.dataAddParticipant,id,data);
+        saveAddParticipant(data){
+            // this.$set(this.dataAddParticipant,id,data);
+            this.$set(this.nodeSetting, 'participants', data);
         }
     },
     created() {

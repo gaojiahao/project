@@ -6,7 +6,7 @@ import { String } from "core-js"
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 10:36:38
+ * @LastEditTime: 2021-01-22 11:33:05
  */
 export default {
   data() {
@@ -105,7 +105,7 @@ export default {
         feliveryFee:'',
         packageFee:'',
         registrationFee:'',
-        status:''
+        status:1
       },
       ruleValidate2:{
         name: [{
@@ -129,6 +129,42 @@ export default {
           required: true,
           type: 'number',
           message: '请输入截止重量',
+          trigger: 'blur'
+        }],
+        billingModel: [{
+          required: true,
+          type: 'number',
+          message: '请输入计费模式',
+          trigger: 'blur'
+        }],
+        charges: [{
+          required: true,
+          type: 'number',
+          message: '收费标准',
+          trigger: 'blur'
+        }],
+        minWeight: [{
+          required: true,
+          type: 'number',
+          message: '最低计费重量',
+          trigger: 'blur'
+        }],
+        feliveryFee: [{
+          required: true,
+          type: 'number',
+          message: '配送费',
+          trigger: 'blur'
+        }],
+        packageFee: [{
+          required: true,
+          type: 'number',
+          message: '包装费',
+          trigger: 'blur'
+        }],
+        registrationFee: [{
+          required: true,
+          type: 'number',
+          message: '挂号费',
           trigger: 'blur'
         }],
       },

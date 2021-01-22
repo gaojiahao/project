@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 10:39:29
+ * @LastEditTime: 2021-01-22 12:15:33
 -->
 <template>
 <div class="edit_store">
     <div class="top">
         <Divider orientation="left" size="small">物流信息</Divider>
         <div class="top_tabale">
-            <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData">
+            <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
@@ -26,7 +26,7 @@
     <div class="top">
         <Divider orientation="left" size="small">运费模板列表</Divider>
         <div class="top_tabale">
-            <AddTemplateTable :data="templateData" :loading="loading" :pageData="pageData" @change-page="changePage" @on-page-size-change="onPageSizeChange" :formValidate="formValidate" @set-filter="setFilter"></AddTemplateTable>
+            <AddTemplateTable :data="templateData" :loadingConfig="loading" :pageData="pageData" @change-page="changePage" @on-page-size-change="onPageSizeChange" :formValidate="formValidate" @set-filter="setFilter"></AddTemplateTable>
         </div> 
     </div>
 </div>
@@ -34,7 +34,7 @@
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/settings/logisticsManager/editStoreConfig";
+import config from "@views/settings/logisticsManager/logisticsManager/editStoreConfig";
 import AddTemplateTable from "@components/settings/logisticsManager/addTemplateTable";
 
 import {
@@ -138,9 +138,10 @@ export default {
             }
         },
         GetFreightTemplatePage(){
+            var logisticsId = this.$route.query.id;
             if(this.formValidate.id) {
                 this.loading = true;
-                return GetFreightTemplatePage({id:this.formValidate.id,...this.pageData}).then(res => {
+                return GetFreightTemplatePage({id:logisticsId,...this.pageData}).then(res => {
                     if (res.result.code == 200) {
                         this.templateData = res.result.item.items;
                         this.pageData.totalPage = res.result.item.totalCount;

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 17:43:57
+ * @LastEditTime: 2021-01-22 12:15:20
 -->
 <template>
 <div class="add_store">
@@ -29,7 +29,7 @@
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/settings/logisticsManager/addLogisticsConfig";
+import config from "@views/settings/logisticsManager/logisticsManager/addLogisticsConfig";
 
 import {
     CreateLogistics
@@ -59,7 +59,8 @@ export default {
                                     this.$Message.info('温馨提示：新建成功！');
                                     // this.$refs['form'].$refs['formValidate'].resetFields();
                                     // this.$refs['form'].initEL('input');
-                                    this.$router.go(-1);
+                                    //this.$router.go(-1);
+                                    this.$router.push({name:'editLogistics',query: {id:res.result.item.id}});
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,

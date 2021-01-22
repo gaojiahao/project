@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 10:02:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-23 16:43:52
+ * @LastEditTime: 2021-01-22 20:02:32
 -->
 <template>
     <Modal
@@ -18,22 +18,22 @@
             <div class="action-button">
                 <Form :model="node" ref="dataForm" :label-width="0" inline>
                     <FormItem label="">
-                        <Select v-model="formData['conditionalRelation']" :style="{width:'80px',float: 'left'}" size="small" clearable  filterable>
+                        <Select v-model="formData['nexus']" :style="{width:'80px',float: 'left'}" size="small" clearable  filterable>
                             <Option v-for="item in conditionalList" :value="item.value" :key="item.value">{{ item.name }}</Option>
                         </Select>
                     </FormItem>
                     <FormItem label="">
-                        <Select v-model="formData['fieldCode']" :style="{width:'200px',float: 'left'}" size="small" clearable  filterable>
-                            <Option v-for="item in formSettings" :value="item.fieldCode" :key="item.fieldCode">{{ item.fieldName }}</Option>
+                        <Select v-model="formData['fName']" :style="{width:'200px',float: 'left'}" size="small" clearable  filterable @on-select="onChange" :label-in-value='true'>
+                            <Option v-for="item in formSettings" :value="item.fName" :key="item.fId" :tag="item.fId">{{ item.fNameText }}</Option>
                         </Select>
                     </FormItem>
                     <FormItem label="">
-                        <Select v-model="formData['logicJudge']" :style="{width:'80px',float: 'left'}" size="small" clearable filterable>
+                        <Select v-model="formData['logic']" :style="{width:'80px',float: 'left'}" size="small" clearable filterable>
                             <Option v-for="item in operatorList" :value="item.value" :key="item.value">{{ item.name }}</Option>
                         </Select>
                     </FormItem>
                     <FormItem label="">
-                        <Input v-model="formData['text']" :style="{width:'200px'}" size="small"></Input>
+                        <Input v-model="formData['value']" :style="{width:'200px'}" size="small"></Input>
                     </FormItem>
                     <FormItem label="">
                         <Button size="small" type="primary" icon="ios-add" @click.native="add" class="marginRight">新增</Button>
@@ -41,7 +41,7 @@
                 </Form>
             </div>
         </div>
-        <Table border :loading="loading" highlight-row :columns="columns" :data="selectAddCondition&&selectAddCondition.config" stripe ref="selection" @on-current-change="onCurrentChange">
+        <Table border :loading="loading" highlight-row :columns="columns" :data="selectAddCondition" stripe ref="selection" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="error" size="small" icon="ios-close" @click="del(index)" class="marginRight">删除</Button>
             </template>
@@ -67,11 +67,9 @@ export default {
             }
         },
         selectAddCondition:{
-            type:Object,
+            type:Array,
             default () {
-                return {
-                    
-                }
+                return []
             }           
         },
     },
@@ -90,20 +88,20 @@ export default {
             columns: [
                 {
                     title: '条件关系',
-                    key: 'conditionalRelationName',
+                    key: 'nexusText',
                 },
                 {
                     title: '字段名称',
-                    key: 'fieldName',
+                    key: 'fNameText',
                     
                 },
                 {
                     title: '逻辑判断',
-                    key: 'logicJudgeName',
+                    key: 'logicText',
                 },
                 {
                     title: '输入值',
-                    key: 'text',
+                    key: 'value',
                 },
                 {
                     title: '操作',
@@ -131,6 +129,7 @@ export default {
                 {name:'以...结尾',value:'012'},
             ],
             formData:{},
+            selectF:{}
         }
     },
     methods:{
@@ -139,39 +138,46 @@ export default {
             this.$emit('show','AddConditionModal',false);
         },
         ok(){
-            this.$emit('save',this.selectAddCondition.nodeId,this.selectAddCondition);
+            this.$emit('save',this.selectAddCondition);
             this.$emit('show','AddConditionModal',false);
         },
         onCurrentChange(){},
         add(){
             this.loading = true;
+            debugger
             this.formData = {
+                fId:this.selectF.tag,
                 ...this.formData,
-                fieldName: (this.formSettings.find(item=>item.fieldCode === this.formData.fieldCode))['fieldName'],
-                conditionalRelationName: (this.conditionalList.find(item=>item.value === this.formData.conditionalRelation))['name'],
-                logicJudgeName: (this.operatorList.find(item=>item.value === this.formData.logicJudge))['name'],
+                fNameText: (this.formSettings.find(item=>item.fName === this.formData.fName))['fNameText'],
+                nexusText: (this.conditionalList.find(item=>item.value === this.formData.nexus))['name'],
+                logicText: (this.operatorList.find(item=>item.value === this.formData.logic))['name'],
             }
-            this.selectAddCondition.config.push(this.formData);
+            this.selectAddCondition.push(this.formData);
             this.formData = {
-                conditionalRelation: this.conditionalList[0].value,
-                fieldCode:'',
-                logicJudge: this.operatorList[0].value,
-                text:'' 
+                nexus: this.conditionalList[0].value,
+                fName:'',
+                logic: this.operatorList[0].value,
+                value:'' 
             },
+            this.selectF = {};
             setTimeout(() => {
                 this.loading = false;
             }, 1000);
         },
         del(index){
-            this.selectAddCondition.config.splice(index, 1);
+            this.selectAddCondition.splice(index, 1);
+        },
+        onChange(data){
+            debugger
+            this.selectF = data;
         }
     },
     created() {
         this.formData = {
-            conditionalRelation: this.conditionalList[0].value,
-            fieldCode:'',
-            logicJudge: this.operatorList[0].value,
-            text:'' 
+            nexus: this.conditionalList[0].value,
+            fName:'',
+            logic: this.operatorList[0].value,
+            value:'' 
         },
         setTimeout(() => {
             this.loading = false;

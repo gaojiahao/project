@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 16:00:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-22 16:31:12
+ * @LastEditTime: 2021-01-22 20:31:31
 -->
 <!--
  * @Descripttion: 
@@ -23,17 +23,17 @@
         draggable >
         <Form :model="formData" ref="formData" :label-width="120">
             <FormItem label="无参与者">
-                <Select v-model="formData['noParticipant']" :style="{width:'200px',float: 'left'}" clearable  filterable>
+                <Select v-model="formData['noParPolicy']" :style="{width:'200px',float: 'left'}" clearable  filterable>
                     <Option v-for="item in noParticipantList" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="参与者是发起人">
-                <Select v-model="formData['isSponsor']" :style="{width:'200px',float: 'left'}" clearable  filterable>
+                <Select v-model="formData['dupParPolicy']" :style="{width:'200px',float: 'left'}" clearable  filterable>
                     <Option v-for="item in noParticipantList" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="已经参与过">
-                <Select v-model="formData['already']" :style="{width:'200px',float: 'left'}" clearable  filterable>
+                <Select v-model="formData['participatedParPolicy']" :style="{width:'200px',float: 'left'}" clearable  filterable>
                     <Option v-for="item in noParticipantList" :value="item.value" :key="item.value">{{ item.name }}</Option>
                 </Select>
             </FormItem>
@@ -63,7 +63,13 @@ export default {
             default () {
                 return {}
             }
-        }
+        },
+        selectParticipantDecision:{
+            type:Object,
+            default () {
+                return {}
+            }
+        },
     },
     watch:{
         show:{
@@ -73,28 +79,28 @@ export default {
         },
         nodeSetting:{
             handler(val){
-                this.formData.nodeId = val.id;
-                this.formData = {
-                    ...this.data[val.id]
-                }
+                // this.formData.nodeId = val.id;
+                // this.formData = {
+                //     ...this.data[val.id]
+                // }
+                this.formData = this.nodeSetting['parPolicies'];
             },
             deep:true,
         },
-        data:{
-            handler(val){
-                this.formData = val[this.nodeSetting.id];
-            }
-        }
+        // data:{
+        //     handler(val){
+        //         this.formData = val[this.nodeSetting.id];
+        //     }
+        // }
     },
     data () {
         return {
             visble: false,
             value: '',
             formData:{
-                nodeId:'',
-                noParticipant:'',
-                isSponsor:'',
-                already:'' 
+                noParPolicy:'',
+                dupParPolicy:'',
+                participatedParPolicy:'' 
             },
             noParticipantList:[
                 {name:'不处理',value:'001'},
@@ -122,7 +128,7 @@ export default {
             this.$emit('show','ParticipantDecisionModal',false);
         },
         ok(){
-            this.$emit('save',this.nodeSetting.id,this.formData);
+            this.$emit('save',this.formData);
             this.$refs['formData'].resetFields();
             this.$emit('show','ParticipantDecisionModal',false);
         }

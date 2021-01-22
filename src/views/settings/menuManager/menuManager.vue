@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 16:22:42
+ * @LastEditTime: 2021-01-22 12:12:13
 -->
 <template>
 <div class="erp_table_container">
@@ -154,7 +154,7 @@ export default {
         //保存菜单
         saveMenu() {
             var params = this.formValidate;
-            params['icon'] = this.formValidate['icon'][0]['filePath'];
+            params['icon'] = this.formValidate['icon']&&this.formValidate['icon'][0]&&this.formValidate['icon'][0]['filePath'];
             if (!this.formValidate.id) {
                 return new Promise((resolve, reject) => {
                     this.$FromLoading.show();

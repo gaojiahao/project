@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 17:35:56
+ * @LastEditTime: 2021-01-22 14:20:30
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -510,52 +510,88 @@ const routes = [
             path: "logisticsManager",
             name: "logisticsManager",
             component: resolve=>(require(["@views/settings/logisticsManager"],resolve)),
-            redirect:'logisticsManager/logisticsList',   //默认子路由
+            redirect:'logisticsManager/logisticsManager',   //默认子路由
             meta: {
               title: "物流管理",
               group: "logisticsManager",
             },
             children:[
               {
-                path: "logisticsList",
-                name: "logisticsList",
-                component: resolve=>(require(["@views/settings/logisticsManager/logisticsList"],resolve)),
-                meta: {
-                  title: "物流管理",
+                path: 'logisticsManager',
+                name: 'logisticsManager',
+                meta:{ 
+                  title:'物流管理',
                   group: "logisticsManager",
                   level: 1,
                 },
+                component: resolve=>(require(["@views/settings/logisticsManager/logisticsManager"],resolve)),
+                redirect:'logisticsManager/logisticsList',
+                children:[
+                  {
+                    path: "logisticsList",
+                    name: "logisticsList",
+                    component: resolve=>(require(["@views/settings/logisticsManager/logisticsManager/logisticsList"],resolve)),
+                    meta: {
+                      title: "物流管理",
+                      group: "logisticsManager",
+                      level: 1,
+                    },
+                  },
+                  {
+                    path: "addLogistics",
+                    name: "addLogistics",
+                    component: resolve=>(require(["@views/settings/logisticsManager/logisticsManager/addLogistics"],resolve)),
+                    meta: {
+                      title: "添加物流",
+                      group: "logisticsManager",
+                      level: 2,
+                    },
+                  },
+                  {
+                    path: "editLogistics",
+                    name: "editLogistics",
+                    component: resolve=>(require(["@views/settings/logisticsManager/logisticsManager/editLogistics"],resolve)),
+                    meta: {
+                      title: "编辑物流",
+                      group: "logisticsManager",
+                      level: 2,
+                    },
+                  },
+                  {
+                    path: "viewLogistics",
+                    name: "viewLogistics",
+                    component: resolve=>(require(["@views/settings/logisticsManager/logisticsManager/viewLogistics"],resolve)),
+                    meta: {
+                      title: "查看物流",
+                      group: "logisticsManager",
+                      level: 2,
+                    },
+                  },
+                ]
               },
               {
-                path: "addLogistics",
-                name: "addLogistics",
-                component: resolve=>(require(["@views/settings/logisticsManager/addLogistics"],resolve)),
-                meta: {
-                  title: "添加物流",
-                  group: "logisticsManager",
-                  level: 2,
+                path: 'countryManager',
+                name: 'countryManager',
+                meta:{ 
+                  title:'国家管理',
+                  group: "countryManager",
+                  level: 1,
                 },
-              },
-              {
-                path: "editLogistics",
-                name: "editLogistics",
-                component: resolve=>(require(["@views/settings/logisticsManager/editLogistics"],resolve)),
-                meta: {
-                  title: "编辑物流",
-                  group: "logisticsManager",
-                  level: 2,
-                },
-              },
-              {
-                path: "viewLogistics",
-                name: "viewLogistics",
-                component: resolve=>(require(["@views/settings/logisticsManager/viewLogistics"],resolve)),
-                meta: {
-                  title: "查看物流",
-                  group: "logisticsManager",
-                  level: 2,
-                },
-              },
+                component: resolve=>(require(["@views/settings/logisticsManager/countryManager"],resolve)),
+                redirect:'countryManager/countryList',
+                children:[
+                  {
+                    path: "countryList",
+                    name: "countryList",
+                    component: resolve=>(require(["@views/settings/logisticsManager/countryManager/countryList"],resolve)),
+                    meta: {
+                      title: "国家管理",
+                      group: "countryManager",
+                      level: 1,
+                    },
+                  },  
+                ]
+              }
             ]
           },
         ]

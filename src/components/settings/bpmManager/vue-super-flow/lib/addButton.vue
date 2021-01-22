@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 10:02:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-23 16:12:47
+ * @LastEditTime: 2021-01-22 19:17:54
 -->
 <template>
     <Modal
@@ -13,7 +13,7 @@
         @on-ok="ok"
         @on-cancel="cancel"
         draggable >
-        <Table border :loading="loading" highlight-row :columns="columns" :data="selectDataAddButton&&selectDataAddButton.config" stripe ref="selection" @on-current-change="onCurrentChange">
+        <Table border :loading="loading" highlight-row :columns="columns" :data="selectDataAddButton" stripe ref="selection" @on-current-change="onCurrentChange">
         </Table>
     </Modal>   
 </template>
@@ -30,11 +30,9 @@ export default {
             default: '添加操作按钮'
         },
         selectDataAddButton:{
-            type:Object,
+            type:Array,
             default () {
-                return {
-                    
-                }
+                return []
             }           
         },
     },
@@ -73,11 +71,11 @@ export default {
                     render: (h, params) => {
                         return h('Checkbox', {
                             props: {
-                                value: this.selectDataAddButton['config'][params.index][params.column.key]
+                                value: this.selectDataAddButton[params.index][params.column.key]
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.selectDataAddButton['config'][params.index][params.column.key] = event; //获取编辑行的inde和编辑字段名，对表格数据进行重新赋值
+                                    this.selectDataAddButton[params.index][params.column.key] = event; //获取编辑行的inde和编辑字段名，对表格数据进行重新赋值
                                 }
                             }
                         });
@@ -119,7 +117,7 @@ export default {
             this.$emit('show','AddButtonModal',false);
         },
         ok(){
-            this.$emit('save',this.selectDataAddButton.nodeId,this.selectDataAddButton);
+            this.$emit('save',this.selectDataAddButton);
             this.$emit('show','AddButtonModal',false);
         },
         onCurrentChange(){}

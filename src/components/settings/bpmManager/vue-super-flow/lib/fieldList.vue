@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-18 20:07:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-22 20:21:25
+ * @LastEditTime: 2021-01-22 20:15:57
 -->
 <!--
  * @Descripttion: 
@@ -68,19 +68,19 @@ export default {
             columns: [
                 {
                     title: '字段名称',
-                    key: 'fieldName',
+                    key: 'fNameText',
                     render: (h, params) => {
                         return h("span", {
                         style: {
                             display: "inline-block",
                             color: "#2d8cf0"
                         },
-                        },params.row.fieldName);
+                        },params.row.fNameText);
                     }
                 },
                 {
                     title: '字段值',
-                    key: 'fieldCode',
+                    key: 'fName',
                 },
                 {
                     title: '字段类型',
@@ -95,25 +95,31 @@ export default {
             ],
             data: [
                 {
-                    id:'fds',
-                    fieldName: '姓名',
-                    fieldCode: "name",
+                    fId:1,
+                    fNameText: '姓名',
+                    fName: "name",
                     type: '文本',
-                    isEdit: false
+                    isEditable: false,
+                    isVisible:false,
+                    required:false
                 },
                 {
-                    id:'fds2',
-                    fieldName: '性别',
-                    fieldCode: "sex",
+                    fId:'fds2',
+                    fNameText: '性别',
+                    fName: "sex",
                     type: '文本',
-                    isEdit: false
+                    isEditable: false,
+                    isVisible:false,
+                    required:false
                 },
                 {
-                    id:'fds3',
-                    fieldName: '年龄',
-                    fieldCode: "age",
+                    fId:'fds3',
+                    fNameText: '年龄',
+                    fName: "age",
                     type: '文本',
-                    isEdit: false
+                    isEditable: false,
+                    isVisible:false,
+                    required:false
                 },
             ],
             loading: true,
@@ -145,6 +151,7 @@ export default {
             this.showModel = flag;
         },
         save(data) {
+            debugger
             if(this.formValidate.id){
                 this.data[this.selectIndex] = this.formValidate;
                 this.selectIndex = null;    

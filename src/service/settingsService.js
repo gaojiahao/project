@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 19:30:56
+ * @LastEditTime: 2021-01-22 20:40:45
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -571,6 +571,56 @@ export let GetFreightTemplateList = (data = {}) => {
 export let GetFreightTemplateById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetFreightTemplateById',
+    data: data
+  })
+};
+//国家管理
+export let CreateArea = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateArea',
+    data: data
+  })
+};
+export let UpdateArea = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateArea',
+    data: data
+  })
+};
+export let DelArea = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelArea',
+    data: data
+  })
+};
+export let GetAreaPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetAreaPage',
+    data: data
+  })
+};
+export let GetAreaList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetAreaList',
+    data: data
+  })
+};
+export let GetAreaById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetAreaById',
+    data: data
+  })
+};
+//工作流保存
+export let CreateWorkflow = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateWorkflow',
+    data: data
+  })
+};
+export let GetWorkflowById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetWorkflowById',
     data: data
   })
 };

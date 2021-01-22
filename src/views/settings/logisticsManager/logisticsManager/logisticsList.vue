@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 17:55:13
+ * @LastEditTime: 2021-01-22 14:32:46
 -->
 <template>
 <div class="erp_table_container">
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import config from "@views/settings/logisticsManager/logisticsManagerConfig";
+import config from "@views/settings/logisticsManager/logisticsManager/logisticsManagerConfig";
 import list from "@mixins/list";
 import {
     GetLogisticsPage,
@@ -162,36 +162,6 @@ export default {
                     title: '物流编码',
                     key: 'code',
                     resizable: true,
-                },
-                {
-                    title: '状态',
-                    key: 'status',
-                    resizable: true,
-                    filters: [
-                        {
-                            label: '已启用',
-                            value: 1
-                        },
-                        {
-                            label: '未启用',
-                            value: 0
-                        },
-                    ],
-                    filterMethod (value, row) {
-                        if (value === 1) {
-                            return row.status===1;
-                        } else if (value === 0) {
-                            return row.status===0;
-                        }
-                    },
-                    render: (h, params) => {
-                        return h("span", {
-                            style: {
-                                display: "inline-block",
-                                color: params.row.status===1 ? "#19be6b": "#ed4014"
-                            },
-                        },params.row.status===1?'已启用':'未启用');
-                    }
                 },
                 {
                     title: '创建者',

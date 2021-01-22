@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 10:38:26
+ * @LastEditTime: 2021-01-22 14:38:37
 -->
 <template>
 <div class="addTemplateTable-container">
@@ -13,16 +13,16 @@
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">
-                        <Button size="small" type="primary" icon="ios-add" @click.native="showPop(true)" class="marginRight">新建</Button>
-                        <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-                        <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+                        <Button size="small" type="primary" icon="ios-add" @click.native="showPop(true)" class="marginRight" v-if="!disabled">新建</Button>
+                        <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight" v-if="!disabled">编辑</Button>
+                        <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight" v-if="!disabled">删除</Button>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
                         <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
                     </div>
-                    <div class="filter-search">
+                    <!-- <div class="filter-search">
                         <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
-                    </div>
+                    </div> -->
                 </div>    
             </template>
             <template slot="footer">
@@ -40,7 +40,7 @@
 <script>
 import ModalForm from "@components/public/form/modalForm";
 import list from "@mixins/listTable";
-import config from "@views/settings/logisticsManager/editTemplate";
+import config from "@views/settings/logisticsManager/logisticsManager/editTemplate";
 import {
     CreateFreightTemplate,
     UpdateFreightTemplate,
@@ -60,7 +60,7 @@ export default {
                 return []
             }
         },
-        loading:{
+        loadingConfig:{
             type: Boolean,
             default: true,
         },
@@ -75,6 +75,10 @@ export default {
             default () {
                 return {}
             }    
+        },
+        disabled:{
+            type: Boolean,
+            default: false
         }
     },
     computed:{
@@ -88,6 +92,12 @@ export default {
                 this.formValidate2.logisticsId = val.id;
                 this.formValidate2.logisticsName = val.name;
             }
+        },
+        loadingConfig:{
+            handler(val){
+                this.loading = val;
+            },
+            deep:true
         }
     },
     data() {
@@ -142,6 +152,7 @@ export default {
                 },
             ],
             showModel: false,
+            loading:true,
         }
     },
     methods: {
