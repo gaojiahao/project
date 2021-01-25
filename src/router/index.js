@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 14:20:30
+ * @LastEditTime: 2021-01-25 11:17:27
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -589,7 +589,37 @@ const routes = [
                       group: "countryManager",
                       level: 1,
                     },
-                  },  
+                  },
+                  {
+                    path: "addCountry",
+                    name: "addCountry",
+                    component: resolve=>(require(["@views/settings/logisticsManager/countryManager/addCountry"],resolve)),
+                    meta: {
+                      title: "添加国家",
+                      group: "countryManager",
+                      level: 2,
+                    },
+                  },
+                  {
+                    path: "editCountry",
+                    name: "editCountry",
+                    component: resolve=>(require(["@views/settings/logisticsManager/countryManager/editCountry"],resolve)),
+                    meta: {
+                      title: "编辑国家",
+                      group: "countryManager",
+                      level: 2,
+                    },
+                  },
+                  {
+                    path: "viewCountry",
+                    name: "viewCountry",
+                    component: resolve=>(require(["@views/settings/logisticsManager/countryManager/viewCountry"],resolve)),
+                    meta: {
+                      title: "查看国家",
+                      group: "countryManager",
+                      level: 2,
+                    },
+                  },
                 ]
               }
             ]

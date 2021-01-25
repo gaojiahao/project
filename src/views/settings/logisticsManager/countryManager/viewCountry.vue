@@ -4,44 +4,44 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-25 10:59:55
+ * @LastEditTime: 2021-01-25 11:18:01
 -->
 <template>
-<div class="add_store">
+<div>
     <div class="top">
         <Divider orientation="left" size="small">国家信息</Divider>
         <div class="top_tabale">
-            <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+            <viewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">重置</Button>
                             <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                         </div>
                     </FormItem>
                 </template>
-            </XForm>
+            </viewForm>
         </div>
     </div>
 </div>
 </template>
 
 <script>
-import XForm from "@components/public/form/xForm";
+import ViewForm from "@components/public/form/viewForm";
 import config from "@views/settings/logisticsManager/countryManager/addCountryConfig";
-
 import {
-    CreateArea
+    GetAreaById,
+    CreateArea,
+    UpdateArea
 } from "@service/settingsService"
 
 export default {
-    name: "AddCountry",
+    name: "ViewCountry",
     components: {
-        XForm,
+        ViewForm,
     },
     data() {
         return {
+
         }
     },
     mixins: [config],
@@ -59,7 +59,22 @@ export default {
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.$refs['form'].$refs['formValidate'].resetFields();
                                     this.$refs['form'].initEL('input');
-                                    this.$router.go(-1);
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });
+                    } else {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            UpdateArea(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：更新成功！');
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -81,13 +96,37 @@ export default {
         },
         goReturn(){
             this.$router.go(-1);
-        },
+        }
+
     },
     created() {
-        
+        this.id = this.$route.query.id;
+        if(this.id) {
+            return new Promise((resolve, reject) => {
+                GetAreaById({id:this.id}).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.formValidate = {
+                            id: res.result.item.id,
+                            longName: res.result.item.longName,
+                            abbreviation: res.result.item.abbreviation,
+                            chinaName: res.result.item.chinaName,
+                            areaLevel: res.result.item.areaLevel,
+                            directLevel: res.result.item.directLevel,
+                        }
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.msg
+                        });
+                    }
+                });
+            });    
+        }
     }
 }
 </script>
+
 <style lang="less" scoped>
 @import "~@less/form.less";
 </style>

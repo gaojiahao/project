@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 14:47:52
+ * @LastEditTime: 2021-01-25 11:21:57
 -->
 <template>
 <div class="erp_table_container">
@@ -96,16 +96,16 @@ export default {
             this.GetAreaPage();
         },
         goAdd(){
-            this.$router.push({name:'addLogistics'});
+            this.$router.push({name:'addCountry'});
         },
         goEdit(){
             if(this.activatedRow.id){
-                this.$router.push({name:'editLogistics',query: {id:this.activatedRow.id}});
+                this.$router.push({name:'editCountry',query: {id:this.activatedRow.id}});
             }
         },
         goDetail(id){
             if(id)
-                this.$router.push({name:'viewLogistics',query: {id:id}});
+                this.$router.push({name:'viewCountry',query: {id:id}});
         },
         checkALl(){
             this.$nextTick(function () {
