@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 14:21:45
+ * @LastEditTime: 2021-01-25 15:05:22
 -->
 <template>
 <div class="erp_table_container">
@@ -43,9 +43,7 @@
 
 <script>
 import ModalForm from "@components/public/form/modalForm";
-import SeniorFilter from "@components/public/filter/seniorFilter";
-import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
-import ImageModel from "@components/public/model/imageModel";
+import list from "@mixins/list";
 import config from "@views/basicinfo/productManager/productListConfig";
 import {
     GetPrepGoodsPage,
@@ -60,7 +58,7 @@ export default {
         AutoCompleteSearch,
         ImageModel
     },
-    mixins: [config],
+    mixins: [config,list],
     data() {
         return {
             titleText: '',

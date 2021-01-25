@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-25 11:17:27
+ * @LastEditTime: 2021-01-25 12:03:27
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -622,6 +622,58 @@ const routes = [
                   },
                 ]
               }
+            ]
+          },
+          {
+            path: "merchantManager",
+            name: "merchantManager",
+            component: resolve=>(require(["@views/settings/merchantManager"],resolve)),
+            redirect:'merchantManager/merchantList',
+            meta: {
+              title: "角色管理",
+              group: "merchantManager",
+            },
+            children:[
+              {
+                path: "merchantList",
+                name: "merchantList",
+                component: resolve=>(require(["@views/settings/merchantManager/merchantList"],resolve)),
+                meta: {
+                  title: "商户管理",
+                  group: "merchantManager",
+                  level: 1,
+                },
+              },
+              {
+                path: "addMerchant",
+                name: "addMerchant",
+                component: resolve=>(require(["@views/settings/merchantManager/addMerchant"],resolve)),
+                meta: {
+                  title: "添加商户",
+                  group: "merchantManager",
+                  level: 2,
+                },
+              },
+              {
+                path: "editMerchant",
+                name: "editMerchant",
+                component: resolve=>(require(["@views/settings/merchantManager/editMerchant"],resolve)),
+                meta: {
+                  title: "编辑商户 ",
+                  group: "merchantManager",
+                  level: 2,
+                },
+              },
+              {
+                path: "viewMerchant",
+                name: "viewMerchant",
+                component: resolve=>(require(["@views/settings/merchantManager/viewMerchant"],resolve)),
+                meta: {
+                  title: "查看商户",
+                  group: "merchantManager",
+                  level: 2,
+                },
+              },
             ]
           },
         ]

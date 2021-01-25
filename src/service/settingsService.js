@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-23 11:44:28
+ * @LastEditTime: 2021-01-25 11:43:55
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -633,6 +633,37 @@ export let CreateWorkflow = (data = {}) => {
 export let GetWorkflowById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetWorkflowById',
+    data: data
+  })
+};
+//商户管理
+export let CreateMerchantInfo = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateMerchantInfo',
+    data: data
+  })
+};
+export let UpdateMerchantInfo = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateMerchantInfo',
+    data: data
+  })
+};
+export let DelMerchantInfo = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelMerchantInfo',
+    data: data
+  })
+};
+export let GetMerchantInfoPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetMerchantInfoPage',
+    data: data
+  })
+};
+export let GetMerchantInfoById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetMerchantInfoById',
     data: data
   })
 };
