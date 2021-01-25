@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 10:24:33
+ * @LastEditTime: 2021-01-23 12:10:05
 -->
 <template>
 <div class="erp_table_container">
@@ -34,7 +34,7 @@
                 </div>
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="goSaveBpm(row.id)">工作流编辑</Button>
+                <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="goSaveBpm(row)">工作流编辑</Button>
             </template>
         </Table>
     </div>
@@ -160,7 +160,7 @@ export default {
                 },
                 {
                     title: '版本号',
-                    key: 'templateId',
+                    key: 'version',
                 },
                 // {
                 //     title: '业务表',
@@ -204,7 +204,7 @@ export default {
         getData(){
             var data = [
             {
-                id:'fds',
+                id:1,
                 moduleName: '新品开发',
                 flowName: '新品开发流程',
                 edition: '1.0',
@@ -213,7 +213,7 @@ export default {
                 createTime: "2020-11-06",
                 creater:"李四"
             }, {
-                id:'fds1',
+                id:2,
                 moduleName: '制图管理',
                 flowName: '制图管理流程',
                 edition: '1.0',
@@ -222,7 +222,7 @@ export default {
                 createTime: "2020-11-06",
                 creater:"李四"
             },{
-                id:'fds2',
+                id:3,
                 moduleName: '销售推品',
                 flowName: '新销售推品流程',
                 edition: '1.0',
@@ -277,9 +277,9 @@ export default {
             },
             this.GetWorkflowClausePage(); 
         },
-        goSaveBpm(id){
-            if(id)
-                this.$router.push({name:'saveBpm',query: {id:id}});    
+        goSaveBpm(row){
+            if(row.id)
+                this.$router.push({name:'saveBpm',query: {id:row.id,tpId:row.tpId}});    
         }
     },
     created(){

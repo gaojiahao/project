@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 10:02:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 20:02:32
+ * @LastEditTime: 2021-01-23 11:40:22
 -->
 <template>
     <Modal
@@ -144,7 +144,6 @@ export default {
         onCurrentChange(){},
         add(){
             this.loading = true;
-            debugger
             this.formData = {
                 fId:this.selectF.tag,
                 ...this.formData,
@@ -168,7 +167,6 @@ export default {
             this.selectAddCondition.splice(index, 1);
         },
         onChange(data){
-            debugger
             this.selectF = data;
         }
     },

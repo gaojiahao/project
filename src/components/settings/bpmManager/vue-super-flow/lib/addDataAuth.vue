@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 10:02:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 18:58:47
+ * @LastEditTime: 2021-01-23 11:19:03
 -->
 <template>
     <Modal
@@ -139,7 +139,7 @@ export default {
                         required:false
                     },
                     {
-                        fId:'fds2',
+                        fId:2,
                         fNameText: '性别',
                         fName: "sex",
                         type: '文本',

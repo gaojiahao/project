@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 20:40:45
+ * @LastEditTime: 2021-01-23 11:44:28
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -469,6 +469,12 @@ export let GetWorkflowPackageById = (data = {}) => {
     data: data
   })
 };
+export let GetWorkflowPackageList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetWorkflowPackageList',
+    data: data
+  })
+};
 //流程管理
 export let CreateWorkflowClause = (data = {}) => {
   return $flyio.post({
@@ -497,6 +503,12 @@ export let GetWorkflowClausePage = (data = {}) => {
 export let GetWorkflowClauseById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetWorkflowClauseById',
+    data: data
+  })
+};
+export let GetWorkflowTemplateById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetWorkflowTemplateById',
     data: data
   })
 };

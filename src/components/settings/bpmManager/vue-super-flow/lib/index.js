@@ -556,12 +556,12 @@
 					this.text = d.name,
 					this.width = s,
 					this.height = u,
-					this.participants = [],
-					this.parPolicies = {},
-					this.outerParticipants = [],
-					this.buttons = [],
-					this.rules = [],
-					this.permissions = []
+					this.participants = e.participants||[],
+					this.parPolicies = e.parPolicies||{},
+					this.outerParticipants = e.outerParticipants||[],
+					this.buttons = e.buttons||[],
+					this.rules = e.rules||[],
+					this.permissions = e.permissions||[]
 				}
 				return et(t, [{
 					key: "angle",
@@ -636,7 +636,13 @@
 							left: this.coordinate[0],
 							top: this.coordinate[1],
 							type: this.data.prop,
-							text: this.data.name
+							text: this.data.name,
+							nodeId: this.id,
+							parPolicies: this.parPolicies,
+							permissions: this.permissions,
+							buttons: this.buttons,
+							rules: this.rules,
+							participants: this.participants,
 						}
 					}
 				},

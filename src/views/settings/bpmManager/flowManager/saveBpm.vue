@@ -87,7 +87,7 @@ import AddButton from '@components/settings/bpmManager/vue-super-flow/lib/addBut
 import AddCondition from '@components/settings/bpmManager/vue-super-flow/lib/addCondition';
 import {
     CreateWorkflow,
-    GetWorkflowById
+    GetWorkflowTemplateById
 } from "@service/settingsService"
 
 import list from './nodeList'
@@ -159,7 +159,7 @@ export default {
                                 required:false
                             },
                             {
-                                fId:'fds2',
+                                fId:2,
                                 fNameText: '性别',
                                 fName: "sex",
                                 type: '文本',
@@ -168,7 +168,7 @@ export default {
                                 required:false
                             },
                             {
-                                id:'fds3',
+                                id:3,
                                 fNameText: '年龄',
                                 fName: "age",
                                 type: '文本',
@@ -471,19 +471,16 @@ export default {
                         'start',
                         'task',
                         'condition',
-                        'cc'
                     ].includes(formType)
                 case 'condition':
                     return [
                         'start',
                         'task',
                         'condition',
-                        'cc'
                     ].includes(formType)
                 case 'end':
                     return [
                         'task',
-                        'cc'
                     ].includes(formType)
                 default:
                     return true
@@ -516,13 +513,13 @@ export default {
         },
         //保存工作流数据
         save() {
-            debugger
             var params= {};
-            params.id = "";
+            // params.id = "";
             params.clauseId = this.$route.query.id; //流程id
             params.chanrtJson = {};
+            params.viewJson="";
             var a = this.$refs.superFlow.graph.toJSON();
-            debugger
+            params.viewJson=(JSON.stringify(this.$refs.superFlow.graph.toJSON(), null, 2));
             params.chanrtJson = {
                 origin: a.origin,
                 nodes: a.nodeList,
@@ -531,40 +528,23 @@ export default {
             var json = {};
             // let a = (JSON.stringify(this.$refs.superFlow.graph.toJSON(), null, 2));
             // console.log(a);
-
-            if (!params.id) {
-                return new Promise((resolve, reject) => {
-                    this.$FromLoading.show();
-                    CreateWorkflow(params).then(res => {
-                        if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：保存成功！');
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.msg
-                            });
-                            this.$FromLoading.hide();
-                        }
-                    });
+            
+            return new Promise((resolve, reject) => {
+                this.$FromLoading.show();
+                CreateWorkflow(params).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.$Message.info('温馨提示：保存成功！');
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.msg
+                        });
+                        this.$FromLoading.hide();
+                    }
                 });
-            } else {
-                return new Promise((resolve, reject) => {
-                    this.$FromLoading.show();
-                    UpdateStore(params).then(res => {
-                        if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.$Message.info('温馨提示：更新成功！');
-                        } else if (res.result.code == 400) {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.msg
-                            });
-                            this.$FromLoading.hide();
-                        }
-                    });
-                });
-            }
+            });
+            
         },
         //暂时没用
         docMousemove({
@@ -785,18 +765,39 @@ export default {
         saveAddParticipant(data){
             // this.$set(this.dataAddParticipant,id,data);
             this.$set(this.nodeSetting, 'participants', data);
-        }
+        },
+        GetWorkflowTemplateById(){
+            this.id = this.$route.query.tpId;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetWorkflowTemplateById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            var arr = JSON.parse(res.result.item.viewJson);
+                            this.nodeList = arr.nodeList;
+                            this.linkList = arr.linkList;
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
     },
     created() {
-        var data = this.$route.query;
-        if (data.id) {
-            for (var i = 0; i < this.list.length; i++) {
-                if (this.list[i].id == data.id) {
-                    this.nodeList = this.list[i].nodeList;
-                    this.linkList = this.list[i].linkList;
-                }
-            }
-        }
+        // var data = this.$route.query;
+        // if (data.id) {
+        //     for (var i = 0; i < this.list.length; i++) {
+        //         if (this.list[i].id == data.id) {
+        //             this.nodeList = this.list[i]['chanrtJson']['nodes'];
+        //             this.linkList = this.list[i]['chanrtJson']['edges'];
+        //         }
+        //     }
+        // }
+        this.GetWorkflowTemplateById();
     },
     mounted(){
         //监听鼠标的拖动

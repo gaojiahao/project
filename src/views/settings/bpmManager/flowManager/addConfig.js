@@ -4,52 +4,60 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 17:16:21
+ * @LastEditTime: 2021-01-23 11:11:17
  */
 export default {
     data() {
+        const packageIdVali = (rule, value, callback) => {
+            if (value == ''||value === undefined) {
+                callback(new Error('请选择模型名称'));
+            } else {
+              callback();
+            }
+        };
         return {
             formConfig:{
-                moduleName:{
+                packageId:{
                     name:'模型名称',
                     type:'select',
                     dataSource:{
-                        type:'static',
-                        data:[
-                            {name:'新品开发',value:'001'},
-                            {name:'请假管理',value:'002'},
-                            {name:'销售推品',value:'003'}
-                        ],
+                        type:'dynamic',
+                        url:'/api/GetWorkflowPackageList',
+                        data:[],
+                        col:[
+                            {k:'name',v:'packageName'},
+                            {k:'value',v:'id'}
+                          ]
                     },
-                    disabled: false
+                    bind:{
+                      target: 'packageName',
+                      bindValue: 'packageName'
+                    }
                 },
-                flowName:{
+                workflowName:{
                     name:'流程名称',
                     type:'text',
                 },
-                icon:{
-                    name:'流程名称',
+                workflowIcon:{
+                    name:'流程icon',
                     type:'text',
-                },
-                relationTable:{
-                    name:'关联表',
-                    type:'text', 
                 },
             },
             formValidate: {
-                moduleName: '',
-                flowName:'',
-                icon: '',
-                relationTable:''
+                packageId:'',
+                packageName: '',
+                workflowName:'',
+                templateId:0,
+                workflowIcon: '',
             },
             ruleValidate: {
-                moduleName: [{
+                packageId: [{
                     required: true,
-                    type: 'string',
-                    message: '请输入模型名称',
-                    trigger: 'change'
+                    message: '请选择模型名称',
+                    trigger: 'change',
+                    validator: packageIdVali,
                 }],
-                flowName: [{
+                workflowName: [{
                     required: true,
                     type: 'string',
                     message: '请输入流程名称',

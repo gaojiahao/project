@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-18 20:07:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 20:15:57
+ * @LastEditTime: 2021-01-23 11:19:29
 -->
 <!--
  * @Descripttion: 
@@ -104,7 +104,7 @@ export default {
                     required:false
                 },
                 {
-                    fId:'fds2',
+                    fId:2,
                     fNameText: '性别',
                     fName: "sex",
                     type: '文本',
@@ -113,7 +113,7 @@ export default {
                     required:false
                 },
                 {
-                    fId:'fds3',
+                    fId:3,
                     fNameText: '年龄',
                     fName: "age",
                     type: '文本',

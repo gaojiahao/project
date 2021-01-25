@@ -3,718 +3,275 @@ export default {
       return {
         list:[
           {
-            id:'fds',
-            name:'开发审核',
-            value:'kfsh',
-            "nodeList": [
-              {
-                "id": "node76JYr1TYvjNvdGSs",
+            id:261,
+            "clauseId": "261",
+            "chanrtJson": {
+              "origin": [681, 465],
+              "nodes": [{
+                "id": "nodez6g47CN0ylhPvXBq",
                 "width": 40,
                 "height": 40,
-                "coordinate": [
-                  -295,
-                  -394
-                ],
+                "coordinate": [-207, -406],
                 "data": {
                   "prop": "start",
                   "name": "开始"
                 },
-                "left": -295,
-                "top": -394,
+                "left": -207,
+                "top": -406,
                 "type": "start",
-                "text": "开始"
-              },
-              {
-                "id": "nodemAk3FGJMI2zY55Km",
-                "width": 140,
-                "height": 60,
-                "coordinate": [
-                  -345,
-                  -156
-                ],
-                "data": {
-                  "prop": "condition",
-                  "name": "条件"
-                },
-                "left": -345,
-                "top": -156,
-                "type": "condition",
-                "text": "条件"
-              },
-              {
-                "id": "nodetaUQKRqHRuGPJrqJ",
+                "text": "开始",
+                "nodeId": "nodez6g47CN0ylhPvXBq",
+                "parPolicies": {},
+                "permissions": [],
+                "buttons": [],
+                "rules": [],
+                "participants": []
+              }, {
+                "id": "nodeLnoCuKVfqRiPGhEd",
                 "width": 120,
                 "height": 50,
-                "coordinate": [
-                  -335,
-                  -31
-                ],
+                "coordinate": [-247, -308],
                 "data": {
                   "prop": "task",
                   "name": "任务"
                 },
-                "left": -335,
-                "top": -31,
+                "left": -247,
+                "top": -308,
                 "type": "task",
-                "text": "任务"
-              },
-              {
-                "id": "nodeliFEcAq1N0Fr96iB",
+                "text": "任务",
+                "nodeId": "nodeLnoCuKVfqRiPGhEd",
+                "parPolicies": {
+                  "noParPolicy": "001",
+                  "dupParPolicy": "001",
+                  "participatedParPolicy": "001"
+                },
+                "permissions": [{
+                  "fId": 1,
+                  "fNameText": "姓名",
+                  "fName": "name",
+                  "type": "文本",
+                  "isEditable": true,
+                  "isVisible": true,
+                  "required": false
+                }, {
+                  "fId": 2,
+                  "fNameText": "性别",
+                  "fName": "sex",
+                  "type": "文本",
+                  "isEditable": true,
+                  "isVisible": true,
+                  "required": false
+                }, {
+                  "id": 3,
+                  "fNameText": "年龄",
+                  "fName": "age",
+                  "type": "文本",
+                  "isEditable": true,
+                  "isVisible": true,
+                  "required": false
+                }],
+                "buttons": [{
+                  "name": "同意",
+                  "value": "agree",
+                  "action": true
+                }, {
+                  "name": "拒绝",
+                  "value": "disagree",
+                  "action": true
+                }, {
+                  "name": "撤回",
+                  "value": "recall",
+                  "action": false
+                }, {
+                  "name": "终止",
+                  "value": "stop",
+                  "action": false
+                }, {
+                  "name": "转办",
+                  "value": "transfer",
+                  "action": false
+                }],
+                "rules": [],
+                "participants": [{
+                  "participantId": 212,
+                  "roleName": "总经理",
+                  "type": 1
+                }, {
+                  "participantId": 212,
+                  "roleName": "总经理",
+                  "type": 1
+                }]
+              }, {
+                "id": "nodeXPCvv5NAoevgb8Hf",
+                "width": 140,
+                "height": 60,
+                "coordinate": [-257, -192],
+                "data": {
+                  "prop": "condition",
+                  "name": "条件"
+                },
+                "left": -257,
+                "top": -192,
+                "type": "condition",
+                "text": "条件",
+                "nodeId": "nodeXPCvv5NAoevgb8Hf",
+                "parPolicies": {},
+                "permissions": [],
+                "buttons": [],
+                "rules": [{
+                  "fId": 1,
+                  "nexus": "001",
+                  "fName": "name",
+                  "logic": "001",
+                  "value": "1",
+                  "fNameText": "姓名",
+                  "nexusText": "并且",
+                  "logicText": "等于"
+                }, {
+                  "fId": 2,
+                  "nexus": "001",
+                  "fName": "sex",
+                  "logic": "001",
+                  "value": "1",
+                  "fNameText": "性别",
+                  "nexusText": "并且",
+                  "logicText": "等于"
+                }],
+                "participants": []
+              }, {
+                "id": "nodeIdRypeAcTTYu6VYe",
+                "width": 120,
+                "height": 50,
+                "coordinate": [-247, -82],
+                "data": {
+                  "prop": "task",
+                  "name": "任务"
+                },
+                "left": -247,
+                "top": -82,
+                "type": "task",
+                "text": "任务",
+                "nodeId": "nodeIdRypeAcTTYu6VYe",
+                "parPolicies": {
+                  "noParPolicy": "002",
+                  "dupParPolicy": "003",
+                  "participatedParPolicy": "002"
+                },
+                "permissions": [{
+                  "fId": 1,
+                  "fNameText": "姓名",
+                  "fName": "name",
+                  "type": "文本",
+                  "isEditable": false,
+                  "isVisible": true,
+                  "required": false
+                }, {
+                  "fId": 2,
+                  "fNameText": "性别",
+                  "fName": "sex",
+                  "type": "文本",
+                  "isEditable": false,
+                  "isVisible": true,
+                  "required": false
+                }, {
+                  "id": 3,
+                  "fNameText": "年龄",
+                  "fName": "age",
+                  "type": "文本",
+                  "isEditable": false,
+                  "isVisible": true,
+                  "required": false
+                }],
+                "buttons": [{
+                  "name": "同意",
+                  "value": "agree",
+                  "action": true
+                }, {
+                  "name": "拒绝",
+                  "value": "disagree",
+                  "action": true
+                }, {
+                  "name": "撤回",
+                  "value": "recall",
+                  "action": false
+                }, {
+                  "name": "终止",
+                  "value": "stop",
+                  "action": false
+                }, {
+                  "name": "转办",
+                  "value": "transfer",
+                  "action": true
+                }],
+                "rules": [],
+                "participants": [{
+                  "participantId": 206,
+                  "roleName": "总经理",
+                  "type": 1
+                }]
+              }, {
+                "id": "nodeoXkq5nJneSGCx8wP",
                 "width": 40,
                 "height": 40,
-                "coordinate": [
-                  -295,
-                  113
-                ],
+                "coordinate": [-207, 25],
                 "data": {
                   "prop": "end",
                   "name": "结束"
                 },
-                "left": -295,
-                "top": 113,
+                "left": -207,
+                "top": 25,
                 "type": "end",
-                "text": "结束"
-              },
-              {
-                "id": "nodehQpwTBtI4e1q2JK9",
-                "width": 120,
-                "height": 50,
-                "coordinate": [
-                  -335,
-                  -288
-                ],
-                "data": {
-                  "prop": "task",
-                  "name": "任务1111"
-                },
-                "left": -335,
-                "top": -288,
-                "type": "task",
-                "text": "任务1111"
-              }
-            ],
-            "linkList": [
-              {
-                "id": "linkTArIvZlGJnPjlwis",
-                "startId": "nodehQpwTBtI4e1q2JK9",
-                "endId": "nodemAk3FGJMI2zY55Km",
-                "startAt": [
-                  60,
-                  50
-                ],
-                "endAt": [
-                  70,
-                  0
-                ],
+                "text": "结束",
+                "nodeId": "nodeoXkq5nJneSGCx8wP",
+                "parPolicies": {},
+                "permissions": [],
+                "buttons": [],
+                "rules": [],
+                "participants": []
+              }],
+              "edges": [{
+                "edgeid": "linkKZzUtAPikSGCy8Rf",
+                "sourse": "nodeXPCvv5NAoevgb8Hf",
+                "target": "nodeIdRypeAcTTYu6VYe",
+                "startAt": [70, 60],
+                "endAt": [60, 0],
                 "data": {
                   "name": "线",
                   "prop": "line"
                 }
-              },
-              {
-                "id": "linkGKgBJaRcKziINZ5C",
-                "startId": "nodemAk3FGJMI2zY55Km",
-                "endId": "nodetaUQKRqHRuGPJrqJ",
-                "startAt": [
-                  70,
-                  60
-                ],
-                "endAt": [
-                  60,
-                  0
-                ],
+              }, {
+                "edgeid": "linkQrFDChIQz0XRbmF4",
+                "sourse": "nodeIdRypeAcTTYu6VYe",
+                "target": "nodeoXkq5nJneSGCx8wP",
+                "startAt": [60, 50],
+                "endAt": [20, 0],
                 "data": {
                   "name": "线",
                   "prop": "line"
                 }
-              },
-              {
-                "id": "linktOOnRygEAjEcIQFd",
-                "startId": "nodetaUQKRqHRuGPJrqJ",
-                "endId": "nodeliFEcAq1N0Fr96iB",
-                "startAt": [
-                  60,
-                  50
-                ],
-                "endAt": [
-                  20,
-                  0
-                ],
+              }, {
+                "edgeid": "linkrqwKwTBfaDZZ34Cg",
+                "sourse": "nodeLnoCuKVfqRiPGhEd",
+                "target": "nodeXPCvv5NAoevgb8Hf",
+                "startAt": [60, 50],
+                "endAt": [70, 0],
                 "data": {
                   "name": "线",
                   "prop": "line"
                 }
-              },
-              {
-                "id": "linkzTKkFBnz6L5H8AIa",
-                "startId": "node76JYr1TYvjNvdGSs",
-                "endId": "nodehQpwTBtI4e1q2JK9",
-                "startAt": [
-                  20,
-                  40
-                ],
-                "endAt": [
-                  60,
-                  0
-                ],
+              }, {
+                "edgeid": "linkUcBXcGqH2wujZODU",
+                "sourse": "nodez6g47CN0ylhPvXBq",
+                "target": "nodeLnoCuKVfqRiPGhEd",
+                "startAt": [20, 40],
+                "endAt": [60, 0],
                 "data": {
                   "name": "线",
                   "prop": "line"
                 }
-              }
-            ]
-          },
-            {
-                id:'fdsf',
-                name:'开发审核',
-                value:'kfsh',
-                nodeList: [
-                    {
-                        "id": "node5ZOOSrDWL3XBdus7",
-                        "width": 100,
-                        "height": 80,
-                        "coordinate": [
-                        -34,
-                        -437
-                        ],
-                        "meta": {
-                        "prop": "start",
-                        "name": "开始节点",
-                        "desc": "开始"
-                        }
-                    },
-                    {
-                        "id": "nodexO4hqXbrc33JRaaN",
-                        "width": 160,
-                        "height": 80,
-                        "coordinate": [
-                        -52,
-                        -35
-                        ],
-                        "meta": {
-                        "prop": "approval",
-                        "name": "审批节点",
-                        "desc": "总裁审批"
-                        }
-                    },
-                    {
-                        "id": "nodesFJ2095Yy7sfIfIY",
-                        "width": 80,
-                        "height": 50,
-                        "coordinate": [
-                        -12,
-                        144
-                        ],
-                        "meta": {
-                        "prop": "end",
-                        "name": "结束节点"
-                        }
-                    },
-                    {
-                        "id": "nodeE9WlgsDuWaCOe3mH",
-                        "width": 160,
-                        "height": 80,
-                        "coordinate": [
-                        103,
-                        -327
-                        ],
-                        "meta": {
-                        "prop": "condition",
-                        "name": "条件节点",
-                        "desc": "是否需要审批"
-                        }
-                    },
-                    {
-                        "id": "nodeGuUN3gTWlQXkVmhT",
-                        "width": 160,
-                        "height": 80,
-                        "coordinate": [
-                        -52,
-                        -179
-                        ],
-                        "meta": {
-                        "prop": "approval",
-                        "name": "审批节点",
-                        "desc": "总经理审批"
-                        }
-                    },
-                    {
-                        "id": "nodeeXEeMJrE9FXGevyS",
-                        "width": 160,
-                        "height": 80,
-                        "coordinate": [
-                        -239,
-                        -327
-                        ],
-                        "meta": {
-                        "prop": "condition",
-                        "name": "条件节点",
-                        "desc": "是否需要审批"
-                        }
-                    }
-                ],
-                linkList: [
-                    {
-                      "id": "link1hbJaCNR9MrZIs3f",
-                      "startId": "nodexO4hqXbrc33JRaaN",
-                      "endId": "nodesFJ2095Yy7sfIfIY",
-                      "startAt": [
-                        80,
-                        80
-                      ],
-                      "endAt": [
-                        40,
-                        0
-                      ],
-                      "meta": {
-                        "prop": "line",
-                        "name": "线",
-                        "desc": "同意"
-                        }
-                    },
-                    {
-                      "id": "linkviVioHMiNQFiyq8A",
-                      "startId": "nodeE9WlgsDuWaCOe3mH",
-                      "endId": "nodeGuUN3gTWlQXkVmhT",
-                      "startAt": [
-                        80,
-                        80
-                      ],
-                      "endAt": [
-                        80,
-                        0
-                      ],
-                      "meta": {
-                        "prop": "line",
-                        "name": "线",
-                        "desc": "不同意"
-                        }
-                    },
-                    {
-                      "id": "linkzlJGGV2kIPB3U2fj",
-                      "startId": "nodeGuUN3gTWlQXkVmhT",
-                      "endId": "nodexO4hqXbrc33JRaaN",
-                      "startAt": [
-                        80,
-                        80
-                      ],
-                      "endAt": [
-                        80,
-                        0
-                      ],
-                      "meta":  {
-                        "prop": "line",
-                        "name": "线",
-                        "desc": "不同意"
-                        }
-                    },
-                    {
-                      "id": "linkVblJtL0pOs7Fx2wV",
-                      "startId": "node5ZOOSrDWL3XBdus7",
-                      "endId": "nodeE9WlgsDuWaCOe3mH",
-                      "startAt": [
-                        50,
-                        80
-                      ],
-                      "endAt": [
-                        80,
-                        0
-                      ],
-                      "meta":  {
-                        "prop": "line",
-                        "name": "线",
-                        "desc": "不同意"
-                        }
-                    },
-                    {
-                      "id": "link1QbaGM1SB2GGbvkS",
-                      "startId": "nodeeXEeMJrE9FXGevyS",
-                      "endId": "nodexO4hqXbrc33JRaaN",
-                      "startAt": [
-                        80,
-                        80
-                      ],
-                      "endAt": [
-                        0,
-                        40
-                      ],
-                      "meta":  {
-                        "prop": "line",
-                        "name": "线",
-                        "desc": "不同意"
-                        }
-                    },
-                    {
-                      "id": "linktCt6KsQwciCRpWCe",
-                      "startId": "node5ZOOSrDWL3XBdus7",
-                      "endId": "nodeeXEeMJrE9FXGevyS",
-                      "startAt": [
-                        50,
-                        80
-                      ],
-                      "endAt": [
-                        80,
-                        0
-                      ],
-                      "meta":  {
-                        "prop": "line",
-                        "name": "线",
-                        "desc": "不同意"
-                        }
-                    }
-                ]
-            },
-            {
-                id:'czv',
-                name:'侵权审核',
-                value:'qqsh',
-                nodeList: [
-                    {
-                        'id': 'nodeS3WgFnzCI15X58Qw',
-                        'width': 100,
-                        'height': 80,
-                        'coordinate': [-644, -148],
-                        'meta': {
-                            'prop': 'start',
-                            'name': '开始节点'
-                        }
-                    },
-                    {
-                        'id': 'nodefHsy9uJObPtdHZv1',
-                        'width': 160,
-                        'height': 80,
-                        'coordinate': [-200, -148],
-                        'meta': {
-                            'prop': 'approval',
-                            'name': '审批节点',
-                            'desc': '111111'
-                        }
-                    },
-                    {
-                        'id': 'nodeni9QOqT3mI7hsMau',
-                        'width': 160,
-                        'height': 80,
-                        'coordinate': [-442, -275],
-                        'meta': {
-                            'prop': 'condition',
-                            'name': '条件节点'
-                        }
-                    },
-                    {
-                        'id': 'nodeZBK0ZPpgMe1exezE',
-                        'width': 160,
-                        'height': 80,
-                        'coordinate': [-200, -275],
-                        'meta': {
-                            'prop': 'approval',
-                            'name': '审批节点'
-                        }
-                    },
-                    {
-                        'id': 'nodeqkK9zjcDz53xKRlK',
-                        'width': 160,
-                        'height': 80,
-                        'coordinate': [34, -209],
-                        'meta': {
-                            'prop': 'cc',
-                            'name': '抄送节点'
-                        }
-                    },
-                    {
-                        'id': 'nodeDhVU6w2KbEnJCjZs',
-                        'width': 80,
-                        'height': 50,
-                        'coordinate': [286, -133],
-                        'meta': {
-                            'prop': 'end',
-                            'name': '结束节点'
-                        }
-                    },
-                    {
-                        'id': 'nodesyxisLH1hJDdPsxx',
-                        'width': 160,
-                        'height': 80,
-                        'coordinate': [34, -75],
-                        'meta': {
-                            'prop': 'cc',
-                            'name': '抄送节点'
-                        }
-                    },
-                    {
-                        'id': 'node0aiA9VuhjkiAdZCs',
-                        'width': 160,
-                        'height': 80,
-                        'coordinate': [-200, -2],
-                        'meta': {
-                            'prop': 'approval',
-                            'name': '审批节点'
-                        }
-                    },
-                    {
-                        'id': 'nodeG3WeFnzCI15X58Qw',
-                        'width': 160,
-                        'height': 80,
-                        'coordinate': [-442, -2],
-                        'meta': {
-                            'prop': 'condition',
-                            'name': '条件节点'
-                        }
-                    },
-                    {
-                        'id': 'node7WXbwOR6kSFD53Hf',
-                        'width': 160,
-                        'height': 80,
-                        'coordinate': [-442, -148],
-                        'meta': {
-                            'prop': 'condition',
-                            'name': '条件节点'
-                        }
-                    }
-                ],
-                linkList: [
-                    {
-                        'id': 'linkcs9ZhumWeTHrtUy8',
-                        'startId': 'nodeS3WgFnzCI15X58Qw',
-                        'endId': 'nodeni9QOqT3mI7hsMau',
-                        'startAt': [100, 40],
-                        'endAt': [0, 40],
-                        'meta': null
-                    },
-                    {
-                        'id': 'linkBDld5rDBw4C6kiva',
-                        'startId': 'nodefHsy9uJObPtdHZv1',
-                        'endId': 'nodeqkK9zjcDz53xKRlK',
-                        'startAt': [160, 40],
-                        'endAt': [0, 40],
-                        'meta': null
-                    },
-                    {
-                        'id': 'linkA0ZZxRlDI9AOonuq',
-                        'startId': 'node7WXbwOR6kSFD53Hf',
-                        'endId': 'nodefHsy9uJObPtdHZv1',
-                        'startAt': [160, 40],
-                        'endAt': [0, 40],
-                        'meta': null
-                    },
-                    {
-                        'id': 'linkhCKTpRAf89gcujGS',
-                        'startId': 'nodeni9QOqT3mI7hsMau',
-                        'endId': 'nodeZBK0ZPpgMe1exezE',
-                        'startAt': [160, 40],
-                        'endAt': [0, 40],
-                        'meta': null
-                    },
-                    {
-                        'id': 'link2o7VZ7DRaSFKtB0g',
-                        'startId': 'nodeqkK9zjcDz53xKRlK',
-                        'endId': 'nodeDhVU6w2KbEnJCjZs',
-                        'startAt': [160, 40],
-                        'endAt': [0, 25],
-                        'meta': null
-                    },
-                    {
-                        'id': 'linkII013ovDctUDuPLu',
-                        'startId': 'nodeS3WgFnzCI15X58Qw',
-                        'endId': 'nodeG3WeFnzCI15X58Qw',
-                        'startAt': [100, 40],
-                        'endAt': [0, 40],
-                        'meta': null
-                    },
-                    {
-                        'id': 'link6MOmsq1EqzlWcG1n',
-                        'startId': 'nodeZBK0ZPpgMe1exezE',
-                        'endId': 'nodeqkK9zjcDz53xKRlK',
-                        'startAt': [160, 40],
-                        'endAt': [0, 40],
-                        'meta': null
-                    },
-                    {
-                        'id': 'link52SczSXHmuyKDzRU',
-                        'startId': 'nodesyxisLH1hJDdPsxx',
-                        'endId': 'nodeDhVU6w2KbEnJCjZs',
-                        'startAt': [160, 40],
-                        'endAt': [0, 25],
-                        'meta': null
-                    },
-                    {
-                        'id': 'link2hBQDTuIG4ZFYyE0',
-                        'startId': 'node0aiA9VuhjkiAdZCs',
-                        'endId': 'nodesyxisLH1hJDdPsxx',
-                        'startAt': [160, 40],
-                        'endAt': [0, 40],
-                        'meta': null
-                    },
-                    {
-                        'id': 'linkrwdW87FmOma5rPVo',
-                        'startId': 'nodeG3WeFnzCI15X58Qw',
-                        'endId': 'node0aiA9VuhjkiAdZCs',
-                        'startAt': [160, 40],
-                        'endAt': [0, 40],
-                        'meta': null
-                    },
-                    {
-                        'id': 'linknL75dQV0AWZA85sq',
-                        'startId': 'nodeS3WgFnzCI15X58Qw',
-                        'endId': 'node7WXbwOR6kSFD53Hf',
-                        'startAt': [100, 40],
-                        'endAt': [0, 40],
-                        'meta': null
-                    }
-                ]
-            },
-            {
-                id:'123',
-                name:'侵权审核',
-                value:'qqsh',
-                "origin": [
-                    681,
-                    465
-                  ],
-                  "nodeList": [
-                    {
-                      "id": "node9xjqXpp6qLd5tE9d",
-                      "width": 80,
-                      "height": 50,
-                      "coordinate": [
-                        -501.5,
-                        255
-                      ],
-                      "data": {
-                        "prop": "end",
-                        "name": "结束"
-                      }
-                    },
-                    {
-                      "id": "nodeyGJE4iE4O1iFJtE7",
-                      "width": 160,
-                      "height": 80,
-                      "coordinate": [
-                        -445.5,
-                        139
-                      ],
-                      "data": {
-                        "prop": "approval",
-                        "name": "审批节点"
-                      }
-                    },
-                    {
-                      "id": "node13eOeZ7OsqmvE070",
-                      "width": 100,
-                      "height": 80,
-                      "coordinate": [
-                        -357.5,
-                        -339
-                      ],
-                      "data": {
-                        "prop": "start",
-                        "name": "开始"
-                      }
-                    },
-                    {
-                      "id": "nodechVM2VeAAOZc2QU5",
-                      "width": 160,
-                      "height": 80,
-                      "coordinate": [
-                        -229.5,
-                        -34
-                      ],
-                      "data": {
-                        "prop": "condition",
-                        "name": "条件节点"
-                      }
-                    },
-                    {
-                      "id": "nodeOCKtyTfy1r2p0CZ6",
-                      "width": 160,
-                      "height": 80,
-                      "coordinate": [
-                        -472.5,
-                        -133
-                      ],
-                      "data": {
-                        "prop": "approval",
-                        "name": "审批节点",
-                        "roles": "001",
-                        "view": "002",
-                        "actions": [
-                          "agree",
-                          "stop"
-                        ],
-                        "message": "1"
-                      }
-                    }
-                  ],
-                  "linkList": [
-                    {
-                      "id": "linkIFrM8NKwWypGNMdj",
-                      "startId": "nodeOCKtyTfy1r2p0CZ6",
-                      "endId": "nodechVM2VeAAOZc2QU5",
-                      "startAt": [
-                        160,
-                        40
-                      ],
-                      "endAt": [
-                        80,
-                        0
-                      ],
-                      "data": {
-                        "name": "线",
-                        "prop": "line"
-                      }
-                    },
-                    {
-                      "id": "linkeZz3PCHWNHfvc1uX",
-                      "startId": "nodechVM2VeAAOZc2QU5",
-                      "endId": "nodeyGJE4iE4O1iFJtE7",
-                      "startAt": [
-                        80,
-                        80
-                      ],
-                      "endAt": [
-                        80,
-                        0
-                      ],
-                      "data": {
-                        "name": "线",
-                        "prop": "line"
-                      }
-                    },
-                    {
-                      "id": "linkH0FJ6PKlIAeNLbnz",
-                      "startId": "nodeyGJE4iE4O1iFJtE7",
-                      "endId": "node9xjqXpp6qLd5tE9d",
-                      "startAt": [
-                        80,
-                        80
-                      ],
-                      "endAt": [
-                        40,
-                        0
-                      ],
-                      "data": {
-                        "name": "线",
-                        "prop": "line"
-                      }
-                    },
-                    {
-                      "id": "linkCUeWXECkL3i0egxC",
-                      "startId": "node13eOeZ7OsqmvE070",
-                      "endId": "nodeOCKtyTfy1r2p0CZ6",
-                      "startAt": [
-                        50,
-                        80
-                      ],
-                      "endAt": [
-                        80,
-                        0
-                      ],
-                      "data": {
-                        "name": "线",
-                        "prop": "line"
-                      }
-                    }
-                  ]
-            }   
+              }]
+            }
+          }
         ]
       }
     }
