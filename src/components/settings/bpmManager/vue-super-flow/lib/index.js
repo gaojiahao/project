@@ -781,7 +781,8 @@
 					this.startDirection = J[W.top],
 					this.endDirection = J[W.top],
 					this.startAt = l,
-					this.endAt = h
+					this.endAt = h,
+					this.rules= e.rules||[]
 				}
 				return ht(t, [{
 					key: "startCoordinate",
@@ -874,7 +875,8 @@
 							target: this.end.id,
 							startAt: this.startAt,
 							endAt: this.endAt,
-							data: this.data
+							data: this.data,
+							rules:this.rules,
 						}
 					}
 				},
@@ -1120,7 +1122,8 @@
 								end: m,
 								data: d,
 								startAt: u,
-								endAt: c
+								endAt: c,
+								rules:t.rules||[],
 							}))
 						})),
 						H(this.linkList, n),

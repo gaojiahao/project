@@ -53,7 +53,7 @@
                 </div>
             </template>
         </super-flow>
-        <!-- <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form> -->
+        <flow-node-form ref="nodeForm" :visible="visible" :nodeSetting="nodeSetting"></flow-node-form>
     </div>
     <SiderPanel :show="isShow['ShowPanel']" @show="showModal">
         <div slot="info">
@@ -88,7 +88,7 @@ import AddCondition from '@components/settings/bpmManager/vue-super-flow/lib/add
 import {
     CreateWorkflow,
     GetWorkflowTemplateById
-} from "@service/settingsService"
+} from "@service/settingsService";
 
 import list from './nodeList'
 export default {
@@ -122,8 +122,9 @@ export default {
                         this.$set(this.nodeSetting, 'name', info.data.name);
                         this.$set(this.nodeSetting, 'desc', info.data.desc);
                     } else {
-                        
-                        this.$set(this.linkSetting, 'desc', info.data ? info.data.desc : '')
+                        this.nameModalTitle = '修改条件名称';
+                        this.$set(this.nodeSetting, 'name', info.data.name);
+                        this.$set(this.nodeSetting, 'desc', info.data.desc);
                     }
                 },
                 openParticipantDecision: (type, info) => {
@@ -296,15 +297,15 @@ export default {
                         this.drawerConf.edit(drawerType.node, node)
                     }
                 }],
-                [{
-                    label: '添加条件',
-                    hidden(node) {
-                        return ['start','end','task'].indexOf(node.type)!=-1;
-                    },
-                    selected: (node, coordinate) => {
-                        this.drawerConf.openAddCondition(drawerType.node, node)
-                    }
-                }],
+                // [{
+                //     label: '添加条件',
+                //     hidden(node) {
+                //         return ['start','end','task'].indexOf(node.type)!=-1;
+                //     },
+                //     selected: (node, coordinate) => {
+                //         this.drawerConf.openAddCondition(drawerType.node, node)
+                //     }
+                // }],
                 [{
                     label: '参与者决策',
                     hidden(node) {
@@ -350,13 +351,6 @@ export default {
                 //         this.drawerConf.open(drawerType.node, node)
                 //     }
                 // }],
-                [{
-                    label: '删除',
-                    disable: false,
-                    selected(node, coordinate) {
-                        node.remove()
-                    }
-                }],
             ],
             //线右键菜单列表
             linkMenuList: [
@@ -368,12 +362,18 @@ export default {
                     }
                 }],
                 [{
-                    label: '编辑',
+                    label: '修改描述',
                     disable: false,
                     selected: (link, coordinate) => {
-                        this.drawerConf.open(drawerType.link, link)
+                        this.drawerConf.edit(drawerType.link, link)
                     }
-                }]
+                }],
+                [{
+                    label: '添加条件',
+                    selected: (node, coordinate) => {
+                        this.drawerConf.openAddCondition(drawerType.node, node)
+                    }
+                }],
             ],
             index: 0,
             //左侧菜单模块
@@ -648,7 +648,34 @@ export default {
                     }
                     this.$refs.superFlow.addNode({
                         ...item,
-                        coordinate: coordinate,  
+                        coordinate: coordinate,
+                        buttons:[
+                            {
+                                name: '同意',
+                                value: "agree",
+                                action: false
+                            },
+                            {
+                                name: '拒绝',
+                                value: "disagree",
+                                action: false
+                            },
+                            {
+                                name: '撤回',
+                                value: "recall",
+                                action: false
+                            },
+                            {
+                                name: '终止',
+                                value: "stop",
+                                action: false
+                            },
+                            {
+                                name: '转办',
+                                value: "transfer",
+                                action: false
+                            }
+                        ]
                     })
 
                 }
