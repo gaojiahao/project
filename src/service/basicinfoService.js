@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 20:15:33
+ * @LastEditTime: 2021-01-25 15:36:08
  */
 import $flyio from '@plugins/ajax';
 //新品开发管理
@@ -111,6 +111,31 @@ export let GetSupplierById = (data = {}) => {
 export let GetSelectionReviewById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetSelectionReviewById',
+    data: data
+  })
+};
+//比价
+export let CreatePriceComparison = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreatePriceComparison',
+    data: data
+  })
+};
+export let UpdatePriceComparison = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdatePriceComparison',
+    data: data
+  })
+};
+export let DelPriceComparison = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelPriceComparison',
+    data: data
+  })
+};
+export let GetPriceComparisonPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetPriceComparisonPage',
     data: data
   })
 };

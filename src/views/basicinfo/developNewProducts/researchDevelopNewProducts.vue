@@ -4,41 +4,41 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 17:03:17
+ * @LastEditTime: 2021-01-25 17:55:16
 -->
 <template>
 <div>
-    <div class="top-title">
-        商品信息
-    </div>
     <div class="top">
-        <div class="top-box">
-            <div class="item">
-                <label>商品编号：</label>
-                <Input v-model="formData['productCode']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>商品名称：</label>
-                <Input v-model="formData['productName']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>商品分类：</label>
-                <Input v-model="formData['productType']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>品牌：</label>
-                <Input v-model="formData['brand']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>是否带包装：</label>
-                <RadioGroup v-model="formData['isPacking']">
-                    <Radio label="true" disabled>
-                        是
-                    </Radio>
-                    <Radio label="false" disabled>
-                        否
-                    </Radio>
-                </RadioGroup>
+        <Divider orientation="left" size="small">基本信息</Divider>
+        <div class="top_tabale">
+            <div class="top-box">
+                <div class="item">
+                    <label>商品编号：</label>
+                    <Input v-model="formData['code']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>商品名称：</label>
+                    <Input v-model="formData['name']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>商品分类：</label>
+                    <Input v-model="formData['categoryName']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>品牌：</label>
+                    <Input v-model="formData['brandName']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>是否带包装：</label>
+                    <RadioGroup v-model="formData['isPackage']">
+                        <Radio :label="true" disabled>
+                            是
+                        </Radio>
+                        <Radio :label="false" disabled>
+                            否
+                        </Radio>
+                    </RadioGroup>
+                </div>
             </div>
         </div>
     </div>
@@ -47,6 +47,7 @@
             <div class="filter-button">
                 <Button size="small" type="primary" icon="ios-add" @click.native="showPop(true)">添加调研</Button>
                 <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm">删除</Button>
+                <Button size="small" @click="goReturn">返回</Button>
             </div>
         </div>
         <div class="myTable">
@@ -71,6 +72,10 @@
 import Research from "@components/basicinfo/developNewProductList/research";
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/basicinfo/developNewProducts/researchConfig";
+import {
+    GetPrepGoodsById,
+    CreatePriceComparison
+} from "@service/basicinfoService"
 
 export default {
     name: 'ResearchDevelopNewProducts',
@@ -94,13 +99,7 @@ export default {
             loading: true,
             activatedRow:{},
             showResearchStatus:false,
-            formData: {
-                productCode: 'TX23423',
-                productType: '积木',
-                brand: '森宝',
-                isPacking: 'true',
-                productName: '地方撒快乐'
-            },
+            formData: {},
             columns: [
                 {
                     title: '调研编号',
@@ -239,9 +238,38 @@ export default {
         },
         handleClearCurrentRow () {
             this.$refs.selection.clearCurrentRow();
+        },
+        getFormData(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetPrepGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formData = {
+                                id: res.result.item.id,
+                                code:res.result.item.code,
+                                name: res.result.item.name,
+                                categoryName: res.result.item.categoryName,
+                                brandName:res.result.item.brandName,
+                                isPackage: res.result.item.isPackage,
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
+        goReturn(){
+            this.$router.go(-1);
         }
     },
     created(){
+        this.getFormData();
         setTimeout(() => {
             this.loading = false;
         }, 1000);
@@ -249,17 +277,19 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import  "~@less/form.less";
 .top {
     // flex: 1;
-    background-color: #ffffff;
-    border: 1px solid #dcdee2;
-    border-color: #e8eaec;
-    transition: all 0.2s ease-in-out;
-    padding: 5px;
+    // background-color: #ffffff;
+    // border: 1px solid #dcdee2;
+    // border-color: #e8eaec;
+    // transition: all 0.2s ease-in-out;
+    // padding: 5px;
 
     .top-box {
         width: 100%;
-        height: auto;
+        height: 55px;
+        padding: 10px;
         display: flex;
         display: -webkit-flex;
         justify-content: space-between;

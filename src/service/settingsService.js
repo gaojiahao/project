@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-25 11:43:55
+ * @LastEditTime: 2021-01-26 15:29:39
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -633,6 +633,37 @@ export let CreateWorkflow = (data = {}) => {
 export let GetWorkflowById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetWorkflowById',
+    data: data
+  })
+};
+//工作流表单字段
+export let CreateClauseDataItem = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateClauseDataItem',
+    data: data
+  })
+};
+export let UpdateClauseDataItem = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateClauseDataItem',
+    data: data
+  })
+};
+export let DelClauseDataItem = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DelClauseDataItem',
+    data: data
+  })
+};
+export let GetClauseDataItemPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetClauseDataItemPage',
+    data: data
+  })
+};
+export let GetClauseDataItemById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetClauseDataItemById',
     data: data
   })
 };

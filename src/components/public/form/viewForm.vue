@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 14:46:59
+ * @LastEditTime: 2021-01-26 11:31:33
 -->
 <template>
 <div class="content">
@@ -82,6 +82,9 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='password'">
                 <Input v-model="formValidate[index]" :style="{width:'300px'}" :disabled="formConfig[index]['disabled']" type="password" password :placeholder="formConfig[index]['placeholder']" ></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='tree'">
+                <XTree :name="index" v-model="formValidate[index]" :config="formConfig[index]" v-show="!formConfig[index]['hidden']" :disabled="formConfig[index]['disabled']"></XTree>
+            </FormItem>
         </template>
         <slot name='button'>
             <FormItem>
@@ -104,6 +107,7 @@ import Size from '@components/public/input/size';
 import SelectorSingle from '@components/public/xSelect/selectorSingle';
 import SelectorMulti from '@components/public/xSelect/selectorMulti';
 import DistributionPeople from "@components/charting/distributionPeople";
+import XTree from "@components/public/tree/xTree";
 import $flyio from '@plugins/ajax'
 
 export default {
@@ -115,7 +119,8 @@ export default {
         Size,
         SelectorSingle,
         SelectorMulti,
-        DistributionPeople
+        DistributionPeople,
+        XTree
     },
     props: {
         titleText: {
@@ -222,10 +227,11 @@ export default {
                         this.formValidate[this.formConfig[item].bind.target] = value;
                     })
                 }
-                if(this.formConfig[item].type=='select'&&this.formConfig[item].dataSource.type=='dynamic'){
+                if((['select','selectCustom','tree'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
+                    var parmas = this.formConfig[item].dataSource.parmas ? this.formConfig[item].dataSource.parmas:{};
                     await $flyio.post({
                         url: this.formConfig[item].dataSource.url,
-                        data:{ maxResultCount:200}
+                        data:{ ...parmas,maxResultCount:200}
                     }).then((res) => {
                         if(res.result.code==200){
                             if(this.formConfig[item].dataSource.col){

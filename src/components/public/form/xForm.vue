@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 11:43:14
+ * @LastEditTime: 2021-01-26 11:31:19
 -->
 <template>
 <div class="content">
@@ -95,7 +95,7 @@
                 <SelectCascade :name="index" v-model="formValidate[index]" :formConfig="formConfig[index]" v-show="!formConfig[index]['hidden']" ></SelectCascade>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='tree'">
-                <XTree :name="index" v-model="formValidate[index]" :config="formConfig[index]" v-show="!formConfig[index]['hidden']" ></XTree>
+                <XTree :name="index" v-model="formValidate[index]" :config="formConfig[index]" v-show="!formConfig[index]['hidden']" :disabled="formConfig[index]['disabled']"></XTree>
             </FormItem>
         </template>
         <slot name='button'>

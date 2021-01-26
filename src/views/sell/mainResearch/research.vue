@@ -4,41 +4,41 @@
  * @Author: gaojiahao
  * @Date: 2020-11-12 19:54:00
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-04 16:05:46
+ * @LastEditTime: 2021-01-26 15:03:08
 -->
 <template>
-<div>
-    <div class="bottom-title">
-        商品信息
-    </div>
+<div class="mainResearch_research">
     <div class="top">
-        <div class="top-box">
-            <div class="item">
-                <label>商品编号：</label>
-                <Input v-model="formData['productCode']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>商品分类：</label>
-                <Input v-model="formData['productType']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>品牌：</label>
-                <Input v-model="formData['brand']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>是否带包装：</label>
-                <RadioGroup v-model="formData['isPacking']">
-                    <Radio label="true" disabled>
-                        是
-                    </Radio>
-                    <Radio label="false" disabled>
-                        否
-                    </Radio>
-                </RadioGroup>
-            </div>
-            <div class="item">
-                <label>商品名称：</label>
-                <Input v-model="formData['productName']" :style="{width:'400px'}" disabled></Input>
+        <Divider orientation="left" size="small">商品信息</Divider>
+        <div class="top_tabale">
+            <div class="top-box">
+                <div class="item">
+                    <label>商品编号：</label>
+                    <Input v-model="formData['productCode']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>商品分类：</label>
+                    <Input v-model="formData['productType']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>品牌：</label>
+                    <Input v-model="formData['brand']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>是否带包装：</label>
+                    <RadioGroup v-model="formData['isPacking']">
+                        <Radio label="true" disabled>
+                            是
+                        </Radio>
+                        <Radio label="false" disabled>
+                            否
+                        </Radio>
+                    </RadioGroup>
+                </div>
+                <div class="item">
+                    <label>商品名称：</label>
+                    <Input v-model="formData['productName']" :style="{width:'400px'}" disabled></Input>
+                </div>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@
         <div>
             <Table border :columns="columns" :data="data" stripe>
                 <template slot-scope="{ row, index }" slot="action">
-                    <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true)">查看</Button>
+                    <Button type="success" size="small" style="margin-right: 5px" @click="goBijia(row)">查看</Button>
                 </template>
             </Table>
             <div style="margin: 10px;overflow: hidden">
@@ -494,67 +494,72 @@ export default {
     },
     methods: {
         changePage() {},
-        showPop() {}
+        showPop() {},
+        goBijia(row){
+            this.$router.push({name:'referenceComparison',query: {id:row.id}});    
+        }
     }
 }
 </script>
 
 <style lang="less" scoped>
-.top {
-    // flex: 1;
-    background-color: #ffffff;
-    border: 1px solid #dcdee2;
-    border-color: #e8eaec;
-    transition: all 0.2s ease-in-out;
-    padding: 10px 10px 10px 20px;
+@import  "~@less/form.less";
+.mainResearch_research{
+    .top {
+        // flex: 1;
+        // background-color: #ffffff;
+        // border: 1px solid #dcdee2;
+        // border-color: #e8eaec;
+        // transition: all 0.2s ease-in-out;
+        // padding: 5px;
 
-    .top-box {
-        width: 100%;
-        height: auto;
+        .top-box {
+            width: 100%;
+            height: 55px;
+            padding: 10px;
+            display: flex;
+            display: -webkit-flex;
+            justify-content: space-between;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            .item {
+                margin-right: 10px;
+                line-height: 32px;
+                height: 32px;
+            }
+        }
+    }
+
+    .content {
+        margin: 10px;
+
+        .content-box {
+            display: flex;
+
+            .content-item {
+                display: inline-block;
+                overflow: hidden;
+                position: relative;
+                margin-right: 10px;
+            }
+        }
+    }
+
+    .bottom-title {
+    background: #ffffff;
+        border: 1px solid #dcdee2;
+        border-color: #e8eaec;
+        transition: all 0.2s ease-in-out;
+        text-align: left;
+        padding: 10px 20px;
+    }
+
+    .bottom {
+        transition: all 0.2s ease-in-out;
         display: flex;
-        display: -webkit-flex;
-        justify-content: space-between;
         flex-direction: row;
-        flex-wrap: wrap;
-
-        .item {
-            margin-right: 100px;
-            line-height: 38px;
-            margin-top: 10px;
-            // width: 33.3333%;
-            height: 38px;
-        }
     }
-}
-
-.content {
-    margin: 10px;
-
-    .content-box {
-        display: flex;
-
-        .content-item {
-            display: inline-block;
-            overflow: hidden;
-            position: relative;
-            margin-right: 10px;
-        }
-    }
-}
-
-.bottom-title {
-background: #ffffff;
-    border: 1px solid #dcdee2;
-    border-color: #e8eaec;
-    transition: all 0.2s ease-in-out;
-    text-align: left;
-    padding: 10px 20px;
-}
-
-.bottom {
-    transition: all 0.2s ease-in-out;
-    display: flex;
-    flex-direction: row;
 }
 </style><style scoped>
 >>>.ivu-table td.red-color {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-25 15:05:22
+ * @LastEditTime: 2021-01-25 18:05:47
 -->
 <template>
 <div class="erp_table_container">
@@ -54,9 +54,6 @@ export default {
     name: "ProductList",
     components: {
         ModalForm,
-        SeniorFilter,
-        AutoCompleteSearch,
-        ImageModel
     },
     mixins: [config,list],
     data() {

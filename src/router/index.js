@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-25 12:03:27
+ * @LastEditTime: 2021-01-26 15:03:49
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1070,37 +1070,40 @@ const routes = [
                   level: 2,
                 },
                 component: resolve=>(require(["@views/sell/mainResearch/research"],resolve)),
-              },
-              {
-                path: 'researchResult',
-                name: 'ResearchResult',
-                meta:{ 
-                  title:'调研结果',
-                  group: "mainResearch",
-                },
-                component: resolve=>(require(["@views/sell/mainResearch/researchResult/index"],resolve)),
-                redirect:'researchResult/researchResultList',
                 children:[
                   {
-                    path: 'researchResultList',
-                    name: 'ResearchResultList',
-                    meta:{ 
-                      title:'调研结果',
-                      group: "researchResult",
-                      level: 1,
-                    },
-                    component: resolve=>(require(["@views/sell/mainResearch/researchResult/researchResult"],resolve)),
-                  },
-                  {
                     path: 'referenceComparison',
-                    name: 'ReferenceComparison',
+                    name: 'referenceComparison',
                     meta:{ 
                       title:'参考比价',
-                      group: "researchResult",
-                      level: 2,
+                      group: "mainResearch",
+                      level: 3,
                     },
                     component: resolve=>(require(["@views/sell/mainResearch/researchResult/referenceComparison"],resolve)),
                   },   
+                ]
+              },
+              {
+                path: 'researchResult',
+                name: 'researchResult',
+                meta:{ 
+                  title:'调研结果',
+                  group: "mainResearch",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/sell/mainResearch/researchResult/index"],resolve)),
+                redirect:'researchResult/researchResult',
+                children:[
+                  {
+                    path: 'researchResult',
+                    name: 'researchResult',
+                    meta:{ 
+                      title:'调研结果',
+                      group: "mainResearch",
+                      level: 3,
+                    },
+                    component: resolve=>(require(["@views/sell/mainResearch/researchResult/researchResult"],resolve)),
+                  },  
                 ]
               } 
             ]

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 14:53:39
+ * @LastEditTime: 2021-01-26 11:25:03
  */
 export default {
     data() {
@@ -103,7 +103,7 @@ export default {
             type:'text',
           },
           name:{
-            name:'商品名称',
+            name:'产品名称',
             type:'text',
             disabled: false
           },

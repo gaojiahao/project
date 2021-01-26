@@ -4,41 +4,41 @@
  * @Author: gaojiahao
  * @Date: 2020-11-23 16:48:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 17:06:24
+ * @LastEditTime: 2021-01-26 10:15:43
 -->
 <template>
 <div class="viewResearch">
-    <div class="top-title">
-        商品信息
-    </div>
     <div class="top">
-        <div class="top-box">
-            <div class="item">
-                <label>商品编号：</label>
-                <Input v-model="formData['productCode']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>商品名称：</label>
-                <Input v-model="formData['productName']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>商品分类：</label>
-                <Input v-model="formData['productType']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>品牌：</label>
-                <Input v-model="formData['brand']" :style="{width:'200px'}" disabled></Input>
-            </div>
-            <div class="item">
-                <label>是否带包装：</label>
-                <RadioGroup v-model="formData['isPacking']">
-                    <Radio label="true" disabled>
-                        是
-                    </Radio>
-                    <Radio label="false" disabled>
-                        否
-                    </Radio>
-                </RadioGroup>
+        <Divider orientation="left" size="small">商品信息</Divider>
+        <div class="top_tabale">
+            <div class="top-box">
+                <div class="item">
+                    <label>商品编号：</label>
+                    <Input v-model="formData['code']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>商品名称：</label>
+                    <Input v-model="formData['name']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>商品分类：</label>
+                    <Input v-model="formData['categoryName']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>品牌：</label>
+                    <Input v-model="formData['brandName']" :style="{width:'200px'}" disabled></Input>
+                </div>
+                <div class="item">
+                    <label>是否带包装：</label>
+                    <RadioGroup v-model="formData['isPackage']">
+                        <Radio :label="true" disabled>
+                            是
+                        </Radio>
+                        <Radio :label="false" disabled>
+                            否
+                        </Radio>
+                    </RadioGroup>
+                </div>
             </div>
         </div>
     </div>
@@ -47,17 +47,20 @@
             <div class="title">
                 销售比价
             </div>
-            <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" height="300">
+            <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" height="300" @on-current-change="onCurrentChange">
             </Table> 
         </div>
         <div class="research-container-item2">
             <div class="title">
                 开发比价
             </div>
-            <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" height="300">
+            <Table border :loading="loading" highlight-row :columns="columns" :data="data2" stripe ref="selection" height="300" @on-current-change="onCurrentChange2">
             </Table> 
         </div>
     </div>
+    <Card class="card-style">
+        <div class="siggle-chart" id="myChart"></div>
+    </Card>
     <div class="research-container">
         <div class="research-container-item3">
             <div style="height:30px">
@@ -65,6 +68,11 @@
                     审核价格
                 </div>
                 <div style="float:right">
+                   <ButtonGroup size="small">
+                        <Button>引用开发</Button>
+                        <Button>引用销售</Button>
+                        <Button>引用最低</Button>
+                    </ButtonGroup>
                     <Button size="small" type="primary" @click.native="">保存</Button>
                 </div>
             </div>
@@ -75,6 +83,27 @@
 </div>
 </template>
 <script>
+import * as echarts from 'echarts/core';
+import {
+    DatasetComponent,
+    TooltipComponent,
+    GridComponent,
+    LegendComponent
+} from 'echarts/components';
+import {
+    BarChart
+} from 'echarts/charts';
+import {
+    CanvasRenderer
+} from 'echarts/renderers';
+echarts.use(
+    [DatasetComponent, TooltipComponent, GridComponent, LegendComponent, BarChart, CanvasRenderer]
+);
+import {
+    GetPrepGoodsById,
+} from "@service/basicinfoService";
+import { ButtonGroup } from "view-design";
+
 export default {
     name:"ViewResearch",
     data() {
@@ -135,7 +164,6 @@ export default {
                 {
                     title: '建议价',
                     key: 'proposalPrice',
-                    key: 'basePirce',
                     renderHeader:(h,params)=>{
                         return h('div',[
                             h('div','建议价'),
@@ -164,81 +192,164 @@ export default {
                     destination: 'France',
                     logisticsMode: "深圳挂号",
                     basePirce:8,
-                    proposalPrice:10,
-                    profitMargin:10,
-                    sellPrice: 10
+                    proposalPrice:12,
+                    profitMargin:14,
+                    sellPrice: 16
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:20,
+                    proposalPrice:22,
+                    profitMargin:24,
+                    sellPrice: 25
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:16,
+                    proposalPrice:17,
+                    profitMargin:18,
+                    sellPrice: 18
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:11,
+                    proposalPrice:12,
+                    profitMargin:14,
+                    sellPrice: 16
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:10,
+                    proposalPrice:11,
+                    profitMargin:12,
+                    sellPrice: 13
                 },
                 {
                     id:'fds',
                     destination: 'France',
                     logisticsMode: "深圳挂号",
                     basePirce:8,
-                    proposalPrice:10,
-                    profitMargin:10,
+                    proposalPrice:11,
+                    profitMargin:15,
+                    sellPrice: 16
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:16,
+                    proposalPrice:17,
+                    profitMargin:18,
+                    sellPrice: 18
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:12,
+                    proposalPrice:13,
+                    profitMargin:11,
+                    sellPrice: 15
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:13,
+                    proposalPrice:17,
+                    profitMargin:18,
+                    sellPrice: 20
+                },
+            ],
+            data2: [
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:8,
+                    proposalPrice:20,
+                    profitMargin:20,
                     sellPrice: 10
                 },
                 {
                     id:'fds',
                     destination: 'France',
                     logisticsMode: "深圳挂号",
-                    basePirce:8,
-                    proposalPrice:10,
+                    basePirce:9,
+                    proposalPrice:12,
+                    profitMargin:14,
+                    sellPrice: 15
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:10,
+                    proposalPrice:20,
+                    profitMargin:16,
+                    sellPrice: 18
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:11,
+                    proposalPrice:13,
                     profitMargin:10,
-                    sellPrice: 10
+                    sellPrice: 9
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:15,
+                    proposalPrice:20,
+                    profitMargin:23,
+                    sellPrice: 24
                 },
                 {
                     id:'fds',
                     destination: 'France',
                     logisticsMode: "深圳挂号",
                     basePirce:8,
+                    proposalPrice:13,
+                    profitMargin:20,
+                    sellPrice: 15
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:6,
                     proposalPrice:10,
-                    profitMargin:10,
-                    sellPrice: 10
+                    profitMargin:11,
+                    sellPrice: 12
+                },
+                {
+                    id:'fds',
+                    destination: 'France',
+                    logisticsMode: "深圳挂号",
+                    basePirce:9,
+                    proposalPrice:14,
+                    profitMargin:16,
+                    sellPrice: 16
                 },
                 {
                     id:'fds',
                     destination: 'France',
                     logisticsMode: "深圳挂号",
                     basePirce:8,
-                    proposalPrice:10,
-                    profitMargin:10,
-                    sellPrice: 10
-                },
-                {
-                    id:'fds',
-                    destination: 'France',
-                    logisticsMode: "深圳挂号",
-                    basePirce:8,
-                    proposalPrice:10,
-                    profitMargin:10,
-                    sellPrice: 10
-                },
-                {
-                    id:'fds',
-                    destination: 'France',
-                    logisticsMode: "深圳挂号",
-                    basePirce:8,
-                    proposalPrice:10,
-                    profitMargin:10,
-                    sellPrice: 10
-                },
-                {
-                    id:'fds',
-                    destination: 'France',
-                    logisticsMode: "深圳挂号",
-                    basePirce:8,
-                    proposalPrice:10,
-                    profitMargin:10,
-                    sellPrice: 10
-                },
-                {
-                    id:'fds',
-                    destination: 'France',
-                    logisticsMode: "深圳挂号",
-                    basePirce:8,
-                    proposalPrice:10,
-                    profitMargin:10,
-                    sellPrice: 10
+                    proposalPrice:15,
+                    profitMargin:15,
+                    sellPrice: 17
                 },
             ],
             examineDataColumns:[
@@ -253,6 +364,7 @@ export default {
                         return h('Select',{
                                 props:{
                                     value: params.row.logisticsMode,
+                                    transfer:true
                                 },
                                 on: {
                                     'on-change':(event) => {
@@ -549,10 +661,223 @@ export default {
                     sellPrice: 25,
                     profitMargin: 12,
                 },    
-            ]
+            ],
+            Xdata:[],
+            Ydata:[],
+            buttonSize: '',
         }
     },
+    components:{ButtonGroup},
+    watch:{
+        Ydata:{
+            handler(val){
+                this.drawLine();
+            }
+        },
+        Xdata:{
+            handler(val){
+                this.drawLine();
+            }
+        }
+    },
+    methods:{
+        getFormData(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetPrepGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formData = {
+                                id: res.result.item.id,
+                                code:res.result.item.code,
+                                name: res.result.item.name,
+                                categoryName: res.result.item.categoryName,
+                                brandName:res.result.item.brandName,
+                                isPackage: res.result.item.isPackage,
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
+        drawLine(){
+            var app = {};
+
+            var chartDom = document.getElementById('myChart');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            var posList = [
+                'left', 'right', 'top', 'bottom',
+                'inside',
+                'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+                'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+            ];
+
+            app.configParameters = {
+                rotate: {
+                    min: -90,
+                    max: 90
+                },
+                align: {
+                    options: {
+                        left: 'left',
+                        center: 'center',
+                        right: 'right'
+                    }
+                },
+                verticalAlign: {
+                    options: {
+                        top: 'top',
+                        middle: 'middle',
+                        bottom: 'bottom'
+                    }
+                },
+                position: {
+                    options: posList.reduce(function (map, pos) {
+                        map[pos] = pos;
+                        return map;
+                    }, {})
+                },
+                distance: {
+                    min: 0,
+                    max: 100
+                }
+            };
+
+            app.config = {
+                rotate: 90,
+                align: 'left',
+                verticalAlign: 'middle',
+                position: 'insideBottom',
+                distance: 15,
+                onChange: function () {
+                    var labelOption = {
+                        normal: {
+                            rotate: app.config.rotate,
+                            align: app.config.align,
+                            verticalAlign: app.config.verticalAlign,
+                            position: app.config.position,
+                            distance: app.config.distance
+                        }
+                    };
+                    myChart.setOption({
+                        series: [{
+                            label: labelOption
+                        }, {
+                            label: labelOption
+                        }, {
+                            label: labelOption
+                        }, {
+                            label: labelOption
+                        }]
+                    });
+                }
+            };
+
+
+            var labelOption = {
+                show: true,
+                position: app.config.position,
+                distance: app.config.distance,
+                align: app.config.align,
+                verticalAlign: app.config.verticalAlign,
+                rotate: app.config.rotate,
+                formatter: '{c}  {name|{a}}',
+                fontSize: 16,
+                rich: {
+                    name: {
+                    }
+                }
+            };
+
+            option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['销售', '开发']
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        axisTick: {show: false},
+                        data: ['保底价', '建议价', '利润率', '销售价']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: '销售',
+                        type: 'bar',
+                        label: labelOption,
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: this.Xdata
+                    },
+                    {
+                        name: '开发',
+                        type: 'bar',
+                        barGap: 0,
+                        label: labelOption,
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        data: this.Ydata
+                    },
+                ]
+            };
+            option && myChart.setOption(option);
+        },
+        onCurrentChange(currentRow,oldCurrentRow){
+            var obj = [];
+            obj[0] = currentRow.basePirce;
+            obj[1] = currentRow.proposalPrice;
+            obj[2] = currentRow.profitMargin;
+            obj[3] = currentRow.sellPrice;
+            this.Xdata = obj; 
+        },
+        onCurrentChange2(currentRow,oldCurrentRow){
+            var obj = [];
+            obj[0] = currentRow.basePirce;
+            obj[1] = currentRow.proposalPrice;
+            obj[2] = currentRow.profitMargin;
+            obj[3] = currentRow.sellPrice;
+            this.Ydata = obj; 
+        },
+    },
+    mounted(){
+        this.drawLine();
+    },
     created(){
+        this.getFormData();
         setTimeout(() => {
             this.loading = false;
         }, 1000);
@@ -596,18 +921,20 @@ export default {
 }
 </style>
 <style lang="less" scoped>
+@import  "~@less/form.less";
 .viewResearch{
     .top {
         // flex: 1;
-        background-color: #ffffff;
-        border: 1px solid #dcdee2;
-        border-color: #e8eaec;
-        transition: all 0.2s ease-in-out;
-        padding: 5px;
+        // background-color: #ffffff;
+        // border: 1px solid #dcdee2;
+        // border-color: #e8eaec;
+        // transition: all 0.2s ease-in-out;
+        // padding: 5px;
 
         .top-box {
             width: 100%;
-            height: auto;
+            height: 55px;
+            padding: 10px;
             display: flex;
             display: -webkit-flex;
             justify-content: space-between;
@@ -701,6 +1028,17 @@ export default {
                 line-height:30px
             }
         }
+    }   
+    .card-style {
+    height: 600px;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    }
+    .siggle-chart {
+    width: 1100px;
+    height: 520px;
+    margin: auto;
     }
 }
 </style>

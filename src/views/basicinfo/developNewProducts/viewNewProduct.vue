@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 20:43:49
+ * @LastEditTime: 2021-01-26 11:33:29
 -->
 <template>
 <div>
@@ -63,7 +63,7 @@
 
 <script>
 import ViewForm from "@components/public/form/viewForm";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
+import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
@@ -335,7 +335,6 @@ export default {
                     GetPrepGoodsById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.prod
                             this.productInfoFormValidate = {
                                 id: res.result.item.id,
                                 code:res.result.item.code,

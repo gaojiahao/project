@@ -342,6 +342,12 @@ export default {
                         this.drawerConf.openAddButton(drawerType.node, node)
                     }
                 }],
+                [{
+                    label: '删除',
+                    selected: node => {
+                        node.remove()
+                    }
+                }],
                 // [{
                 //     label: '编辑',
                 //     hidden(node) {
@@ -448,8 +454,8 @@ export default {
             selectAddCondition:[],
             dataAddParticipant:{},
             selectAddParticipant:{},
-            selectParticipantDecision:{}
-
+            selectParticipantDecision:{},
+            id:null
         }
     },
     watch: {

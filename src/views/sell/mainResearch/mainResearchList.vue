@@ -4,40 +4,41 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 20:30:36
+ * @LastEditTime: 2021-01-26 14:51:24
 -->
 <template>
-<div class="storeManager-container">
-    <div class="filter">
-        <div class="filter-button">
-            <RadioGroup v-model="filter" type="button">
-                <Radio label="large">全部</Radio>
-                <Radio label="default">已调研</Radio>
-                <Radio label="small">未调研</Radio>
-            </RadioGroup>
-        </div>
-        <div class="filter-search">
-            关键词：
-            <Input placeholder="关键词" style="width: 200px" />
-            创建时间：
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <DatePicker type="date" placeholder="" style="width: 200px"></DatePicker>
-            <Button type="primary" icon="ios-search">查询</Button>
-        </div>
-    </div>
-    <div>
-        <Table border :columns="columns" :data="data" stripe>
+<div class="erp_table_container">
+    <div class="myTable">
+        <Table border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange" :draggable="true">
+            <template slot="header">
+                <div class="filter">
+                    <div class="filter-button">
+                        <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
+                        <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
+                        <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+                        <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
+                    </div>
+                    <div class="filter-search">
+                        <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
+                    </div>
+                </div>    
+            </template>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="info" size="small" style="margin-right: 5px" @click="showPop(true)">比价</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="showPop2()">调研</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="goResult(row)">审核</Button>
+            </template>
+            <template slot="footer">
+                <div class="footer_page">
+                    <div class="footer_page_right">
+                        <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
+                    </div>
+                </div>
             </template>
         </Table>
-        <div style="margin: 10px;overflow: hidden">
-            <div style="float: right;">
-                <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
-            </div>
-        </div>
     </div>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
+    <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
     <ResearchModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ResearchModalForm>
 </div>
 </template>
@@ -45,13 +46,14 @@
 <script>
 import ResearchModalForm from "@components/sell/mainResearch/researchModalForm";
 import config from "@views/sell/mainResearch/researchConfig";
+import list from "@mixins/list";
 
 export default {
     name: "MainResearchList",
     components: {
         ResearchModalForm,
     },
-    mixins: [config],
+    mixins: [config,list],
     data() {
         return {
             titleText: '',
@@ -72,8 +74,8 @@ export default {
                                     src: params.img || require("@assets/default/logo.png")
                                 },
                                 style: {
-                                    width: '40px',
-                                    height: '40px'
+                                    width: '30px',
+                                    height: '30px'
                                 }
                             }),
                         ]);
@@ -127,18 +129,6 @@ export default {
                     width: 200
                 }
             ],
-            dataConfig: {
-                'filterList': [{
-                    name: '全部',
-                    value: 'all',
-                }, {
-                    name: '已审核',
-                    value: 'all',
-                }, {
-                    name: '待审核',
-                    value: 'all',
-                }]
-            },
             data: [{
                     img: '',
                     type: '惯性积木玩具',
@@ -346,7 +336,14 @@ export default {
                     createTime1: '2020-11-06'
                 },
             ],
-            filter: "large"
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
         }
     },
     methods: {
@@ -371,7 +368,10 @@ export default {
         changePage() {
 
         },
-        clearFormData2() {}
+        clearFormData2() {},
+        goResult(row) {
+            this.$router.push({name:'researchResult',query: {id:row.id}});    
+        },
     }
 }
 </script>

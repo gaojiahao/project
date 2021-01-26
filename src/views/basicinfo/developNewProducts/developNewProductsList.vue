@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 12:18:34
+ * @LastEditTime: 2021-01-25 15:51:21
 -->
 <template>
 <div class="erp_table_container">
@@ -29,7 +29,7 @@
             </template>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.saleStatus==0">审核</Button>
-                <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel()">调研</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel(row)">调研</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -139,8 +139,8 @@ export default {
         goTortExamine(row) {
             this.$router.push({name:'examineNewProduct',query: {id:row.id}});    
         },
-        showResearchModel(flag){
-            this.$router.push({name:'ResearchDevelopNewProducts'}); 
+        showResearchModel(row){
+            this.$router.push({name:'ResearchDevelopNewProducts',query: {id:row.id}}); 
         },
         changeCoulmns(data){
             let datas = [];

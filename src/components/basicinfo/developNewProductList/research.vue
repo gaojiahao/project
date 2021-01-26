@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-12 19:54:00
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-30 17:02:37
+ * @LastEditTime: 2021-01-25 18:04:29
 -->
 <style>
     .ivu-table th.demo-table-info-column{
@@ -47,7 +47,7 @@
             </Table>
             <div style="margin: 10px;overflow: hidden">
                 <div style="float: right;">
-                    <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                    <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
                 </div>
             </div>
         </div>
@@ -56,6 +56,11 @@
 </template>
 
 <script>
+import {
+    CreatePriceComparison,
+    GetPriceComparisonPage
+} from "@service/basicinfoService";
+
 export default {
     name: 'Research',
     data() {
@@ -74,10 +79,10 @@ export default {
                 },
                 {
                     title: '物流方式',
-                    key: 'logisticsMode'
+                    key: 'logisticsName'
                 },
                 {
-                    key: 'smallPackagePrice',
+                    key: 'freight',
                     width:100,
                     renderHeader:(h,params)=>{
                         return h('div',[
@@ -87,7 +92,7 @@ export default {
                     }
                 },
                 {
-                    key: 'guaranteedPrice',
+                    key: 'guaranteed',
                     width:100,
                     renderHeader:(h,params)=>{
                         return h('div',[
@@ -97,7 +102,7 @@ export default {
                     }
                 },
                 {
-                    key: 'originalPrice',
+                    key: 'original_Price',
                     width:100,
                     renderHeader:(h,params)=>{
                         return h('div',[
@@ -108,7 +113,7 @@ export default {
                 },
                 {
                     title: '店铺打折',
-                    key: 'storeDiscount',
+                    key: 'store_discount',
                     className: 'red-color',
                     width: 100,
                     render: (h, params) => {
@@ -119,7 +124,7 @@ export default {
                         }, [
                             h('Input', {
                                 props: {
-                                    value: params.row.storeDiscount,
+                                    value: params.row.store_discount,
                                 },
                                 on: {
                                     'on-change': (event) => {
@@ -141,7 +146,7 @@ export default {
                 },
                 {
                     title: '区域定价折扣',
-                    key: 'areaPrice',
+                    key: 'area_discount',
                     className: 'oranger-color',
                     width: 100,
                     render: (h, params) => {
@@ -152,7 +157,7 @@ export default {
                         }, [
                             h('Input', {
                                 props: {
-                                    value: params.row.areaPrice,
+                                    value: params.row.area_discount,
                                 },
                                 on: {
                                     'on-change': (event) => {
@@ -173,7 +178,7 @@ export default {
                     }
                 },
                 {
-                    key: 'proposalPrice',
+                    key: 'suggested_price',
                     width:100,
                     renderHeader:(h,params)=>{
                         return h('div',[
@@ -184,7 +189,7 @@ export default {
                 },
                 {
                     title: '浮动值',
-                    key: 'floatNum',
+                    key: 'float_value',
                     width:100,
                     render: (h, params) => {
                         return h('div', {
@@ -194,7 +199,7 @@ export default {
                         }, [
                             h('Input', {
                                 props: {
-                                    value: params.row.floatNum,
+                                    value: params.row.float_value,
                                 },
                                 on: {
                                     'on-change': (event) => {
@@ -215,7 +220,7 @@ export default {
                     }
                 },
                 {
-                    key: 'sellPrice',
+                    key: 'sale_price',
                     className: 'blue-color',
                     width:100,
                     renderHeader:(h,params)=>{
@@ -227,7 +232,7 @@ export default {
                     render: (h, params) => {
                         return h('Input', {
                             props: {
-                                value: params.row.sellPrice,
+                                value: params.row.sale_price,
                             },
                             on: {
                                 'on-change': (event) => {
@@ -239,7 +244,7 @@ export default {
                 },
                 {
                     title: '利润率',
-                    key: 'profitMargin',
+                    key: 'profit_margin',
                     width:100,
                     render: (h, params) => {
                         return h('div', {
@@ -249,7 +254,7 @@ export default {
                         }, [
                             h('Input', {
                                 props: {
-                                    value: params.row.profitMargin,
+                                    value: params.row.profit_margin,
                                 },
                                 on: {
                                     'on-change': (event) => {
@@ -270,7 +275,7 @@ export default {
                     }
                 },
                 {
-                    key: 'referencePrice',
+                    key: 'reference_price',
                     width:100,
                     renderHeader:(h,params)=>{
                         return h('div',[
@@ -281,7 +286,7 @@ export default {
                     render: (h, params) => {
                         return h('Input', {
                             props: {
-                                value: params.row.referencePrice,
+                                value: params.row.reference_price,
                             },
                             on: {
                                 'on-change': (event) => {
@@ -293,7 +298,7 @@ export default {
                 },
                 {
                     title: '参考利润',
-                    key: 'referenceProfit',
+                    key: 'reference_profit',
                     width:100,
                     render: (h, params) => {
                         return h('div', {
@@ -303,7 +308,7 @@ export default {
                         }, [
                             h('Input', {
                                 props: {
-                                    value: params.row.referenceProfit,
+                                    value: params.row.reference_profit,
                                 },
                                 on: {
                                     'on-change': (event) => {
@@ -325,7 +330,7 @@ export default {
                 },
                 {
                     title: '价格差',
-                    key: 'priceDifference',
+                    key: 'price_difference',
                     width:100,
                     className: 'demo-table-info-column',
                     renderHeader:(h,params)=>{
@@ -339,23 +344,23 @@ export default {
                         // 执行的一些列样式或者事件等操作
                         style: {
                             display: "inline-block",
-                            color: params.row.sellPrice - params.row.referencePrice > 0  ? "#ed4014":"#19be6b"
+                            color: params.row.sale_price - params.row.reference_price > 0  ? "#ed4014":"#19be6b"
                         },
-                        },params.row.sellPrice - params.row.referencePrice);
+                        },params.row.sale_price - params.row.reference_price);
                     }
                 },
                 {
                     title: '利润差',
-                    key: 'profitDifference',
+                    key: 'profit_difference',
                     width:100,
                     className: 'demo-table-info-column',
                     render: (h, params) => {
                         return h('span', {
                             style: {
                                 display: "inline-block",
-                                color: params.row.profitMargin - params.row.referenceProfit > 0  ? "#ed4014":"#19be6b"
+                                color: params.row.profit_margin - params.row.reference_profit > 0  ? "#ed4014":"#19be6b"
                             },
-                        }, [params.row.profitMargin - params.row.referenceProfit,
+                        }, [params.row.profit_margin - params.row.reference_profit,
                             h('span', {
                                 style: {
                                     marginLeft: '1px',
@@ -391,223 +396,287 @@ export default {
             ],
             data: [{
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 },
                 {
                     destination: 'France',
-                    logisticsMode: '美国e邮宝',
-                    smallPackagePrice: 80.64,
-                    guaranteedPrice: 58.64,
-                    originalPrice: 60.64,
-                    storeDiscount: 10,
-                    areaPrice: 5,
-                    proposalPrice: 16.99,
-                    floatNum: 5,
-                    sellPrice: 25,
-                    profitMargin: 12,
-                    referencePrice: 20,
-                    referenceProfit: 10,
+                    logisticsName: '美国e邮宝',
+                    freight: 80.64,
+                    guaranteed: 58.64,
+                    original_Price: 60.64,
+                    store_discount: 10,
+                    area_discount: 5,
+                    suggested_price: 16.99,
+                    float_value: 5,
+                    sale_price: 25,
+                    profit_margin: 12,
+                    reference_price: 20,
+                    reference_profit: 10,
                     url: 'www.baidu.com',
-                    priceDifference:0,
-                    profitDifference:0
+                    price_difference:0,
+                    profit_difference:0
                 }
             ],
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
         }
     },
     methods: {
-        changePage() {},
         showPop() {},
         setResearchData(){
             for(var i=0;i<this.data.length;i++){
-                this.data[i]['floatNum'] = this.inputData['floatingQuota'];
-                this.data[i]['profitMargin'] = this.inputData['pricingProfit'];
+                this.data[i]['float_value'] = this.inputData['floatingQuota'];
+                this.data[i]['profit_margin'] = this.inputData['pricingProfit'];
             }
         },
         save(){
-            this.loading = true;
-            this.$Message.info({content:'温馨提示：保存成功'});
-            setTimeout(() => {
-                this.loading = false;
-            }, 1000);
-        }
+            for(var i=0;i<this.data.length;i++){
+                var params = {};
+                params = {
+                    goodsCode: this.$parent.formData.code,
+                    destination: this.data[i].destination,
+                    logisticsName: this.data[i].logisticsName,
+                    freight: this.data[i].freight,
+                    guaranteed: this.data[i].guaranteed,
+                    original_Price: this.data[i].original_Price,
+                    store_discount: this.data[i].store_discount,
+                    area_discount: this.data[i].area_discount,
+                    suggested_price: this.data[i].suggested_price,
+                    float_value: this.data[i].float_value,
+                    sale_price: this.data[i].sale_price,
+                    profit_margin: this.data[i].profit_margin,
+                    reference_price: this.data[i].reference_price,
+                    reference_profit: this.data[i].reference_profit,
+                    price_difference: this.data[i].price_difference,
+                    profit_difference: this.data[i].profit_difference,
+                };
+                if (params.goodsCode) {
+                    return new Promise((resolve, reject) => {
+                        this.$FromLoading.show();
+                        CreatePriceComparison(params).then(res => {
+                            if (res.result.code == 200) {
+                                this.$FromLoading.hide();
+                                this.$Message.info({content:'温馨提示：保存成功'});
+                            } else if (res.result.code == 400) {
+                                this.$Message.error({
+                                    background: true,
+                                    content: res.result.msg
+                                });
+                                this.$FromLoading.hide();
+                            }
+                        });
+                    });
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            }
+        },
+        GetPriceComparisonPage() {
+            return new Promise((resolve, reject) => {
+                GetPriceComparisonPage(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPage = res.result.item.totalCount;
+                            this.data = res.result.item.items;
+                            this.loading = false;
+                        });
+                    }
+                });
+            });
+        },
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetPriceComparisonPage();
+        },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetPriceComparisonPage();
+        },
     },
     created(){
+        //this.GetPriceComparisonPage();
         setTimeout(() => {
             this.loading = false;
         }, 1000);

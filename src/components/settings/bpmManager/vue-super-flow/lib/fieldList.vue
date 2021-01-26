@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-18 20:07:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-23 11:19:29
+ * @LastEditTime: 2021-01-26 19:32:59
 -->
 <!--
  * @Descripttion: 
@@ -32,9 +32,9 @@
             <div class="myTable">
                 <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-current-change="onCurrentChange">
                     <template slot-scope="{ row, index }" slot="action">
-                        <div v-if="row.isEdit">
-                            <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="edit(true,row,index)">修改</Button>
-                            <Button type="error" icon="md-create" size="small" style="margin-right: 5px" @click="del(index)">删除</Button>
+                        <div v-if="!row.isEdit">
+                            <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="edit(true,row)">修改</Button>
+                            <Button type="error" icon="md-create" size="small" style="margin-right: 5px" @click="del(row)">删除</Button>
                         </div>
                         <div style="color:#ed4014;" v-else>
                             禁止
@@ -43,19 +43,26 @@
                 </Table>
                 <div style="margin: 10px;overflow: hidden">
                     <div style="float: right;">
-                        <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+                        <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
                     </div>
                 </div>
             </div>
         </div>
-        <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     </div>
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
 </div>
 </template>
 
 <script>
 import ModalForm from "@components/public/form/modalForm";
-import config from "@views/settings/bpmManager/flowManager/addFieldConfig"
+import config from "@views/settings/bpmManager/flowManager/addFieldConfig";
+import {
+    CreateClauseDataItem,
+    UpdateClauseDataItem,
+    DelClauseDataItem,
+    GetClauseDataItemPage,
+    GetClauseDataItemById
+} from "@service/settingsService";
 
 export default {
     name: 'FieldList',
@@ -68,23 +75,23 @@ export default {
             columns: [
                 {
                     title: '字段名称',
-                    key: 'fNameText',
+                    key: 'displayName',
                     render: (h, params) => {
                         return h("span", {
                         style: {
                             display: "inline-block",
                             color: "#2d8cf0"
                         },
-                        },params.row.fNameText);
+                        },params.row.displayName);
                     }
                 },
                 {
                     title: '字段值',
-                    key: 'fName',
+                    key: 'columnName',
                 },
                 {
                     title: '字段类型',
-                    key: 'type',
+                    key: 'logicType',
                 },
                 {
                     title: '操作',
@@ -94,92 +101,131 @@ export default {
                 }
             ],
             data: [
-                {
-                    fId:1,
-                    fNameText: '姓名',
-                    fName: "name",
-                    type: '文本',
-                    isEditable: false,
-                    isVisible:false,
-                    required:false
-                },
-                {
-                    fId:2,
-                    fNameText: '性别',
-                    fName: "sex",
-                    type: '文本',
-                    isEditable: false,
-                    isVisible:false,
-                    required:false
-                },
-                {
-                    fId:3,
-                    fNameText: '年龄',
-                    fName: "age",
-                    type: '文本',
-                    isEditable: false,
-                    isVisible:false,
-                    required:false
-                },
+                // {
+                //     fId:1,
+                //     fNameText: '姓名',
+                //     fName: "name",
+                //     type: '文本',
+                //     isEditable: false,
+                //     isVisible:false,
+                //     required:false
+                // },
+                // {
+                //     fId:2,
+                //     fNameText: '性别',
+                //     fName: "sex",
+                //     type: '文本',
+                //     isEditable: false,
+                //     isVisible:false,
+                //     required:false
+                // },
+                // {
+                //     fId:3,
+                //     fNameText: '年龄',
+                //     fName: "age",
+                //     type: '文本',
+                //     isEditable: false,
+                //     isVisible:false,
+                //     required:false
+                // },
             ],
             loading: true,
             showModel: false,
             titleText: '',
             selectIndex: null,
             showLoading: false,
+            pageData:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],
+            },
+            totalPage:0,
+            activatedRow:{}
         }
     },
     methods: {
         changePage() {},
-        onCurrentChange(currentRow,oldCurrentRow){
-            this.formValidate['id'] = currentRow.id;   
-        },
         clearFormData() {
+            this.$delete(this.formValidate,'id')
             this.formValidate = {
-                id: '',
-                fieldCode:'',
-                fieldName: '',
-                type:'',
-            }
+                clauseId:'',
+                columnName:'',
+                displayName: '',
+                logicType:'',
+                columnLength:'',
+            };
         },
         showPop(flag, row) {
-            if (row && row.containerCode) {
+            if (row && row.id) {
                 this.titleText = '编辑';
             } else {
                 this.titleText = '新建';
+                this.$delete(this.formValidate,'id');
             }
             this.showModel = flag;
         },
-        save(data) {
-            debugger
-            if(this.formValidate.id){
-                this.data[this.selectIndex] = this.formValidate;
-                this.selectIndex = null;    
+        save() {
+            var params = this.formValidate;
+            params.clauseId = this.$parent.$parent.$parent.id;
+            if (!params.id) {
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    CreateClauseDataItem(params).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：新建成功！');
+                            this.$refs['form'].$refs['formValidate'].resetFields();
+                            this.$refs['form'].initEL('input');
+                            this.loading = true;
+                            this.GetClauseDataItemPage();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
             } else {
-                this.data.push({
-                    id:'111',
-                    ...this.formValidate,
-                    isEdit: true
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    UpdateClauseDataItem({...params,id:this.activatedRow.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：更新成功！');
+                            this.$refs['form'].$refs['formValidate'].resetFields();
+                            this.$refs['form'].initEL('input');
+                            this.loading = true;
+                            this.GetClauseDataItemPage();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                            this.$FromLoading.hide();
+                        }
+                    });
                 });
             }
-            this.loading = true;
-            this.clearFormData();
-            setTimeout(() => {
-                this.loading = false;
-            }, 500);
         },
-        edit(flag,data,index){
-            if (data && data.id) {
+        edit(flag,row){
+            if (row && row.id) {
                 this.titleText = '编辑';
+                this.formValidate = {
+                    id:row.id,
+                    clauseId:row.clauseId,
+                    columnName:row.columnName,
+                    displayName: row.displayName,
+                    logicType:row.logicType,
+                    columnLength:row.columnLength,
+                };
             } else {
                 this.titleText = '新建';
             }
-            this.selectIndex = index;
-            this.formValidate = data;
             this.showModel = flag;        
-        },
-        del(index){
-            this.data.splice(index, 1); 
         },
         submit(){
             this.showLoading = true;
@@ -189,12 +235,53 @@ export default {
                 this.$emit('save',this.data);
                 this.$emit('show','ShowPanel',false);
             }, 500);
-        }
+        },
+        GetClauseDataItemPage() {
+            GetClauseDataItemPage({...this.pageData,clauseId:this.$parent.$parent.$parent.id}).then(res => {
+                if(res.result.code==200){
+                    this.$nextTick(() => {
+                        this.totalPage = res.result.item.totalCount;
+                        this.data = res.result.item.items;
+                        this.loading = false;
+                    });
+                }
+            });
+        },
+        changePage(page) {
+            this.pageData.skipCount = page;
+            this.GetClauseDataItemPage();
+        },
+        onPageSizeChange(pagesize){
+            this.pageData.maxResultCount = pagesize;
+            this.GetClauseDataItemPage();
+        },
+        del(row){
+            if(row.id){
+                this.loading = true;
+                return new Promise((resolve, reject) => {
+                    DelClauseDataItem({id:row.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$Message.info('温馨提示：删除成功！');
+                            this.GetClauseDataItemPage();
+                            this.activatedRow = {};
+                            this.loading = false;
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                            this.loading = false;
+                        }
+                    });
+                });
+            } 
+        },
+        onCurrentChange(currentRow,oldCurrentRow){
+            this.activatedRow = currentRow;    
+        },
     },
     created() {
-        setTimeout(() => {
-            this.loading = false;
-        }, 1000);
+        this.GetClauseDataItemPage();
     }
 }
 </script>
