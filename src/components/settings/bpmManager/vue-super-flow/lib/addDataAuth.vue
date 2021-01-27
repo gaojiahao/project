@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 10:02:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-23 11:19:03
+ * @LastEditTime: 2021-01-26 20:16:32
 -->
 <template>
     <Modal
@@ -56,23 +56,23 @@ export default {
             columns: [
                 {
                     title: '字段名称',
-                    key: 'fNameText',
+                    key: 'displayName',
                     render: (h, params) => {
                         return h("span", {
                         style: {
                             display: "inline-block",
                             color: "#2d8cf0"
                         },
-                        },params.row.fNameText);
+                        },params.row.displayName);
                     }
                 },
                 {
                     title: '字段值',
-                    key: 'fName',
+                    key: 'columnName',
                 },
                 {
                     title: '字段类型',
-                    key: 'type',
+                    key: 'logicType',
                 },
                 {
                     title: '可见',
@@ -128,35 +128,6 @@ export default {
             ],
             data: {
                 nodeId:'',
-                config: [
-                    {
-                        fId:1,
-                        fNameText: '姓名',
-                        fName: "name",
-                        type: '文本',
-                        isEditable: false,
-                        isVisible:false,
-                        required:false
-                    },
-                    {
-                        fId:2,
-                        fNameText: '性别',
-                        fName: "sex",
-                        type: '文本',
-                        isEditable: false,
-                        isVisible:false,
-                        required:false
-                    },
-                    {
-                        id:'fds3',
-                        fNameText: '年龄',
-                        fName: "age",
-                        type: '文本',
-                        isEditable: false,
-                        isVisible:false,
-                        required:false
-                    },
-                ],
             },
         }
     },

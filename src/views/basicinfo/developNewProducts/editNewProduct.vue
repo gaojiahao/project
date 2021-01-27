@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 11:32:24
+ * @LastEditTime: 2021-01-27 15:22:09
 -->
 <template>
 <div>
@@ -26,8 +26,8 @@
                 </div>
             </div>
         </TabPane>
-        <TabPane label="销售信息" name="sellInfo" :disabled="disabled">
-            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
+        <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
+            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch" @set-pruch="setPruch" ref="pruchTable"></AddNewProductTable>
             <div class="top">
                 <Divider orientation="left" size="small">其他信息</Divider>
                 <div class="top_tabale">
@@ -36,7 +36,7 @@
                             <div style="width:100%">
                                 <FormItem>
                                     <Button type="primary" @click="savePurchase" style="float: left;">保存</Button>
-                                    <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                    <Button @click="clearFormDataPruch" style="float: left; margin-left:10px">取消</Button>
                                 </FormItem>
                             </div>
                         </template>
@@ -96,7 +96,8 @@ import {
     UpdatePrepGoods,
     GetPrepGoodsAttributeById,
     UpdatePrepGoodsAttribute,
-    GetOperationLogPage
+    GetOperationLogPage,
+    UpdateGoodsSupplier
 } from "@service/basicinfoService"
 import {
     Tabs,
@@ -221,6 +222,9 @@ export default {
                 }
             })
         },
+        setPruch(row){
+            this.purchaseFormValidate = row;
+        },
         savePurchase(){
             var params = this.purchaseFormValidate;
             params = {
@@ -231,7 +235,7 @@ export default {
             console.log('params',params);
             this.$refs['formPurch'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
-                    if (this.productId) {
+                    if (!params.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
                             CraeteGoodsSupplier(params).then(res => {
@@ -249,11 +253,33 @@ export default {
                                 }
                             });
                         });
+                    } else {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            UpdateGoodsSupplier(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：更新成功！');
+                                    this.GetGoodsSupplierPage();
+                                    this.GetOperationLogPage();
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });    
                     }
                 } else {
                     this.$Message.error('保存失败');
                 }
             })
+        },
+        clearFormDataPruch(){
+            this.$delete(this.purchaseFormValidate,'id');
+            this.$refs['formPurch'].$refs['formValidate'].resetFields();
         },
         saveDescription(value){
             this.productInfoFormValidate.description = value;

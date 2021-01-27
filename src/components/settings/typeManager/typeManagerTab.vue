@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 18:03:24
+ * @LastEditTime: 2021-01-27 10:49:34
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -175,24 +175,24 @@ export default {
                         });
                     }
                 },
-                {
-                    title: '是否需要',
-                    key: 'isCheck',
-                    align: 'center',
-                    render: (h, params) => {
-                        return h('Checkbox', {
-                            props: {
-                                single: false,
-                                value: params.row.isCheck
-                            },
-                            on: {
-                                'on-change': (event) => {
-                                    this.filesData[params.index][params.column.key] = event;
-                                }
-                            }
-                        });
-                    }
-                }
+                // {
+                //     title: '是否需要',
+                //     key: 'isCheck',
+                //     align: 'center',
+                //     render: (h, params) => {
+                //         return h('Checkbox', {
+                //             props: {
+                //                 single: false,
+                //                 value: params.row.isCheck
+                //             },
+                //             on: {
+                //                 'on-change': (event) => {
+                //                     this.filesData[params.index][params.column.key] = event;
+                //                 }
+                //             }
+                //         });
+                //     }
+                // }
             ],
             filesData: [],
             activeTab: '',
@@ -311,7 +311,7 @@ export default {
             }
             var arr = [];
             for(var j=0;j<this.filesData.length;j++){
-                if(this.filesData[j].isCheck){
+                if(this.filesData[j].quantity){
                     var obj = {
                         categoryId: this.categoryId,
                         platformId: this.platform,
@@ -349,7 +349,7 @@ export default {
                             if(data[i].fileTypeId==a[j].id){
                                 a[j] = {
                                     ...a[j],
-                                    quantity: data[i]['quantity'],
+                                    quantity: data[i]['quantity']||1,
                                     isCheck: true   
                                 }
                             }

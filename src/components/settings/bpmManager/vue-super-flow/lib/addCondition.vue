@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 10:02:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-23 11:40:22
+ * @LastEditTime: 2021-01-26 19:58:00
 -->
 <template>
     <Modal
@@ -24,7 +24,7 @@
                     </FormItem>
                     <FormItem label="">
                         <Select v-model="formData['fName']" :style="{width:'200px',float: 'left'}" size="small" clearable  filterable @on-select="onChange" :label-in-value='true'>
-                            <Option v-for="item in formSettings" :value="item.fName" :key="item.fId" :tag="item.fId">{{ item.fNameText }}</Option>
+                            <Option v-for="item in formSettings" :value="item.columnName" :key="item.id" :tag="item.id">{{ item.displayName }}</Option>
                         </Select>
                     </FormItem>
                     <FormItem label="">
@@ -147,7 +147,7 @@ export default {
             this.formData = {
                 fId:this.selectF.tag,
                 ...this.formData,
-                fNameText: (this.formSettings.find(item=>item.fName === this.formData.fName))['fNameText'],
+                fNameText: (this.formSettings.find(item=>item.columnName === this.formData.fName))['displayName'],
                 nexusText: (this.conditionalList.find(item=>item.value === this.formData.nexus))['name'],
                 logicText: (this.operatorList.find(item=>item.value === this.formData.logic))['name'],
             }

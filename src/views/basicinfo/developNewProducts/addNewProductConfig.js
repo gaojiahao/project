@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 11:25:03
+ * @LastEditTime: 2021-01-27 12:06:48
  */
 export default {
     data() {
@@ -179,7 +179,8 @@ export default {
                 {name:'否',value:false}
               ],
             },
-            disabled: false
+            disabled: false,
+            hiddenFun: this.isPackageHiddenFun,
           },
           weight:{
             name:'商品重量',
@@ -411,12 +412,12 @@ export default {
             message: '请输入特性标签', 
             trigger: 'blur' 
           }],
-          brandId: [{
-            required: true,
-            message: '请选择品牌',
-            trigger: 'change',
-            validator: brandIdVali
-          }],
+          // brandId: [{
+          //   required: true,
+          //   message: '请选择品牌',
+          //   trigger: 'change',
+          //   validator: brandIdVali
+          // }],
           // isPackage: [{
           //   required: true,
           //   message: '请选择是否带包装',
@@ -446,14 +447,11 @@ export default {
             trigger: 'change',
             validator: materialSizeVali
           }],
-          packageCost:[{ 
-            required: true, 
-            // type: 'string',
-            message: '请输入包装成本', 
-            // trigger: 'blur',
-            // validator: packageCostVali
-            trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
-          }],
+          // packageCost:[{ 
+          //   required: true, 
+          //   message: '请输入包装成本', 
+          //   trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+          // }],
           packageWeight:[{ 
             required: true,
             // type: 'number',
@@ -555,5 +553,20 @@ export default {
           },
         }
       }
-    }
+    },
+    methods: {
+      isPackageHiddenFun(value){
+        if(value){
+          this.productInfo['material']['hidden']=false;
+          this.productInfo['packageCost']['hidden']=false;
+          this.productInfo['packageWeight']['hidden']=false;
+          this.productInfo['packagingSize']['hidden']=false;
+        } else {
+          this.productInfo['material']['hidden']=true;
+          this.productInfo['packageCost']['hidden']=true;
+          this.productInfo['packageWeight']['hidden']=true;
+          this.productInfo['packagingSize']['hidden']=true;
+        }
+      }
+    },
   }

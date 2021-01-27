@@ -4,14 +4,15 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 14:12:25
+ * @LastEditTime: 2021-01-27 15:04:42
 -->
 <template>
 <div class="addNewProductTable-container">
     <div>
-        <Table border :columns="columns" :data="data" :loading="loading" stripe>
+        <Table border :columns="columns" :data="data" :loading="loading" stripe highlight-row ref="selection" @on-current-change="onCurrentChange">
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">参考比价</Button>
+                <Button type="error" icon="md-create" size="small" style="margin-right: 5px" @click="del(row)">删除</Button>
             </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -27,6 +28,9 @@
 <script>
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/basicinfo/productManager/productListConfig";
+import {
+    DelGoodsSupplier
+} from "@service/basicinfoService"
 
 export default {
     name: "AddNewProductTable",
@@ -83,6 +87,7 @@ export default {
                     align: 'center'
                 }
             ],
+            activatedRow:{}
         }
     },
     methods: {
@@ -100,6 +105,29 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.$emit('on-page-size-change',pagesize);
+        },
+        del(row){
+            return new Promise((resolve, reject) => {
+                DelGoodsSupplier({id:row.id}).then(res => {
+                    if (res.result.code == 200) {
+                        this.$Message.info('温馨提示：删除成功！');
+                        this.$parent.$parent.$parent.GetPrepGoodsPage();
+                        this.activatedRow = {};
+                        this.loading = false;
+                        this.activatedRow={};
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.msg
+                        });
+                        this.loading = false;
+                    }
+                });
+            });        
+        },
+        onCurrentChange(currentRow,oldCurrentRow){
+            this.activatedRow = currentRow;
+            this.$emit('set-pruch',currentRow);
         },
     }
 }

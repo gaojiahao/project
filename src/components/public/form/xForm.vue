@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 11:31:19
+ * @LastEditTime: 2021-01-27 12:04:42
 -->
 <template>
 <div class="content">
@@ -26,7 +26,7 @@
             </FormItem>
             <!--单选框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
-                <RadioGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']">
+                <RadioGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" @on-change="formConfig[index]['hiddenFun']">
                     <template v-for="(ditem,dIndex) in formConfig[index]['dataSource']['data']">
                         <Radio :label="ditem.value" :key="ditem.value" :disabled="formConfig[index]['disabled']">
                             {{ditem.name}}
@@ -43,7 +43,7 @@
                 </CheckboxGroup>
             </FormItem>
             <!--formConfig[index]['dataSource']['multiple']控制选择器是否多选，单选-->
-            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='select'">
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="(formConfig[index]&&formConfig[index]['type']=='select')&&!formConfig[index]['hidden']">
                 <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable :disabled="formConfig[index]['disabled']" :label-in-value='true' v-show="!formConfig[index]['hidden']" @on-select="onChange">
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
                 </Select>
@@ -62,7 +62,7 @@
                 <Texts v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></Texts>
             </FormItem>
             <!--商品体积-->
-            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='size'">
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="(formConfig[index]&&formConfig[index]['type']=='size')&&!formConfig[index]['hidden']">
                 <Size v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"></Size>
             </FormItem>
             <!--单项选择器-->

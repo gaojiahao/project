@@ -89,7 +89,7 @@ import {
     CreateWorkflow,
     GetWorkflowTemplateById
 } from "@service/settingsService";
-
+import $flyio from '@plugins/ajax';
 import list from './nodeList'
 export default {
     name: 'SaveBpm',
@@ -149,35 +149,19 @@ export default {
                     if(this.nodeSetting['permissions'].length){
                         this.selectDataAuthData = this.nodeSetting['permissions'];
                     } else {
-                        this.selectDataAuthData =  [
-                            {
-                                fId:1,
-                                fNameText: '姓名',
-                                fName: "name",
-                                type: '文本',
-                                isEditable: false,
-                                isVisible:false,
-                                required:false
-                            },
-                            {
-                                fId:2,
-                                fNameText: '性别',
-                                fName: "sex",
-                                type: '文本',
-                                isEditable: false,
-                                isVisible:false,
-                                required:false
-                            },
-                            {
-                                id:3,
-                                fNameText: '年龄',
-                                fName: "age",
-                                type: '文本',
-                                isEditable: false,
-                                isVisible:false,
-                                required:false
-                            },
-                        ];
+                        $flyio.post({
+                            url: '/api/GetClauseDataItemPage',
+                            data:{ clauseId:this.id,maxResultCount:200}
+                        }).then((res) => {
+                            if(res.result.code==200){
+                                this.selectDataAuthData = res.result.item.items.map((e,index)=>{
+                                    e['isVisible'] = false;
+                                    e['isEditable'] = false;
+                                    e['required'] = false;
+                                    return e;
+                                }); 
+                            }
+                        })
                     }
                     this.isShow['AddDataAuthModal'] = true;
                 },
@@ -455,6 +439,7 @@ export default {
             dataAddParticipant:{},
             selectAddParticipant:{},
             selectParticipantDecision:{},
+            tpId:null,
             id:null
         }
     },
@@ -800,10 +785,10 @@ export default {
             this.$set(this.nodeSetting, 'participants', data);
         },
         GetWorkflowTemplateById(){
-            this.id = this.$route.query.tpId;
-            if(this.id) {
+            this.tpId = this.$route.query.tpId;
+            if(this.tpId) {
                 return new Promise((resolve, reject) => {
-                    GetWorkflowTemplateById({id:this.id}).then(res => {
+                    GetWorkflowTemplateById({id:this.tpId}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             var arr = JSON.parse(res.result.item.viewJson);
@@ -830,6 +815,7 @@ export default {
         //         }
         //     }
         // }
+        this.id = this.$route.query.id;
         this.GetWorkflowTemplateById();
     },
     mounted(){
