@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-20 19:49:25
+ * @LastEditTime: 2021-01-27 15:44:28
  */
 export default {
     data() {
@@ -15,12 +15,12 @@ export default {
                 type:'text',
           },
           categoryId:{
-            name:'分类',
+            name:'类目',
             type:'text',
             hidden:true
           },
           categoryName:{
-            name:'分类',
+            name:'类目',
             type:'text',
           },
           productImg:{

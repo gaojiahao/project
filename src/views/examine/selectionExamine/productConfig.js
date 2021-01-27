@@ -24,7 +24,7 @@ export default {
               disabled: false
             },
             productType:{
-              name:'分类',
+              name:'类目',
               type:'select',
               dataSource:{
                 type:'static',
@@ -319,7 +319,7 @@ export default {
           }],
           storeCode: [{ 
             required: true, 
-            message: '商品分类', 
+            message: '商品类目', 
             trigger: 'change' 
           }],
           weight:[{ 
@@ -333,7 +333,7 @@ export default {
         },
         filtersConfig:{
           productType:{
-            name:'分类',
+            name:'类目',
             value:'productType',
             type:'select',
             dataSource:{

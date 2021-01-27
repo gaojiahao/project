@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 12:06:48
+ * @LastEditTime: 2021-01-27 15:41:59
  */
 export default {
     data() {
       const categoryIdVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
-            callback(new Error('请选择分类'));
+            callback(new Error('请选择类目'));
         } else {
           callback();
         }
@@ -108,7 +108,7 @@ export default {
             disabled: false
           },
           // categoryId:{
-          //   name:'分类',
+          //   name:'类目',
           //   type:'selectCascade',
           //   dataSource:{
           //     type:'dynamic',
@@ -125,7 +125,7 @@ export default {
           //   }
           // },
           categoryId:{
-            name:'分类',
+            name:'类目',
             type:'tree',
             dataSource:{
               type:'dynamic',
@@ -402,7 +402,7 @@ export default {
           }],
           categoryId: [{
             required: true,
-            message: '请选择分类',
+            message: '请选择类目',
             trigger: 'change',
             validator: categoryIdVali,
           }],
@@ -503,7 +503,7 @@ export default {
             type:'text',
           },
           productType:{
-            name:'分类',
+            name:'类目',
             value:'productType',
             type:'select',
             dataSource:{

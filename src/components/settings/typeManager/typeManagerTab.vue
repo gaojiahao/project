@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 10:49:34
+ * @LastEditTime: 2021-01-27 15:39:46
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
-    <TabPane label="分类属性">
+    <TabPane label="类目属性">
         <Table border :columns="columns" :data="data.attributeBinds" :loading="loading" stripe>
             <template slot-scope="{ row, index }" slot="action">
                 <i-switch size="large">

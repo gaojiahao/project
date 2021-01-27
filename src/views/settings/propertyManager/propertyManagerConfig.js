@@ -10,7 +10,7 @@ export default {
     data() {
       const groupNameVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
-            callback(new Error('请输入分类层级'));
+            callback(new Error('请输入类目层级'));
         } else {
           callback();
         }

@@ -3,7 +3,7 @@
     <div class="head">
         <div class="left">
             <Icon type="md-apps" />
-            <span class="text">当前分类</span>
+            <span class="text">当前类目</span>
         </div>
     </div>
     <div class="head">

@@ -10,7 +10,7 @@ export default {
     data() {
       const levelVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
-            callback(new Error('请输入分类层级'));
+            callback(new Error('请输入类目层级'));
         } else {
           callback();
         }
@@ -50,11 +50,11 @@ export default {
             }
           },
           name:{
-            name:'分类名称',
+            name:'类目名称',
             type:'text',
           },
           level:{
-            name:'分类层级',
+            name:'类目层级',
             type:'number',
           },
         },
@@ -76,12 +76,12 @@ export default {
           name: [{
               required: true,
               type: 'string',
-              message: '请输入分类名称',
+              message: '请输入类目名称',
               trigger: 'blur'
           }],
           level: [{
             required: true,
-            message: '请输入正确的分类层级',
+            message: '请输入正确的类目层级',
             trigger: 'change',
             pattern: /^[0-9]\d*$/,
           }],

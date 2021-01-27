@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-24 11:57:34
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 20:32:30
+ * @LastEditTime: 2021-01-27 15:40:04
  */
 export default {
     data() {
@@ -35,18 +35,18 @@ export default {
                 auth: false,
               },
               {
-                name: '分类管理',
+                name: '类目管理',
                 value: 'typeManager',
                 status: true,
                 auth: true,
                 children: [
                   {
-                    name: '平台分类',
+                    name: '平台类目',
                     value: 'platformCategoryManager',
                     status: true,
                   },
                   {
-                    name: '系统分类',
+                    name: '系统类目',
                     value: 'systemCategoryManager',
                     status: true,
                   },

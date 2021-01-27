@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-17 20:18:08
+ * @LastEditTime: 2021-01-27 15:44:11
  */
 export default {
   data() {
@@ -68,7 +68,7 @@ export default {
           type:'text',
         },
         productType:{
-          name:'分类',
+          name:'类目',
           value:'productType',
           type:'select',
           dataSource:{

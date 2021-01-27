@@ -129,7 +129,7 @@ export let DelStore = (data = {}) => {
     data: data
   })
 };
-//分类管理
+//类目管理
 export let GetCategoryList = (data = {}) => {
   return $flyio.post({
     url: '/api/GetCategoryList',

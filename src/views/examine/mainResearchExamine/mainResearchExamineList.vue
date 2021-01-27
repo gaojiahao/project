@@ -226,7 +226,7 @@ export default {
                 resizable: true,
             },
             {
-                title: '分类',
+                title: '类目',
                 key: 'categoryName',
                 resizable: true,
                 width: 165,

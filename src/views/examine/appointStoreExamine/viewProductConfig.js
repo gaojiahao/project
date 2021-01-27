@@ -10,7 +10,7 @@ export default {
     data() {
       const categoryIdVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
-            callback(new Error('请选择分类'));
+            callback(new Error('请选择类目'));
         } else {
           callback();
         }
@@ -26,7 +26,7 @@ export default {
             type:'text',
           },
           categoryId:{
-            name:'分类',
+            name:'类目',
             type:'select',
             dataSource:{
               type:'dynamic',
@@ -75,7 +75,7 @@ export default {
           }],
           categoryId: [{
             required: true,
-            message: '请选择分类',
+            message: '请选择类目',
             trigger: 'change',
             validator: categoryIdVali,
           }],

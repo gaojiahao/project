@@ -98,7 +98,7 @@ export default {
                     key: 'productName'
                 },
                 {
-                    title: '分类',
+                    title: '类目',
                     key: 'supplier'
                 },
                 {

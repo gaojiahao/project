@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-20 20:04:47
+ * @LastEditTime: 2021-01-27 15:45:17
  */
 export default {
   data() {
@@ -52,7 +52,7 @@ export default {
       },
       filtersConfig:{
         productType:{
-          name:'分类',
+          name:'类目',
           value:'productType',
           type:'select',
           dataSource:{

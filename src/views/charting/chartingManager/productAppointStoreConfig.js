@@ -22,12 +22,12 @@ export default {
           type:'text',
         },
         categoryId:{
-          name:'分类',
+          name:'类目',
           type:'text',
           hidden:true
         },
         categoryName:{
-          name:'分类',
+          name:'类目',
           type:'text',
         },
         productImg:{

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:22:09
+ * @LastEditTime: 2021-01-27 15:27:50
 -->
 <template>
 <div>
@@ -175,7 +175,6 @@ export default {
                 packageHigh:params.packagingSize.high,
                 packageVolume:params.packagingSize.volume,
             }
-            console.log('params',params);
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (this.productId) {
@@ -232,7 +231,6 @@ export default {
                 goodsId:this.productInfoFormValidate.id||this.productId,
                 goodsName:this.productInfoFormValidate.name||'是否第三方',
             }
-            console.log('params',params);
             this.$refs['formPurch'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (!params.id) {
@@ -295,7 +293,6 @@ export default {
                 packageHigh:params.packagingSize.high,
                 packageVolume:params.packagingSize.volume,
             }
-            console.log('params',params);
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (this.productId) {

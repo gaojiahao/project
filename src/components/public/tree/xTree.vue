@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 11:30:21
+ * @LastEditTime: 2021-01-27 15:41:17
 -->
 <template>
 <div class="x_tree" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
@@ -61,7 +61,7 @@ export default {
             datas:[],
             show: false,
             titleText: '选择',
-            checkText: '分类名称',
+            checkText: '类目名称',
             placeholder: '',
             fullscreen: false,
             hidden: false,

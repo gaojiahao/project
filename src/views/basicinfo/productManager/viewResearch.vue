@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-23 16:48:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 10:15:43
+ * @LastEditTime: 2021-01-27 15:44:19
 -->
 <template>
 <div class="viewResearch">
@@ -21,7 +21,7 @@
                     <Input v-model="formData['name']" :style="{width:'200px'}" disabled></Input>
                 </div>
                 <div class="item">
-                    <label>商品分类：</label>
+                    <label>商品类目：</label>
                     <Input v-model="formData['categoryName']" :style="{width:'200px'}" disabled></Input>
                 </div>
                 <div class="item">

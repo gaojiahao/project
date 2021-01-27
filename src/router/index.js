@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 15:03:49
+ * @LastEditTime: 2021-01-27 15:40:21
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -107,7 +107,7 @@ const routes = [
             name: "typeManager",
             component: resolve=>(require(["@views/settings/typeManager/index"],resolve)),
             meta: {
-              title: "分类管理",
+              title: "类目管理",
               group: "typeManager",
             },
             redirect:'typeManager/platformCategoryManager',
@@ -116,7 +116,7 @@ const routes = [
                 path: 'platformCategoryManager',
                 name: 'platformCategoryManager',
                 meta:{ 
-                  title:'平台类目管理',
+                  title:'平台类目',
                   group: "platformCategoryManager",
                   level: 1,
                 },
@@ -126,7 +126,7 @@ const routes = [
                 path: 'systemCategoryManager',
                 name: 'systemCategoryManager',
                 meta:{ 
-                  title:'系统类目管理',
+                  title:'系统类目',
                   group: "systemCategoryManager",
                   level: 1,
                 },

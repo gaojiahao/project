@@ -18,7 +18,7 @@
                 <Input v-model="formData['productCode']" :style="{width:'200px'}" disabled></Input>
             </div>
             <div class="item">
-                <label>商品分类：</label>
+                <label>商品类目：</label>
                 <Input v-model="formData['productType']" :style="{width:'200px'}" disabled></Input>
             </div>
             <div class="item">

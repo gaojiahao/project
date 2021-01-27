@@ -52,7 +52,7 @@ export default {
       },
       filtersConfig:{
         productType:{
-          name:'分类',
+          name:'类目',
           value:'productType',
           type:'select',
           dataSource:{

@@ -32,7 +32,7 @@
             </div>
             <div class="item"  v-show="isShowBind">
                 <div class="top">
-                    <Divider orientation="left" size="small">分类属性</Divider>
+                    <Divider orientation="left" size="small">类目属性</Divider>
                     <TypeManagerTab :list="attrList" :loading="attrLoading" :pageAttrData="pageAttrData" @change-page="changePage" @on-page-size-change="onPageSizeChange" @get-data="GetAttributeCategoryPage" :categoryId="formValidate.id"></TypeManagerTab>
                 </div>
             </div>

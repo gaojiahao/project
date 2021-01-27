@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-25 17:55:16
+ * @LastEditTime: 2021-01-27 15:42:21
 -->
 <template>
 <div>
@@ -21,7 +21,7 @@
                     <Input v-model="formData['name']" :style="{width:'200px'}" disabled></Input>
                 </div>
                 <div class="item">
-                    <label>商品分类：</label>
+                    <label>商品类目：</label>
                     <Input v-model="formData['categoryName']" :style="{width:'200px'}" disabled></Input>
                 </div>
                 <div class="item">
