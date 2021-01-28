@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-21 10:02:51
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-21 16:51:48
+ * @LastEditTime: 2021-01-28 15:02:06
 -->
 <template>
     <Modal
@@ -22,6 +22,9 @@
             </FormItem>
             <FormItem label="名称">
                 <Input  v-model="node.data&&node.data.name"></Input >
+            </FormItem>
+            <FormItem label="业务">
+                <Input  v-model="node.data&&node.data.business"></Input >
             </FormItem>
         </Form>
     </Modal>   

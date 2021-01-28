@@ -4,8 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:41:59
+ * @LastEditTime: 2021-01-28 19:22:52
  */
+import $flyio from '@plugins/ajax';
+
 export default {
     data() {
       const categoryIdVali = (rule, value, callback) => {
@@ -105,25 +107,9 @@ export default {
           name:{
             name:'产品名称',
             type:'text',
+            length:200,
             disabled: false
           },
-          // categoryId:{
-          //   name:'类目',
-          //   type:'selectCascade',
-          //   dataSource:{
-          //     type:'dynamic',
-          //     url:'/api/GetCategoryList',
-          //     data:[],
-          //     col:[
-          //       {k:'name',v:'name'},
-          //       {k:'value',v:'id'}
-          //     ]
-          //   },
-          //   bind:{
-          //     target: 'categoryName',
-          //     bindValue: 'name'
-          //   }
-          // },
           categoryId:{
             name:'类目',
             type:'tree',
@@ -156,9 +142,23 @@ export default {
             //   ]
             // },
           },
+          logisticsLabel:{
+            name:'物流属性',
+            type:'select',
+            dataSource:{
+              type:'dynamic',
+              url:'/api/GetSystemConfigList',
+              data:[],
+              parmas:{congfigType:'logisticsLabel'},
+              col:[
+                {k:'name',v:'name'},
+                {k:'value',v:'id'}
+              ]
+            },
+          },
           brandId:{
             name:'品牌',
-            type:'select',
+            type:'selectCustom',
             dataSource:{
               type:'dynamic',
               url:'/api/GetBrandList',
@@ -167,7 +167,8 @@ export default {
             bind:{
               target: 'brandName',
               bindValue: 'name'
-            }
+            },
+            createFun:this.brandIdCreateFun,
           },
           isPackage:{
             name:'是否带包装',
@@ -290,6 +291,7 @@ export default {
           url:{
             name:'参考链接',
             type:'text',
+            length:2000
           },
           remark:{
             name:'备注',
@@ -361,13 +363,14 @@ export default {
           imgTwo:'',
           imgThree:'',
           characteristic:'',
+          logisticsLabel:'',
           brandId:'',
           brandName:'',
           isPackage: true,
           weight:'',
           productSize:{},
           material:'',
-          packageCost:'',
+          packageCost:2,
           packageWeight:'',
           packagingSize:{},
           features:'',
@@ -406,12 +409,12 @@ export default {
             trigger: 'change',
             validator: categoryIdVali,
           }],
-          characteristic: [{ 
-            required: true, 
-            type: 'string',
-            message: '请输入特性标签', 
-            trigger: 'blur' 
-          }],
+          // characteristic: [{ 
+          //   required: true, 
+          //   type: 'string',
+          //   message: '请输入特性标签', 
+          //   trigger: 'blur' 
+          // }],
           // brandId: [{
           //   required: true,
           //   message: '请选择品牌',
@@ -567,6 +570,18 @@ export default {
           this.productInfo['packageWeight']['hidden']=true;
           this.productInfo['packagingSize']['hidden']=true;
         }
+      },
+      async brandIdCreateFun(value){
+        await $flyio.post({
+          url: '/api/CreateBrand',
+          data:{ name:value,platformId:0}
+        }).then((res) => {
+          if(res.result.code==200){
+            this.productInfo['brandId']['dataSource']['data'].push({name:res.result.item.name,value:res.result.item.id,id:res.result.item.id});
+            this.productInfoFormValidate['brandId'] = res.result.item.id;
+            this.productInfoFormValidate['brandName'] = res.result.item.name;
+          }
+        })
       }
     },
   }

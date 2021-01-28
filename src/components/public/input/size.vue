@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 17:40:55
+ * @LastEditTime: 2021-01-27 19:28:01
 -->
 <template>
 <div class="size-content">
@@ -48,7 +48,23 @@ export default {
             handler(val){
                 this.list = val;
             }
+        },
+        "list.long":{
+            handler(val){
+                this.list.volume = this.list.long*this.list.wide*this.list.high;
+            }
+        },
+        "list.wide":{
+            handler(val){
+                this.list.volume = this.list.long*this.list.wide*this.list.high;
+            }
+        },
+        "list.high":{
+            handler(val){
+                this.list.volume = this.list.long*this.list.wide*this.list.high;
+            }
         }
+        
     },
     data() {
         return {

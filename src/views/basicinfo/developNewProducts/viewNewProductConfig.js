@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:42:59
+ * @LastEditTime: 2021-01-28 14:38:00
  */
 export default {
   data() {
@@ -156,6 +156,20 @@ export default {
           //     {k:'value',v:'name'}
           //   ]
           // },
+        },
+        logisticsLabel:{
+          name:'物流属性',
+          type:'select',
+          dataSource:{
+            type:'dynamic',
+            url:'/api/GetSystemConfigList',
+            data:[],
+            parmas:{congfigType:'logisticsLabel'},
+            col:[
+              {k:'name',v:'name'},
+              {k:'value',v:'id'}
+            ]
+          },
         },
         brandId:{
           name:'品牌',
@@ -361,6 +375,7 @@ export default {
         imgTwo:'',
         imgThree:'',
         characteristic:'',
+        logisticsLabel:'',
         brandId:'',
         brandName:'',
         isPackage: true,

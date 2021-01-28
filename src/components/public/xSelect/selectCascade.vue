@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-01-12 20:59:44
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 09:03:50
+ * @LastEditTime: 2021-01-27 16:25:03
 -->
 <template>
     <Cascader :data="data" v-model="value1" change-on-select :render-format="format" @on-change="onChange" trigger="hover"></Cascader>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:27:31
+ * @LastEditTime: 2021-01-28 19:20:23
 -->
 <template>
 <div>
@@ -18,7 +18,8 @@
                             <FormItem>
                                 <div style="width:100%"> 
                                     <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                    <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!productId">重置</Button>
+                                    <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!this.productId">重置</Button>
+                                    <Button type="warning" @click="copy" style="float: left; margin-left:10px" v-if="this.productId">复制为新建</Button>
                                     <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>
@@ -140,7 +141,8 @@ export default {
             },
             loadingPruch:true,
             dataProp:[],
-            loadingProp:true
+            loadingProp:true,
+            copyId:''
         }
     },
     computed:{
@@ -394,15 +396,14 @@ export default {
             this.tabName = 'logInfo';   
         },
         getFormData(){
-            this.id = this.$route.query.id;
+            this.id = this.$route.query.id||this.copyId;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetPrepGoodsById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.prod
                             this.productInfoFormValidate = {
-                                id: res.result.item.id,
+                                // id: res.result.item.id,
                                 code:res.result.item.code,
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
@@ -452,14 +453,16 @@ export default {
             params.prepGoodsId = this.productId;
             params.prepGoodsAttributes = [];
             for(var i in data){
-                var obj = {};
-                obj = {
-                    goodsId:  this.productId,
-                    goodsName: this.productInfoFormValidate.name,
-                    attributeId: data[i].tag,
-                    attributeValueId: data[i].value,
+                if(i!='undefined'){
+                    var obj = {};
+                    obj = {
+                        goodsId:  this.productId,
+                        goodsName: this.productInfoFormValidate.name,
+                        attributeId: data[i].tag,
+                        attributeValueId: data[i].value,
+                    }
+                    params.prepGoodsAttributes.push(obj);
                 }
-                params.prepGoodsAttributes.push(obj);
             }
             return new Promise((resolve, reject) => {
                 this.$FromLoading.show();
@@ -497,11 +500,22 @@ export default {
                 });
             }    
         },
+        copy(){
+            if(this.productId){
+                this.$router.push({name:'AddNewProduct',params:{flag:'copy',id:this.productId}});
+            }
+        }
     },
     created() {
-        this.getFormData();
-        this.GetGoodsSupplierPage();
-        this.GetPrepGoodsAttributeById();
+        if(this.$route.params.flag=="copy"){
+            this.copyId = this.$route.params.id;
+            this.getFormData();
+            this.GetGoodsSupplierPage();
+        } else {
+            this.getFormData();
+            this.GetGoodsSupplierPage();
+            this.GetPrepGoodsAttributeById();
+        }
     }
 }
 </script>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 12:04:42
+ * @LastEditTime: 2021-01-28 14:48:33
 -->
 <template>
 <div class="content">
@@ -77,25 +77,31 @@
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='distributionPeople'">
                 <DistributionPeople v-model="formValidate[index]" :config="formConfig[index]" :parmas="formConfig[index]['parmas']"></DistributionPeople>
             </FormItem>
+            <!-- 时间段控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dataTimes'">
                 <DatePicker v-model="formValidate[index]" @on-change="formValidate[index]=$event" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px" :disabled="formConfig[index]['disabled']"></DatePicker>
             </FormItem>
+            <!-- 日期控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
                 <DatePicker v-model="formValidate[index]" @on-change="formValidate[index]=$event" format="yyyy-MM-dd HH:mm" type="date" placeholder="" style="width: 200px" :disabled="formConfig[index]['disabled']"></DatePicker> 
             </FormItem>
+            <!-- 密码控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="(formConfig[index]&&formConfig[index]['type']=='password')&&!formConfig[index]['hidden']">
                 <Input v-model="formValidate[index]" :style="{width:'300px'}" :disabled="formConfig[index]['disabled']" type="password" password :placeholder="formConfig[index]['placeholder']"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
+            <!-- 自定义下拉控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCustom'">
-                <Select v-model="formValidate[index]" :style="{width:'300px',float: 'left'}" allow-create multiple filterable :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']">
-                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id">{{ item.name }}</Option>
+                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" allow-create filterable @on-create="formConfig[index]['createFun']" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"  @on-select="onChange">
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
                 </Select>
             </FormItem>
+            <!-- 下拉关联层级控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCascade'">
                 <SelectCascade :name="index" v-model="formValidate[index]" :formConfig="formConfig[index]" v-show="!formConfig[index]['hidden']" ></SelectCascade>
             </FormItem>
+            <!-- 树形控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='tree'">
-                <XTree :name="index" v-model="formValidate[index]" :config="formConfig[index]" v-show="!formConfig[index]['hidden']" :disabled="formConfig[index]['disabled']"></XTree>
+                <XTree :configName="index" v-model="formValidate[index]" :config="formConfig[index]" v-show="!formConfig[index]['hidden']" :disabled="formConfig[index]['disabled']" @on-select="onChange"></XTree>
             </FormItem>
         </template>
         <slot name='button'>
@@ -211,7 +217,7 @@ export default {
                 if (i == 0 && controls[i].type == 'text') { //第一个输入框获取焦点
                     setTimeout(() => {
                         controls[0].focus();
-                        console.log(controls[0].value);
+                        // console.log(controls[0].value);
                     }, 1000);
                 }
             }

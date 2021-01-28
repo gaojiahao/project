@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-12-04 15:11:40
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 15:35:20
+ * @LastEditTime: 2021-01-28 15:45:47
  */
 import Vue from "vue";
 import { Message, Switch, Circle,Tree,Icon,Button,Span,Badge,Notice,Modal,Tag,Spin,Radio,
-RadioGroup,Checkbox,CheckboxGroup,Input,Select,Option,Card,Divider,FormItem,Table,Page,DatePicker,Form,Cascader} from "view-design";
+RadioGroup,Checkbox,CheckboxGroup,Input,Select,Option,Card,Divider,FormItem,Table,Page,DatePicker,Form,Cascader,Poptip} from "view-design";
 import "view-design/dist/styles/iview.css";
 
 Vue.component("Tree", Tree);
@@ -37,6 +37,7 @@ Vue.component("Form", Form);
 Vue.component("Spin", Spin);
 Vue.component("Modal", Modal);
 Vue.component("Cascader", Cascader);
+Vue.component("Poptip", Poptip);
 //组件挂载到vue $this上
 Vue.prototype.$Message = Message;
 Vue.prototype.$Notice = Notice;

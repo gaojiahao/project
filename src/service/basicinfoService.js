@@ -62,7 +62,7 @@ export let GetOperationLogPage = (data = {}) => {
     data: data
   })
 };
-//添加商品销售信息
+//添加商品供应商信息
 export let CraeteGoodsSupplier = (data = {}) => {
   return $flyio.post({
     url: '/api/CraeteGoodsSupplier',
@@ -81,7 +81,7 @@ export let UpdateGoodsSupplier = (data = {}) => {
     data: data
   })
 };
-//分页查询商品销售信息
+//分页查询商品供应商信息
 export let GetGoodsSupplierPage = (data = {}) => {
   return $flyio.post({
     url: '/api/GetGoodsSupplierPage',

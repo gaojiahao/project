@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:27:50
+ * @LastEditTime: 2021-01-28 19:18:20
 -->
 <template>
 <div>
@@ -18,6 +18,7 @@
                             <FormItem>
                                 <div style="width:100%"> 
                                     <Button type="primary" @click="save" style="float: left;">保存</Button>
+                                    <Button type="warning" @click="copy" style="float: left; margin-left:10px">复制为新建</Button>
                                     <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>
@@ -414,6 +415,7 @@ export default {
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
                                 categoryName: res.result.item.categoryName,
+                                logisticsLabel: res.result.item.logisticsLabel,
                                 imgOne:res.result.item.imgOne,
                                 imgTwo:res.result.item.imgTwo,
                                 imgThree:res.result.item.imgThree,
@@ -459,14 +461,16 @@ export default {
             params.prepGoodsId = this.productId;
             params.prepGoodsAttributes = [];
             for(var i in data){
-                var obj = {};
-                obj = {
-                    goodsId:  this.productId,
-                    goodsName: this.productInfoFormValidate.name,
-                    attributeId: data[i].tag,
-                    attributeValueId: data[i].value,
+                if(i!='undefined'){
+                    var obj = {};
+                    obj = {
+                        goodsId:  this.productId,
+                        goodsName: this.productInfoFormValidate.name,
+                        attributeId: data[i].tag,
+                        attributeValueId: data[i].value,
+                    }
+                    params.prepGoodsAttributes.push(obj);
                 }
-                params.prepGoodsAttributes.push(obj);
             }
             return new Promise((resolve, reject) => {
                 this.$FromLoading.show();
@@ -511,6 +515,9 @@ export default {
             this.pageDataLog.maxResultCount = pagesize;
             this.GetOperationLogPage();
         },
+        copy(){
+            this.$router.push({name:'AddNewProduct',params:{flag:'copy',id:this.productId}});
+        }
     },
     created() {
         this.productId = this.$route.query.id;

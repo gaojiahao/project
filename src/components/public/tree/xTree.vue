@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:41:17
+ * @LastEditTime: 2021-01-28 19:41:52
 -->
 <template>
 <div class="x_tree" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
@@ -21,7 +21,7 @@
         <div style="">
             <Input v-model="searchValue" search enter-button placeholder="" size="small" style="width: 200px" @on-search="initData" clearable />
         </div>
-        <div style="overflow-y: scroll;height: 600px;position: relative;">
+        <div style="overflow-y: scroll;height: 400px;position: relative;">
             <Tree :data="datas" @on-select-change="onSelectChange" ref="tree"></Tree>
         </div>
     </Modal>
@@ -29,9 +29,6 @@
 </template>
 
 <script>
-import {
-    AuthModuleList,
-} from "@service/settingsService"
 import $flyio from '@plugins/ajax'
 
 export default {
@@ -55,6 +52,10 @@ export default {
             type: Boolean,
             default: false
         },
+        configName:{
+            type:String,
+            default:''
+        }
     },
     data() {
         return {
@@ -65,7 +66,6 @@ export default {
             placeholder: '',
             fullscreen: false,
             hidden: false,
-            disabled:false,
             name:'',
             selected:{},
             menuData:[],
@@ -113,6 +113,7 @@ export default {
                 } else {
                     if(this.value == data[i].id){
                         this.name = data[i].name;
+                        data[i]['checked'] = true;
                     }
                     data[i] = {
                         ...data[i],
@@ -134,8 +135,12 @@ export default {
             this.selected=[];
         },
         ok(){
+            this.handleInput(this.selected.id);
             this.name = this.selected.name;
-            this.$emit('change',this.selected.id);
+            this.$emit('on-select',{label: this.selected.name,tag: this.configName,value: this.selected.id});
+        },
+        handleInput(value) {
+            this.$emit('change', value)
         },
         initData(){
             var parmas = {};

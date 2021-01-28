@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 20:20:12
+ * @LastEditTime: 2021-01-28 17:08:51
 -->
 <template>
 <div>
@@ -30,7 +30,7 @@
                 </div>
                 <div style="width:120px">{{item.fileName}}</div>
             </div>
-            <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:78px;">
+            <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:78px;">
                 <div style="width: 120px;height:120px;line-height: 120px;">
                     <Icon type="ios-camera" size="30"></Icon>
                 </div>
@@ -119,6 +119,9 @@ export default {
             data:{
                 'BusinessType':''
             },
+            formats:['jpg','jpeg','png','bmp','gif','raw','tif','webp','wmf','3GP','ASF','AVI','MOV',
+            'MPEG','WMV','mp4','AAC','AIFF','AMR','FLAC','MIDI','mpeg','WMA','mp3','3dm','3ds','asm',
+            'ade','drw','dwg','max','obj','prt','stl','stp','x-t','igs']
         }
     },
     methods: {

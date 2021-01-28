@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 11:33:29
+ * @LastEditTime: 2021-01-28 14:36:41
 -->
 <template>
 <div>
@@ -88,7 +88,7 @@ import {
     TabPane,
 } from "view-design";
 export default {
-    name: 'editNewProduct',
+    name: 'ViewNewProduct',
     components: {
         Tabs,
         TabPane,
@@ -340,7 +340,9 @@ export default {
                                 code:res.result.item.code,
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
                                 characteristic:res.result.item.characteristic,
+                                logisticsLabel: res.result.item.logisticsLabel,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
                                 isPackage: res.result.item.isPackage,
