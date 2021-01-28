@@ -27,7 +27,7 @@
                 </div>
             </div>
         </TabPane>
-        <TabPane label="销售信息" name="sellInfo" :disabled="disabled">
+        <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
             <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
             <div class="top">
                 <Divider orientation="left" size="small">其他信息</Divider>

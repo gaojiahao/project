@@ -34,7 +34,7 @@
                 </ViewForm>
             </div>
         </TabPane>
-        <TabPane label="销售信息">
+        <TabPane label="供应商信息">
             <AddNewProductTable></AddNewProductTable>
             <div class="top-title">
                 采购信息
