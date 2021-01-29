@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:40:21
+ * @LastEditTime: 2021-01-29 16:29:22
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -727,6 +727,16 @@ const routes = [
                   level: 2,
                 },
                 component: resolve=>(require(["@views/basicinfo/developNewProducts/editNewProduct"],resolve)),
+              },
+              {
+                path: 'copyNewProduct',
+                name: 'copyNewProduct',
+                meta:{ 
+                  title:'复制新品',
+                  group: "developNewProducts",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/basicinfo/developNewProducts/copyNewProduct"],resolve)),
               },
               {
                 path: 'viewNewProduct',

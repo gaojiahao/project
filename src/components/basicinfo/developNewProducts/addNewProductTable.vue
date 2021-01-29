@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:04:42
+ * @LastEditTime: 2021-01-29 16:59:33
 -->
 <template>
 <div class="addNewProductTable-container">
     <div>
         <Table border :columns="columns" :data="data" :loading="loading" stripe highlight-row ref="selection" @on-current-change="onCurrentChange">
-            <template slot-scope="{ row, index }" slot="action">
+            <template slot-scope="{ row, index }" slot="action" v-if="!disabled">
                 <Button type="primary" icon="md-create" size="small" style="margin-right: 5px" @click="showPop(true)">参考比价</Button>
                 <Button type="error" icon="md-create" size="small" style="margin-right: 5px" @click="del(row)">删除</Button>
             </template>
@@ -54,6 +54,10 @@ export default {
                 return {}
             }
         },
+        disabled:{
+            type: Boolean,
+            default: false
+        }
     },
     mixins: [config],
     data() {

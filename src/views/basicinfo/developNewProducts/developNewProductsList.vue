@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-29 14:31:08
+ * @LastEditTime: 2021-01-29 16:30:24
 -->
 <template>
 <div class="erp_table_container">
@@ -19,7 +19,8 @@
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
-                        <Button type="primary" size="small" @click="exportData(false)" :loading="exportLoading"><Icon type="ios-download-outline"></Icon>导出</Button>
+                        <Button type="warning" size="small" @click="goCopy" class="marginRight"><Icon type="ios-copy-outline"></Icon>复制</Button>
+                        <Button type="primary" size="small" @click="exportData(false)" :loading="exportLoading" class="marginRight"><Icon type="ios-download-outline"></Icon>导出</Button>
                         <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
                     </div>
                     <div class="filter-search">
@@ -141,6 +142,11 @@ export default {
                 this.$router.push({name:'editNewProduct',query: {id:this.activatedRow.id}});
             }
         },
+        goCopy(){
+            if(this.activatedRow.id){
+                this.$router.push({name:'copyNewProduct',query: {id:this.activatedRow.id}});
+            }
+        },
         goDetail(id){
             if(id)
             this.$router.push({name:'ViewNewProduct',query: {id:id}});
@@ -170,11 +176,6 @@ export default {
         },
         getTableColumn(){
             var columns2 = [
-                // {
-                //     type: 'selection',
-                //     width: 60,
-                //     align: 'center'
-                // },
                 {
                     type: 'index',
                     width: 60,

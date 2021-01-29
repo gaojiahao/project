@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 19:20:23
+ * @LastEditTime: 2021-01-29 15:36:46
 -->
 <template>
 <div>
@@ -19,7 +19,6 @@
                                 <div style="width:100%"> 
                                     <Button type="primary" @click="save" style="float: left;">保存</Button>
                                     <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!this.productId">重置</Button>
-                                    <Button type="warning" @click="copy" style="float: left; margin-left:10px" v-if="this.productId">复制为新建</Button>
                                     <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>
@@ -142,7 +141,6 @@ export default {
             loadingPruch:true,
             dataProp:[],
             loadingProp:true,
-            copyId:''
         }
     },
     computed:{
@@ -199,6 +197,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.productId = res.result.item.id;
+                                    this.productInfoFormValidate.code = res.result.item.code;
                                     this.GetGoodsSupplierPage();
                                     this.GetPrepGoodsAttributeById();
                                     this.GetOperationLogPage();
@@ -396,7 +395,7 @@ export default {
             this.tabName = 'logInfo';   
         },
         getFormData(){
-            this.id = this.$route.query.id||this.copyId;
+            this.id = this.$route.query.id;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetPrepGoodsById({id:this.id}).then(res => {
@@ -480,8 +479,7 @@ export default {
                         this.$FromLoading.hide();
                     }
                 });
-            }); 
-               
+            });      
         },
         goReturn(){
             this.$router.go(-1);
@@ -507,15 +505,9 @@ export default {
         }
     },
     created() {
-        if(this.$route.params.flag=="copy"){
-            this.copyId = this.$route.params.id;
-            this.getFormData();
-            this.GetGoodsSupplierPage();
-        } else {
-            this.getFormData();
-            this.GetGoodsSupplierPage();
-            this.GetPrepGoodsAttributeById();
-        }
+        this.getFormData();
+        this.GetGoodsSupplierPage();
+        this.GetPrepGoodsAttributeById();
     }
 }
 </script>

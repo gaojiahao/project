@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-29 17:00:51
+ * @LastEditTime: 2021-01-29 16:49:11
 -->
 <template>
 <div>
@@ -13,26 +13,42 @@
             <div class="top">
                 <Divider orientation="left" size="small">基本信息</Divider>
                 <div class="top_tabale">
-                    <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" @save="save" @clear-form-data="clearFormData" ref="form" :divisionField="divisionField">
+                    <XForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" @save="save" @clear-form-data="clearFormData" ref="form" :divisionField="divisionField">
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%"> 
+                                    <Button type="primary" @click="save" style="float: left;">保存</Button>
                                     <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>
                         </template>
-                    </ViewForm>
+                    </XForm>
                 </div>
             </div>
         </TabPane>
         <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
-            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch" :disabled="true"></AddNewProductTable>
+            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch" @set-pruch="setPruch" ref="pruchTable"></AddNewProductTable>
+            <div class="top">
+                <Divider orientation="left" size="small">其他信息</Divider>
+                <div class="top_tabale">
+                    <XForm :formValidate="purchaseFormValidate" :ruleValidate="ruleValidate" :formConfig="purchase" @save="save" @clear-form-data="clearFormData" ref="formPurch">
+                        <template slot="button">
+                            <div style="width:100%">
+                                <FormItem>
+                                    <Button type="primary" @click="savePurchase" style="float: left;">保存</Button>
+                                    <Button @click="clearFormDataPruch" style="float: left; margin-left:10px">取消</Button>
+                                </FormItem>
+                            </div>
+                        </template>
+                    </XForm>
+                </div>
+            </div>
         </TabPane>
         <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :disabled="true"></UploadPic>
+                    <UploadPic :length="3" :formValue="[productInfoFormValidate.imgOne,productInfoFormValidate.imgTwo,productInfoFormValidate.imgThree]" @save="saveUpload"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -61,8 +77,8 @@
 </template>
 
 <script>
-import ViewForm from "@components/public/form/viewForm";
-import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
+import XForm from "@components/public/form/xForm";
+import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
@@ -80,18 +96,19 @@ import {
     UpdatePrepGoods,
     GetPrepGoodsAttributeById,
     UpdatePrepGoodsAttribute,
-    GetOperationLogPage
+    GetOperationLogPage,
+    UpdateGoodsSupplier
 } from "@service/basicinfoService"
 import {
     Tabs,
     TabPane,
 } from "view-design";
 export default {
-    name: 'ViewNewProduct',
+    name: 'CopyNewProduct',
     components: {
         Tabs,
         TabPane,
-        ViewForm,
+        XForm,
         AddNewProductTable,
         AddNewProductTableUploadPic,
         AddNewProductTableUploadVideo,
@@ -152,11 +169,12 @@ export default {
                 howlong:params.productSize.long,
                 width:params.productSize.wide,
                 high:params.productSize.high,
+                volume:params.productSize.volume,
                 packageLong:params.packagingSize.long,
                 packageWidth:params.packagingSize.wide,
                 packageHigh:params.packagingSize.high,
+                packageVolume:params.packagingSize.volume,
             }
-            console.log('params',params);
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (this.productId) {
@@ -168,6 +186,7 @@ export default {
                                     this.$Message.info('温馨提示：更新成功！');
                                     this.productId = res.result.item.id;
                                     this.GetGoodsSupplierPage();
+                                    this.GetOperationLogPage();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -202,6 +221,9 @@ export default {
                 }
             })
         },
+        setPruch(row){
+            this.purchaseFormValidate = row;
+        },
         savePurchase(){
             var params = this.purchaseFormValidate;
             params = {
@@ -209,10 +231,9 @@ export default {
                 goodsId:this.productInfoFormValidate.id||this.productId,
                 goodsName:this.productInfoFormValidate.name||'是否第三方',
             }
-            console.log('params',params);
             this.$refs['formPurch'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
-                    if (this.productId) {
+                    if (!params.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
                             CraeteGoodsSupplier(params).then(res => {
@@ -220,6 +241,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.GetGoodsSupplierPage();
+                                    this.GetOperationLogPage();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -229,11 +251,33 @@ export default {
                                 }
                             });
                         });
+                    } else {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            UpdateGoodsSupplier(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：更新成功！');
+                                    this.GetGoodsSupplierPage();
+                                    this.GetOperationLogPage();
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });    
                     }
                 } else {
                     this.$Message.error('保存失败');
                 }
             })
+        },
+        clearFormDataPruch(){
+            this.$delete(this.purchaseFormValidate,'id');
+            this.$refs['formPurch'].$refs['formValidate'].resetFields();
         },
         saveDescription(value){
             this.productInfoFormValidate.description = value;
@@ -243,12 +287,12 @@ export default {
                 howlong:params.productSize.long,
                 width:params.productSize.wide,
                 high:params.productSize.high,
+                volume:params.productSize.volume,
                 packageLong:params.packagingSize.long,
                 packageWidth:params.packagingSize.wide,
                 packageHigh:params.packagingSize.high,
-                description:value,
+                packageVolume:params.packagingSize.volume,
             }
-            console.log('params',params);
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (this.productId) {
@@ -260,6 +304,7 @@ export default {
                                     this.$Message.info('温馨提示：更新成功！');
                                     this.productId = res.result.item.id;
                                     this.GetGoodsSupplierPage();
+                                    this.GetOperationLogPage();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -312,10 +357,39 @@ export default {
             this.pageDataPruch.maxResultCount = pagesize;
             this.GetGoodsSupplierPage();
         },
-        saveUpload(){
-            this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledProperty = false;
-            this.tabName = 'propertyInfo';        
+        saveUpload(data){
+            var params = this.productInfoFormValidate;
+            params = {
+                ...params,
+                howlong:params.productSize.long,
+                width:params.productSize.wide,
+                high:params.productSize.high,
+                volume:params.productSize.volume,
+                packageLong:params.packagingSize.long,
+                packageWidth:params.packagingSize.wide,
+                packageHigh:params.packagingSize.high,
+                packageVolume:params.packagingSize.volume,
+                imgOne:data[0]&&data[0].filePath||'',
+                imgTwo:data[1]&&data[1].filePath||'',
+                imgThree:data[2]&&data[2].filePath||'',
+            }
+            return new Promise((resolve, reject) => {
+                this.$FromLoading.show();
+                UpdatePrepGoods(params).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.$Message.info('温馨提示：保存成功！');
+                        this.getFormData();
+                        this.GetOperationLogPage();
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.msg
+                        });
+                        this.$FromLoading.hide();
+                    }
+                });
+            });       
         },
         saveProperty(){
             this.$Message.info({content:'温馨提示：保存成功'});
@@ -335,13 +409,16 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.productInfoFormValidate = {
-                                id: res.result.item.id,
-                                code:res.result.item.code,
+                                // id: res.result.item.id,
+                                code:'',
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
                                 categoryName: res.result.item.categoryName,
-                                characteristic:res.result.item.characteristic,
                                 logisticsLabel: res.result.item.logisticsLabel,
+                                imgOne:res.result.item.imgOne,
+                                imgTwo:res.result.item.imgTwo,
+                                imgThree:res.result.item.imgThree,
+                                characteristic:res.result.item.characteristic,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
                                 isPackage: res.result.item.isPackage,
@@ -383,14 +460,16 @@ export default {
             params.prepGoodsId = this.productId;
             params.prepGoodsAttributes = [];
             for(var i in data){
-                var obj = {};
-                obj = {
-                    goodsId:  this.productId,
-                    goodsName: this.productInfoFormValidate.name,
-                    attributeId: data[i].tag,
-                    attributeValueId: data[i].value,
+                if(i!='undefined'){
+                    var obj = {};
+                    obj = {
+                        goodsId:  this.productId,
+                        goodsName: this.productInfoFormValidate.name,
+                        attributeId: data[i].tag,
+                        attributeValueId: data[i].value,
+                    }
+                    params.prepGoodsAttributes.push(obj);
                 }
-                params.prepGoodsAttributes.push(obj);
             }
             return new Promise((resolve, reject) => {
                 this.$FromLoading.show();
@@ -399,6 +478,7 @@ export default {
                         this.$FromLoading.hide();
                         this.$Message.info('温馨提示：保存成功！');
                         this.GetPrepGoodsAttributeById();
+                        this.GetOperationLogPage();
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
@@ -415,7 +495,7 @@ export default {
         GetOperationLogPage(){
             if(this.productId){
                 return new Promise((resolve, reject) => {
-                    GetOperationLogPage({goodsId:this.productId}).then(res => {
+                    GetOperationLogPage({goodsId:this.productId,...this.pageDataLog}).then(res => {
                         if(res.result.code==200){
                             this.$nextTick(() => {
                                 this.dataLog = res.result.item.items;
@@ -434,9 +514,12 @@ export default {
             this.pageDataLog.maxResultCount = pagesize;
             this.GetOperationLogPage();
         },
+        copy(){
+            this.$router.push({name:'AddNewProduct',params:{flag:'copy',id:this.productId}});
+        }
     },
     created() {
-        this.productId = this.$route.query.id;
+        // this.productId = this.$route.query.id;
         this.getFormData();
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();

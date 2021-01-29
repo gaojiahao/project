@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 19:18:20
+ * @LastEditTime: 2021-01-29 16:46:32
 -->
 <template>
 <div>
@@ -18,7 +18,7 @@
                             <FormItem>
                                 <div style="width:100%"> 
                                     <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                    <Button type="warning" @click="copy" style="float: left; margin-left:10px">复制为新建</Button>
+                                    <!-- <Button type="warning" @click="copy" style="float: left; margin-left:10px">复制为新建</Button> -->
                                     <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>

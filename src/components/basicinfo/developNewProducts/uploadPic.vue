@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 17:08:51
+ * @LastEditTime: 2021-01-29 17:05:53
 -->
 <template>
 <div>
@@ -44,7 +44,7 @@
                 </div>
             </Modal>
         </div>
-        <div style="width:100%">
+        <div style="width:100%" v-if="!disabled">
             <Button type="primary" @click="save" style="float: left;">保存</Button>
         </div>
     </div>
@@ -86,6 +86,10 @@ export default {
             default () {
                 return []
             }
+        },
+        disabled:{
+            type: Boolean,
+            default: false
         }
     },
     watch:{

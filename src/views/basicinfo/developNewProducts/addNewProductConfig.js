@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 19:22:52
+ * @LastEditTime: 2021-01-29 16:48:16
  */
 import $flyio from '@plugins/ajax';
 
@@ -103,6 +103,7 @@ export default {
           code:{
             name:'产品编码',
             type:'text',
+            disabled:true
           },
           name:{
             name:'产品名称',
