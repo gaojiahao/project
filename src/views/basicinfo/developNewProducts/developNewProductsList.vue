@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 16:16:56
+ * @LastEditTime: 2021-01-29 14:31:08
 -->
 <template>
 <div class="erp_table_container">
@@ -19,7 +19,7 @@
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
-                        <Button type="primary" size="small" @click="exportData()"><Icon type="ios-download-outline"></Icon>导出</Button>
+                        <Button type="primary" size="small" @click="exportData(false)" :loading="exportLoading"><Icon type="ios-download-outline"></Icon>导出</Button>
                         <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
                     </div>
                     <div class="filter-search">
@@ -33,6 +33,9 @@
             </template>
             <template slot="footer">
                 <div class="footer_page">
+                    <Button size="small" style="margin-right: 5px" @click.native="openMult">多选</Button>
+                    <Button size="small" style="margin-right: 5px" @click.native="exportData(true)" v-if="isMult">导出</Button>
+                    <!-- <Button size="small" style="margin-right: 5px" @click.native="sureDeleteConfirm(true)" v-if="isMult">删除</Button> -->
                     <div class="footer_page_right">
                         <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
                     </div>
@@ -51,8 +54,10 @@ import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
 import list from "@mixins/list";
 import {
     GetPrepGoodsPage,
-    DelPrepGoods
-} from "@service/basicinfoService"
+    DelPrepGoods,
+    GetPrepGoodsList
+} from "@service/basicinfoService";
+import table2excel from 'js-table2excel'
 
 export default {
     name: "DevelopNewProductsList",
@@ -74,6 +79,10 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
+            exportLoading:false,
+            newsList:[],
+	        pageNum:1,
+	        pageSize:3
         }
     },
     methods: {
@@ -161,177 +170,166 @@ export default {
         },
         getTableColumn(){
             var columns2 = [
-            {
-                type: 'index',
-                width: 60,
-                align: 'center',
-                title: '序号',
-                resizable: true,
-            },
-            {
-                title: '图片',
-                key: 'img',
-                align: 'center',
-                render: (h, params) => {
-                    return h('div', 
-                    [
-                        h('Poptip',{
-                            props: {
-                                trigger:'hover',
-                                content:"content",
-                                placement:"right",
-                                transfer:'true',
-                            },
-                        },[
-                            h('img', {
-                                attrs: {
-                                    src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                // {
+                //     type: 'selection',
+                //     width: 60,
+                //     align: 'center'
+                // },
+                {
+                    type: 'index',
+                    width: 60,
+                    align: 'center',
+                    title: '序号',
+                    resizable: true,
+                },
+                {
+                    title: '图片',
+                    key: 'img',
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('div', 
+                        [
+                            h('Poptip',{
+                                props: {
+                                    trigger:'hover',
+                                    content:"content",
+                                    placement:"right",
+                                    transfer:true,
                                 },
-                                style: {
-                                    width: '30px',
-                                    height: '30px'
-                                },
-                                on: {
-                                    click:()=>{
-                                        this.srcData = {
-                                            imgName: '图片预览',
-                                            src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                            },[
+                                h('img', {
+                                    attrs: {
+                                        src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                                    },
+                                    style: {
+                                        width: '30px',
+                                        height: '30px'
+                                    },
+                                    on: {
+                                        click:()=>{
+                                            this.srcData = {
+                                                imgName: '图片预览',
+                                                src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                                            }
+                                            this.showImageModel(true);
                                         }
-                                        this.showImageModel(true);
                                     }
-                                }
-                            }),
-                            h('img',{
-                                slot:"content",
-                                attrs: {
-                                    src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
-                                },
-                                style: {
-                                    width: '300px',
-                                    height: '300px'
-                                },
-                                class:'api'
-                            })
-                        ])    
-                    ]);
-                },
-                width: 80,
-                resizable: true,
-            },
-            {
-                title: '产品编码',
-                key: 'code',
-                resizable: true,
-                width: 220,
-            },
-            {
-                title: '产品名称',
-                key: 'name',
-                render: (h, params) => {
-                    return h("span", {// 创建的标签名
-                    // 执行的一些列样式或者事件等操作
-                    style: {
-                        display: "inline-block",
-                        color: "#2d8cf0"
+                                }),
+                                h('img',{
+                                    slot:"content",
+                                    attrs: {
+                                        src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                                    },
+                                    style: {
+                                        width: '300px',
+                                        height: '300px'
+                                    },
+                                    class:'api'
+                                })
+                            ])    
+                        ]);
                     },
-                    on:{
-                        click:()=>{// 这里给了他一个打印事件，下面有展示图
-                            this.goDetail(params.row.id)    
+                    width: 80,
+                    resizable: true,
+                },
+                {
+                    title: '产品编码',
+                    key: 'code',
+                    resizable: true,
+                    width: 220,
+                },
+                {
+                    title: '产品名称',
+                    key: 'name',
+                    render: (h, params) => {
+                        return h("span", {// 创建的标签名
+                        // 执行的一些列样式或者事件等操作
+                        style: {
+                            display: "inline-block",
+                            color: "#2d8cf0"
+                        },
+                        on:{
+                            click:()=>{// 这里给了他一个打印事件，下面有展示图
+                                this.goDetail(params.row.id)    
+                            }
                         }
-                    }
-                    },params.row.name);//  展示的内容
-                },
-                width: 220,
-                resizable: true,
-            },
-            {
-                title: '类目',
-                key: 'categoryName',
-                resizable: true,
-                width: 120,
-            },
-            // {
-            //     title:'商户',
-            //     key: 'merchantName',
-            //     resizable: true,
-            //     width: 110,
-            // },
-            // {
-            //     title:'平台名称',
-            //     key: 'platformName',
-            //     resizable: true,
-            // },
-            // {
-            //     title:'店铺',
-            //     key: 'storeName',
-            //     resizable: true,
-            // },
-            {
-                title:'品牌名称',
-                key: 'brandName',
-                resizable: true,
-                width: 138,
-            },
-            {
-                title: '状态',
-                key: 'status',
-                render: (h, params) => {
-                    return h("span", {
-                    style: {
-                        display: "inline-block",
-                        color: params.row.status==1 ? "#19be6b": "#ed4014"
+                        },params.row.name);//  展示的内容
                     },
-                    },params.row.status?"已审核":"未审核");
+                    width: 220,
+                    resizable: true,
                 },
-                resizable: true,
-                width: 100,
-            },
-            {
-                title: '销售状态',
-                key: 'saleStatus',
-                render: (h, params) => {
-                    return h("span", {
-                    style: {
-                        display: "inline-block",
-                        color: params.row.saleStatus==1 ? "#19be6b":  params.row.saleStatus==2 ?"#ff9900" : "#ed4014"
+                {
+                    title: '类目',
+                    key: 'categoryName',
+                    resizable: true,
+                    width: 120,
+                },
+                {
+                    title:'品牌名称',
+                    key: 'brandName',
+                    resizable: true,
+                    width: 138,
+                },
+                {
+                    title: '状态',
+                    key: 'status',
+                    render: (h, params) => {
+                        return h("span", {
+                        style: {
+                            display: "inline-block",
+                            color: params.row.status==1 ? "#19be6b": "#ed4014"
+                        },
+                        },params.row.status?"已审核":"待审核");
                     },
-                    },params.row.saleStatus==1 ? "已通过": params.row.saleStatus==2 ? "未通过" : "待审核");
+                    resizable: true,
+                    width: 100,
                 },
-                resizable: true,
-                width: 110,
-            },
-            {
-                title: '创建时间',
-                key: 'createdOn',
-                resizable: true,
-                width: 180,
-            },
-            {
-                title: '创建者',
-                key: 'createdName',
-                resizable: true,
-                width: 80,
-            },
-            {
-                title: '修改时间',
-                key: 'modifyOn',
-                resizable: true,
-                width: 180,
-            },
-            {
-                title: '修改者',
-                key: 'modifyName',
-                resizable: true,
-                width: 80,
-            },
-            {
-                title: '操作',
-                slot: 'action',
-                align: 'center',
-                width: 150,
-                resizable: true,
-            }
-        ];
+                {
+                    title: '销售状态',
+                    key: 'saleStatus',
+                    render: (h, params) => {
+                        return h("span", {
+                        style: {
+                            display: "inline-block",
+                            color: params.row.saleStatus==1 ? "#19be6b":  params.row.saleStatus==2 ?"#ff9900" : "#ed4014"
+                        },
+                        },params.row.saleStatus==1 ? "已通过": params.row.saleStatus==2 ? "未通过" : "待审核");
+                    },
+                    resizable: true,
+                    width: 110,
+                },
+                {
+                    title: '创建时间',
+                    key: 'createdOn',
+                    resizable: true,
+                    width: 180,
+                },
+                {
+                    title: '创建者',
+                    key: 'createdName',
+                    resizable: true,
+                    width: 80,
+                },
+                {
+                    title: '修改时间',
+                    key: 'modifyOn',
+                    resizable: true,
+                    width: 180,
+                },
+                {
+                    title: '修改者',
+                    key: 'modifyName',
+                    resizable: true,
+                    width: 80,
+                },
+                {
+                    title: '操作',
+                    slot: 'action',
+                    align: 'center',
+                    width: 150,
+                    resizable: true,
+                }
+            ];
             return columns2;
         },
         checkALl(){
@@ -380,13 +378,59 @@ export default {
             },
             this.GetPrepGoodsPage(); 
         },
-        exportData(){
-            this.$refs.selection.exportCsv({
-                filename: 'Custom data',
-                columns: this.columns,
-                data: this.data,
-            });    
-        }
+        exportData(flag){
+            if(flag){
+                var columns = this.getTableColumn();
+                columns.map((e,index)=>{
+                    if(e['title']=="序号"){
+                        e['key']='index'
+                    }
+                    if(e['key']=='img'){
+                        e['type'] = 'image';
+                    } else {
+                        e['type'] = 'text';
+                    }
+                    return e;
+                });
+                var data = this.selectedList.map((e,index)=>{
+                    e['index'] = index;
+                    e['img'] = 'https://avatar.csdnimg.cn/9/8/3/2_xiaoxiaojie12321.jpg';
+                    e['status'] = e.statusName;
+                    e['saleStatus'] = e.saleStatusName;
+                    return e;
+                });
+                table2excel(columns, data, "新品开发"+new Date().getTime()+".xls");        
+            } else {
+                this.exportLoading = true;
+                return new Promise((resolve, reject) => {
+                    GetPrepGoodsList().then(res => {
+                        if(res.result.code==200){
+                            var columns = this.getTableColumn();
+                            columns.map((e,index)=>{
+                                if(e['title']=="序号"){
+                                    e['key']='index'
+                                }
+                                if(e['key']=='img'){
+                                    e['type'] = 'image';
+                                } else {
+                                    e['type'] = 'text';
+                                }
+                                return e;
+                            });
+                            var data = res.result.item.map((e,index)=>{
+                                e['index'] = index;
+                                e['img'] = 'https://avatar.csdnimg.cn/9/8/3/2_xiaoxiaojie12321.jpg';
+                                e['status'] = e.statusName;
+                                e['saleStatus'] = e.saleStatusName;
+                                return e;
+                            });
+                            table2excel(columns, data, "新品开发"+new Date().getTime()+".xls");
+                            this.exportLoading=false;
+                        }
+                    });
+                });
+            }
+        },
     },
     created(){
         this.GetPrepGoodsPage();

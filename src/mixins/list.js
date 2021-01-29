@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-18 14:29:46
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-31 16:48:39
+ * @LastEditTime: 2021-01-29 12:20:08
  */
 import ModalForm from "@components/public/form/modalForm";
 import SeniorFilter from "@components/public/filter/seniorFilter";
@@ -28,6 +28,7 @@ export default {
             srcData:{},
             selectedList:[],
             activatedRow:{},
+            isMult:false
         }
     },
     methods: {
@@ -98,6 +99,22 @@ export default {
                 });
             }
         },
+        openMult(){
+            this.isMult = this.isMult ? false : true;
+            if(this.isMult){
+                var columns = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                ];
+                columns.push.apply(columns,this.columns);
+                this.columns = columns;
+            } else {
+                this.columns.splice(0, 1);
+            } 
+        }
     },
     created(){
         setTimeout(() => {
