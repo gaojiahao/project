@@ -35,12 +35,12 @@ export default {
 
 <style scoped>
 .content{
-    background-color: #fff;
+    /* background-color: #fff;
     width: 100%;
     overflow: hidden;
     border: 1px solid #dfe0e6;
     border-radius: 6px;
-    height: 399px;
+    height: 399px; */
 }
 .cardsp {
     height: 28px;

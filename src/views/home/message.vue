@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-27 19:14:50
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-15 18:09:54
+ * @LastEditTime: 2021-01-30 11:56:18
 -->
 <template>
 <div class="message">
@@ -117,12 +117,12 @@ export default {
 
 <style scoped>
 .message {
-    padding: 0 10px;
+    /* padding: 0 10px;
     background-color: #ffffff;
     flex: 1;
     border: 1px solid #dfe0e6;
     border-radius: 6px;
-    height: 399px;
+    height: 399px; */
 }
 
 >>>.ivu-badge-count {

@@ -4,20 +4,18 @@
  * @Author: gaojiahao
  * @Date: 2020-10-28 15:54:07
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-15 11:38:54
+ * @LastEditTime: 2021-01-30 11:56:54
 -->
 <template>
 <div class="quick_container">
-    <Card class="card">
-        <div class="title">快捷入口</div>
-        <Divider />
+    <div class="card">
         <div class="list" v-for="(item,index) in quickList" :key='index'>
             <div class="list_box">
                 <img :src="item.src">
                 <div class="">{{item.name}}</div>
             </div>
         </div>
-    </Card>
+    </div>
 </div>
 </template>
 
@@ -37,11 +35,11 @@ export default {
 
 <style lang="less" scoped>
 .quick_container{
-    display:flex;
+   
     .card {
-        width:100%;
-        background-color: #ffffff;
-        flex:1;
+        // width:100%;
+        // background-color: #ffffff;
+        
         .title{
             width: 200px;text-align: left;
         }

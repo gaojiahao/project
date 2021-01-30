@@ -4,13 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 19:22:29
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-15 21:04:31
+ * @LastEditTime: 2021-01-30 11:58:10
 -->
 <template>
 <div>
-    <Card style="margin: 0px 10px 10px 0px;width:100%;background-color: #ffffff; flex:1;">
-        <div style="width: 200px;text-align: left;">表格统计</div>
-        <Divider />
+    <div>
         <div style="width:100%; margin-bottom:15px;display:flex;margin-top: 15px;justify-content: space-between;">
             <div style="">
                 <RadioGroup v-model="buttonSize" type="button">
@@ -36,7 +34,7 @@
                 <Page :total="100" :current="1" @on-change="changePage" show-elevator show-sizer transfer></Page>
             </div>
         </div>
-    </Card>
+    </div>
 </div>
 </template>
 

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-29 16:29:22
+ * @LastEditTime: 2021-01-29 17:57:36
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -29,6 +29,15 @@ const routes = [
         meta: {
           title: "首页",
           group: "index",
+        },
+      },
+      {
+        path: "index2",
+        name: "index2",
+        component: resolve=>(require(["@views/home/index/index2"],resolve)),
+        meta: {
+          title: "首页",
+          group: "index2",
         },
       },
       {

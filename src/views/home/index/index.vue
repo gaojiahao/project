@@ -4,34 +4,56 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-25 10:43:59
+ * @LastEditTime: 2021-01-30 12:22:05
 -->
 <template>
-<div>
-    <div style="margin-top: 10px;width: 100%;height: 20px;" v-show="showSave">
-        <Button type="primary" :style="{float:'right'}" @click="saveLayoutConfig" size="small">保存布局</Button>
+    <div :class="{drag:dragging}">
+        <div class="layout-container">
+            <div :class="key" v-for="(item, key) in mainData" :key="key">
+                <draggable v-bind="dragOptions" class="list-group" :list="item" @end="onEnd" @start="onStart">
+                    <transition-group name="list">
+                        <div class="list-group-item" v-for="(element, index) in item" :key="index">
+                            <div class="panel-actions">
+                                <Dropdown :transfer="true">
+                                    <a href="javascript:void(0)" style="color:#fff">
+                                        <Icon type="md-more" />
+                                    </a>
+                                    <DropdownMenu slot="list">
+                                        <DropdownItem @click.native="refresh(element.name)">刷新</DropdownItem>
+                                        <DropdownItem @click.native="showPop(true)">编辑</DropdownItem>
+                                        <DropdownItem @click.native="del(element)">隐藏</DropdownItem>
+                                        <DropdownItem @click.native="showPop2(true)" divided>添加区块</DropdownItem>
+                                        <DropdownItem @click.native="recovery()">恢复默认</DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </div>
+                            <div class="drag-handle">{{ element.title }}</div>
+                            <div class="component-box">
+                                <component :is="element.name" v-if="element.name=='XMessage'" :messageList="messageList" :ref="element.name" />
+                                <component :is="element.name" v-else-if="element.name=='XQuick'" :quickList="quickList" :ref="element.name" />
+                                <component :is="element.name" v-else :ref="element.name" />
+                            </div>
+                        </div>
+                    </transition-group>
+                </draggable>
+            </div>
+        </div>
+        <ModalForm :titleText="title" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
+        <ModalForm :titleText="title2" :formValidate="formValidate2" :ruleValidate="ruleValidate" :showModel='showModel2' :formConfig="formConfig2" @save="save2" @show-pop="showPop2" @clear-form-data="clearFormData2" ref="form2"></ModalForm>
     </div>
-    <grid-layout :layout.sync="layoutConfig" :col-num="12" :row-height="30" :is-draggable="true" :is-resizable="true" :is-mirrored="false" :vertical-compact="true" :margin="[10, 10]" :use-css-transforms="true">
-        <grid-item v-for="item in layoutConfig" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i" :key="item.i" @moved="movedEvent" @resized="resizedEvent">
-            <XCalendar v-if="item.component=='XCalendar'"></XCalendar>
-            <XMessage :messageList="messageList" v-else-if="item.component=='XMessage'"></XMessage>
-            <XQuick :quickList="quickList" v-else-if="item.component=='XQuick'"></XQuick>
-            <XTable v-else-if="item.component=='XTable'"></XTable>
-            <template v-else>
-                <div style="background: #2d8cf0; width:100%;height: 100%;">自定义模块</div>
-            </template>
-        </grid-item>
-    </grid-layout>
-</div>
 </template>
 
 <script>
+import { Dropdown,DropdownMenu,DropdownItem } from "view-design";
 const xTable = ()=>import("@views/home/table");
 const calendar = ()=>import("@views/home/calendar");
 const xMessage = ()=>import("@views/home/message");
 const xQuick = ()=>import("@views/home/quick");
+import ModalForm from "@components/public/form/modalForm"
 import VueGridLayout from 'vue-grid-layout';
-import LayoutJs from './layout'
+import LayoutJs from './layout';
+import draggable from "vuedraggable";
+import config from '@views/home/index/indexConfig'
 
 export default {
     name: "Index",
@@ -42,8 +64,25 @@ export default {
         XQuick:xQuick,
         GridLayout: VueGridLayout.GridLayout,
         GridItem: VueGridLayout.GridItem,
+        draggable,
+        Dropdown,
+        DropdownMenu,
+        DropdownItem,
+        ModalForm
     },
-    mixins: [LayoutJs],
+    computed: {
+        dragOptions() {
+            return {
+                animation: 30,
+                handle: ".drag-handle",
+                group: "description",
+                ghostClass: "ghost",
+                chosenClass: "sortable",
+                forceFallback: true,
+            };
+        }
+    },
+    mixins: [LayoutJs,config],
     data() {
         return {
             showSave: false,
@@ -200,23 +239,179 @@ export default {
                 name: '自定义',
                 src: require('@assets/quick/custom.png'),
                 path: '/custom',
-            }, ]
+            }, ],
+            dragging: false,
+            componentList: [
+                { name: "XCalendar", title: "日历", id: "5" },
+                { name: "XMessage", title: "消息", id: "4" },
+                { name: "XQuick", title: "快捷入口", id: "2" },
+                { name: "XQuick", title: "走马灯组件", id: "1" },
+                { name: "XTable", title: "上架统计", id: "3" }
+            ],
+            layout: {
+                left: ["4", "2", "3"],
+                right: ["5", "2"]
+            },
+            mainData: {},
+            showModel: false,
+            title:'编辑',
+            showModel2: false,
+            title2:'添加'
         };
     },
+    mounted() {
+        this.getLayout();
+    },
     methods: {
-        movedEvent() {
-            this.showSave = true;
-            console.log('拖动结束！')
+        onStart() {
+            this.dragging = true;
         },
-        saveLayoutConfig() {
-            this.showSave = false;
-            console.log('保存页面布局成功！');
+        onEnd() {
+            this.dragging = false;
+            this.setLayout();
         },
-        resizedEvent() {
-            this.showSave = true;
-            console.log('调整大小结束！')
+        getLayout() {
+            let myLayout = JSON.parse(window.localStorage.getItem("kon"));
+            if (!myLayout || Object.keys(myLayout).length === 0)
+                myLayout = this.layout;
+            const newLayout = {};
+            for (const side in myLayout) {
+                newLayout[side] = myLayout[side].map(i => {
+                return this.componentList.find(c => c.id === i);
+                });
+            }
+            this.mainData = newLayout;
         },
+        setLayout() {
+            const res = {};
+            for (const side in this.mainData) {
+                const item = this.mainData[side].map(i => i.id);
+                res[side]=item;
+            }
+            window.localStorage.setItem("kon", JSON.stringify(res));
+        },
+        refresh(name){
+            console.log(this.$refs[name]);
+        },
+        save(){
+
+        },
+        showPop(flag, row) {
+            this.showModel = flag;
+        },
+        clearFormData(){
+           
+        },
+        save2(){
+
+        },
+        showPop2(flag, row) {
+            this.showModel2 = flag;
+        },
+        clearFormData2(){
+           
+        },
+        del(element){
+            for (const side in this.mainData) {
+                if(this.mainData[side].length){
+                    for(var j=0;j<this.mainData[side].length;j++){
+                        if(this.mainData[side][j]['id']==element.id){
+                            this.mainData[side].splice(j, 1);
+                            this.setLayout(); 
+                        }
+                    }
+                }
+            }
+        },
+        recovery(){
+            let myLayout = this.layout;
+            const newLayout = {};
+            for (const side in myLayout) {
+                newLayout[side] = myLayout[side].map(i => {
+                return this.componentList.find(c => c.id === i);
+                });
+            }
+            this.mainData = newLayout;
+            this.setLayout();      
+        }
     },
     created() {}
 }
 </script>
+<style lang="less" scoped>
+
+.layout-container {
+  height: 100%;
+  display: flex;
+  margin: 20px;
+  .left {
+    flex: 1;
+    margin-right: 20px;
+  }
+  .right {
+    width: 550px;
+  }
+  .list-group-item {
+    margin-bottom: 20px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+    .panel-actions {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 22px;
+        line-height: 40px;
+        padding: 0 8px;
+        color:#fff;
+    }
+  }
+  .component-box {
+    padding: 20px;
+  }
+  .drag-handle {
+    cursor: move;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 0 20px;
+    background: #6cf;
+  }
+}
+.drag {
+  .component-box {
+    display: none;
+  }
+}
+ 
+.list-enter-active {
+  transition: all .3s linear;
+ 
+}
+.list-enter,
+.list-leave-to {
+  opacity: .5;
+}
+ 
+.sortable {
+  .component-box {
+    display: none;
+    height: 0;
+  }
+}
+.list-group {
+  > span {
+    display: block;
+    min-height: 20px;
+  }
+}
+ 
+.ghost {
+  .drag-handle {
+    background: rgb(129, 168, 187);
+  }
+}
+</style>
