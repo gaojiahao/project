@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-29 17:05:53
+ * @LastEditTime: 2021-02-01 10:37:20
 -->
 <template>
 <div>
@@ -18,11 +18,14 @@
             <div v-for="(item,index) in uploadList" class="left demo-upload">
                 <div class="demo-upload-list">
                     <template v-if="item.status === 'finished'">
-                        <img :src="baseUrl + item.filePath">
-                        <div class="demo-upload-list-cover">
-                            <Icon type="ios-eye-outline" @click.native="handleView(item.fileName,index)"></Icon>
-                            <Icon type="ios-trash-outline" @click.native="handleRemove(index)"></Icon>
-                        </div>
+                        <Poptip trigger='hover' content="content" placement="right" :transfer="true">
+                            <img :src="baseUrl + item.filePath">
+                            <img slot="content" :src="baseUrl + item.filePath" style="width:300px;height:300px" />
+                            <div class="demo-upload-list-cover">
+                                <Icon type="ios-eye-outline" @click.native="handleView(item.fileName,index)"></Icon>
+                                <Icon type="ios-trash-outline" @click.native="handleRemove(index)" v-if="!disabled"></Icon>
+                            </div>
+                        </Poptip>
                     </template>
                     <template v-else>
                         <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
@@ -30,7 +33,7 @@
                 </div>
                 <div style="width:120px">{{item.fileName}}</div>
             </div>
-            <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:78px;">
+            <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:78px;" v-if="!disabled">
                 <div style="width: 120px;height:120px;line-height: 120px;">
                     <Icon type="ios-camera" size="30"></Icon>
                 </div>

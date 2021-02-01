@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 19:20:05
+ * @LastEditTime: 2021-02-01 10:51:06
 -->
 <template>
 <div class="addAttrProductTable-container">
@@ -12,12 +12,12 @@
         <div style="margin-bottom: 10px; padding:10px"  v-for="(item,index) in data">
             <div style="position: relative;line-height: 32px;font-size: 14px;">
                 <label style="text-align: right;vertical-align: middle;float: left;font-size: 14px;color: #515a6e;line-height: 1;padding: 10px 12px 10px 0;box-sizing: border-box;width: 120px;">{{ item.attributeName }}</label>
-                <Select style="width:200px" @on-change="onChange" :label-in-value="true" v-model="list2[item.attributeId]&&list2[item.attributeId]['value']" allow-create filterable @on-create="brandIdCreateFun({value:$event,...item})" :transfer="true">
+                <Select style="width:200px" @on-change="onChange" :label-in-value="true" v-model="list2[item.attributeId]&&list2[item.attributeId]['value']" allow-create filterable @on-create="brandIdCreateFun({value:$event,...item})" :transfer="true" :disabled="disabled">
                     <Option v-for="(dItem,k) in item.valueList" :value="dItem.valueId" :key="dItem.valueId" :tag="item.attributeId">{{ dItem.valueName }}</Option>
                 </Select>
             </div>
         </div>
-        <div style="margin-bottom: 10px; padding:10px;display: inline-block;">
+        <div style="margin-bottom: 10px; padding:10px;display: inline-block;" v-if="!disabled">
             <div style="position: relative;line-height: 48px;font-size: 14px;margin-left:120px">
                 <Button @click="clearFormData" style="float: right;">取消</Button>
                 <Button type="primary" @click="save" style="float: right; margin-right:10px">保存</Button>
@@ -51,6 +51,10 @@ export default {
                 return {}
             }
         },
+        disabled:{
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {

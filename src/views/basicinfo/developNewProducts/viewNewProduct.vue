@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-29 17:00:51
+ * @LastEditTime: 2021-02-01 10:55:08
 -->
 <template>
 <div>
@@ -32,7 +32,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :disabled="true"></UploadPic>
+                    <UploadPic :length="3" :formValue="[productInfoFormValidate.imgOne,productInfoFormValidate.imgTwo,productInfoFormValidate.imgThree]" @save="saveUpload" :disabled="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -40,7 +40,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" :disabled="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -48,7 +48,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description"></NewHtmlEditor>
+                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
@@ -342,6 +342,9 @@ export default {
                                 categoryName: res.result.item.categoryName,
                                 characteristic:res.result.item.characteristic,
                                 logisticsLabel: res.result.item.logisticsLabel,
+                                imgOne:res.result.item.imgOne,
+                                imgTwo:res.result.item.imgTwo,
+                                imgThree:res.result.item.imgThree,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
                                 isPackage: res.result.item.isPackage,
