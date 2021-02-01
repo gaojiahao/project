@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-25 11:55:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 16:34:33
+ * @LastEditTime: 2021-02-01 16:50:02
 -->
 <template>
 <div class="add_store">
@@ -57,6 +57,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
+                                    this.$router.go(-1);
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,

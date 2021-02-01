@@ -58,6 +58,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
+                                    this.$router.go(-1);
                                     this.$refs['form'].$refs['formValidate'].resetFields();
                                     this.$refs['form'].initEL('input');
                                 } else if (res.result.code == 400) {

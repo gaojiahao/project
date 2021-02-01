@@ -2,33 +2,28 @@
  * @Descripttion: 
  * @version: 1.0.0
  * @Author: gaojiahao
- * @Date: 2020-12-25 11:55:52
- * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:47:42
--->
-<!--
- * @Descripttion: 
- * @version: 1.0.0
- * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-24 20:43:53
+ * @LastEditTime: 2021-02-01 17:14:43
 -->
 <template>
-<div class="add_store">
+<div class="form">
     <div class="top">
-        <Divider orientation="left" size="small">角色信息</Divider>
+        <Divider orientation="left" size="small">流程信息</Divider>
         <div class="top_tabale">
-            <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
-                <template slot="button">
-                    <FormItem>
-                        <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
-                        </div>
-                    </FormItem>
-                </template>
-            </XForm>
+            <div class="myTable">
+                <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                    <template slot="button">
+                        <FormItem>
+                            <div style="width:100%">
+                                <Button type="primary" @click="save" style="float: left;">保存</Button>
+                                <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
+                                <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                            </div>
+                        </FormItem>
+                    </template>
+                </XForm>
+            </div>
         </div>
     </div>
 </div>
@@ -36,20 +31,21 @@
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/settings/roleManager/roleManagerConfig";
+import config from "@views/settings/bpmManager/flowManager/addConfig";
 import {
-    UpdateAuthRole,
-    GetUserRoleMenuById
+    CreateWorkflowClause,
+    GetWorkflowClauseById,
+    UpdateWorkflowClause
 } from "@service/settingsService"
 
 export default {
-    name: "EditStore",
+    name: "EditFlow",
     components: {
         XForm,
     },
     data() {
         return {
-            id:null
+
         }
     },
     mixins: [config],
@@ -58,10 +54,10 @@ export default {
             var params = this.formValidate;
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
-                    if (this.formValidate.id) {
+                    if (this.formValidate.packageId) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
-                            UpdateAuthRole(params).then(res => {
+                            UpdateWorkflowClause(params).then(res => {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
@@ -76,31 +72,31 @@ export default {
                             });
                         });
                     }
+                } else {
+                    this.$Message.error('保存失败');
                 }
-
             })
         },
-        clearFormData() {},
+        clearFormData() {
+            this.$refs.form.$refs['formValidate'].resetFields();
+            this.$router.go(-1); 
+        },
         goReturn(){
             this.$router.go(-1);
-        }
+        },
     },
     created() {
         this.id = this.$route.query.id;
         if(this.id) {
             return new Promise((resolve, reject) => {
-                GetUserRoleMenuById({id:this.id}).then(res => {
+                GetWorkflowClauseById({id:this.id}).then(res => {
                     if (res.result.code == 200) {
                         this.$FromLoading.hide();
                         this.formValidate = {
-                            id: res.result.item.id,
-                            roleName: res.result.item.roleName,
-                            roleCode:res.result.item.roleCode,
-                            enabled:res.result.item.enabled,
-                            isAdmin:res.result.item.isAdmin,
-                            merchantId:res.result.item.merchantId,
-                            moduleIdList:res.result.item.moduleIdList
-                        };
+                            packageId: res.result.item.packageId,
+                            workflowName: res.result.item.workflowName,
+                            workflowIcon: res.result.item.workflowIcon,
+                        }
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
@@ -113,6 +109,7 @@ export default {
     }
 }
 </script>
+
 <style lang="less" scoped>
-@import "~@less/form.less";
+@import  "~@less/form.less";
 </style>

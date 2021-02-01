@@ -4,22 +4,23 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-11-18 16:51:29
+ * @LastEditTime: 2021-02-01 16:44:28
 -->
 <template>
 <div>
-    <div class="bottom-title">
-        供应商信息
-    </div>
     <div class="top">
-        <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
-            <template slot="button">
-                <div style="width:100%">
-                    <Button type="primary" @click="slotSave" style="float: left;">保存</Button>
-                    <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                </div>
-            </template>
-        </ViewForm>
+        <Divider orientation="left" size="small">供应商信息</Divider>
+        <div class="top_tabale">
+            <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                <template slot="button">
+                    <FormItem>
+                        <div style="width:100%">
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                        </div>
+                    </FormItem>
+                </template>
+            </ViewForm>
+        </div>
     </div>
 </div>
 </template>
@@ -27,9 +28,14 @@
 <script>
 import ViewForm from "@components/public/form/viewForm";
 import config from "@views/basicinfo/supplierManager/addSupplierConfig";
+import {
+    CreateSupplier,
+    UpdateSupplier,
+    GetSupplierById
+} from "@service/basicinfoService";
 
 export default {
-    name: "AddSupplier",
+    name: "ViewSupplier",
     components: {
         ViewForm,
     },
@@ -52,37 +58,39 @@ export default {
         clearFormData() {
             this.$refs.form.$refs['formValidate'].resetFields();
         },
-
+        goReturn(){
+            this.$router.go(-1);
+        },
     },
     created() {
-
+        this.id = this.$route.query.id;
+        if(this.id) {
+            return new Promise((resolve, reject) => {
+                GetSupplierById({id:this.id}).then(res => {
+                    if (res.result.code == 200) {
+                        this.$FromLoading.hide();
+                        this.formValidate = {
+                            id: res.result.item.id,
+                            name: res.result.item.name,
+                            code: res.result.item.code,
+                            telePhone: res.result.item.telePhone,
+                            changeUser: res.result.item.changeUser,
+                            address: res.result.item.address,
+                            email: res.result.item.email,
+                            remark: res.result.item.remark,
+                        }
+                    } else if (res.result.code == 400) {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.msg
+                        });
+                    }
+                });
+            });    
+        }
     }
 }
 </script>
-
 <style lang="less" scoped>
-.top {
-    flex: 1;
-    margin: 0 10px;
-    background-color: #ffffff;
-    border: 1px solid #dcdee2;
-    border-color: #e8eaec;
-    transition: all 0.2s ease-in-out;
-}
-
-.bottom-title {
-    margin: 0 10px;
-background: #ffffff;
-    border: 1px solid #dcdee2;
-    border-color: #e8eaec;
-    transition: all 0.2s ease-in-out;
-    text-align: left;
-    padding: 10px 20px;
-}
-
-.bottom {
-    transition: all 0.2s ease-in-out;
-    display: flex;
-    flex-direction: row;
-}
+@import "~@less/form.less";
 </style>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-29 17:57:36
+ * @LastEditTime: 2021-02-01 17:15:25
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -355,7 +355,7 @@ const routes = [
                       group: "flowManager",
                       level: 3,
                     },
-                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/addFlow"],resolve)),
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/editFlow"],resolve)),
                   },
                   {
                     path: 'viewFlow',
@@ -365,7 +365,7 @@ const routes = [
                       group: "flowManager",
                       level: 3,
                     },
-                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/addFlow"],resolve)),
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/viewFlow"],resolve)),
                   },
                   {
                     path: 'saveBpm',
