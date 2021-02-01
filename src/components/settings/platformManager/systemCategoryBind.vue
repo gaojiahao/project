@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-05 14:25:00
+ * @LastEditTime: 2021-02-01 09:22:57
 -->
 <template>
 <div class="content">
@@ -119,6 +119,9 @@ export default {
         height: 30px;
         background:#d2effd;
         line-height: 30px;
+        .text {
+            margin-left: 5px;
+        }
     }
     .list{
         overflow-y: scroll;

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 20:26:50
+ * @LastEditTime: 2021-02-01 09:49:52
 -->
 <template>
 <div>
@@ -80,6 +80,7 @@ export default {
                 if(this.roleAuthData.indexOf(data[i]['id'])!=-1){
                     data[i]['checked'] = true;
                     data[i]['expand'] = true;
+                    this.selected.push(data[i].id);
                 }
                 if(data[i].children){
                     this.calleArr(data[i].children);
