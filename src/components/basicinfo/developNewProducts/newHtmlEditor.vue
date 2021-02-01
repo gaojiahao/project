@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-11 15:50:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 15:08:06
+ * @LastEditTime: 2021-02-01 16:19:10
 -->
 <template>
   <div class="editor-container">
@@ -165,7 +165,6 @@ export default {
             });
         },
         handleSuccess(res, file) {
-            debugger
             let quill = this.$refs.myQuillEditor.quill
             if(res.result.code==200){
                  let length = quill.getSelection().index;

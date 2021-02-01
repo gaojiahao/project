@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 20:10:11
+ * @LastEditTime: 2021-02-01 16:34:56
 -->
 <template>
 <div class="erp_table_container">
@@ -223,13 +223,7 @@ export default {
             } 
         },
         setFilter(value){
-            this.pageData = {
-                skipCount: 1,
-                skipTotal: 15,
-                maxResultCount: 15,
-                roleName:value,
-                pageSizeOpts:[15,50,200],
-            },
+            this.pageData.roleName=value;
             this.AuthRolePage(); 
         },
         saveMenu(data){

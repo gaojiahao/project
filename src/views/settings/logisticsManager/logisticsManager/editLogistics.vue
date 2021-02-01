@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 12:15:33
+ * @LastEditTime: 2021-02-01 16:33:59
 -->
 <template>
 <div class="edit_store">
@@ -174,13 +174,7 @@ export default {
             await this.GetFreightTemplatePage();
         },
         setFilter(value){
-            this.pageData = {
-                skipCount: 1,
-                skipTotal: 15,
-                maxResultCount: 15,
-                keyword:value,
-                pageSizeOpts:[15,50,200],
-            },
+            this.pageData.keyword=value;
             this.GetFreightTemplatePage(); 
         },
     },

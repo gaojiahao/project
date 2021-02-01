@@ -320,13 +320,7 @@ export default {
             } 
         },
         setFilter(value){
-            this.pageData = {
-                skipCount: 1,
-                skipTotal: 15,
-                maxResultCount: 15,
-                keyword:value,
-                pageSizeOpts:[15,50,200],
-            };
+            this.pageData.keyword=value;
             this.getMenuList(); 
         },
         onPageSizeChange(pagesize){
