@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:32:20
+ * @LastEditTime: 2021-02-02 17:47:22
 -->
 <template>
 <div class="erp_table_container">
@@ -13,6 +13,12 @@
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">
+                        <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
+                            <Radio label="large">全部</Radio>
+                            <Radio label="default">已选</Radio>
+                            <Radio label="small">未选</Radio>
+                            <Radio label="small2">不选</Radio>
+                        </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
@@ -105,7 +111,8 @@ export default {
                         ],
                     },
                 },
-            }
+            },
+            filter:"small",
         }
     },
     methods: {
@@ -130,7 +137,6 @@ export default {
             this.showModel = flag;
         },
         save(data) {
-            debugger
             var params = {};
             var userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY))['userInfo'];
             params = {

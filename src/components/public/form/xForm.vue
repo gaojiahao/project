@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 14:48:33
+ * @LastEditTime: 2021-02-02 17:11:50
 -->
 <template>
 <div class="content">
@@ -26,7 +26,7 @@
             </FormItem>
             <!--单选框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
-                <RadioGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" @on-change="formConfig[index]['hiddenFun']">
+                <RadioGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" @on-change="formConfig[index]['hiddenFun']||''">
                     <template v-for="(ditem,dIndex) in formConfig[index]['dataSource']['data']">
                         <Radio :label="ditem.value" :key="ditem.value" :disabled="formConfig[index]['disabled']">
                             {{ditem.name}}

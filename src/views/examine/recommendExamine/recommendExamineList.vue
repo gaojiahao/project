@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:30:28
+ * @LastEditTime: 2021-02-02 17:46:05
 -->
 <template>
 <div class="erp_table_container">
@@ -13,6 +13,12 @@
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">
+                        <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
+                            <Radio label="large">全部</Radio>
+                            <Radio label="default">未审核</Radio>
+                            <Radio label="small">通过</Radio>
+                            <Radio label="small2">不通过</Radio>
+                        </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
@@ -65,6 +71,7 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
+            filter:"default",
         }
     },
     methods: {
