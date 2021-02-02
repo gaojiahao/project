@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-07 15:23:22
+ * @LastEditTime: 2021-02-01 19:33:17
 -->
 <template>
     <div>
@@ -123,7 +123,6 @@ export default {
                     this.checkAll = true;   
                     this.indeterminate = false;
                 }
-
             });
         }
     },

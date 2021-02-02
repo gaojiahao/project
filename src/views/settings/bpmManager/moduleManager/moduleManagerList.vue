@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:33:30
+ * @LastEditTime: 2021-02-02 11:54:19
 -->
 <template>
 <div class="erp_table_container">
@@ -130,7 +130,8 @@ export default {
                     type: 'index',
                     width: 80,
                     align: 'center',
-                    title: '序号'
+                    title: '序号',
+                    resizable: true,
                 }, 
                 {
                     title: '模型名称',
@@ -147,22 +148,32 @@ export default {
                             }
                         }
                         },params.row.packageName);
-                    }
+                    },
+                    resizable: true,
+                    width: 439,
                 },
                 {
                     title: '创建时间',
-                    key: 'createdOn'
+                    key: 'createdOn',
+                    resizable: true,
+                    width: 300,
                 }, {
                     title: '创建者',
-                    key: 'createdBy'
+                    key: 'createdBy',
+                    resizable: true,
+                    width: 300,
                 },
                 {
                     title: '修改者',
-                    key: 'modifyBy'
+                    key: 'modifyBy',
+                    resizable: true,
+                    width: 300,
                 },
                 {
                     title: '修改时间',
-                    key: 'modifyOn'
+                    key: 'modifyOn',
+                    resizable: true,
+                    width: 300,
                 }, 
             ];
             return columns;

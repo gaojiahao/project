@@ -7,7 +7,7 @@
     </div>
     <collapse-transition v-if="mode === 'vertical'">
         <ul class="ivu-menu" v-show="opendedChild||opendedChildCom" v-for="(data,k) in item.children" :key="k">
-            <li class="ivu-menu-item ivu-menu-box" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.enabled">{{data.name}}
+            <li class="ivu-menu-item ivu-menu-box" :class="[activeMenu2==data.code ? 'ivu-menu-box-active':'']" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.enabled">{{data.name}}
             </li>
         </ul>
     </collapse-transition>
@@ -87,6 +87,13 @@ export default {
                 return false;
             }
         },
+        activeMenu2() {
+            if (this.$store.state.menuRouter.thirdLevel && (this.$store.state.menuRouter.thirdLevel.code)) {
+                return this.$store.state.menuRouter.thirdLevel.code; //需要监听的数据
+            } else {
+                return false;
+            }
+        },
         opendedChildCom() {
             if (this.$store.state.menuRouter.twoLevel && this.$store.state.menuRouter.twoLevel.code == this.item.code) {
 
@@ -141,6 +148,9 @@ export default {
 .ivu-menu-box{
     background: rgb(220, 222, 226);
     text-align: left;
+}
+.ivu-menu-box-active {
+    color: #447ED9;
 }
 .ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item {
     padding: 14px 14px 14px 40px;

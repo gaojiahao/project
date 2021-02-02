@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 14:51:24
+ * @LastEditTime: 2021-02-02 12:30:49
 -->
 <template>
 <div class="erp_table_container">
@@ -58,12 +58,15 @@ export default {
         return {
             titleText: '',
             showModel: false,
-            columns: [{
+            columns: [
+                {
                     type: 'index',
-                    width: 80,
+                    width: 70,
                     align: 'center',
-                    title: '序号'
-                }, {
+                    title: '序号',
+                    resizable: true,
+                }, 
+                {
                     title: '图片',
                     key: 'img',
                     align: 'center',
@@ -79,54 +82,76 @@ export default {
                                 }
                             }),
                         ]);
-                    }
+                    },
+                    width: 80,
+                    resizable: true,
                 },
                 {
                     title: '名称',
-                    key: 'type'
+                    key: 'type',
+                    width: 260,
+                    resizable: true,
                 },
                 {
                     title: '商品编号',
-                    key: 'sku'
+                    key: 'sku',
+                    width: 129,
+                    resizable: true,
                 },
                 {
                     title: '供应商',
-                    key: 'color'
+                    key: 'color',
+                    width: 120,
+                    resizable: true,
                 },
                 {
                     title: '开发人员',
-                    key: 'productName'
+                    key: 'productName',
+                    width: 120,
+                    resizable: true,
                 },
                 {
                     title: '类目',
-                    key: 'supplier'
+                    key: 'supplier',
+                    width: 120,
+                    resizable: true,
                 },
                 {
                     title: '特性标签',
-                    key: 'supplierNum'
+                    key: 'supplierNum',
+                    width: 120,
+                    resizable: true,
                 },
                 {
                     title: '包装材料',
                     key: 'createTime',
+                    width: 120,
+                    resizable: true,
                 },
                 {
                     title: '平均成本',
                     key: 'recommendingOfficer',
+                    width: 120,
+                    resizable: true,
                 },
                 {
                     title: '状态',
                     key: 'status',
-                    width: 100
+                    width: 80,
+                    resizable: true,
                 },
                 {
                     title: '创建时间',
                     key: 'createTime1',
+                    width: 180,
+                    resizable: true,
                 },
                 {
                     title: '操作',
                     slot: 'action',
                     align: 'center',
-                    width: 200
+                    width: 200,
+                    resizable: true,
                 }
             ],
             data: [{

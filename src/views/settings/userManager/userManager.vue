@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:35:44
+ * @LastEditTime: 2021-02-02 11:41:10
 -->
 <template>
 <div class="erp_table_container">
@@ -117,43 +117,59 @@ export default {
                     title: '序号',
                     slot: 'number',
                     type: 'index',
-                    width: 80,
-                    align: 'center'
+                    width: 70,
+                    align: 'center',
+                    resizable: true,
                 },
                 {
                     title: '用户名称',
                     key: 'userName',
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '昵称',
                     key: 'nickName',
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '性别',
                     key: 'sex',
+                    align: 'center',
                     render: (h, params) => {
                         return h("span", {
                             style: {
                                 display: "inline-block",
                             },
                         },params.row.sex ==1 ?'男':'女');//  展示的内容
-                    }
+                    },
+                    resizable: true,
+                    width: 70,
                 },
                 {
                     title: '手机',
                     key: 'phoneNumber',
+                    resizable: true,
+                    width: 120,
                 },
                 {
                     title: '邮箱',
                     key: 'email',
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '所属角色',
-                    key: 'roleName'
+                    key: 'roleName',
+                    resizable: true,
+                    width: 169,
                 },
                 {
                     title: '生日',
                     key: 'birthday',
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '是否启用',
@@ -166,15 +182,21 @@ export default {
                                 color: params.row.enabled==true ? "#19be6b": "#ed4014"
                             },
                         },params.row.enabled?'是':'否');//  展示的内容
-                    }
+                    },
+                    resizable: true,
+                    width: 90,
                 },
                 {
                     title: '创建时间',
                     key: 'createdOn',
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '创建者',
                     key: 'createdBy',
+                    resizable: true,
+                    width: 200,
                 },]
             return data;
         },

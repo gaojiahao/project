@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:35:18
+ * @LastEditTime: 2021-02-02 12:04:31
 -->
 <template>
 <div class="erp_table_container">
@@ -128,7 +128,8 @@ export default {
                     type: 'index',
                     width: 80,
                     align: 'center',
-                    title: '序号'
+                    title: '序号',
+                    resizable: true,
                 },
                 {
                     title: '系统配置类型',
@@ -139,15 +140,21 @@ export default {
                                 display: "inline-block",
                             },
                         },params.row.congfigType);//  展示的内容
-                    }
+                    },
+                    resizable: true,
+                    width: 200,
                 }, 
                 {
                     title: '名称',
-                    key: 'name'
+                    key: 'name',
+                    resizable: true,
+                    width: 239,
                 },
                 {
                     title: '编码',
-                    key: 'code'
+                    key: 'code',
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '是否启用',
@@ -159,25 +166,34 @@ export default {
                                 color: params.row.enabled==true ? "#19be6b": "#ed4014"
                             },
                         },params.row.enabled?'是':'否');//  展示的内容
-                    }
+                    },
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '创建者',
-                    key: 'createdBy'
+                    key: 'createdBy',
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '创建时间',
                     key: 'createdOn',
-                    width: 160
+                    width: 160,
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '修改者',
-                    key: 'modifyBy'
+                    key: 'modifyBy',
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '修改时间',
                     key: 'modifyOn',
-                    width: 160
+                    resizable: true,
+                    width: 200,
                 }]
             return data;
         },

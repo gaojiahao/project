@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:34:56
+ * @LastEditTime: 2021-02-02 11:33:49
 -->
 <template>
 <div class="erp_table_container">
@@ -125,15 +125,20 @@ export default {
                     slot: 'number',
                     type: 'index',
                     width: 80,
-                    align: 'center'
+                    align: 'center',
+                    resizable: true,
                 },
                 {
                     title: '角色名称',
-                    key: 'roleName'
+                    key: 'roleName',
+                    resizable: true,
+                    width: 439,
                 },
                 {
                     title: '角色编码',
-                    key: 'roleCode'
+                    key: 'roleCode',
+                    resizable: true,
+                    width: 400,
                 },
                 {
                     title: '是否启用',
@@ -146,7 +151,9 @@ export default {
                                 color: params.row.enabled==true ? "#19be6b": "#ed4014"
                             },
                         },params.row.enabled?'是':'否');//  展示的内容
-                    }
+                    },
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '是否管理员',
@@ -159,7 +166,9 @@ export default {
                                 color: params.row.isAdmin==true ? "#19be6b": "#ed4014"
                             },
                         },params.row.isAdmin?'是':'否');//  展示的内容
-                    }
+                    },
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '创建时间',
@@ -167,10 +176,14 @@ export default {
                     // render: (h, params) => {
                     //     return h('div', this.formatDate(this.list[params.index].createTime));
                     // }
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '创建者',
                     key: 'createdBy',
+                    resizable: true,
+                    width: 200,
                 },]
             return data;
         },

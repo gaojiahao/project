@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:34:08
+ * @LastEditTime: 2021-02-02 12:11:49
 -->
 <template>
 <div class="erp_table_container">
@@ -156,34 +156,40 @@ export default {
                                 }
                             }
                         },params.row.name);
-                    }
+                    },
+                    width: 459,
                 },
                 {
                     title: '物流编码',
                     key: 'code',
                     resizable: true,
+                    width: 400,
                 },
                 {
                     title: '创建者',
                     key: 'createdBy',
                     resizable: true,
+                    width: 200,
                 },
                 {
                     title: '创建时间',
                     key: 'createdOn',
                     resizable: true,
+                    width: 200,
                     sortable: true
                 },
                 {
                     title: '修改者',
                     key: 'modifyBy',
                     resizable: true,
+                    width: 200,
                 },
                 {
                     title: '修改时间',
                     key: 'modifyOn',
                     resizable: true,
-                    sortable: true
+                    sortable: true,
+                    width: 200,
                 }]
             return data;
         },

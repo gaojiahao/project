@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:33:50
+ * @LastEditTime: 2021-02-02 12:15:57
 -->
 <template>
 <div class="erp_table_container">
@@ -141,7 +141,7 @@ export default {
                     title: '全称',
                     key: 'longName',
                     resizable: true,
-                    width:200,
+                    width:279,
                     render: (h, params) => {
                         return h("span", {
                             style: {
@@ -160,42 +160,50 @@ export default {
                     title: '简称',
                     key: 'abbreviation',
                     resizable: true,
+                    width: 230,
                 },
                 {
                     title: '中文名称',
                     key: 'chinaName',
                     resizable: true,
+                    width: 270,
                 },
                 {
                     title: '层级',
                     key: 'areaLevel',
                     resizable: true,
+                    width: 80,
                 },
                 {
                     title: '直观级别州，市',
                     key: 'directLevel',
                     resizable: true,
+                    width: 200,
                 },
                 {
                     title: '创建者',
                     key: 'createdBy',
                     resizable: true,
+                    width: 120,
                 },
                 {
                     title: '创建时间',
                     key: 'createdOn',
                     resizable: true,
+                    width: 180,
                     sortable: true
                 },
                 {
                     title: '修改者',
                     key: 'modifyBy',
                     resizable: true,
+                    width: 120,
                 },
                 {
                     title: '修改时间',
                     key: 'modifyOn',
                     resizable: true,
+                    width: 180,
                     sortable: true
                 }]
             return data;

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:27:27
+ * @LastEditTime: 2021-02-02 14:38:10
 -->
 <template>
 <div class="erp_table_container">
@@ -217,7 +217,8 @@ export default {
                 type: 'index',
                 width: 60,
                 align: 'center',
-                title: '序号'
+                title: '序号',
+                resizable: true,
             }, {
                 title: '图片',
                 key: 'imgOne',
@@ -244,7 +245,8 @@ export default {
                             }
                         }),
                     ]);
-                }
+                },
+                resizable: true,
             },
             {
                 title: '产品名称',
@@ -261,20 +263,25 @@ export default {
                         }
                     }
                     },params.row.goodsName);
-                }
+                },
+                width: 349,
+                resizable: true,
             },
             {
                 title: '委派完成日期',
-                key: 'endTime'
+                key: 'endTime',
+                width: 160,
+                resizable: true,
             },
             {
                 title: '实际完成日期',
-                key: 'expectedTime'
+                key: 'expectedTime',
+                width: 160,
+                resizable: true,
             },
             {
                 title: '是否逾期',
                 key: 'status',
-                width:80,
                 render: (h, params) => {
                     return h("span", {
                     style: {
@@ -283,16 +290,18 @@ export default {
                     },
                     },params.row.status?"逾期":"未逾期");
                 },
+                width: 100,
+                resizable: true,
             },
             {
                 title: '逾期天数',
                 key: 'recommendingOfficer',
-                width:70,
+                width: 100,
+                resizable: true,
             },
             {
                 title: '状态',
                 key: 'status',
-                width:80,
                 render: (h, params) => {
                     return h("span", {
                     style: {
@@ -301,30 +310,39 @@ export default {
                     },
                     },params.row.status?"已完成":"未完成");
                 },
+                width: 80,
+                resizable: true,
             },
             {
                 title: '创建时间',
                 key: 'createdOn',
+                width: 160,
+                resizable: true,
             },
             {
                 title: '修改时间',
                 key: 'modifyOn',
+                width: 160,
+                resizable: true,
             },
             {
                 title: '创建者',
                 key: 'createdBy',
-                width:80,
+                width: 80,
+                resizable: true,
             },
             {
                 title: '修改者',
                 key: 'modifyBy',
-                width:80,
+                width: 80,
+                resizable: true,
             },
             {
                 title: '操作',
                 slot: 'action',
                 align: 'center',
-                width: 150
+                width: 150,
+                resizable: true,
             }
         ];
             return columns2;

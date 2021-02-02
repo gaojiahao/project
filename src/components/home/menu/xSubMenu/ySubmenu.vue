@@ -106,14 +106,14 @@ export default {
             this.timeout = setTimeout(() => {
                 this.openedDrop = true;
                 this.opened = this.opened ? false : true;
-            }, 250);
+            }, 100);
         },
         handleMouseleave() {
             clearTimeout(this.timeout);
             this.timeout = setTimeout(() => {
                 this.openedDrop = false;
                 this.opened = this.opened ? false : true;
-            }, 250);
+            }, 100);
         },
         clickMenu(one, two, third, flag = true) {
             clearTimeout(this.timeout);

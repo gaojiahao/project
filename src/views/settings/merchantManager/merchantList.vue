@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:34:34
+ * @LastEditTime: 2021-02-02 12:18:43
 -->
 <template>
 <div class="erp_table_container">
@@ -159,26 +159,31 @@ export default {
                     title: '商户号',
                     key: 'code',
                     resizable: true,
+                    width:200,
                 },
                 {
                     title: '商编',
                     key: 'authCode',
                     resizable: true,
+                    width:200,
                 },
                 {
                     title: '负责人',
                     key: 'chargeUser',
                     resizable: true,
+                    width:120,
                 },
                 {
                     title: '联系电话',
                     key: 'telePhone',
                     resizable: true,
+                    width:120,
                 },
                 {
                     title: '联系地址',
                     key: 'address',
                     resizable: true,
+                    width:200,
                 },
                 {
                     title: '是否启用',
@@ -191,28 +196,33 @@ export default {
                                 color: params.row.enabled ? "#19be6b": "#ed4014"
                             },
                         },params.row.enabled?'已启用':'未启用');
-                    }
+                    },
+                    width:120,
                 },
                 {
                     title: '创建者',
                     key: 'createdBy',
                     resizable: true,
+                    width:120,
                 },
                 {
                     title: '创建时间',
                     key: 'createdOn',
                     resizable: true,
+                    width:200,
                     sortable: true
                 },
                 {
                     title: '修改者',
                     key: 'modifyBy',
                     resizable: true,
+                    width:120,
                 },
                 {
                     title: '修改时间',
                     key: 'modifyOn',
                     resizable: true,
+                    width:200,
                     sortable: true
                 }]
             return data;

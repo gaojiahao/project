@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:25:46
+ * @LastEditTime: 2021-02-02 14:21:26
 -->
 <template>
 <div class="erp_table_container">
@@ -94,7 +94,8 @@ export default {
                 type: 'index',
                 width: 60,
                 align: 'center',
-                title: '序号'
+                title: '序号',
+                resizable: true,
             }, 
             {
                 title: '图片',
@@ -122,7 +123,8 @@ export default {
                             }
                         }),
                     ]);
-                }
+                },
+                resizable: true,
             },
             {
                 title: '产品名称',
@@ -140,23 +142,32 @@ export default {
                     }
                     },params.row.name);
                 },
-                width:220
+                width: 269,
+                resizable: true,
             },
             {
                 title: '委派完成日期',
-                key: 'color'
+                key: 'color',
+                width: 160,
+                resizable: true,
             },
             {
                 title: '实际完成日期',
-                key: 'supplier'
+                key: 'supplier',
+                width: 160,
+                resizable: true,
             },
             {
                 title: '是否逾期',
-                key: 'supplierNum'
+                key: 'supplierNum',
+                width: 100,
+                resizable: true,
             },
             {
                 title: '逾期天数',
                 key: 'recommendingOfficer',
+                width: 100,
+                resizable: true,
             },
             {
                 title: '状态',
@@ -169,32 +180,39 @@ export default {
                     },
                     },params.row.status?"已委派":"未委派");
                 },
+                width:80,
                 resizable: true,
-                width:80
             },
             {
                 title: '创建时间',
                 key: 'createdOn',
+                width: 160,
+                resizable: true,
             },
             {
                 title: '修改时间',
                 key: 'modifyOn',
+                width: 160,
+                resizable: true,
             },
             {
                 title: '创建者',
                 key: 'createdName',
-                width:80
+                width: 120,
+                resizable: true,
             },
             {
                 title: '修改者',
                 key: 'modifyName',
-                width:80
+                width: 120,
+                resizable: true,
             },
             {
                 title: '操作',
                 slot: 'action',
                 align: 'center',
-                width: 150
+                width: 150,
+                resizable: true,
             }
         ];
             return columns2;

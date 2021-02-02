@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 16:16:42
+ * @LastEditTime: 2021-02-02 11:19:36
 -->
 <template>
 <div class="content">
@@ -123,10 +123,10 @@ export default {
         },
         calleArr: function(data){
             for(var i in data){
+                if(this.type=='view'){
+                    data[i]['disabled'] = true;    
+                }
                 for(var j=0;j<this.formData.length;j++){
-                    if(this.type=='view'){
-                        data[i]['disabled'] = true;    
-                    }
                     if(this.formData[j]['categoryId']==data[i]['id']){
                         data[i]['checked'] = true;
                         if(data[i].children&&data[i].children.length)

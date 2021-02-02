@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 12:10:24
+ * @LastEditTime: 2021-02-02 12:25:20
  */
 export default {
     data() {
@@ -27,11 +27,12 @@ export default {
           },
           categoryId:{
             name:'类目',
-            type:'select',
+            type:'tree',
             dataSource:{
               type:'dynamic',
               url:'/api/GetCategoryList',
               data:[],
+              params:'keyword',
               col:[
                 {k:'name',v:'name'},
                 {k:'value',v:'id'}

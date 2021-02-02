@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 19:41:52
+ * @LastEditTime: 2021-02-01 18:59:13
 -->
 <template>
 <div class="x_tree" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
@@ -88,7 +88,7 @@ export default {
         },
         value:{
             handler(val){
-
+                
             },
             deep:true,
             immediate:true,
@@ -114,6 +114,7 @@ export default {
                     if(this.value == data[i].id){
                         this.name = data[i].name;
                         data[i]['checked'] = true;
+                        data[i]['selected'] = true;
                     }
                     data[i] = {
                         ...data[i],

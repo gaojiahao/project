@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 10:24:25
+ * @LastEditTime: 2021-02-02 12:22:41
 -->
 <template>
 <div class="erp_table_container">
@@ -148,12 +148,16 @@ export default {
                 // },
                 {
                     type: 'index',
-                    width: 80,
+                    width: 70,
                     align: 'center',
-                    title: '序号'
-                }, {
+                    title: '序号',
+                    resizable: true,
+                }, 
+                {
                     title: '供应商编号',
-                    key: 'code'
+                    key: 'code',
+                    resizable: true,
+                    width:200,
                 },
                 {
                     title: '供应商名称',
@@ -170,23 +174,33 @@ export default {
                             }
                         }
                         },params.row.name);
-                    }
+                    },
+                    resizable: true,
+                    width:209,
                 },
                 {
                     title: '联系电话',
-                    key: 'telePhone'
+                    key: 'telePhone',
+                    resizable: true,
+                    width:120,
                 },
                 {
                     title: '联系人',
-                    key: 'changeUser'
+                    key: 'changeUser',
+                    resizable: true,
+                    width:120,
                 },
                 {
                     title: '地址',
-                    key: 'address'
+                    key: 'address',
+                    resizable: true,
+                    width:200,
                 },
                 {
                     title: '邮箱',
-                    key: 'email'
+                    key: 'email',
+                    resizable: true,
+                    width:200,
                 },
                 // {
                 //     title: '状态',
@@ -202,19 +216,27 @@ export default {
                 // }, 
                 {
                     title: '创建者',
-                    key: 'createdBy'
+                    key: 'createdBy',
+                    resizable: true,
+                    width:120,
                 },
                 {
                     title: '创建时间',
-                    key: 'createdOn'
+                    key: 'createdOn',
+                    resizable: true,
+                    width:180,
                 },
                 {
                     title: '修改者',
-                    key: 'modifyBy'
+                    key: 'modifyBy',
+                    resizable: true,
+                    width:120,
                 },
                 {
                     title: '修改时间',
-                    key: 'modifyOn'
+                    key: 'modifyOn',
+                    resizable: true,
+                    width:180,
                 },
                 // {
                 //     title: '操作',

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-29 16:46:32
+ * @LastEditTime: 2021-02-01 19:14:48
 -->
 <template>
 <div>
@@ -294,32 +294,26 @@ export default {
                 packageHigh:params.packagingSize.high,
                 packageVolume:params.packagingSize.volume,
             }
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    if (this.productId) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            UpdatePrepGoods(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
-                                    this.productId = res.result.item.id;
-                                    this.GetGoodsSupplierPage();
-                                    this.GetOperationLogPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
+            if (this.productId) {
+                return new Promise((resolve, reject) => {
+                    this.$FromLoading.show();
+                    UpdatePrepGoods(params).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.$Message.info('温馨提示：更新成功！');
+                            this.productId = res.result.item.id;
+                            this.GetGoodsSupplierPage();
+                            this.GetOperationLogPage();
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
                             });
-                        });
-                    }
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })    
+                            this.$FromLoading.hide();
+                        }
+                    });
+                });
+            }  
         },
         GetGoodsSupplierPage() {
             if(this.productId){

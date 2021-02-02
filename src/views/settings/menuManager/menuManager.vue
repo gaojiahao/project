@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 12:12:13
+ * @LastEditTime: 2021-02-02 11:28:56
 -->
 <template>
 <div class="erp_table_container">
@@ -234,19 +234,27 @@ export default {
             var data = [{
                     title: '菜单名称',
                     key: 'name',
-                    tree: true
+                    tree: true,
+                    resizable: true,
+                    width: 329,
                 },
                 {
                     title: '路由地址',
                     key: 'linkUrl',
+                    resizable: true,
+                    width: 400,
                 },
                 {
                     title: '菜单图标',
-                    key: 'icon'
+                    key: 'icon',
+                    resizable: true,
+                    width: 200,
                 },
                 {
                     title: '标签',
-                    key: 'code'
+                    key: 'code',
+                    resizable: true,
+                    width: 120,
                 },
                 {
                     title: '是否菜单',
@@ -258,11 +266,15 @@ export default {
                                 color: params.row.isMenu==true ? "#19be6b": "#ed4014"
                             },
                         },params.row.isMenu?'是':'否');
-                    }
+                    },
+                    resizable: true,
+                    width: 120,
                 },
                 {
                     title: '创建时间',
                     key: 'createdOn',
+                    resizable: true,
+                    width: 180,
                 },
                 {
                     title: '是否启用',
@@ -274,13 +286,16 @@ export default {
                                 color: params.row.enabled==true ? "#19be6b": "#ed4014"
                             },
                         },params.row.enabled?'是':'否');
-                    }
+                    },
+                    resizable: true,
+                    width: 120,
                 },
                 {
                     title: '操作',
                     slot: 'action',
                     align: 'center',
-                    width:250
+                    resizable: true,
+                    width: 250,
                 }]
             return data;
         },
