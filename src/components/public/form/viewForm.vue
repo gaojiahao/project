@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 11:31:33
+ * @LastEditTime: 2021-02-03 16:00:16
 -->
 <template>
 <div class="content">
@@ -22,7 +22,7 @@
             </FormItem>
             <!--单选框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
-                <RadioGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']">
+                <RadioGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" @on-change="radioOnChangeFun(index,$event)">
                     <template v-for="(ditem,dIndex) in formConfig[index]['dataSource']['data']">
                         <Radio :label="ditem.value" :key="ditem.value" disabled>
                             {{ditem.name}}
@@ -39,7 +39,7 @@
                 </CheckboxGroup>
             </FormItem>
             <!--formConfig[index]['dataSource']['multiple']控制选择器是否多选，单选-->
-            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='select'">
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="(formConfig[index]&&formConfig[index]['type']=='select')&&!formConfig[index]['hidden']">
                 <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable disabled :label-in-value='true' v-show="!formConfig[index]['hidden']" @on-select="onChange">
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
                 </Select>
@@ -58,7 +58,7 @@
                 <Texts v-model="formValidate[index]" disabled v-show="!formConfig[index]['hidden']"></Texts>
             </FormItem>
             <!--商品体积-->
-            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='size'">
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="(formConfig[index]&&formConfig[index]['type']=='size')&&!formConfig[index]['hidden']">
                 <Size v-model="formValidate[index]" disabled v-show="!formConfig[index]['hidden']"></Size>
             </FormItem>
             <!--单项选择器-->
@@ -81,6 +81,16 @@
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='password'">
                 <Input v-model="formValidate[index]" :style="{width:'300px'}" :disabled="formConfig[index]['disabled']" type="password" password :placeholder="formConfig[index]['placeholder']" ></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
+            </FormItem>
+            <!-- 自定义下拉控件 -->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCustom'">
+                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" allow-create filterable :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']" disabled>
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
+                </Select>
+            </FormItem>
+            <!-- 下拉关联层级控件 -->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCascade'">
+                <SelectCascade :name="index" v-model="formValidate[index]" :formConfig="formConfig[index]" v-show="!formConfig[index]['hidden']" ></SelectCascade>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='tree'">
                 <XTree :name="index" v-model="formValidate[index]" :config="formConfig[index]" v-show="!formConfig[index]['hidden']" :disabled="formConfig[index]['disabled']"></XTree>
@@ -107,6 +117,7 @@ import Size from '@components/public/input/size';
 import SelectorSingle from '@components/public/xSelect/selectorSingle';
 import SelectorMulti from '@components/public/xSelect/selectorMulti';
 import DistributionPeople from "@components/charting/distributionPeople";
+import SelectCascade from "@components/public/xSelect/selectCascade";
 import XTree from "@components/public/tree/xTree";
 import $flyio from '@plugins/ajax'
 
@@ -120,6 +131,7 @@ export default {
         SelectorSingle,
         SelectorMulti,
         DistributionPeople,
+        SelectCascade,
         XTree
     },
     props: {
@@ -190,7 +202,7 @@ export default {
                 if (i == 0 && controls[i].type == 'text') { //第一个输入框获取焦点
                     setTimeout(() => {
                         controls[0].focus();
-                        console.log(controls[0].value);
+                        // console.log(controls[0].value);
                     }, 1000);
                 }
             }
@@ -227,6 +239,12 @@ export default {
                         this.formValidate[this.formConfig[item].bind.target] = value;
                     })
                 }
+                if(this.formConfig[item].hiddenFun){
+                    form.$on('on-change-' + item,function(item){
+                        form.formConfig[item.data].hiddenFun(item.event);
+                    })
+                    this.radioOnChangeFun(item,form.formValidate[item]);
+                }
                 if((['select','selectCustom','tree'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
                     var parmas = this.formConfig[item].dataSource.parmas ? this.formConfig[item].dataSource.parmas:{};
                     await $flyio.post({
@@ -258,6 +276,9 @@ export default {
         },
         onChange(data){
             this.$emit('value-change-'+data.tag,data.label);
+        },
+        radioOnChangeFun(data,event){
+            this.$emit('on-change-'+data,{data:data,event:event});
         }
     },
     mounted() {

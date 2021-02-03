@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 14:38:00
+ * @LastEditTime: 2021-02-03 15:50:54
  */
 export default {
   data() {
@@ -96,6 +96,13 @@ export default {
         callback();
       }
     };
+    const logisticsLabelVali = (rule, value, callback) => {
+      if (value == ''||value === undefined) {
+          callback(new Error('请选择物流属性'));
+      } else {
+        callback();
+      }
+    };
     return {
       productInfo:{
         code:{
@@ -143,20 +150,20 @@ export default {
           },
           disabled:true
         },
-        characteristic:{
-          name:'特性标签',
-          type:'texts',
-          // dataSource:{
-          //   type:'dynamic',
-          //   url:'/api/GetSystemConfigList',
-          //   data:[],
-          //   parmas:{congfigType:'productLabel'},
-          //   col:[
-          //     {k:'name',v:'name'},
-          //     {k:'value',v:'name'}
-          //   ]
-          // },
-        },
+        // characteristic:{
+        //   name:'特性标签',
+        //   type:'texts',
+        //   dataSource:{
+        //     type:'dynamic',
+        //     url:'/api/GetSystemConfigList',
+        //     data:[],
+        //     parmas:{congfigType:'productLabel'},
+        //     col:[
+        //       {k:'name',v:'name'},
+        //       {k:'value',v:'name'}
+        //     ]
+        //   },
+        // },
         logisticsLabel:{
           name:'物流属性',
           type:'select',
@@ -173,7 +180,7 @@ export default {
         },
         brandId:{
           name:'品牌',
-          type:'select',
+          type:'selectCustom',
           dataSource:{
             type:'dynamic',
             url:'/api/GetBrandList',
@@ -182,7 +189,7 @@ export default {
           bind:{
             target: 'brandName',
             bindValue: 'name'
-          }
+          },
         },
         isPackage:{
           name:'是否带包装',
@@ -194,7 +201,8 @@ export default {
               {name:'否',value:false}
             ],
           },
-          disabled: false
+          disabled: false,
+          hiddenFun: this.isPackageHiddenFun,
         },
         weight:{
           name:'商品重量',
@@ -421,18 +429,18 @@ export default {
           trigger: 'change',
           validator: categoryIdVali,
         }],
-        characteristic: [{ 
-          required: true, 
-          type: 'string',
-          message: '请输入特性标签', 
-          trigger: 'blur' 
-        }],
-        brandId: [{
-          required: true,
-          message: '请选择品牌',
-          trigger: 'change',
-          validator: brandIdVali
-        }],
+        // characteristic: [{ 
+        //   required: true, 
+        //   type: 'string',
+        //   message: '请输入特性标签', 
+        //   trigger: 'blur' 
+        // }],
+        // brandId: [{
+        //   required: true,
+        //   message: '请选择品牌',
+        //   trigger: 'change',
+        //   validator: brandIdVali
+        // }],
         // isPackage: [{
         //   required: true,
         //   message: '请选择是否带包装',
@@ -508,6 +516,12 @@ export default {
           // trigger: 'blur',
           trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
         }],
+        logisticsLabel:[{
+          required: true, 
+          message: '请选择物流属性', 
+          trigger: 'change',
+          validator: logisticsLabelVali  
+        }]
       },
       filtersConfig:{
         name:{
@@ -569,7 +583,34 @@ export default {
           value:'modifyer',
           type:'text',
         },
-      }
+      },
     }
-  }
+  },
+  methods: {
+    isPackageHiddenFun(value){
+      if(value){
+        this.productInfo['material']['hidden']=false;
+        this.productInfo['packageCost']['hidden']=false;
+        this.productInfo['packageWeight']['hidden']=false;
+        this.productInfo['packagingSize']['hidden']=false;
+      } else {
+        this.productInfo['material']['hidden']=true;
+        this.productInfo['packageCost']['hidden']=true;
+        this.productInfo['packageWeight']['hidden']=true;
+        this.productInfo['packagingSize']['hidden']=true;
+      }
+    },
+    async brandIdCreateFun(value){
+      await $flyio.post({
+        url: '/api/CreateBrand',
+        data:{ name:value,platformId:0}
+      }).then((res) => {
+        if(res.result.code==200){
+          this.productInfo['brandId']['dataSource']['data'].push({name:res.result.item.name,value:res.result.item.id,id:res.result.item.id});
+          this.productInfoFormValidate['brandId'] = res.result.item.id;
+          this.productInfoFormValidate['brandName'] = res.result.item.name;
+        }
+      })
+    }
+  },
 }

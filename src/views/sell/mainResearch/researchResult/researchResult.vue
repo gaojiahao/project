@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 14:49:11
+ * @LastEditTime: 2021-02-02 20:01:16
 -->
 <template>
 <div>
@@ -119,7 +119,7 @@ import {
     TabPane,
 } from "view-design";
 export default {
-    name: 'editNewProduct',
+    name: 'researchResult',
     components: {
         Tabs,
         TabPane,

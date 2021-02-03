@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-30 12:22:05
+ * @LastEditTime: 2021-02-03 09:45:32
 -->
 <template>
     <div :class="{drag:dragging}">
@@ -12,7 +12,7 @@
             <div :class="key" v-for="(item, key) in mainData" :key="key">
                 <draggable v-bind="dragOptions" class="list-group" :list="item" @end="onEnd" @start="onStart">
                     <transition-group name="list">
-                        <div class="list-group-item" v-for="(element, index) in item" :key="index">
+                        <div class="list-group-item" v-for="(element) in item" :key="element.id">
                             <div class="panel-actions">
                                 <Dropdown :transfer="true">
                                     <a href="javascript:void(0)" style="color:#fff">

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 17:11:50
+ * @LastEditTime: 2021-02-03 16:01:12
 -->
 <template>
 <div class="content">
@@ -26,7 +26,8 @@
             </FormItem>
             <!--单选框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
-                <RadioGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" @on-change="formConfig[index]['hiddenFun']||''">
+                <!-- <RadioGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" @on-change="formConfig[index]['hiddenFun']"> -->
+                    <RadioGroup v-model="formValidate[index]" v-show="!formConfig[index]['hidden']" @on-change="radioOnChangeFun(index,$event)">
                     <template v-for="(ditem,dIndex) in formConfig[index]['dataSource']['data']">
                         <Radio :label="ditem.value" :key="ditem.value" :disabled="formConfig[index]['disabled']">
                             {{ditem.name}}
@@ -255,6 +256,12 @@ export default {
                         this.formValidate[this.formConfig[data.tag].bind.target] = data.label;
                     })
                 }
+                if(this.formConfig[item].hiddenFun){
+                    form.$on('on-change-' + item,function(item){
+                        form.formConfig[item.data].hiddenFun(item.event);
+                    })
+                    this.radioOnChangeFun(item,form.formValidate[item]);
+                }
                 if((['select','selectCustom','tree'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
                     var parmas = this.formConfig[item].dataSource.parmas ? this.formConfig[item].dataSource.parmas:{};
                     await $flyio.post({
@@ -287,6 +294,9 @@ export default {
         },
         onChange(data){
             this.$emit('value-change-'+data.tag,data);
+        },
+        radioOnChangeFun(data,event){
+            this.$emit('on-change-'+data,{data:data,event:event});
         }
     },
     mounted() {

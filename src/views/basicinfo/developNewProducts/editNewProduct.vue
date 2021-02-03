@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 19:14:48
+ * @LastEditTime: 2021-02-03 09:24:47
 -->
 <template>
 <div>
@@ -105,7 +105,7 @@ import {
     TabPane,
 } from "view-design";
 export default {
-    name: 'editNewProduct',
+    name: 'EditNewProduct',
     components: {
         Tabs,
         TabPane,

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-20 16:06:57
+ * @LastEditTime: 2021-02-02 19:05:15
 -->
 <template>
 <div>
@@ -23,12 +23,14 @@
         <Divider orientation="left" size="small">人员分配</Divider>
         <div class="top_tabale">
             <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form">
-                <FormItem>
-                    <div style="width:100%">
-                        <Button type="primary" @click="save" style="float: left;">保存</Button>
-                        <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                    </div>
-                </FormItem>
+                <template slot="button">
+                    <FormItem>
+                        <div style="width:100%">
+                            <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                        </div>
+                    </FormItem>
+                </template>
             </XForm>
         </div>
     </div>

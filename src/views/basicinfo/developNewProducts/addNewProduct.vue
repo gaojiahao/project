@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 19:16:46
+ * @LastEditTime: 2021-02-03 14:42:36
 -->
 <template>
 <div>
@@ -70,7 +70,7 @@
             </div>
         </TabPane>
         <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-            <AddNewProductTableLog></AddNewProductTableLog>
+            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
     
@@ -141,6 +141,16 @@ export default {
             loadingPruch:true,
             dataProp:[],
             loadingProp:true,
+             pageDataLog:{
+                skipCount: 1,
+                skipTotal: 5,
+                maxResultCount: 5,
+                keyword:'',
+                pageSizeOpts:[5,50,200],
+                totalPagePruch:0
+            },
+            dataLog:[],
+            loadingLog:true
         }
     },
     computed:{
@@ -177,7 +187,6 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
-                                    this.productId = res.result.item.id;
                                     this.GetGoodsSupplierPage();
                                     this.GetOperationLogPage();
                                 } else if (res.result.code == 400) {
@@ -197,6 +206,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.productId = res.result.item.id;
+                                    this.productInfoFormValidate.id =  res.result.item.id;
                                     this.productInfoFormValidate.code = res.result.item.code;
                                     this.GetGoodsSupplierPage();
                                     this.GetPrepGoodsAttributeById();
@@ -481,7 +491,7 @@ export default {
         GetOperationLogPage(){
             if(this.productId){
                 return new Promise((resolve, reject) => {
-                    GetOperationLogPage({goodsId:this.productId}).then(res => {
+                    GetOperationLogPage({goodsId:this.productId,...this.pageDataLog}).then(res => {
                         if(res.result.code==200){
                             this.$nextTick(() => {
                                 this.dataLog = res.result.item.items;
@@ -491,6 +501,14 @@ export default {
                     });
                 });
             }    
+        },
+        changePageLog(page){
+            this.pageDataLog.skipCount = page;
+            this.GetOperationLogPage();
+        },
+        onPageSizeChangeLog(pagesize){
+            this.pageDataLog.maxResultCount = pagesize;
+            this.GetOperationLogPage();
         },
         copy(){
             if(this.productId){

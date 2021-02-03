@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 11:15:52
+ * @LastEditTime: 2021-02-02 19:15:38
 -->
 <template>
 <div>
@@ -271,7 +271,6 @@ export default {
             this.$router.go(-1)
         },
         save(status){
-            debugger
             var selectionId = this.$route.query.selectionId;
             var params = this.formValidate2;
             params = {
@@ -290,6 +289,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：审核成功！');
+                                    this.$router.go(-1)
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,

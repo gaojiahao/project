@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 09:26:59
+ * @LastEditTime: 2021-02-03 09:26:39
  */
 import $flyio from '@plugins/ajax';
 
@@ -136,20 +136,10 @@ export default {
               bindValue: 'name'
             }
           },
-          // characteristic:{
-          //   name:'特性标签',
-          //   type:'texts',
-          //   dataSource:{
-          //     type:'dynamic',
-          //     url:'/api/GetSystemConfigList',
-          //     data:[],
-          //     parmas:{congfigType:'productLabel'},
-          //     col:[
-          //       {k:'name',v:'name'},
-          //       {k:'value',v:'name'}
-          //     ]
-          //   },
-          // },
+          characteristic:{
+            name:'特性标签',
+            type:'texts',
+          },
           logisticsLabel:{
             name:'物流属性',
             type:'select',
