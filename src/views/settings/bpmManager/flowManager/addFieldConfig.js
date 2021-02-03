@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 19:45:39
+ * @LastEditTime: 2021-02-03 10:18:57
  */
 export default {
     data() {
       return {
         formConfig:{
           columnName:{
-            name:'字段名称',
+            name:'字段值',
             type:'text',
           },
           displayName:{

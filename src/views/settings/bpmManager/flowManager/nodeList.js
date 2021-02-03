@@ -47,24 +47,24 @@ export default {
                 },
                 "permissions": [{
                   "fId": 1,
-                  "fNameText": "姓名",
-                  "fName": "name",
+                  "columnName": "姓名",
+                  "displayName": "name",
                   "type": "文本",
                   "isEditable": true,
                   "isVisible": true,
                   "required": false
                 }, {
                   "fId": 2,
-                  "fNameText": "性别",
-                  "fName": "sex",
+                  "columnName": "性别",
+                  "displayName": "sex",
                   "type": "文本",
                   "isEditable": true,
                   "isVisible": true,
                   "required": false
                 }, {
                   "id": 3,
-                  "fNameText": "年龄",
-                  "fName": "age",
+                  "columnName": "年龄",
+                  "displayName": "age",
                   "type": "文本",
                   "isEditable": true,
                   "isVisible": true,
@@ -121,19 +121,19 @@ export default {
                 "rules": [{
                   "fId": 1,
                   "nexus": "001",
-                  "fName": "name",
-                  "logic": "001",
+                  "displayName": "name",
+                  "logicType": "001",
                   "value": "1",
-                  "fNameText": "姓名",
+                  "columnName": "姓名",
                   "nexusText": "并且",
                   "logicText": "等于"
                 }, {
                   "fId": 2,
                   "nexus": "001",
-                  "fName": "sex",
-                  "logic": "001",
+                  "displayName": "sex",
+                  "logicType": "001",
                   "value": "1",
-                  "fNameText": "性别",
+                  "columnName": "性别",
                   "nexusText": "并且",
                   "logicText": "等于"
                 }],
@@ -159,24 +159,24 @@ export default {
                 },
                 "permissions": [{
                   "fId": 1,
-                  "fNameText": "姓名",
-                  "fName": "name",
+                  "columnName": "姓名",
+                  "displayName": "name",
                   "type": "文本",
                   "isEditable": false,
                   "isVisible": true,
                   "required": false
                 }, {
                   "fId": 2,
-                  "fNameText": "性别",
-                  "fName": "sex",
+                  "columnName": "性别",
+                  "displayName": "sex",
                   "type": "文本",
                   "isEditable": false,
                   "isVisible": true,
                   "required": false
                 }, {
                   "id": 3,
-                  "fNameText": "年龄",
-                  "fName": "age",
+                  "columnName": "年龄",
+                  "displayName": "age",
                   "type": "文本",
                   "isEditable": false,
                   "isVisible": true,

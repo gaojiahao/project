@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-18 20:07:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 20:52:16
+ * @LastEditTime: 2021-02-03 10:02:17
 -->
 <!--
  * @Descripttion: 
@@ -103,8 +103,8 @@ export default {
             data: [
                 // {
                 //     fId:1,
-                //     fNameText: '姓名',
-                //     fName: "name",
+                //     columnName: '姓名',
+                //     displayName: "name",
                 //     type: '文本',
                 //     isEditable: false,
                 //     isVisible:false,
@@ -112,8 +112,8 @@ export default {
                 // },
                 // {
                 //     fId:2,
-                //     fNameText: '性别',
-                //     fName: "sex",
+                //     columnName: '性别',
+                //     displayName: "sex",
                 //     type: '文本',
                 //     isEditable: false,
                 //     isVisible:false,
@@ -121,8 +121,8 @@ export default {
                 // },
                 // {
                 //     fId:3,
-                //     fNameText: '年龄',
-                //     fName: "age",
+                //     columnName: '年龄',
+                //     displayName: "age",
                 //     type: '文本',
                 //     isEditable: false,
                 //     isVisible:false,
