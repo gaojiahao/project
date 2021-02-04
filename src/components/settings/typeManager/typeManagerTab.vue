@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 09:40:53
+ * @LastEditTime: 2021-02-04 10:17:11
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -225,6 +225,7 @@ export default {
             //     categoryName: this.$parent.formValidate.name,
             //     isCheck: true
             // });
+            this.showPop(false);
             for(var i=0;i<this.$refs['form'].$refs["selectorMulti"].length;i++){
                 this.$refs['form'].$refs["selectorMulti"][i].clear();
             }

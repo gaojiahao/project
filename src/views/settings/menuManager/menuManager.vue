@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 11:28:56
+ * @LastEditTime: 2021-02-04 10:21:01
 -->
 <template>
 <div class="erp_table_container">
@@ -162,6 +162,7 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：新建成功！');
+                            this.showPop(false);
                             this.$refs['form'].$refs['formValidate'].resetFields();
                             this.$refs['form'].initEL('input');
                             this.loading = true;
@@ -182,6 +183,7 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：更新成功！');
+                            this.showPop(false);
                             this.$refs['form'].$refs['formValidate'].resetFields();
                             this.$refs['form'].initEL('input');
                             this.loading = true;

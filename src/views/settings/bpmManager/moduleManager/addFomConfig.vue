@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-18 11:40:24
+ * @LastEditTime: 2021-02-04 10:20:43
 -->
 <template>
 <div>
@@ -184,7 +184,7 @@ export default {
                 id:'11',
                 viewName: '视图111',
             }) 
-
+            this.showPop(false);
         },
         clearFormData(){
             

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:26:19
+ * @LastEditTime: 2021-02-04 10:19:34
 -->
 <template>
 <div class="erp_table_container">
@@ -101,7 +101,7 @@ export default {
             this.showModel = flag;
         },
         save() {
-
+            this.showPop(false);
         },
         goResearch(row){
             this.$router.push({name:'viewProductListResearch',query: {id:row.id||123}})

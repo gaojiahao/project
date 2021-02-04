@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 11:41:10
+ * @LastEditTime: 2021-02-04 10:22:09
 -->
 <template>
 <div class="erp_table_container">
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import ModalForm from "@components/public/form/modalForm";
 import list from "@mixins/list";
 import config from '@views/settings/userManager/userManagerConfig.js';
 import {
@@ -50,9 +49,6 @@ import {
 
 export default {
     name: 'UserManager',
-    components: {
-        ModalForm
-    },
     computed: {
 
     },

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 17:14:43
+ * @LastEditTime: 2021-02-04 09:41:47
 -->
 <template>
 <div class="form">
@@ -54,7 +54,7 @@ export default {
             var params = this.formValidate;
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
-                    if (this.formValidate.packageId) {
+                    if (this.formValidate.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
                             UpdateWorkflowClause(params).then(res => {
@@ -93,7 +93,9 @@ export default {
                     if (res.result.code == 200) {
                         this.$FromLoading.hide();
                         this.formValidate = {
+                            id: res.result.item.id,
                             packageId: res.result.item.packageId,
+                            packageName: res.result.item.packageName,
                             workflowName: res.result.item.workflowName,
                             workflowIcon: res.result.item.workflowIcon,
                         }

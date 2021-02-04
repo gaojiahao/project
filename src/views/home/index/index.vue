@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 09:45:32
+ * @LastEditTime: 2021-02-04 10:19:46
 -->
 <template>
     <div :class="{drag:dragging}">
@@ -294,7 +294,7 @@ export default {
             console.log(this.$refs[name]);
         },
         save(){
-
+            this.showPop(false);
         },
         showPop(flag, row) {
             this.showModel = flag;

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:42:21
+ * @LastEditTime: 2021-02-04 10:18:32
 -->
 <template>
 <div>
@@ -231,7 +231,7 @@ export default {
                 researchPlatform:"亚马逊",
                 researchUrl:"www.amazon.cn"    
             }) 
-
+            this.showPop(false);
         },
         clearFormData(){
             

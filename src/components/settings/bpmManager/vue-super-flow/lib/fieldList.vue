@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-18 20:07:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 10:02:17
+ * @LastEditTime: 2021-02-04 10:10:41
 -->
 <!--
  * @Descripttion: 
@@ -176,6 +176,7 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：新建成功！');
+                            this.showPop(false);
                             this.$refs['form'].$refs['formValidate'].resetFields();
                             this.$refs['form'].initEL('input');
                             this.loading = true;
@@ -196,6 +197,7 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：更新成功！');
+                            this.showPop(false);
                             this.$refs['form'].$refs['formValidate'].resetFields();
                             this.$refs['form'].initEL('input');
                             this.loading = true;

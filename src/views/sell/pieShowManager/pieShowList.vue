@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 17:47:03
+ * @LastEditTime: 2021-02-04 10:19:59
 -->
 <template>
 <div class="erp_table_container">
@@ -133,6 +133,7 @@ export default {
                             if (res.result.code == 200) {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
+                                this.showPop(false);
                                 this.$refs['form'].$refs['formValidate'].resetFields();
                                 this.GetPrepGoodsPage();
                             } else if (res.result.code == 400) {

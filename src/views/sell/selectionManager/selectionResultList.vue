@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 20:30:53
+ * @LastEditTime: 2021-02-04 10:20:14
 -->
 <template>
 <div class="storeManager-container">
@@ -315,7 +315,7 @@ export default {
             this.showModel2 = flag;
         },
         save() {
-
+            this.showPop(false);
         },
         changePage() {
 

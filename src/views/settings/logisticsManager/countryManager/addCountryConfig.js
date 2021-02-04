@@ -4,10 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-25 10:58:41
+ * @LastEditTime: 2021-02-04 09:22:43
  */
 export default {
     data() {
+      const areaLevelVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请选择层级'));
+        } else {
+          callback();
+        }
+      };
       return {
         formConfig:{
           longName:{
@@ -57,6 +64,12 @@ export default {
               message: '请输入全称',
               trigger: 'blur'
           }],
+          areaLevel: [{
+            required: true,
+            message: '请选择层级',
+            trigger: 'change',
+            validator: areaLevelVali
+        }],
         }, 
       }
     }

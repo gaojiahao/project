@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 16:07:32
+ * @LastEditTime: 2021-02-04 10:03:56
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -156,7 +156,7 @@ export default {
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$emit('save');
-                    this.$emit('show-pop', false);
+                    // this.$emit('show-pop', false);
                     this.$emit('clear-form-data');
                 } else {
                     this.$Message.error('保存失败');

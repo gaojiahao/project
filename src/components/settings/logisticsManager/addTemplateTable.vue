@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 20:00:37
+ * @LastEditTime: 2021-02-04 10:07:28
 -->
 <template>
 <div class="addTemplateTable-container">
@@ -198,6 +198,7 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：新建成功！');
+                            this.showPop(false);
                             this.$parent.GetFreightTemplatePage();
                         } else if (res.result.code == 400) {
                             this.$Message.error({
@@ -215,7 +216,9 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：更新成功！');
+                            this.showPop(false);
                             this.$parent.GetFreightTemplatePage();
+                            this.activatedRow = {}; 
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
