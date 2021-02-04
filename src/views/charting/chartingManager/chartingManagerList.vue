@@ -386,7 +386,10 @@ export default {
             datas.push(columns[0]);
             data.forEach(col => {
                 for(var i=0;i<columns.length;i++){
-                    if(col == columns[i].key){
+                    if(columns[i].key&&(col == columns[i].key)){
+                        datas.push(columns[i]);
+                    }
+                     if(columns[i].slot&&(col == columns[i].slot)){
                         datas.push(columns[i]);
                     }
                 }
