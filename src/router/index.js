@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 17:15:25
+ * @LastEditTime: 2021-02-04 15:01:28
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -787,16 +787,6 @@ const routes = [
                 },
                 component: resolve=>(require(["@views/basicinfo/developNewProducts/researchDevelopNewProducts"],resolve)),
               },
-              {
-                path: 'sellNewProduct',
-                name: 'sellNewProduct',
-                meta:{ 
-                  title:'新建新品',
-                  group: "developNewProducts",
-                  level: 2,
-                },
-                component: resolve=>(require(["@views/basicinfo/developNewProducts/sellNewProduct"],resolve)),
-              },
             ]
           },
           {
@@ -1035,6 +1025,16 @@ const routes = [
                   level: 2,
                 },
                 component: resolve=>(require(["@views/sell/sellManager/approvalFinishProduct"],resolve)),
+              },
+              {
+                path: 'sellNewProduct',
+                name: 'sellNewProduct',
+                meta:{ 
+                  title:'新建新品',
+                  group: "sellManager",
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/sell/sellManager/sellNewProduct"],resolve)),
               },
             ]
           },

@@ -526,6 +526,7 @@ export default {
                     if (res.result.code == 200) {
                         this.$FromLoading.hide();
                         this.$Message.info('温馨提示：保存成功！');
+                        this.goReturn();
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
@@ -748,7 +749,7 @@ export default {
             this.$refs.superFlow.$el.style.transform = `scale(${this.zoom})`
         },
         goReturn(){
-            this.$router.go(-1);
+            this.$router.push({name:'flowManagerList'});
         },
         saveFormSettings(data){
             this.$nextTick(() => {

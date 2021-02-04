@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 10:17:11
+ * @LastEditTime: 2021-02-04 11:00:40
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -312,7 +312,7 @@ export default {
             }
             var arr = [];
             for(var j=0;j<this.filesData.length;j++){
-                // if(this.filesData[j].quantity){
+                if(this.filesData[j].quantity){
                     var obj = {
                         categoryId: this.categoryId,
                         platformId: this.platform,
@@ -321,7 +321,7 @@ export default {
                         quantity: this.filesData[j].quantity,
                     }
                     arr.push(obj);
-                // }
+                }
             }
             data['fileRelations'] = JSON.parse(JSON.stringify(arr));
             return new Promise((resolve, reject) => {

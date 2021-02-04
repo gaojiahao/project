@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:33:59
+ * @LastEditTime: 2021-02-04 12:18:39
 -->
 <template>
 <div class="edit_store">
@@ -80,7 +80,7 @@ export default {
                                     this.$Message.info('温馨提示：新建成功！');
                                     // this.$refs['form'].$refs['formValidate'].resetFields();
                                     // this.$refs['form'].initEL('input');
-                                    this.$router.go(-1);
+                                    this.goReturn();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -97,7 +97,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
-                                    this.$router.go(-1);
+                                    this.goReturn();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -115,7 +115,7 @@ export default {
         },
         clearFormData() {},
         goReturn(){
-            this.$router.go(-1);
+            this.$router.push({name:'logisticsList'});
         },
         getFormData(){
             this.id = this.$route.query.id;

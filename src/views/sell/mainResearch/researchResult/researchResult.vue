@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 20:01:16
+ * @LastEditTime: 2021-02-04 15:20:12
 -->
 <template>
 <div>
@@ -16,6 +16,8 @@
                     <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" ref="form" :divisionField="divisionField">
                         <template slot="button">
                             <FormItem>
+                                <div style="width:100%"> 
+                                </div>
                             </FormItem>
                         </template>
                     </ViewForm>
@@ -23,14 +25,13 @@
             </div>
         </TabPane>
         <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
-            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
-
+            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch" :disabled="true"></AddNewProductTable>
         </TabPane>
         <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic></UploadPic>
+                    <UploadPic :length="3" :formValue="[productInfoFormValidate.imgOne,productInfoFormValidate.imgTwo,productInfoFormValidate.imgThree]" :disabled="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -38,7 +39,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -46,7 +47,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor :value="productInfoFormValidate.description"></NewHtmlEditor>
+                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
@@ -88,10 +89,7 @@
 
 <script>
 import ViewForm from "@components/public/form/viewForm";
-import XForm from "@components/public/form/xForm";
 import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
-import config2 from "@views/basicinfo/developNewProducts/examineNewProductConfig";
-import config3 from "@views/sell/mainResearch/researchResult/researchResultConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
@@ -101,6 +99,9 @@ import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addN
 import UploadPic from "@components/basicinfo/developNewProducts/uploadPic";
 import NewHtmlEditor from "@components/basicinfo/developNewProducts/newHtmlEditor";
 import AddAttrProductTable from "@components/basicinfo/developNewProducts/addAttrProductTable";
+import XForm from "@components/public/form/xForm";
+import config2 from "@views/basicinfo/developNewProducts/examineNewProductConfig";
+import config3 from "@views/sell/mainResearch/researchResult/researchResultConfig";
 import {
     CreatePrepGoods,
     CraeteGoodsSupplier,
