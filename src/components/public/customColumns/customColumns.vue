@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-21 10:58:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 19:33:17
+ * @LastEditTime: 2021-02-04 16:55:10
 -->
 <template>
     <div>
@@ -74,7 +74,11 @@ export default {
         }
     },
     watch:{
-
+        columns:{
+            handler(val){
+                
+            }
+        }
     },
     methods: {
         handleCheckAll () {
@@ -89,7 +93,9 @@ export default {
                     if(col.key){
                         this.checkAllGroup.push(col.key);
                     }
-
+                    if(col.slot){
+                        this.checkAllGroup.push(col.slot);
+                    }
                 });
             } else {
                 this.checkAllGroup = [];
@@ -115,11 +121,17 @@ export default {
         init(){
             this.data = [];
             this.checkAllGroup = [];
-            this.defaultCheckAllGroup = this.columns
+            this.defaultCheckAllGroup = this.columns;
             this.defaultCheckAllGroup.forEach(col => {
                 if(col.key){
                     this.data.push({name:col.title,value:col.key});
                     this.checkAllGroup.push(col.key); 
+                    this.checkAll = true;   
+                    this.indeterminate = false;
+                }
+                if(col.slot){
+                    this.data.push({name:col.title,slot:col.slot,value:col.slot});
+                    this.checkAllGroup.push(col.slot); 
                     this.checkAll = true;   
                     this.indeterminate = false;
                 }

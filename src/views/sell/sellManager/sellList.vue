@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 10:20:26
+ * @LastEditTime: 2021-02-04 16:40:32
 -->
 <template>
 <div class="erp_table_container">
@@ -146,7 +146,10 @@ export default {
             datas.push(columns[0]);
             data.forEach(col => {
                 for(var i=0;i<columns.length;i++){
-                    if(col == columns[i].key){
+                    if(columns[i].key&&(col == columns[i].key)){
+                        datas.push(columns[i]);
+                    }
+                     if(columns[i].slot&&(col == columns[i].slot)){
                         datas.push(columns[i]);
                     }
                 }
