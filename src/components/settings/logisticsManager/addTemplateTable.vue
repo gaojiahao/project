@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 17:53:49
+ * @LastEditTime: 2021-02-03 20:00:37
 -->
 <template>
 <div class="addTemplateTable-container">
@@ -148,7 +148,15 @@ export default {
                 },
                 {
                     title: '状态',
-                    key: 'status'
+                    key: 'enable',
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                                color: params.row.enable ? "#19be6b": "#ed4014"
+                            },
+                        },params.row.enable ?'已启用':'未启用');
+                    }
                 },
             ],
             showModel: false,
@@ -160,6 +168,25 @@ export default {
 
         },
         showPop(flag, row) {
+            // this.$refs['form'].$refs['formValidate'].resetFields();
+            this.formValidate2 = {
+                name:'',
+                logisticsId:'',
+                logisticsName:'',
+                country:'',
+                weightStart:'',
+                weightEnd:'',
+                billingModel:'',
+                charges:'',
+                minWeight:'',
+                feliveryFee:'',
+                packageFee:'',
+                registrationFee:'',
+                enable:true
+            };
+            this.$delete(this.formValidate2,'id');
+            this.formValidate2.logisticsId = this.$parent.formValidate.id;
+            this.formValidate2.logisticsName = this.$parent.formValidate.name;
             this.showModel = flag;
         },
         saveMenu() {
@@ -216,7 +243,7 @@ export default {
                     feliveryFee: this.activatedRow.feliveryFee,
                     packageFee: this.activatedRow.packageFee,
                     registrationFee: this.activatedRow.registrationFee,
-                    status: this.activatedRow.status,
+                    enable: this.activatedRow.enable,
                 },
                 this.showModel = true;
             }

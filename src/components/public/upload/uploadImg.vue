@@ -12,13 +12,12 @@
             <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
         </template>
     </div>
-     <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="['jpg','jpeg','png']" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:60px;" v-if="!disabled">
+     <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:60px;" v-if="!disabled">
         <div style="width: 58px;height:58px;line-height: 58px;">
             <Icon type="ios-camera" size="20"></Icon>
         </div>
     </Upload>
     <Modal :title="uploadList&&uploadList[indexPic]&&uploadList[indexPic].fileName" v-model="visible" fullscreen>
-        <!--<img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">-->
         <img :src="baseUrl + uploadList[indexPic].filePath" v-if="visible" style="width: 100%">
         <div slot="footer">
             <Button type="primary" size="small" @click="prePic">上一张</Button>
@@ -93,6 +92,9 @@ export default {
             data:{
                 'BusinessType':''
             },
+            formats:['jpg','jpeg','png','bmp','gif','raw','tif','webp','wmf','3GP','ASF','AVI','MOV',
+            'MPEG','WMV','mp4','AAC','AIFF','AMR','FLAC','MIDI','mpeg','WMA','mp3','3dm','3ds','asm',
+            'ade','drw','dwg','max','obj','prt','stl','stp','x-t','igs']
         }
     },
     methods: {

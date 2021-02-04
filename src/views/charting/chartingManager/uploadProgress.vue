@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 10:06:53
+ * @LastEditTime: 2021-02-03 19:18:33
 -->
 <template>
 <div>
@@ -242,29 +242,27 @@ export default {
         },
         clearFormData() {
             this.formValidate2 = {
-                id:"",
-                data:[],
+                img:[],
             }
         },
         goReturn(){
             this.$router.go(-1);
         },
         save() {
-            var params = [];
-            for(var i=0;i<this.formValidate2.img.length;i++){
-                var obj = {}
-                obj = {
-                    name: this.formValidate2.img[i].name,
-                    suffix: '',
-                    fileType: this.formValidate3.fileType,
-                    fileTypeName:'',
-                    fileSize: this.formValidate2.img[i].size,
-                    fileUrl: this.formValidate2.img[i].filePath,
-                    status:1,
-                    goodsId: this.formValidate.id,
-                };
-                this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                    if (valid) {
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    for(var i=0;i<this.formValidate2.img.length;i++){
+                        var obj = {}
+                        obj = {
+                            name: this.formValidate2.img[i].name,
+                            suffix: '',
+                            fileType: this.formValidate3.fileType,
+                            fileTypeName:'',
+                            fileSize: this.formValidate2.img[i].size,
+                            fileUrl: this.formValidate2.img[i].filePath,
+                            status:1,
+                            goodsId: this.formValidate.id,
+                        };
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
                             CreateGoodsFile(obj).then(res => {
@@ -280,12 +278,12 @@ export default {
                                     this.$FromLoading.hide();
                                 }
                             });
-                        });   
-                    } else {
-                        this.$Message.error('保存失败');
-                    }
-                })   
-            }   
+                        });
+                    }    
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })    
         },
         cancel(){
             this.clearFormData();

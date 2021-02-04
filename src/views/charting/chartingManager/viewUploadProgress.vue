@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 10:11:47
+ * @LastEditTime: 2021-02-03 19:28:21
 -->
 <template>
 <div>
@@ -36,10 +36,6 @@
             <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form">
                 <template slot="button">
                     <div style="width:100%">
-                        <FormItem>
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
-                        </FormItem>
                     </div>
                 </template>
             </ViewForm>
@@ -76,12 +72,13 @@
 </template>
 
 <script>
-import config2 from "@views/charting/chartingManager/productAppointStoreConfig";
+import config2 from "@views/charting/chartingManager/editProductAppointStoreConfig";
 import ViewForm from "@components/public/form/viewForm";
 
 import {
     GetFileDistributionById,
-    CreateGoodsFile
+    CreateGoodsFile,
+    GetGoodsFileById
 } from "@service/tortExamineService";
 import {
     GetPrepGoodsById,
@@ -193,7 +190,7 @@ export default {
             this.id = this.$route.query.goodsId;
             if(this.id) {
                 return new Promise((resolve, reject) => {
-                    GetPrepGoodsById({id:this.id}).then(res => {
+                    GetGoodsFileById({goodsId:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.formValidate = {

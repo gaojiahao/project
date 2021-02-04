@@ -12,6 +12,7 @@
         <div class='fc-event-main'>预计完成时间：{{eventInfo.endTime}}</div>
         <!-- <div class='fc-event-main'>任务1</div> -->
       </div>
+      <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight" style="float:right">删除</Button>
       <!-- <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
         <div class='fc-event-main'>任务2</div>
       </div>
@@ -44,7 +45,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import calendarjs from "@mixins/calendar";
 import {
     GetFileDistributionPage,
-    UpdateFileDistribution
+    UpdateFileDistribution,
+    DelFileDistribution
 } from "@service/tortExamineService";
 
 export default {
@@ -241,14 +243,45 @@ export default {
         e.preventDefault()
         console.log('点击了右键',e);
       });
-    }
+    },
+    sureDeleteConfirm () {
+      if(this.eventInfo.id){
+        this.$Modal.confirm({
+          title: '温馨提示',
+          content: '数据删除后将无法恢复！',
+          onCancel: () => {
+            this.$Message.info('取消');
+          },
+          onOk: () => {
+            this.deleteData();
+          },
+        });
+      }
+    },
+    deleteData(){
+      if(this.eventInfo.id){
+        return new Promise((resolve, reject) => {
+          DelFileDistribution({id:this.eventInfo.id}).then(res => {
+            if (res.result.code == 200) {
+              this.$Message.info('温馨提示：删除成功！');
+              this.GetFileDistributionPageById();
+              this.eventInfo = {};
+            } else if (res.result.code == 400) {
+              this.$Message.error({
+                background: true,
+                content: res.result.msg
+              });
+            }
+          });
+        });
+      } 
+    },
   },
   mounted(){
     
   },
   created(){
-    var f = this.solar2lunar('2021','02','12');
-    console.log(f);
+
   }
 }
 </script>
@@ -262,7 +295,7 @@ export default {
   padding: 0 10px;
   border: 1px solid #ccc;
   background: #eee;
-  height: 120px;
+  height: 135px;
 
 }
 

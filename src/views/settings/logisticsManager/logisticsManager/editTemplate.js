@@ -6,7 +6,7 @@ import { String } from "core-js"
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-22 11:33:05
+ * @LastEditTime: 2021-02-03 19:34:04
  */
 export default {
   data() {
@@ -80,14 +80,14 @@ export default {
           name:'挂号费',
           type:'number',
         },
-        status:{
+        enable:{
           name:'状态',
           type:'radio',
           dataSource:{
             type:'static',
             data:[
-              {name:'启用',value:1},
-              {name:'禁用',value:0}
+              {name:'启用',value:true},
+              {name:'禁用',value:false}
             ],
           }
         },
@@ -105,7 +105,7 @@ export default {
         feliveryFee:'',
         packageFee:'',
         registrationFee:'',
-        status:1
+        enable:true
       },
       ruleValidate2:{
         name: [{
