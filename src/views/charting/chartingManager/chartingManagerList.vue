@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 16:26:40
+ * @LastEditTime: 2021-02-05 09:39:59
 -->
 <template>
 <div class="erp_table_container">
@@ -78,6 +78,7 @@ export default {
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
                     status: "待确认",
+                    status2: "未逾期",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -94,6 +95,7 @@ export default {
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
                     status: "待制作",
+                    status2: "未逾期",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -110,6 +112,7 @@ export default {
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
                     status: "已完成",
+                    status2: "未逾期",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -126,6 +129,7 @@ export default {
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
                     status: "已完成",
+                    status2: "未逾期",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -142,6 +146,7 @@ export default {
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
                     status: "已完成",
+                    status2: "未逾期",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -158,6 +163,7 @@ export default {
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
                     status: "已完成",
+                    status2: "未逾期",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -287,14 +293,14 @@ export default {
             },
             {
                 title: '是否逾期',
-                key: 'status',
+                key: 'status2',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
                         color: params.row.status==1 ? "#ed4014": "#19be6b"
                     },
-                    },params.row.status?"逾期":"未逾期");
+                    },params.row.status2?"逾期":"未逾期");
                 },
                 width: 100,
                 resizable: true,

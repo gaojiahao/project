@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 10:21:01
+ * @LastEditTime: 2021-02-05 09:49:40
 -->
 <template>
 <div class="erp_table_container">
@@ -218,9 +218,13 @@ export default {
         changeCoulmns(data){
             let datas = [];
             let columns = this.getTableColumn();
+            // datas.push(columns[0]);
             data.forEach(col => {
                 for(var i=0;i<columns.length;i++){
-                    if(col == columns[i].key){
+                    if(columns[i].key&&(col == columns[i].key)){
+                        datas.push(columns[i]);
+                    }
+                     if(columns[i].slot&&(col == columns[i].slot)){
                         datas.push(columns[i]);
                     }
                 }

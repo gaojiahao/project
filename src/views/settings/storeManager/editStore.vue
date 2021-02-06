@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 10:17:58
+ * @LastEditTime: 2021-02-05 19:42:46
 -->
 <template>
 <div class="edit_store">
@@ -76,6 +76,16 @@ export default {
     methods: {
         save() {
             var params = this.formValidate;
+            var cData = this.$refs.selectSystemBind.$refs.tree.getCheckedAndIndeterminateNodes();
+            var cSelectData = [];
+            for(var i=0;i<cData.length;i++){
+                var arr = {
+                    categoryId:cData[i]['id'],
+                    categoryName:cData[i]['name'],
+                };
+                cSelectData.push(arr);
+            }
+            params.storeBinds = cSelectData;
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (!this.formValidate.id) {
