@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 09:41:47
+ * @LastEditTime: 2021-02-06 10:26:54
 -->
 <template>
 <div class="form">
@@ -17,7 +17,6 @@
                         <FormItem>
                             <div style="width:100%">
                                 <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                <Button @click="clearFormData" style="float: left; margin-left:10px">取消</Button>
                                 <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                             </div>
                         </FormItem>
@@ -79,7 +78,6 @@ export default {
         },
         clearFormData() {
             this.$refs.form.$refs['formValidate'].resetFields();
-            this.$router.go(-1); 
         },
         goReturn(){
             this.$router.go(-1);

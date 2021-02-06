@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:51:02
+ * @LastEditTime: 2021-02-06 10:47:00
 -->
 <template>
 <div class="form">
@@ -16,7 +16,7 @@
                     <FormItem>
                         <div style="width:100%">
                             <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">取消</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">重置</Button>
                             <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                         </div>
                     </FormItem>
