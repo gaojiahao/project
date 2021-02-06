@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 11:19:36
+ * @LastEditTime: 2021-02-06 10:13:36
 -->
 <template>
 <div class="content">
@@ -18,7 +18,7 @@
         </Spin>
         <template v-else>
             <template v-if="systemCategoryData.length">
-                <Tree ref="tree" :data="systemCategoryData" :render="renderContent" show-checkbox  multiple @on-check-change="checkChange" ></Tree>
+                <Tree ref="tree" :data="systemCategoryData" show-checkbox  multiple @on-check-change="checkChange" ></Tree>
             </template>
             <template v-else>
                 暂无数据
@@ -83,15 +83,15 @@ export default {
             ]);
         },
         checkChange(items, item) {
-            this.selectData= [];
-            for(var i=0;i<items.length;i++){
-                var arr = {
-                    categoryId:items[i]['id'],
-                    categoryName:items[i]['name'],
-                };
-                this.selectData.push(arr);
-            }
-            this.$emit('select-system-bind',this.selectData);
+            // this.selectData= [];
+            // for(var i=0;i<items.length;i++){
+            //     var arr = {
+            //         categoryId:items[i]['id'],
+            //         categoryName:items[i]['name'],
+            //     };
+            //     this.selectData.push(arr);
+            // }
+            // this.$emit('select-system-bind',this.selectData);
         },
         clear(){
             var checkData = this.$refs.tree.getCheckedNodes();
@@ -123,17 +123,25 @@ export default {
         },
         calleArr: function(data){
             for(var i in data){
+                data[i] = {
+                    ...data[i],
+                    title:data[i].name
+                }
                 if(this.type=='view'){
                     data[i]['disabled'] = true;    
                 }
+                var flag=false;
                 for(var j=0;j<this.formData.length;j++){
                     if(this.formData[j]['categoryId']==data[i]['id']){
                         data[i]['checked'] = true;
-                        if(data[i].children&&data[i].children.length)
-                            data[i]['expand'] = true;
-                    }    
+                        flag = true;
+                    } 
+                }
+                if(flag){
+                    data[i]['expand'] = true; 
                 }
                 if(data[i].children&&data[i].children.length){
+                    data[i]['checked'] = false;
                     this.calleArr(data[i].children);
                 }
             }

@@ -4,13 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 10:11:28
+ * @LastEditTime: 2021-02-06 09:43:27
 -->
 <template>
 <div>
     <Modal v-model="modal" title="分配权限" @on-ok="ok" @on-cancel="cancel" width="800">
         <div style="overflow-y: scroll;height: 600px;position: relative;">
-            <Tree :data="datas" show-checkbox multiple @on-check-change="selectChangeAll" ref="tree" :check-strictly="true"></Tree>
+            <Tree :data="datas" show-checkbox multiple @on-check-change="selectChangeAll" ref="tree"></Tree>
+            <!-- <Tree :data="datas" show-checkbox multiple @on-check-change="selectChangeAll" ref="tree" :check-strictly="true"></Tree> -->
         </div>
     </Modal>
 </div>
@@ -57,32 +58,30 @@ export default {
     },
     methods: {
         selectChangeAll(selectedAll1, selectedItem) {
-            this.selected = [];
-            for(var i=0;i<selectedAll1.length;i++){
-                this.selected.push(selectedAll1[i].id);
-            }
+            // this.selected = [];
+            // for(var i=0;i<selectedAll1.length;i++){
+            //     this.selected.push(selectedAll1[i].id);
+            // }
         },
         calleArr: function(data){
             for(var i in data){
-                if(data[i].parent){ 
-                    data[i] = {
-                        ...data[i].parent,
-                        title: data[i].parent.name,
-                        children: data[i].children ? data[i].children:[]
-                    };
-                    this.$delete(data[i],'parent');
-                } else {
-                    data[i] = {
-                        ...data[i],
-                        title:data[i].name
-                    }
+                data[i] = {
+                    ...data[i],
+                    title:data[i].name
                 }
-                if(this.roleAuthData.indexOf(data[i]['id'])!=-1){
-                    data[i]['checked'] = true;
-                    data[i]['expand'] = true;
-                    this.selected.push(data[i].id);
+                if(data[i]['code']=='index'){
+                    data[i]['checked'] = true;    
                 }
-                if(data[i].children){
+                for(var j=0;j<this.roleAuthData.length;j++){
+                    if(this.roleAuthData[j]==data[i]['id']){
+                        data[i]['checked'] = true;
+                        if(data[i].children&&data[i].children.length)
+                            data[i]['expand'] = true;
+                        this.selected.push(data[i].id);
+                    }    
+                }
+                if(data[i].children&&data[i].children.length){
+                    data[i]['checked'] = false;
                     this.calleArr(data[i].children);
                 }
             }
@@ -93,9 +92,13 @@ export default {
             this.selected=[];
         },
         ok(){
+            this.selected = [];
+            var selectedAll1 = this.$refs.tree.getCheckedAndIndeterminateNodes();
+            for(var i=0;i<selectedAll1.length;i++){
+                this.selected.push(selectedAll1[i].id);
+            }
             this.$emit('save-menu',this.selected);
             this.$emit('show-modal',false);
-            var data = this.$refs.tree.getCheckedNodes();
             this.AuthModuleList();
             this.selected=[];
         },
@@ -110,6 +113,14 @@ export default {
                 });
             });
         },
+        checkSelectItem(item){
+            for(var i=0;i<this.selected.length;i++){
+                if(item.id==this.selected[i]){
+                    return false;
+                }
+            }
+            return true;
+        }
     },
     created() {
         this.AuthModuleList();
