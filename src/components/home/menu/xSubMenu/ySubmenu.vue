@@ -168,7 +168,7 @@ export default {
     transform-origin: center top;
     position: absolute;
     will-change: top, left;
-    top: 60px;
+    top: 50px;
     left: 0px;
 }
 

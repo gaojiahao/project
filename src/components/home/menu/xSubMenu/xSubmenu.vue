@@ -6,9 +6,11 @@
         <i class="ivu-icon ivu-icon-ios-arrow-down" :class="[(opendedChild||opendedChildCom) ? 'ivu-menu-submenu-title-icon-up' : 'ivu-menu-submenu-title-icon-down']" v-if="item&&item.children&&item.children.length&&!isCollapsed"></i>
     </div>
     <collapse-transition v-if="mode === 'vertical'">
-        <ul class="ivu-menu" v-show="opendedChild||opendedChildCom" v-for="(data,k) in item.children" :key="k">
-            <li class="ivu-menu-item ivu-menu-box" :class="[activeMenu2==data.code ? 'ivu-menu-box-active':'']" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.enabled">{{data.name}}
-            </li>
+        <ul class="ivu-menu" v-show="opendedChild||opendedChildCom">
+            <template v-for="(data,k) in item.children">
+                <li class="ivu-menu-item ivu-menu-box" :key="k" :class="[activeMenu2==data.code ? 'ivu-menu-box-active':'']" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.enabled">{{data.name}}
+                </li>
+            </template>
         </ul>
     </collapse-transition>
 </li>
@@ -151,6 +153,8 @@ export default {
 }
 .ivu-menu-box-active {
     color: #447ED9;
+    border-right: 2px solid #447ED9;
+    margin-right: 1px;
 }
 .ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item {
     padding: 14px 14px 14px 40px;
