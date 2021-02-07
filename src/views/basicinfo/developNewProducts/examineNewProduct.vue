@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-28 14:35:26
+ * @LastEditTime: 2021-02-06 14:44:18
 -->
 <template>
 <div>
@@ -24,7 +24,6 @@
         </TabPane>
         <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
             <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
-
         </TabPane>
         <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
             <div class="top">
@@ -289,6 +288,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：审核成功！');
+                                    this.goReturn();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,

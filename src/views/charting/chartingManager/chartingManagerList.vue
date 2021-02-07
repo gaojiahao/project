@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-05 09:39:59
+ * @LastEditTime: 2021-02-06 17:41:01
 -->
 <template>
 <div class="erp_table_container">
@@ -111,8 +111,8 @@ export default {
                     supplierNum: "否",
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
-                    status: "已完成",
-                    status2: "未逾期",
+                    status: "1",
+                    status2: "1",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -128,8 +128,8 @@ export default {
                     supplierNum: "否",
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
-                    status: "已完成",
-                    status2: "未逾期",
+                    status: "1",
+                    status2: "1",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -145,8 +145,8 @@ export default {
                     supplierNum: "是",
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
-                    status: "已完成",
-                    status2: "未逾期",
+                    status: "1",
+                    status2: "1",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -162,8 +162,8 @@ export default {
                     supplierNum: "是",
                     createTime: "2020-11-06",
                     recommendingOfficer: '1',
-                    status: "已完成",
-                    status2: "未逾期",
+                    status: "0",
+                    status2: "0",
                     modifyTime:"2020-11-06",
                     modifyer:"李四",
                     creater:"王五"
@@ -298,9 +298,9 @@ export default {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status==1 ? "#ed4014": "#19be6b"
+                        color: params.row.status2==0? "#19be6b": "#ed4014"
                     },
-                    },params.row.status2?"逾期":"未逾期");
+                    },!params.row.status2?"逾期":"未逾期");
                 },
                 width: 100,
                 resizable: true,

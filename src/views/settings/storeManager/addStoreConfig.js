@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 09:54:06
+ * @LastEditTime: 2021-02-06 16:53:23
  */
 export default {
     data() {
@@ -14,7 +14,7 @@ export default {
         } else {
           callback();
         }
-    };
+      };
       return {
         formConfig:{
           name:{

@@ -442,7 +442,7 @@ const routes = [
                   {
                     path:"viewModule",
                     name:"viewModule",
-                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/addModule"],resolve)),
+                    component: resolve=>(require(["@views/settings/bpmManager/moduleManager/viewModule"],resolve)),
                     meta:{
                       title: "查看",
                       group: "moduleManager",

@@ -126,6 +126,7 @@ export default {
     },
     UpdateFileDistribution(data){
       var params = {},
+          me = this,
       params = {
         fileType: data['event']['_def']['extendedProps']['fileType'],
         userId: data['event']['_def']['extendedProps']['userId'],
@@ -143,6 +144,11 @@ export default {
                 if (res.result.code == 200) {
                     this.$FromLoading.hide();
                     this.$Message.info('温馨提示：调换成功！');
+                    this.GetFileDistributionPageById();
+                    this.$nextTick(() => {
+                      this.eventInfo.startTime = res.result.item.startTime;
+                      this.eventInfo.endTime = res.result.item.endTime;
+                    })
                 } else if (res.result.code == 400) {
                     this.$Message.error({
                         background: true,
@@ -190,13 +196,11 @@ export default {
         },
         //事件调整大小
         eventResize: function(event) {
-          console.log(event);
           me.UpdateFileDistribution(event);
           // {description: "Lecture", department: "BioChemistry"}
         },
         //事件拖动
         eventDrop : function( event, dayDelta, revertFunc ) {
-          console.log(event);
           me.UpdateFileDistribution(event);
           // var color = event.color;
           // if(color=='gray'){

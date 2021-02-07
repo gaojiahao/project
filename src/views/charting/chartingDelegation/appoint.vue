@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 19:05:15
+ * @LastEditTime: 2021-02-06 17:36:22
 -->
 <template>
 <div>
@@ -27,6 +27,7 @@
                     <FormItem>
                         <div style="width:100%">
                             <Button type="primary" @click="save" style="float: left;">保存</Button>
+                            <Button @click="clearFormData" style="float: left; margin-left:10px">重置</Button>
                             <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                         </div>
                     </FormItem>
@@ -91,7 +92,13 @@ export default {
                 });    
             }
         },
-        clearFormData() {},
+        clearFormData() {
+            this.formValidate2={
+                data:[],
+                morePic:'',
+                remark:''
+            }
+        },
         goReturn(){
             this.$router.go(-1);
         },

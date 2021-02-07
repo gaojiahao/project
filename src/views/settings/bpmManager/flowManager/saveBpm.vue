@@ -60,7 +60,7 @@
             <FieldList @show="showModal" @save="saveFormSettings"></FieldList>
         </div>
     </SiderPanel>
-    <NameModal :show="isShow['NameModal']" :title="nameModalTitle" :nodeSetting="nodeSetting" @show="showModal"></NameModal>
+    <NameModal :show="isShow['NameModal']" :title="nameModalTitle" :nodeSetting="selectNodeInfo" @show="showModal" @save="saveSelectNodeInfo"></NameModal>
     <ParticipantDecisionModal :show="isShow['ParticipantDecisionModal']" :nodeSetting="nodeSetting" :formData="selectParticipantDecision" :data="participantDecisionData" @show="showModal" @save="saveParticipantDecision"></ParticipantDecisionModal>
     <AddParticipant :show="isShow['AddParticipantModal']" @show="showModal" :selectAddParticipant="selectAddParticipant" :nodeSetting="nodeSetting" @save="saveAddParticipant"></AddParticipant>
     <AddDataAuth :show="isShow['AddDataAuthModal']" @show="showModal" :selectDataAuthData="selectDataAuthData" @save="saveDataAuth"></AddDataAuth>
@@ -119,12 +119,29 @@ export default {
                     if (type === drawerType.node) {
                         this.selectNode(info);
                         this.nameModalTitle = '修改任务名称';
-                        this.$set(this.nodeSetting, 'name', info.data.name);
-                        this.$set(this.nodeSetting, 'desc', info.data.desc);
+                        this.selectNodeInfo = {
+                            id:info.id,
+                            data:{
+                                prop:info.data.prop,
+                                name:info.data.name,
+                                business:info.data.business,
+                            },
+                        }
+                        // this.$set(this.nodeSetting, 'name', info.data.name);
+                        // this.$set(this.nodeSetting, 'desc', info.data.desc);
                     } else {
+                        this.selectNode(info);
+                        this.selectNodeInfo = {
+                            id:info.id,
+                            data:{
+                                prop:info.data.prop,
+                                name:info.data.name,
+                                business:info.data.business,
+                            },
+                        }
                         this.nameModalTitle = '修改条件名称';
-                        this.$set(this.nodeSetting, 'name', info.data.name);
-                        this.$set(this.nodeSetting, 'desc', info.data.desc);
+                        // this.$set(this.nodeSetting, 'name', info.data.name);
+                        // this.$set(this.nodeSetting, 'desc', info.data.desc);
                     }
                 },
                 openParticipantDecision: (type, info) => {
@@ -439,6 +456,7 @@ export default {
             dataAddParticipant:{},
             selectAddParticipant:{},
             selectParticipantDecision:{},
+            selectNodeInfo:{},
             tpId:null,
             id:null
         }
@@ -784,6 +802,12 @@ export default {
         saveAddParticipant(data){
             // this.$set(this.dataAddParticipant,id,data);
             this.$set(this.nodeSetting, 'participants', data);
+        },
+        saveSelectNodeInfo(data){
+            this.$set(this.nodeSetting, 'id', data.id);
+            this.$set(this.nodeSetting['data'], 'prop', data.data.prop);
+            this.$set(this.nodeSetting['data'], 'name', data.data.name);
+            this.$set(this.nodeSetting['data'], 'business', data.data.business);
         },
         GetWorkflowTemplateById(){
             this.tpId = this.$route.query.tpId;

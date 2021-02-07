@@ -1530,6 +1530,18 @@
 					on: {
 						click: function(n) {
 							t.clickLine();
+						},
+						mousedown:function(n,e){
+							e = e || window.event;  
+							if(e.stopPropagation) { //W3C阻止冒泡方法  
+								e.stopPropagation();  
+							} else {  
+								e.cancelBubble = true; //IE阻止冒泡方法  
+							}
+							t.mousedownLink(e);
+						},
+						mouseup:function(n){
+							t.mouseupLink(e);
 						}
 					}
 				})
@@ -1807,7 +1819,17 @@
 					clickLine: function(){
 						var line = this.graph.mouseonLink
 						this.$parent.$emit("line-mousedown",line);
-					}
+						this.$parent.setLinkData(line);
+					},
+					mousedownLink: function(n){
+						console.log('我拖动了线');
+						var line = this.graph.mouseonLink
+						this.$parent.setLinkData(line);
+						this.$parent.moveTemEdge(n)
+					},
+					mouseupLink: function(n){
+						console.log('我松开了线');	
+					},
 				},
 				watch: {
 					"link.pathPointList": function() {
@@ -2135,7 +2157,8 @@
 						},
 						temEdgeConf: {
 							visible: !1,
-							link: null
+							link: null,
+							linkData:{}
 						},
 						loaded: !1,
 						clientWidth: 0,
@@ -2279,6 +2302,12 @@
 					},
 					moveTemEdge: function(t) {
 						this.temEdgeConf.link.movePosition = M(t, this.$el)
+						var a = M(t, this.$el);
+						console.log('startAt',this.temEdgeConf.link.startAt)
+						console.log('endAt',this.temEdgeConf.link.endAt)
+						console.log('movePosition',this.temEdgeConf.link.movePosition)
+						console.log('link',this.temEdgeConf.link)
+						//this.temEdgeConf.link.startDirection[0] =M(t, this.$el)
 					},
 					moveWhole: function(t) {
 						if (this.moveAllConf.isMove) {
@@ -2381,6 +2410,10 @@
 							this.$emit("node-mousedown",data);
 						}
 						return data;
+					},
+					setLinkData: function(t){
+						this.$set(this.temEdgeConf, "link", t),
+						this.temEdgeConf.visible = !0
 					}
 				},
 				watch: {

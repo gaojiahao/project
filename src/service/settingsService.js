@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-26 15:29:39
+ * @LastEditTime: 2021-02-04 19:03:47
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -509,6 +509,12 @@ export let GetWorkflowClauseById = (data = {}) => {
 export let GetWorkflowTemplateById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetWorkflowTemplateById',
+    data: data
+  })
+};
+export let GetBusinessConfigList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetBusinessConfigList',
     data: data
   })
 };

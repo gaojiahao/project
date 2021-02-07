@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 15:20:12
+ * @LastEditTime: 2021-02-06 14:56:57
 -->
 <template>
 <div>
@@ -225,6 +225,11 @@ export default {
                                 code:res.result.item.code,
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                logisticsLabel: res.result.item.logisticsLabel,
+                                imgOne:res.result.item.imgOne,
+                                imgTwo:res.result.item.imgTwo,
+                                imgThree:res.result.item.imgThree,
                                 characteristic:res.result.item.characteristic,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,

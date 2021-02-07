@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-20 14:14:14
+ * @LastEditTime: 2021-02-06 17:49:33
 -->
 <template>
 <div>
@@ -13,8 +13,11 @@
         <div class="top_tabale">
             <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" ref="form">
                 <template slot="button">
-                    <div style="width:100%">   
-                    </div>
+                    <FormItem>
+                        <div style="width:100%">
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                        </div>
+                    </FormItem>
                 </template>
             </ViewForm>
         </div>
@@ -269,6 +272,9 @@ export default {
         changePage() {},
         onCurrentChange(currentRow,oldCurrentRow){
             
+        },
+        goReturn(){
+            this.$router.go(-1);
         },
     },
     created() {

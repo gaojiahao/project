@@ -4,10 +4,29 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 17:05:06
+ * @LastEditTime: 2021-02-06 17:33:20
  */
 export default {
     data() {
+      const datadVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请选择分配人员'));
+        } else {
+          for(var i=0;i<value.length;i++){
+            for(var j in value[i]){
+              if(!value[i][j]){
+                callback(new Error('请选择分配人员')); 
+              }
+              if(j=='date'){
+                if(!value[i][j][0]){
+                  callback(new Error('请选择分配时间')); 
+                }
+              }
+            }
+          }
+          callback();
+        }
+      };
       return {
         formConfig:{
           code:{
@@ -82,7 +101,7 @@ export default {
           remark:''
         },
         ruleValidate2: {
-
+          data: [{ required: true, message: '请选择分配人员',validator: datadVali, trigger: 'change' }],
         },
       }
     }

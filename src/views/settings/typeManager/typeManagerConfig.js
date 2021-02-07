@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 17:50:50
+ * @LastEditTime: 2021-02-07 11:49:25
  */
 export default {
     data() {
@@ -77,7 +77,7 @@ export default {
             isName:true,
             dataSource:{
               type:'dynamic',
-              url:'/api/GetAttributeList',
+              url:'/api/GetAttributePage',
               data:[],
               col:[
                 {k:'name',v:'name'},

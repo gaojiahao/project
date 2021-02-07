@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 11:00:40
+ * @LastEditTime: 2021-02-07 11:12:22
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -37,14 +37,15 @@
         </div>
         <Table border :columns="columns2" :data="filesData" stripe v-if="platform"></Table>
     </TabPane>
-    <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="showPop(true)">添加属性</Button>
+    <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="showModel(true)">添加属性</Button>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="save()">保存</Button>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==1" class="tabsButton" @click.native="saveFileSettings()">保存</Button>
-    <ModalForm :titleText="titleText" :formValidate="formValidate2" :ruleValidate="ruleValidate2" :showModel='showModel' :formConfig="formConfig2" @save="add" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
+    <!-- <ModalForm :titleText="titleText" :formValidate="formValidate2" :ruleValidate="ruleValidate2" :showModel='showModel' :formConfig="formConfig2" @save="add" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
         <div slot="footer">
             <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
         </div>
-    </Modal>
+    </Modal> -->
+    <TypeManagerAdd v-model="formValidate2['attributeId']" :config="formConfig2['attributeId']" ref="selectorMulti" :isShow="isShow" @show-model="showModel" @add="add"></TypeManagerAdd>
 </Tabs>
 </template>
 
@@ -54,6 +55,7 @@ import {
     TabPane,
 } from "view-design";
 import ModalForm from "@components/public/form/modalForm";
+import TypeManagerAdd from "@components/settings/typeManager/typeManagerAdd";
 import config from "@views/settings/typeManager/typeManagerConfig";
 import {
     BindAttributeCategory,
@@ -67,7 +69,8 @@ export default {
     components: {
         Tabs,
         TabPane,
-        ModalForm
+        ModalForm,
+        TypeManagerAdd
     },
     mixins: [config],
     props: {
@@ -199,7 +202,7 @@ export default {
             firstPlatform:'',
             platform: '',
             titleText: '添加属性',
-            showModel: false,
+            isShow: false,
             platformList:[],
             fileSettings:[]
         }
@@ -225,11 +228,11 @@ export default {
             //     categoryName: this.$parent.formValidate.name,
             //     isCheck: true
             // });
-            this.showPop(false);
-            for(var i=0;i<this.$refs['form'].$refs["selectorMulti"].length;i++){
-                this.$refs['form'].$refs["selectorMulti"][i].clear();
-            }
-            this.$refs['form'].$refs['formValidate'].resetFields();
+            // this.showPop(false);
+            // for(var i=0;i<this.$refs['form'].$refs["selectorMulti"].length;i++){
+            //     this.$refs['form'].$refs["selectorMulti"][i].clear();
+            // }
+            // this.$refs['form'].$refs['formValidate'].resetFields();
         },
         BindAttributeCategory(){
             if (this.data.categoryId) {
@@ -359,6 +362,9 @@ export default {
                     me.filesData=a;
                 }
             }).catch(e =>{console.log(e)}); 
+        },
+        showModel(value) {
+            this.isShow = value;
         },
         async init(){
             await this.GetPlatformsList();
