@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-06 17:33:20
+ * @LastEditTime: 2021-02-07 17:43:04
  */
 export default {
     data() {
@@ -97,7 +97,7 @@ export default {
         },
         formValidate2: {
           data:[],
-          morePic:'',
+          morePic:'true',
           remark:''
         },
         ruleValidate2: {

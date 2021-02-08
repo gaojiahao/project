@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 10:55:08
+ * @LastEditTime: 2021-02-08 10:58:12
 -->
 <template>
 <div>
@@ -418,11 +418,12 @@ export default {
         GetOperationLogPage(){
             if(this.productId){
                 return new Promise((resolve, reject) => {
-                    GetOperationLogPage({goodsId:this.productId}).then(res => {
+                    GetOperationLogPage({goodsId:this.productId,...this.pageDataLog}).then(res => {
                         if(res.result.code==200){
                             this.$nextTick(() => {
                                 this.dataLog = res.result.item.items;
                                 this.loadingLog = false;
+                                this.pageDataLog.totalPagePruch = res.result.item.totalCount;
                             });
                         }
                     });

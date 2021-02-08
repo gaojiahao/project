@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 17:45:10
+ * @LastEditTime: 2021-02-08 09:24:58
 -->
 <template>
 <div class="erp_table_container">
@@ -292,7 +292,7 @@ export default {
         },
         goDetail(id){
             if(id)
-            this.$router.push({name:'viewFinishProduct',query: {id:id}});
+            this.$router.push({name:'viewChartingDelegation',query: {id:id}});
         },
         changeCoulmns(data){
             let datas = [];

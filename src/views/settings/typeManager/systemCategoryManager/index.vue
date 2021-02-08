@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 17:03:33
+ * @LastEditTime: 2021-02-07 15:17:14
 -->
 <template>
 <div class="platformManager-container">
@@ -33,7 +33,7 @@
             <div class="item"  v-show="isShowBind">
                 <div class="top">
                     <Divider orientation="left" size="small">类目属性</Divider>
-                    <TypeManagerTab :list="attrList" :loading="attrLoading" :pageAttrData="pageAttrData" @change-page="changePage" @on-page-size-change="onPageSizeChange" @get-data="GetAttributeCategoryPage" :categoryId="formValidate.id"></TypeManagerTab>
+                    <TypeManagerTab :list="attrList" :loading="attrLoading" :pageAttrData="pageAttrData" @change-page="changePage" @on-page-size-change="onPageSizeChange" @get-data="GetAttributeCategoryPage" :categoryId="formValidate.id" ref="typeManagerTab"></TypeManagerTab>
                 </div>
             </div>
         </div>
