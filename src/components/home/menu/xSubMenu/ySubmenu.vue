@@ -8,7 +8,7 @@
     <div class="ivu-select-dropdown" :style="dropStyle" :class="[ openedDrop ? 'ivu-select-dropdown-display':'ivu-select-dropdown-none']" v-if="item&&item.children&&item.children.length&&item.enabled">
         <ul class="ivu-menu-drop-list" v-for="(data,k) in item.children" :key='k'>
             <li class="ivu-menu-item-group" v-if="data.enabled">
-                <div class="ivu-menu-item-group-title" @click="clickMenu(item,data)">{{data.name}}</div>
+                <div class="ivu-menu-item-group-title" @click="clickMenu2(item,data)">{{data.name}}</div>
                 <ul v-for="(dItem,y) in data.children" :key="y">
                     <li class="ivu-menu-item" @click="clickMenu(item,data,dItem)" v-if="dItem.enabled">
                         {{dItem.name}}
@@ -141,6 +141,37 @@ export default {
             this.activeIndex = data;
             this.$store.commit('setMenuRouter', data);
             this.$router.push(routerPath);
+        },
+        clickMenu2(one, two, third, flag = true) {
+            clearTimeout(this.timeout);
+            if (flag) {
+                this.opened = this.opened ? false : true;
+            }
+            var data = {};
+            var routerPath = "/";
+            if (one) {
+                data['oneLevel'] = one;
+                routerPath = routerPath + one.code;
+            }
+            if (two) {
+                data['twoLevel'] = two;
+                routerPath = routerPath + '/' + two.code;
+            } else {
+                if(data['oneLevel']['code']!='index'){
+                    return ;
+                }
+            }
+            if (third) {
+                data['thirdLevel'] = third;
+                routerPath = routerPath + '/' + third.code;
+            }
+            this.activeIndex = data;
+            this.$store.commit('setMenuRouter', data);
+            if(data['twoLevel']&&data['twoLevel'].children&&data['twoLevel'].children.length){
+                
+            } else {
+                this.$router.push(routerPath);    
+            }
         },
     },
 };

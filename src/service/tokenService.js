@@ -15,6 +15,7 @@ let tokenService = {
     sessionStorage.clear();
     localStorage.clear();
     store.commit('clearMenuRouter');
+    store.commit('clearAuth');
   },
   // 设置token
   setToken(data) {

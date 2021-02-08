@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 16:56:06
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 15:24:01
+ * @LastEditTime: 2021-02-08 16:32:42
 -->
 <template>
 <div class="break-container">
@@ -116,8 +116,12 @@ export default {
                     }
                 }
             }
-            
+            this.$store.commit('setAuth', this.data);
         }
+    },
+    created(){
+        var auth = JSON.parse(window.sessionStorage.getItem('auth'));
+        this.data = auth||[];
     }
 };
 </script>

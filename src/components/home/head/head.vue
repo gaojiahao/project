@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 11:10:44
+ * @LastEditTime: 2021-02-08 16:33:42
 -->
 <template>
 <div class="head">
@@ -134,6 +134,7 @@ export default {
             localStorage.clear();
             sessionStorage.clear();
             this.$store.commit('clearMenuRouter');
+            this.$store.commit('clearAuth');
             this.$router.push('/login');
         }
     },

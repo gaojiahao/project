@@ -1,6 +1,6 @@
 <template>
 <li class="ivu-menu-submenu" :class="[ activeMenu ? 'ivu-menu-opened':'ivu-menu-submenu-color']">
-    <div class="ivu-menu-submenu-title" @click="clickMenu(parentItem&&parentItem.oneLevel,item)" v-if="item&&item.enabled">
+    <div class="ivu-menu-submenu-title" @click="clickMenu2(parentItem&&parentItem.oneLevel,item)" v-if="item&&item.enabled">
         <i class="ivu-icon ivu-icon-ios-navigate"></i>
         <span class="ivu-menu-text" v-if="!isCollapsed">{{item.name}}</span>
         <i class="ivu-icon ivu-icon-ios-arrow-down" :class="[(opendedChild||opendedChildCom) ? 'ivu-menu-submenu-title-icon-up' : 'ivu-menu-submenu-title-icon-down']" v-if="item&&item.children&&item.children.length&&!isCollapsed"></i>
@@ -124,6 +124,29 @@ export default {
             this.activeIndex = data;
             this.$store.commit('setMenuRouter', data);
             this.$router.push(routerPath);
+        },
+        clickMenu2(one, two, third, flag = true) {
+            var data = {};
+            var routerPath = "/";
+            if (one) {
+                data['oneLevel'] = one;
+                routerPath = routerPath + one.code;
+            }
+            if (two) {
+                data['twoLevel'] = two;
+                routerPath = routerPath + '/' + two.code;
+            }
+            if (third) {
+                data['thirdLevel'] = third;
+                routerPath = routerPath + '/' + third.code;
+            }
+            this.activeIndex = data;
+            this.$store.commit('setMenuRouter', data);
+            if(data['twoLevel']&&data['twoLevel'].children&&data['twoLevel'].children.length){
+                
+            } else {
+                this.$router.push(routerPath);    
+            }
         },
         opendedChildFun() {
             this.opendedChild = this.opendedChild ? false : true;
