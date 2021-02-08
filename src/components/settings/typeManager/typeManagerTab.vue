@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-07 11:12:22
+ * @LastEditTime: 2021-02-07 15:39:46
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
     <TabPane label="类目属性">
-        <Table border :columns="columns" :data="data.attributeBinds" :loading="loading" stripe>
+        <Table border :columns="columns" :data="data.attributeBinds" :loading="loading" stripe ref="selection">
             <template slot-scope="{ row, index }" slot="action">
                 <i-switch size="large">
                     <span slot="open">ON</span>
@@ -214,25 +214,24 @@ export default {
         add() {
             this.data.categoryId = this.data.categoryId?this.data.categoryId:this.$parent.formValidate.id;
             for(var i=0;i<this.formValidate2.attributeId.length;i++){
-                this.data.attributeBinds.push({
-                    attributeId:this.formValidate2.attributeId[i]['value'],
-                    attributeName:this.formValidate2.attributeId[i]['name'],
-                    categoryId: this.$parent.formValidate.id,
-                    categoryName: this.$parent.formValidate.name,
-                    isCheck: true
-                });
+                if(!this.checkAttribute(this.formValidate2.attributeId[i]['value'])) {
+                    this.data.attributeBinds.push({
+                        attributeId:this.formValidate2.attributeId[i]['value'],
+                        attributeName:this.formValidate2.attributeId[i]['name'],
+                        categoryId: this.$parent.formValidate.id,
+                        categoryName: this.$parent.formValidate.name,
+                        isCheck: true
+                    });
+                }
             }
-            // this.data.attributeBinds.push({
-            //     ...this.formValidate2,
-            //     categoryId: this.$parent.formValidate.id,
-            //     categoryName: this.$parent.formValidate.name,
-            //     isCheck: true
-            // });
-            // this.showPop(false);
-            // for(var i=0;i<this.$refs['form'].$refs["selectorMulti"].length;i++){
-            //     this.$refs['form'].$refs["selectorMulti"][i].clear();
-            // }
-            // this.$refs['form'].$refs['formValidate'].resetFields();
+        },
+        checkAttribute(id){
+            for(var i=0;i<this.data.attributeBinds.length;i++){
+                if(this.data.attributeBinds[i].attributeId==id){
+                    return true;
+                }
+            }
+            return false;
         },
         BindAttributeCategory(){
             if (this.data.categoryId) {

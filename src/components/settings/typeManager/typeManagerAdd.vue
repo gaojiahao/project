@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-07 12:02:01
+ * @LastEditTime: 2021-02-07 15:44:42
 -->
 <template>
 <div>
@@ -123,16 +123,6 @@ export default {
         showModel() {
             this.show = true;
         },
-        getData() {
-            let data = [];
-            for (let i = 0; i < 15; i++) {
-                data.push({
-                    userName: '用户' + Math.floor(Math.random() * 100 + 1),
-                    userId: Math.floor(Math.random() * 3 + 1),
-                })
-            }
-            return data;
-        },
         setvalue(){
             this.name = '';
             var v = '';
@@ -143,15 +133,19 @@ export default {
             this.$emit('change', this.selectedList);
             this.$emit('add');
             this.$emit('show-model',false);
+            this.handleSelectAll(false);
+            this.searchValue="";
         },
         ok() {
-            this.setvalue();    
+            this.setvalue();
         },
         clear(){
             this.selectedList = [];
             this.name ='';
             this.$refs.selection.selectAll(false);
             this.$emit('show-model',false);
+            this.handleSelectAll(false);
+            this.searchValue="";
         },
         cancel() {
             this.clear();
@@ -210,6 +204,9 @@ export default {
             this.pageData.maxResultCount = pagesize;
             this.init();
         },
+        handleSelectAll (status) {
+            this.$refs.selection.selectAll(status);
+        }
     },
     created(){
         this.hidden = this.config.hidden;

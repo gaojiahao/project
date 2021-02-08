@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 10:51:06
+ * @LastEditTime: 2021-02-07 16:32:37
 -->
 <template>
 <div class="addAttrProductTable-container">
@@ -12,7 +12,7 @@
         <div style="margin-bottom: 10px; padding:10px"  v-for="(item,index) in data">
             <div style="position: relative;line-height: 32px;font-size: 14px;">
                 <label style="text-align: right;vertical-align: middle;float: left;font-size: 14px;color: #515a6e;line-height: 1;padding: 10px 12px 10px 0;box-sizing: border-box;width: 120px;">{{ item.attributeName }}</label>
-                <Select style="width:200px" @on-change="onChange" :label-in-value="true" v-model="list2[item.attributeId]&&list2[item.attributeId]['value']" allow-create filterable @on-create="brandIdCreateFun({value:$event,...item})" :transfer="true" :disabled="disabled">
+                <Select style="width:200px" @on-change="onChange" clearable :label-in-value="true" v-model="list2[item.attributeId]&&list2[item.attributeId]['value']" allow-create filterable @on-create="brandIdCreateFun({value:$event,...item})" :transfer="true" :disabled="disabled" ref="resetSelect">
                     <Option v-for="(dItem,k) in item.valueList" :value="dItem.valueId" :key="dItem.valueId" :tag="item.attributeId">{{ dItem.valueName }}</Option>
                 </Select>
             </div>
@@ -83,10 +83,15 @@ export default {
     },
     methods: {
         clearFormData() {
-
+            this.list2={};
+            var arr = this.$refs.resetSelect;
+            for(var i=0;i<arr.length;i++){
+                arr[i].clearSingleSelect();
+            }
         },
         onChange(data){
-            this.list2[data.tag]=data;
+            if(data&&data.tag)
+                this.list2[data.tag]=data;
         },
         save() {
             this.$emit('save',this.list2);
