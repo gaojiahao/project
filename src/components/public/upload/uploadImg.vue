@@ -105,6 +105,7 @@ export default {
         },
         handleRemove(index) {
             this.uploadList.splice(index, 1);
+            this.$emit('change', this.uploadList);
         },
         handleSuccess(res, file) {
             if(res.result.code==200){
