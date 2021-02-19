@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-06 10:13:36
+ * @LastEditTime: 2021-02-19 17:04:38
 -->
 <template>
 <div class="content">
-    <div style="margin:0 5px; padding:10px 0">
+    <div style="margin:0 10px; padding:10px 0">
         <Input search clearable placeholder="" size="small" @on-search="onSearch" @on-clear="onCler" />
     </div>
     <div :class="[type=='add'? 'list':'list_view']">
@@ -166,7 +166,14 @@ export default {
     .list{
         overflow-y: scroll;
         height: 451px;
-        position: relative;    
+        position: relative;
+        .ivu-tree /deep/ ul li {
+            list-style: none;
+            margin: 3px 0 3px 10px;
+            padding: 0;
+            white-space: nowrap;
+            outline: none;
+        }
     }
     .list_view{
         overflow-y: scroll;

@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 09:22:39
+ * @LastEditTime: 2021-02-19 16:50:35
 -->
 <template>
 <div class="content">
     <div class="head">
         <span class="text">平台类目</span>
     </div>
-    <div style="margin:5px">
+    <div style="margin:5px 10px">
         <Input search clearable placeholder="" size="small" @on-search="onSearch" @on-clear="onCler" />
     </div>
     <div class="list">
@@ -105,20 +105,28 @@ export default {
     background-color: #ffffff;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
-
+    border-radius: 3px;
     .head {
         width: 100%;
         height: 30px;
         background:#d2effd;
         line-height: 30px;
+        border-radius: 3px 3px 0 0;
         .text {
-            margin-left: 5px;
+            margin-left: 10px;
         }
     }
     .list{
         overflow-y: scroll;
         height: 375px;
-        position: relative;    
+        position: relative;
+        .ivu-tree /deep/ ul li {
+            list-style: none;
+            margin: 3px 0 3px 10px;
+            padding: 0;
+            white-space: nowrap;
+            outline: none;
+        }
     }
 }
 </style>

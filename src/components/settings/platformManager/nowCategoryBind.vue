@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 09:23:07
+ * @LastEditTime: 2021-02-19 16:50:15
 -->
 <template>
 <div class="content">
@@ -81,14 +81,15 @@ export default {
     background-color: #ffffff;
     border: 1px solid #dcdee2;
     border-color: #e8eaec;
-
+    border-radius: 3px;
     .head {
         width: 100%;
         height: 30px;
         background:#d2effd;
         line-height: 30px;
+        border-radius: 3px 3px 0 0;
         .text {
-            margin-left: 5px;
+            margin-left: 10px;
         }
     }
     .list{

@@ -96,7 +96,7 @@ let tokenService = {
         },
         data: userInfo
       };
-      console.log(params);
+      // console.log(params);
       fly
         .request(params, params.data)
         .then(res => {

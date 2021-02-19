@@ -28,7 +28,7 @@
                 <List :border="false" :split="false" v-for="(item,index) in list" :key="index">
                     <ListItem>
                         <div style="padding:0 10px 0 28px; width: 100%; text-align: left;" :class="[selectIndex!=null&&selectIndex==item.id ? 'active':'']" @click="select(item.id)">
-                            <span class="default">{{item.platformId}}</span>&nbsp|&nbsp<span class="default">{{item.name}}</span>
+                            <span class="default">{{item.platformName}}</span>&nbsp|&nbsp<span class="default">{{item.name}}</span>
                             <span style="float:right">
                                 <Icon type="md-close" @click.native="del($event,item.id)" />
                             </span>

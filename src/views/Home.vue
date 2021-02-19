@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 17:37:36
+ * @LastEditTime: 2021-02-19 15:34:34
 -->
 <template>
 <div class="layout">
@@ -17,8 +17,8 @@
             <!-- 左侧菜单 -->
             <Sider ref="side1" hide-trigger breakpoint="md" class="container-sider" v-model="isCollapsed" collapsible :collapsed-width="78" v-if="leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.children&&leftMenu.oneLevel.children.length" :width="150">
                 <Menu active-name="typeManager" :theme="theme1" width="auto" :open-names="['1']" :class="menuitemClasses">
-                    <div class="title-menu">
-                        <Icon type="ios-apps" :style="{verticalAlign: '-0.05em'}" @click.native="collapsedSider" />
+                    <div class="title-menu" @click="collapsedSider">
+                        <Icon :type="isCollapsed ? 'md-arrow-dropleft':'md-arrow-dropright'" :style="{verticalAlign: '-0.05em'}" />
                         <span v-show="!isCollapsed">{{leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.name}}</span>
                     </div>
                     <template v-for="(item,index) in leftMenu&&leftMenu.oneLevel.children">

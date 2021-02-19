@@ -9,7 +9,7 @@
             <Button type="primary" icon="md-add" size="small" @click.native="add">新建
             </Button>
         </div>
-        <div style="margin:0 5px">
+        <div style="margin:0 10px">
             <Input search clearable placeholder="" size="small" @on-search="onSearch" @on-clear="onCler" />
         </div>
     </div>
@@ -113,7 +113,6 @@ export default {
     .head {
         width: 100%;
         height: 80px;
-        background: #ffffff;
         line-height: 40px;
 
         .left {

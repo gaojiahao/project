@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-07 15:39:46
+ * @LastEditTime: 2021-02-19 17:42:57
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -19,7 +19,7 @@
         </Table>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="pageAttrData.totalPage" :transfer="true" :current="pageAttrData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageAttrData.pageSizeOpts" :page-size="pageAttrData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
+                <Page :total="pageAttrData.totalPage" :transfer="true" :current="pageAttrData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageAttrData.pageSizeOpts" :page-size="pageAttrData.maxResultCount" @on-page-size-change="onPageSizeChange"></Page>
             </div>
         </div>
     </TabPane>
