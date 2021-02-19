@@ -1,7 +1,8 @@
 <template>
 <li class="ivu-menu-submenu" :class="[ activeMenu ? 'ivu-menu-opened':'ivu-menu-submenu-color']">
     <div class="ivu-menu-submenu-title" @click="clickMenu2(parentItem&&parentItem.oneLevel,item)" v-if="item&&item.enabled">
-        <i class="ivu-icon ivu-icon-ios-navigate"></i>
+        <i class="ivu-icon ivu-icon-ios-navigate" v-if="!item.icon"></i>
+        <img class="icon" :src="this.$base_url+item.icon" v-else></img>
         <span class="ivu-menu-text" v-if="!isCollapsed">{{item.name}}</span>
         <i class="ivu-icon ivu-icon-ios-arrow-down" :class="[(opendedChild||opendedChildCom) ? 'ivu-menu-submenu-title-icon-up' : 'ivu-menu-submenu-title-icon-down']" v-if="item&&item.children&&item.children.length&&!isCollapsed"></i>
     </div>
@@ -181,6 +182,10 @@ export default {
 }
 .ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item {
     padding: 14px 14px 14px 40px;
+}
+.ivu-menu-submenu /deep/ .ivu-menu-submenu-title img {
+    width: 16px;
+    vertical-align:middle;
 }
 </style>
 <style scoped>

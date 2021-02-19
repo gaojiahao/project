@@ -1,7 +1,8 @@
 <template>
 <li class="ivu-menu-submenu ivu-menu-submenu-height" :class="[ opened&&activeMenu==item.code ? 'ivu-menu-opened':'']" @mouseenter="handleMouseenter" @mouseleave="handleMouseleave">
     <div class="ivu-menu-submenu-title" @click="clickMenu(item)">
-        <i class="ivu-icon ivu-icon-ios-navigate"></i>
+        <i class="ivu-icon ivu-icon-ios-navigate" v-if="!item.icon"></i>
+        <img class="icon" :src="this.$base_url+item.icon" v-else></img>
         {{item.name}}
         <i class="ivu-icon ivu-icon-ios-arrow-down ivu-menu-submenu-title-icon" :class="[ openedDrop ? 'ivu-icon-ios-arrow-down-transform':'']" v-if="item&&item.children&&item.children.length&&item.enabled"></i>
     </div>
@@ -221,6 +222,13 @@ export default {
     padding-left: 8px;
     font-size: 14px;
     color: #515a6e;
+}
+.ivu-menu-submenu /deep/ .ivu-menu-submenu-title i {
+    margin-right: 0;
+}
+.ivu-menu-submenu /deep/ .ivu-menu-submenu-title img {
+    width: 16px;
+    vertical-align:middle;
 }
 </style>
 <style lang="less" scoped>

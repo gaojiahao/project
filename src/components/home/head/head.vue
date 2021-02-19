@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-08 16:33:42
+ * @LastEditTime: 2021-02-19 11:10:16
 -->
 <template>
 <div class="head">
@@ -150,7 +150,7 @@ export default {
 <style lang="less" scoped>
 .item {
     float: left;
-    padding: 0 20px;
+    padding: 0 10px 0 10px;
     position: relative;
     cursor: pointer;
     z-index: 3;
@@ -169,7 +169,7 @@ export default {
 .title {
     color: #fff;
     font-size: 24px;
-    padding: 0;
+    padding: 0 10px 0 10px;
 }
 .right-item {
     float: right;
@@ -195,6 +195,9 @@ export default {
     .ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item {
         font-size: 12px !important;
     }
+}
+.ivu-menu-horizontal /deep/ .ivu-menu-submenu /deep/ {
+    padding: 0 10px 0 10px;
 }
 </style><style scoped>
 >>>.ivu-menu-horizontal .ivu-menu-submenu .ivu-select-dropdown .ivu-menu-item {
