@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-16 09:32:40
+ * @LastEditTime: 2021-02-08 17:29:05
 -->
 <template>
     <div class="addFinishProduct">
@@ -27,8 +27,9 @@
                     <template slot="button">
                         <FormItem>
                             <div style="width:100%">
-                                <Button type="primary" @click="approval" style="float: left;">提交</Button>
-                                <Button @click="goReturn" style="float: left; margin-left:10px">取消</Button>
+                                <Button type="primary" @click="approval(true)" style="float: left;">同意</Button>
+                                <Button @click="approval(false)" style="float: left; margin-left:10px">不同意</Button>
+                                <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                             </div>
                         </FormItem>
                     </template>
@@ -141,8 +142,9 @@ export default {
                 });    
             }
         },
-        approval(){
+        approval(value){
             this.approvalValidate.relatedId = this.$route.query.id;
+            this.approvalValidate.isPass = value;
             var params = this.approvalValidate;
             this.$refs['approvalForm'].$refs['formValidate'].validate((valid) => {
                 if (valid) {

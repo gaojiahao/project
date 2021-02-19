@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 16:07:43
+ * @LastEditTime: 2021-02-19 14:54:58
  */
 export default {
     data() {
@@ -33,12 +33,17 @@ export default {
                 url:'/api/GetPlatformsList',
                 data:[],
             },
+            bind:{
+              target: 'platformName',
+              bindValue: 'name'
+            },
           },
         },
         formValidate: {
           name: '',
           // code: '',
           platformId: '',
+          platformName:'',
           merchantId: 0
         },
         ruleValidate: {

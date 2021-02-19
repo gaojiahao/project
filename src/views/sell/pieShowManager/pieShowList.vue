@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 10:19:59
+ * @LastEditTime: 2021-02-19 17:58:47
 -->
 <template>
 <div class="erp_table_container">
@@ -200,25 +200,46 @@ export default {
                 key: 'img',
                 align: 'center',
                 render: (h, params) => {
-                    return h('div', [
-                        h('img', {
-                            attrs: {
-                                src: params.img || require("@assets/default/logo.png")
+                    return h('div', 
+                    [
+                        h('Poptip',{
+                            props: {
+                                trigger:'hover',
+                                content:"content",
+                                placement:"right",
+                                transfer:true,
                             },
-                            style: {
-                                width: '30px',
-                                height: '30px'
-                            },
-                            on: {
-                                click:()=>{
-                                    this.srcData = {
-                                        imgName: '图片预览',
-                                        src: params.img || require("@assets/default/logo.png")
+                        },[
+                            h('img', {
+                                attrs: {
+                                    src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                                },
+                                style: {
+                                    width: '30px',
+                                    height: '30px'
+                                },
+                                on: {
+                                    click:()=>{
+                                        this.srcData = {
+                                            imgName: '图片预览',
+                                            src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                                        }
+                                        this.showImageModel(true);
                                     }
-                                    this.showImageModel(true);
                                 }
-                            }
-                        }),
+                            }),
+                            h('img',{
+                                slot:"content",
+                                attrs: {
+                                    src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
+                                },
+                                style: {
+                                    width: '300px',
+                                    height: '300px'
+                                },
+                                class:'api'
+                            })
+                        ])    
                     ]);
                 },
                 width: 80,

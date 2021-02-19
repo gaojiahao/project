@@ -4,12 +4,12 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 10:27:56
+ * @LastEditTime: 2021-02-19 16:58:32
 -->
 <template>
 <div class="add_store">
-    <Row>
-        <Col span="12">
+    <Row type="flex" justify="space-around" class="code-row-bg">
+        <Col span="11">
             <div class="top">
                 <Divider orientation="left" size="small">店铺信息</Divider>
                 <div class="top_tabale">
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </Col>
-        <Col span="12">
+        <Col span="11">
             <div class="item">
                 <div class="top">
                     <Divider orientation="left" size="small">选择系统类目绑定</Divider>

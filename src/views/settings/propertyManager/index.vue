@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 14:53:53
+ * @LastEditTime: 2021-02-19 17:28:02
 -->
 <template>
 <div class="propertyManager-container">
@@ -276,6 +276,7 @@ export default {
                             this.$Message.info('温馨提示：删除成功！');
                             this.GetAttributeList();
                             this.clearFormData();
+                            this.showAdd();
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,

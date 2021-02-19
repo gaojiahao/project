@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 15:27:41
+ * @LastEditTime: 2021-02-19 16:11:57
 -->
 <template>
 <div class="platformManager-container">
@@ -32,7 +32,7 @@
             </div>
             <div class="item" v-show="isShowBind">
                 <div class="top">
-                    <Divider orientation="left" size="small">类目绑定</Divider>
+                    <!-- <Divider orientation="left" size="small">类目绑定</Divider> -->
                     <Row>
                         <Col span="8"><PlatformCategoryBind @select-platform-bind="selectPlatformBind" @set-filter="setPlatformCategoryFilter" ref="selectPlatformBind" :data="platformCategoryData"></PlatformCategoryBind></Col>
                         <Col span="8"><SystemCategoryBind @select-system-bind="selectSystemBind" @set-filter="setSystemCategoryFilter" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind></Col>
@@ -412,4 +412,5 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/basicinfo/platformManager/index";
+@import "~@less/form.less";
 </style>

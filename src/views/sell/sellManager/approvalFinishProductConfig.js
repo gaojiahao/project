@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 19:42:14
+ * @LastEditTime: 2021-02-08 17:44:32
  */
 export default {
     data() {
@@ -89,6 +89,7 @@ export default {
         approvalValidate: {
           reviewType:'aaaaa',
           relatedId:'',
+          isPass:'',
           reviewResult:1,
           resultName:'fdsa',
           reviewBefore:2,
@@ -96,7 +97,11 @@ export default {
           reviewRemark:'',
         },
         approvalRuleValidate: {
-
+          reviewRemark: [{
+            required: true,
+            message: '请输入推荐审核意见',
+            trigger: 'blur'
+          }],
         }
       }
     }
