@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 15:01:28
+ * @LastEditTime: 2021-02-20 17:59:43
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1507,6 +1507,78 @@ const routes = [
             ],
           } 
         ]
+      },
+      {
+        path: 'total',
+        name: 'total',
+        meta:{ 
+          title:'统计管理',
+          group: 'total',
+        },
+        component: resolve=>(require(["@views/total/index"],resolve)),
+        redirect:'total/newProductsTotal',
+        children:[
+          {
+            path: 'newProductsTotal',
+            name: 'newProductsTotal',
+            meta:{ 
+              title:'新品开发统计',
+              group: 'newProductsTotal',
+            },
+            component: resolve=>(require(["@views/total/newProductsTotal/index"],resolve)),
+            children:[]
+          },
+          {
+            path: 'chartingTotal',
+            name: 'chartingTotal',
+            meta:{ 
+              title:'制图分析统计',
+              group: 'chartingTotal',
+            },
+            component: resolve=>(require(["@views/total/chartingTotal/index"],resolve)),
+            children:[]
+          },
+          {
+            path: 'examineTotal',
+            name: 'examineTotal',
+            meta:{ 
+              title:'审核统计',
+              group: 'examineTotal',
+            },
+            component: resolve=>(require(["@views/total/examineTotal/index"],resolve)),
+            children:[]
+          },
+          {
+            path: 'storeTotal',
+            name: 'storeTotal',
+            meta:{ 
+              title:'店铺分配统计',
+              group: 'storeTotal',
+            },
+            component: resolve=>(require(["@views/total/storeTotal/index"],resolve)),
+            children:[]
+          },
+          {
+            path: 'upProductTotal',
+            name: 'upProductTotal',
+            meta:{ 
+              title:'上架统计',
+              group: 'upProductTotal',
+            },
+            component: resolve=>(require(["@views/total/upProductTotal/index"],resolve)),
+            children:[]
+          },
+          {
+            path: 'overdueTotal',
+            name: 'overdueTotal',
+            meta:{ 
+              title:'逾期分析统计',
+              group: 'overdueTotal',
+            },
+            component: resolve=>(require(["@views/total/overdueTotal/index"],resolve)),
+            children:[]
+          },
+        ]    
       }
     ],
   },
