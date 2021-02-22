@@ -47,7 +47,7 @@
                 <Card style="margin:0 0 10px 0">
                     <RadioGroup v-model="filter" type="button" size="small">
                         <Radio label="line">折线图</Radio>
-                        <Radio label="bigLine">大面积折线图</Radio>
+                        <!-- <Radio label="bigLine">大面积折线图</Radio> -->
                         <Radio label="bar">柱状图</Radio>
                         <Radio label="pie">饼图</Radio>
                     </RadioGroup>

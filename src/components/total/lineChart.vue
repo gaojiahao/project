@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-02-20 11:04:19
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-20 12:13:17
+ * @LastEditTime: 2021-02-22 10:01:34
 -->
 <template>
     <div class="siggle-chart" id="myChart">
@@ -39,18 +39,56 @@ export default {
             var option;
 
             option = {
+                //标题
+                title: {
+                    text: '新品开发统计',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    right: 'right',
+                },
                 xAxis: {
                     type: 'category',
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    name: '时间',
+                    data: ['2.13', '2.14', '2.15', '2.16', '2.17', '2.18', '2.19',]
                 },
                 yAxis: {
-                    type: 'value'
+                    type: 'value',
+                    name: '数量',
                 },
-                series: [{
-                    name:'本周',
-                    data: [150, 230, 224, 218, 135, 147, 260],
-                    type: 'line'
-                }]
+                dataZoom: [{
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                }, {
+                    start: 0,
+                    end: 100
+                }],
+                series: [
+                    {
+                        name:'所有',
+                        data: [16, 33, 39, 44, 32, 41, 41],
+                        type: 'line'
+                    },
+                    {
+                        name:'已开发',
+                        data: [10, 11, 17, 8, 5, 12, 9],
+                        type: 'line'
+                    },
+                    {
+                        name:'未开发',
+                        data: [5, 10, 20, 25, 15, 10, 22],
+                        type: 'line'
+                    },
+                    {
+                        name:'审核中',
+                        data: [1, 2, 5, 3, 2, 7, 1],
+                        type: 'line'
+                    },
+                ]
             };
             option && myChart.setOption(option);
         },

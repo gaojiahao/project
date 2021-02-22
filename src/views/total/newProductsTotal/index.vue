@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-02-20 11:04:19
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-20 17:41:55
+ * @LastEditTime: 2021-02-22 11:31:04
 -->
 <template>
     <div class="total">
@@ -47,9 +47,10 @@
                 <Card style="margin:0 0 10px 0">
                     <RadioGroup v-model="filter" type="button" size="small">
                         <Radio label="line">折线图</Radio>
-                        <Radio label="bigLine">大面积折线图</Radio>
+                        <!-- <Radio label="bigLine">大面积折线图</Radio> -->
                         <Radio label="bar">柱状图</Radio>
                         <Radio label="pie">饼图</Radio>
+                        <Radio label="my">我的</Radio>
                     </RadioGroup>
                     <template v-if="filter=='line'">
                         <LineChart></LineChart>
@@ -66,6 +67,9 @@
                     <template v-else-if="filter=='bar'">
                         <BarChart></BarChart>
                     </template>
+                    <template v-else-if="filter=='my'">
+                        <Dashboard></Dashboard>
+                    </template>
                 </Card>
             </Col>
         </Row>
@@ -80,6 +84,7 @@ import LineChart from "@components/total/lineChart";
 import MonthLineChart from "@components/total/monthLineChart";
 import PieChart from "@components/total/pieChart";
 import BarChart from "@components/total/barChart";
+import Dashboard from "@components/total/dashboard";
 import { ButtonGroup } from "view-design";
 
 export default {
@@ -138,7 +143,7 @@ export default {
             filter:'line'
         }
     },
-    components:{ButtonGroup,Row,Col,LineChart,PieChart,MonthLineChart,BarChart},
+    components:{ButtonGroup,Row,Col,LineChart,PieChart,MonthLineChart,BarChart,Dashboard},
     methods:{
         onChangeTime(data) {
             if (data.length > 1) {

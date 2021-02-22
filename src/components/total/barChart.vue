@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-02-20 16:48:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-20 16:49:36
+ * @LastEditTime: 2021-02-22 10:01:57
 -->
 <template>
     <div class="siggle-chart" id="barChart">
@@ -39,17 +39,55 @@ export default {
             var option;
 
             option = {
+                title: {
+                    text: '新品开发统计',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    right: 'right',
+                },
                 xAxis: {
                     type: 'category',
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    name: '时间',
+                    data: ['2.13', '2.14', '2.15', '2.16', '2.17', '2.18', '2.19',]
                 },
                 yAxis: {
-                    type: 'value'
+                    type: 'value',
+                    name: '数量',
                 },
-                series: [{
-                    data: [120, 200, 150, 80, 70, 110, 130],
-                    type: 'bar'
-                }]
+                dataZoom: [{
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                }, {
+                    start: 0,
+                    end: 100
+                }],
+                series: [
+                    {
+                        name:'所有',
+                        data: [16, 33, 39, 44, 32, 41, 41],
+                        type: 'bar'
+                    },
+                    {
+                        name:'已开发',
+                        data: [10, 11, 17, 8, 5, 12, 9],
+                        type: 'bar'
+                    },
+                    {
+                        name:'未开发',
+                        data: [5, 10, 20, 25, 15, 10, 22],
+                        type: 'bar'
+                    },
+                    {
+                        name:'审核中',
+                        data: [1, 2, 5, 3, 2, 7, 1],
+                        type: 'bar'
+                    },
+                ]
             };
             option && myChart.setOption(option);
         },
