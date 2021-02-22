@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 15:34:34
+ * @LastEditTime: 2021-02-22 15:34:35
 -->
 <template>
 <div class="layout">
@@ -189,7 +189,7 @@ export default {
     .ivu-layout-header {
         height: 54px;
         line-height: 54px;
-        padding: 0;
+        padding: 0 10px;
     }
 .layout /deep/
     .ivu-menu-vertical /deep/ 

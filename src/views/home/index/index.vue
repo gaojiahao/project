@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 10:19:46
+ * @LastEditTime: 2021-02-22 16:54:00
 -->
 <template>
     <div :class="{drag:dragging}">
@@ -45,10 +45,12 @@
 
 <script>
 import { Dropdown,DropdownMenu,DropdownItem } from "view-design";
-const xTable = ()=>import("@views/home/table");
-const calendar = ()=>import("@views/home/calendar");
-const xMessage = ()=>import("@views/home/message");
-const xQuick = ()=>import("@views/home/quick");
+import XTable from "@views/home/table"
+import XCalendar from "@views/home/calendar"
+import XMessage from "@views/home/message"
+import XQuick from "@views/home/quick"
+import Flow from "@views/home/flow"
+import ProductView from "@views/home/productView"
 import ModalForm from "@components/public/form/modalForm"
 import VueGridLayout from 'vue-grid-layout';
 import LayoutJs from './layout';
@@ -58,10 +60,12 @@ import config from '@views/home/index/indexConfig'
 export default {
     name: "Index",
     components: {
-        XTable:xTable,
-        XCalendar:calendar,
-        XMessage:xMessage,
-        XQuick:xQuick,
+        XTable,
+        XCalendar,
+        XMessage,
+        XQuick,
+        Flow,
+        ProductView,
         GridLayout: VueGridLayout.GridLayout,
         GridItem: VueGridLayout.GridItem,
         draggable,
@@ -246,11 +250,13 @@ export default {
                 { name: "XMessage", title: "消息", id: "4" },
                 { name: "XQuick", title: "快捷入口", id: "2" },
                 { name: "XQuick", title: "走马灯组件", id: "1" },
-                { name: "XTable", title: "上架统计", id: "3" }
+                { name: "XTable", title: "上架统计", id: "3" },
+                { name: "Flow", title: "流程图", id: "6" },
+                { name: "ProductView", title: "产品总览", id: "7" }
             ],
             layout: {
-                left: ["4", "2", "3"],
-                right: ["5", "2"]
+                left: ["6",'2', "3"],
+                right: ["4", "5","7"]
             },
             mainData: {},
             showModel: false,

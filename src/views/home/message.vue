@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-27 19:14:50
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-30 11:56:18
+ * @LastEditTime: 2021-02-22 16:35:31
 -->
 <template>
 <div class="message">
@@ -51,6 +51,48 @@
                 </List>
             </Scroll>
         </TabPane>
+        <TabPane label="动态" name="name5">
+            <Scroll :on-reach-bottom="handleReachBottom" height="360">
+                <Timeline>
+                    <TimelineItem>
+                        <p class="time">2月22日 12:02</p>
+                        <p class="content">张旦 创建 Bug 菜单管理 点击“新建”弹出的表</p>
+                    </TimelineItem>
+                    <TimelineItem>
+                        <p class="time">2月22日 11:58</p>
+                        <p class="content">张旦 创建 Bug 菜单管理 选择一个菜单点击编</p>
+                    </TimelineItem>
+                    <TimelineItem>
+                        <p class="time">2月22日 11:51</p>
+                        <p class="content">张旦 关闭了 Bug 销售推品 新建推品时要与已</p>
+                    </TimelineItem>
+                    <TimelineItem>
+                        <p class="time">2月22日 11:20</p>
+                        <p class="content">高家豪 创建 待办 范德萨发的</p>
+                    </TimelineItem>
+                    <TimelineItem>
+                        <p class="time">2月22日 11:20</p>
+                        <p class="content">高家豪 完成了 待办 刚发的广泛地</p>
+                    </TimelineItem>
+                    <TimelineItem>
+                        <p class="time">2月22日 11:20</p>
+                        <p class="content">高家豪 完成了 待办 刚发的广泛地</p>
+                    </TimelineItem>
+                    <TimelineItem>
+                        <p class="time">2月22日 11:20</p>
+                        <p class="content">高家豪 完成了 待办 刚发的广泛地</p>
+                    </TimelineItem>
+                    <TimelineItem>
+                        <p class="time">2月22日 11:20</p>
+                        <p class="content">高家豪 完成了 待办 刚发的广泛地</p>
+                    </TimelineItem>
+                    <TimelineItem>
+                        <p class="time">2月22日 11:20</p>
+                        <p class="content">高家豪 完成了 待办 刚发的广泛地</p>
+                    </TimelineItem>
+                </Timeline>
+            </Scroll>
+        </TabPane>
     </Tabs>
 </div>
 </template>
@@ -62,7 +104,9 @@ import {
     List,
     ListItem,
     ListItemMeta,
-    Scroll
+    Scroll,
+    Timeline,
+    TimelineItem
 } from "view-design";
 export default {
     name: 'Message',
@@ -72,7 +116,9 @@ export default {
         List,
         ListItem,
         ListItemMeta,
-        Scroll
+        Scroll,
+        Timeline,
+        TimelineItem
     },
     props: {
         messageList: {
@@ -140,5 +186,12 @@ export default {
 
 >>>.ivu-tabs-bar {
     margin-bottom: 0;
+}
+.time{
+    font-size: 14px;
+    font-weight: bold;
+}
+.content{
+    padding-left: 5px;
 }
 </style>

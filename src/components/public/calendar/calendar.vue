@@ -1,360 +1,146 @@
-<style scoped>
-@media screen and (min-width: 460px) {
-    .wh_item_date:hover {
-        background: #71c7a5;
-        cursor: pointer;
-    }
-}
-
-* {
-    margin: 0;
-    padding: 0;
-}
-
-.wh_container {
-    /*max-width: 410px;*/
-    margin: auto;
-}
-
-li {
-    list-style-type: none;
-}
-
-.wh_top_changge {
-    display: flex;
-}
-
-.wh_top_changge li {
-    cursor: pointer;
-    display: flex;
-    color: #fff;
-    font-size: 18px;
-    flex: 1;
-    justify-content: center;
-    align-items: center;
-    height: 47px;
-}
-
-.wh_top_changge .wh_content_li {
-    cursor: auto;
-    flex: 2.5;
-}
-
-.wh_content_all_cl {
-    /* font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
-        "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
-    background-color: #fff;
-    width: 100%;
-    overflow: hidden;
-    padding-bottom: 8px;
-    border: 1px solid #dfe0e6;
-    border-radius: 6px; */
-}
-
-.wh_content {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0 3% 0 3%;
-    width: 100%;
-}
-
-.wh_content:first-child .wh_content_item_tag,
-.wh_content:first-child .wh_content_item {
-    color: #ddd;
-    font-size: 16px;
-}
-
-.wh_content_item,
-.wh_content_item_tag {
-    font-size: 15px;
-    width: 13.4%;
-    text-align: center;
-    color: #fff;
-    position: relative;
-}
-
-.wh_content_item {
-    height: 40px;
-}
-
-.wh_top_tag {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.wh_item_date {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    margin: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.wh_jiantou1 {
-    width: 12px;
-    height: 12px;
-    border-top: 2px solid #ffffff;
-    border-left: 2px solid #ffffff;
-    transform: rotate(-45deg);
-}
-
-.wh_jiantou1:active,
-.wh_jiantou2:active {
-    border-color: #ddd;
-}
-
-.wh_jiantou2 {
-    width: 12px;
-    height: 12px;
-    border-top: 2px solid #ffffff;
-    border-right: 2px solid #ffffff;
-    transform: rotate(45deg);
-}
-
-.wh_content_item>.wh_isMark {
-    margin: auto;
-    border-radius: 100px;
-    background: blue;
-    z-index: 2;
-}
-
-.wh_content_item .wh_other_dayhide {
-    color: #bfbfbf;
-}
-
-.wh_content_item .wh_want_dayhide {
-    color: #bfbfbf;
-}
-
-.wh_content_item .wh_isToday {
-    background: yellow;
-    border-radius: 100px;
-}
-
-.wh_content_item .wh_chose_day {
-    background: green;
-    border-radius: 100px;
-}
-</style>
 <template>
-<section class="wh_container">
-    <div class="wh_content_all_cl">
-        <div class="wh_top_changge">
-            <li @click="PreMonth(myDate,false)">
-                <div class="wh_jiantou1"></div>
-            </li>
-            <li class="wh_content_li">{{dateTop}}</li>
-            <li @click="NextMonth(myDate,false)">
-                <div class="wh_jiantou2"></div>
-            </li>
-            <li @click="getToday()" style="font-size:12px;color:black;">
-                回今天
-            </li>
-        </div>
-        <div class="wh_content">
-            <div class="wh_content_item" v-for="tag in textTop">
-                <div class="wh_top_tag">{{tag}}</div>
-            </div>
-        </div>
-        <div class="wh_content">
-            <div class="wh_content_item" v-for="(item,index) in list" @click="clickDay(item,index)">
-                <div class="wh_item_date" v-bind:class="[{ wh_isMark: item.isMark},{wh_other_dayhide:item.otherMonth!=='nowMonth'},{wh_want_dayhide:item.dayHide},{wh_isToday:item.isToday},{wh_chose_day:item.chooseDay},setClass(item)]">{{item.id}}</div>
-            </div>
-        </div>
+  <div style="display:flex;">
+    <div id='calendar-container' style="width: 100%;">
+      <div id='calendar'></div>
     </div>
-</section>
+  </div>
 </template>
 
 <script>
-import timeUtil from "./calendar";
+import { Calendar } from '@fullcalendar/core';
+import interactionPlugin from '@fullcalendar/interaction';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import calendarjs from "@mixins/calendar";
+
 export default {
-    name: 'Calendar',
-    data() {
-        return {
-            myDate: [],
-            list: [],
-            historyChose: [],
-            dateTop: ""
-        };
-    },
-    props: {
-        markDate: {
-            type: Array,
-            default: () => []
-        },
-        markDateMore: {
-            type: Array,
-            default: () => []
-        },
-        textTop: {
-            type: Array,
-            default: () => ["一", "二", "三", "四", "五", "六", "日"]
-        },
-        sundayStart: {
-            type: Boolean,
-            default: () => false
-        },
-        agoDayHide: {
-            type: String,
-            default: `0`
-        },
-        futureDayHide: {
-            type: String,
-            default: `2554387200`
-        }
-    },
-    created() {
-        this.intStart();
-        this.myDate = new Date();
-        this.getList( this.myDate);
-    },
-    methods: {
-        intStart() {
-            timeUtil.sundayStart = this.sundayStart;
-        },
-        setClass(data) {
-            let obj = {};
-            obj[data.markClassName] = data.markClassName;
-            return obj;
-        },
-        clickDay: function (item, index) {
-            if (item.otherMonth === "nowMonth" && !item.dayHide) {
-                this.getList(this.myDate, item.date);
-            }
-            if (item.otherMonth !== "nowMonth") {
-                item.otherMonth === "preMonth" ?
-                    this.PreMonth(item.date) :
-                    this.NextMonth(item.date);
-            }
-        },
-        ChoseMonth: function (date, isChosedDay = true) {
-            date = timeUtil.dateFormat(date);
-            this.myDate = new Date(date);
-            this.$emit("changeMonth", timeUtil.dateFormat(this.myDate));
-            if (isChosedDay) {
-                this.getList(this.myDate, date, isChosedDay);
-            } else {
-                this.getList(this.myDate);
-            }
-        },
-        PreMonth: function (date, isChosedDay = true) {
-            date = timeUtil.dateFormat(date);
-            this.myDate = timeUtil.getOtherMonth(this.myDate, "preMonth");
-            this.$emit("changeMonth", timeUtil.dateFormat(this.myDate));
-            if (isChosedDay) {
-                this.getList(this.myDate, date, isChosedDay);
-            } else {
-                this.getList(this.myDate);
-            }
-        },
-        NextMonth: function (date, isChosedDay = true) {
-            date = timeUtil.dateFormat(date);
-            this.myDate = timeUtil.getOtherMonth(this.myDate, "nextMonth");
-            this.$emit("changeMonth", timeUtil.dateFormat(this.myDate));
-            if (isChosedDay) {
-                this.getList(this.myDate, date, isChosedDay);
-            } else {
-                this.getList(this.myDate);
-            }
-        },
-        forMatArgs: function () {
-            let markDate = this.markDate;
-            let markDateMore = this.markDateMore;
-            markDate = markDate.map(k => {
-                return timeUtil.dateFormat(k);
-            });
-            markDateMore = markDateMore.map(k => {
-                k.date = timeUtil.dateFormat(k.date);
-                return k;
-            });
-            return [markDate, markDateMore];
-        },
-        getList: function (date, chooseDay, isChosedDay = true) {
-            const [markDate, markDateMore] = this.forMatArgs();
-            this.dateTop = `${date.getFullYear()}年${date.getMonth() + 1}月`;
-            let arr = timeUtil.getMonthList(this.myDate);
-            for (let i = 0; i < arr.length; i++) {
-                let markClassName = "";
-                let k = arr[i];
-                k.chooseDay = false;
-                const nowTime = k.date;
-                const t = new Date(nowTime).getTime() / 1000;
-                //看每一天的class
-                for (const c of markDateMore) {
-                    if (c.date === nowTime) {
-                        markClassName = c.className || "";
-                    }
-                }
-                //标记选中某些天 设置class
-                k.markClassName = markClassName;
-                k.isMark = markDate.indexOf(nowTime) > -1;
-                //无法选中某天
-                k.dayHide = t < this.agoDayHide || t > this.futureDayHide;
-                if (k.isToday) {
-                    this.$emit("isToday", nowTime);
-                }
-                let flag = !k.dayHide && k.otherMonth === "nowMonth";
-                if (chooseDay && chooseDay === nowTime && flag) {
-                    this.$emit("choseDay", nowTime);
-                    this.historyChose.push(nowTime);
-                    k.chooseDay = true;
-                } else if (
-                    this.historyChose[this.historyChose.length - 1] === nowTime &&
-                    !chooseDay &&
-                    flag
-                ) {
-                    k.chooseDay = true;
-                }
-            }
-            this.list = arr;
-        },
-        getToday: function(){
-            var toDay = timeUtil.dateFormat(new Date());
-            this.$emit("isToday", toDay);
-        }
-    },
-    mounted() {
-        //this.getList(this.myDate);
-    },
-    watch: {
-        markDate: {
-            handler(val, oldVal) {
-                this.getList(this.myDate);
-            },
-            deep: true
-        },
-        markDateMore: {
-            handler(val, oldVal) {
-                this.getList(this.myDate);
-            },
-            deep: true
-        },
-        agoDayHide: {
-            handler(val, oldVal) {
-                this.getList(this.myDate);
-            },
-            deep: true
-        },
-        futureDayHide: {
-            handler(val, oldVal) {
-                this.getList(this.myDate);
-            },
-            deep: true
-        },
-        sundayStart: {
-            handler(val, oldVal) {
-                this.intStart();
-                this.getList(this.myDate);
-            },
-            deep: true
-        }
+  props:{
+    config:{
+      type: Object,
+      default () {
+          return {}
+      }
     }
-};
+  },
+  data() {
+      return {
+        events:[],
+        eventInfo:{}
+      }
+  },
+  components: {
+  },
+  mixins:[calendarjs],
+  watch:{
+
+  },
+  methods: {
+    // 点击当天
+    dateClick (info) {
+        console.log('info', info)
+    },
+    // 查看更多
+    moreClick (day, events, jsEvent) {
+      console.log('moreCLick', day, events, jsEvent)
+    },
+    formatDate(date) {
+      const y = date.getFullYear();
+      let m = date.getMonth() + 1;
+      m = m < 10 ? '0' + m : m;
+      let d = date.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      return y + '-' + m + '-' + d;
+    },
+    initCale(){
+      var calendarEl = document.getElementById('calendar');
+      var checkbox = document.getElementById('drop-remove');
+      var me = this;
+      var calendar = new Calendar(calendarEl, {
+        plugins: [ dayGridPlugin,interactionPlugin ],
+        views:{
+          dayGridMonth:{
+            dayMaxEventRows:3,
+            displayEventTime:false,
+            dayCellContent(item){
+              let _date=me.formatDate(item.date).split('-')
+              let _dateF=me.solar2lunar(_date[0],_date[1],_date[2]);
+              _dateF.Term = _dateF.Term ? _dateF.Term : '';
+              _dateF.festival = _dateF.festival ? _dateF.festival : '';
+              _dateF.lunarFestival = _dateF.lunarFestival ? _dateF.lunarFestival : '';
+              return {html:`<p><label>${_dateF.cDay}</label><span>${_dateF.IDayCn}</span></br><span style="color:red">${_dateF.Term}</span><span style="color:red">${_dateF.festival}</span><span style="color:red">${_dateF.lunarFestival}</span></p>`}
+              }
+          },
+        },
+        events: this.events,
+        //事件点击
+        eventClick : function( event ){
+          me.eventInfo = event['event']['_def']['extendedProps'];
+        },
+        //事件调整大小
+        eventResize: function(event) {
+          me.UpdateFileDistribution(event);
+        },
+        //事件拖动
+        eventDrop : function( event, dayDelta, revertFunc ) {
+          me.UpdateFileDistribution(event);
+        },
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth'
+        },
+        buttonText:{
+          today:'今天',
+          month:'月视图',
+          week:'周视图',
+          day:'日视图',
+          list:'列表视图',
+        },
+        displayEventEnd: true,
+        dateClick:function(info) {
+          me.dateClick(info)
+        },
+        locale:'zh-cn',
+        editable: true,
+        droppable: true,
+        drop: function(info) {
+          if (checkbox.checked) {
+            info.draggedEl.parentNode.removeChild(info.draggedEl);
+          }
+        }
+      });
+      calendar.render();
+      calendarEl.addEventListener('contextmenu', (e)=>{
+        e.preventDefault()
+        console.log('点击了右键',e);
+      });
+    },
+  },
+  mounted(){
+      this.initCale();
+  },
+  created(){
+
+  }
+}
 </script>
+<style>
+#external-events {
+  width: 300px;
+  padding: 0 10px;
+  border: 1px solid #ccc;
+  background: #eee;
+  height: 135px;
+}
+#external-events .fc-event {
+  cursor: move;
+  margin: 3px 0;
+}
+#calendar-container {
+  position: relative;
+  z-index: 1;
+}
+#calendar {
+  max-width: 1100px;
+  margin: 20px;
+}
+</style>
