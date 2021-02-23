@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 16:04:50
+ * @LastEditTime: 2021-01-10 14:41:30
  */
 export default {
   data() {
@@ -72,6 +72,7 @@ export default {
           name:'密码',
           type:'password',
           placeholder:'密码由6-20位数字加大小写字母特殊字符组成',
+          hidden:true
         },
         enabled:{
           name:'是否启用',

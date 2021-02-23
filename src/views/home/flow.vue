@@ -4,27 +4,26 @@
  * @Author: gaojiahao
  * @Date: 2021-02-22 11:53:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-22 15:43:56
+ * @LastEditTime: 2021-02-23 10:01:43
 -->
 <template>
     <div class="flow">
         <div class="panel-body scrollbar-hover">
             <div class="row row-admin">
                 <div class="flow-item flow-item-0"><div title="管理员">新品开发</div></div>
-                <div class="flow-item flow-item-1"><div title="维护公司">销售审核</div></div>
-                <div class="flow-item flow-item-2"><div title="添加用户">侵权审核</div></div>
-                <div class="flow-item flow-item-3"><div title="维护权限">制图审核</div></div>
+                <div class="flow-item flow-item-1"><div title="创建产品">销售组长审核</div></div>
+                <div class="flow-item flow-item-3"><div title="维护模块">销售经理审核</div></div>
+                <div class="flow-item flow-item-4"><div title="添加用户">侵权审核</div></div>
+                <div class="flow-item flow-item-5"><div title="维护权限">制图审核</div></div>
             </div>
             <div class="row row-product">
-                <div class="flow-item flow-item-0"><div title="产品经理">产品经理</div></div>
-                <div class="flow-item flow-item-1"><div title="创建产品">创建产品</div></div>
-                <div class="flow-item flow-item-2"><div title="维护模块">维护模块</div></div>
-                <div class="flow-item flow-item-3"><div title="维护计划">维护计划</div></div>
-                <div class="flow-item flow-item-4"><div title="维护需求">维护需求</div></div>
-                <div class="flow-item flow-item-5"><div title="创建发布">创建发布</div></div>
+                <div class="flow-item flow-item-0"><div title="产品经理">销售推荐</div></div>
+                <div class="flow-item flow-item-1"><div title="创建产品">销售组长审核</div></div>
+                <div class="flow-item flow-item-2"><div title="维护模块">销售经理审核</div></div>
+                <div class="flow-item flow-item-3"><div title="维护计划">新品开发</div></div>
             </div>
             <div class="row row-project">
-                <div class="flow-item flow-item-0"><div title="项目经理">项目经理</div></div>
+                <div class="flow-item flow-item-0"><div title="项目经理">选品</div></div>
                 <div class="flow-item flow-item-1"><div title="创建项目">创建项目</div></div>
                 <div class="flow-item flow-item-2"><div title="维护团队">维护团队</div></div>
                 <div class="flow-item flow-item-3"><div title="关联产品">关联产品</div></div>
@@ -32,13 +31,13 @@
                 <div class="flow-item flow-item-5"><div title="分解任务">分解任务</div></div>
             </div>
             <div class="row row-dev">
-                <div class="flow-item flow-item-0"><div title="研发人员">研发人员</div></div>
+                <div class="flow-item flow-item-0"><div title="研发人员">制图</div></div>
                 <div class="flow-item flow-item-1"><div title="领取任务和Bug">领取任务和Bug</div></div>
                 <div class="flow-item flow-item-2"><div title="更新状态">更新状态</div></div>
                 <div class="flow-item flow-item-3"><div title="完成任务和Bug">完成任务和Bug</div></div>
             </div>
             <div class="row row-tester">
-                <div class="flow-item flow-item-0"><div title="测试人员">测试人员</div></div>
+                <div class="flow-item flow-item-0"><div title="测试人员">上架</div></div>
                 <div class="flow-item flow-item-1"><div title="撰写用例">撰写用例</div></div>
                 <div class="flow-item flow-item-2"><div title="执行用例">执行用例</div></div>
                 <div class="flow-item flow-item-3"><div title="提交Bug">提交Bug</div></div>

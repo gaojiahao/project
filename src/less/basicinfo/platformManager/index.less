@@ -102,3 +102,51 @@
         color: #515a6e;
     }
 }
+.manager-container {
+    .manager-container-panel {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        width: 100%;
+        .left {
+            width: 350px;
+            background-color: #ffffff;
+            height: 790px;
+            border: 1px solid #dcdee2;
+            border-color: #e8eaec;
+            transition: all 0.2s ease-in-out;
+        }
+        .right {
+            flex: 1;
+            .top {
+                flex: 1;
+                transition: all 0.2s ease-in-out;
+                margin: 0 0 10px 10px;
+                .top_tabale{
+                    background-color: #ffffff;
+                    border: 1px solid #dcdee2;
+                    border-color: #e8eaec;    
+                }
+                .top_tabale_white{
+                    border: 1px solid #dcdee2;
+                    border-top:0;
+                    border-color: #e8eaec;    
+                }
+            }
+            .right-bottom {
+                flex: 1;
+                margin: 10px 10px;
+                transition: all 0.2s ease-in-out;
+            }
+        }
+    }
+    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-center, 
+    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-left, 
+    .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-right
+    {
+        margin: 0 0 0 0;
+        font-weight: 600;
+        color: #515a6e;
+    }
+}

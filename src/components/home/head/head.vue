@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 11:10:16
+ * @LastEditTime: 2021-02-23 16:07:09
 -->
 <template>
 <div class="head">
@@ -22,7 +22,20 @@
                     <Icon type="md-arrow-dropdown"></Icon>
                 </div>
                 <DropdownMenu slot="list">
+                    <DropdownItem @click.native="goUserInfo">个人档案</DropdownItem>
                     <DropdownItem @click.native="loginOut">用户设置</DropdownItem>
+                    <Dropdown placement="right-start">
+                        <DropdownItem>
+                            主题设置
+                            <Icon type="ios-arrow-forward"></Icon>
+                        </DropdownItem>
+                        <DropdownMenu slot="list">
+                            <DropdownItem>默认</DropdownItem>
+                            <DropdownItem>叶兰绿</DropdownItem>
+                            <DropdownItem>赤城红</DropdownItem>
+                            <DropdownItem>深夜黑</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                     <DropdownItem @click.native="loginOut">退出</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
@@ -128,6 +141,9 @@ export default {
         },
         changeMenu(data, type) {
             console.log(data, type);
+        },
+        goUserInfo(){  
+            this.$router.push({name:'userInfo'});
         },
         loginOut() {
             localStorage.removeItem(XZX_TOKEN_KEY);

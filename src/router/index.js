@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-20 17:59:43
+ * @LastEditTime: 2021-02-23 12:10:16
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -30,6 +30,27 @@ const routes = [
           title: "首页",
           group: "index",
         },
+        redirect:'index/home',   //默认子路由
+        children:[
+          {
+            path: 'home',
+            name: 'home',
+            meta:{ 
+              title:'首页',
+              group: "index",
+            },
+            component: resolve=>(require(["@views/home/index/home"],resolve)),
+          },
+          {
+            path: 'userInfo',
+            name: 'userInfo',
+            meta:{ 
+              title:'个人档案',
+              group: "index",
+            },
+            component: resolve=>(require(["@views/home/index/userInfo/userInfo"],resolve)),
+          }
+        ]
       },
       {
         path: "index2",

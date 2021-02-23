@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 16:04:50
+ * @LastEditTime: 2021-02-23 15:57:12
  */
 export default {
   data() {
@@ -30,10 +30,11 @@ export default {
       }
     };
     return {
-      formConfig:{
+      formConfig2:{
         userName:{
           name:'用户名',
           type:'text',
+          disabled:true
         },
         nickName:{
           name:'昵称',
@@ -42,7 +43,7 @@ export default {
         merchantCode:{
           name:'商户号',
           type:'text', 
-          disabled:true 
+          disabled:true
         },
         email:{
           name:'邮箱',
@@ -55,7 +56,7 @@ export default {
         },
         birthday:{
           name:'生日',
-          type:'dateTime'
+          type:'dateTime',
         },
         sex:{
           name:'性别',
@@ -66,7 +67,7 @@ export default {
               {name:'男',value:1},
               {name:'女',value:2}
             ],
-          }
+          },
         },
         password:{
           name:'密码',
@@ -82,11 +83,13 @@ export default {
               {name:'是',value:true},
               {name:'否',value:false}
             ],
-          }
+          },
+          disabled:true
         },
         remark:{
           name:'备注',
           type:'textarea',
+          disabled:true
         },
         roleId:{
           name:'所属角色',
@@ -100,9 +103,10 @@ export default {
               {k:'value',v:'id'}
             ]
           },
+          disabled:true
         },
       },
-      formValidate: {
+      formValidate2: {
         userName: '',
         roleId:'',
         merchantCode:'',
@@ -116,7 +120,7 @@ export default {
         remark:'',
         userRoleId:'',
       },
-      ruleValidate: {
+      ruleValidate2: {
         userName: [{
             required: true,
             message: '请输入用户名',
@@ -158,7 +162,7 @@ export default {
         // enabled: [{ required: true, message: '请选择是否启用',validator: enabledVali, trigger: 'change' }],
         roleId: [{ required: true, message: '请选择所属角色',validator: roleIdVali, trigger: 'change' }],
       },
-      filtersConfig:{
+      filtersConfig2:{
         userName:{
           name:'用户名称',
           value:'userName',

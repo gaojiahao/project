@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 17:28:02
+ * @LastEditTime: 2021-02-23 09:38:39
 -->
 <template>
-<div class="propertyManager-container">
-    <div class="propertyManager-container-panel">
+<div class="manager-container">
+    <div class="manager-container-panel">
         <div class="left">
             <PropertyManagerList :list="listData" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @show-add-child="showAddChild" @edit="edit" @edit-child="editChild" @del="sureDeleteConfirm" @del-child="sureDeleteConfirmChild" @set-filter="setFilter"></PropertyManagerList>
         </div>
@@ -333,54 +333,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.propertyManager-container {
-    .propertyManager-container-panel {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        width: 100%;
-
-        .left {
-            width: 350px;
-            background-color: #ffffff;
-            height: 790px;
-            border: 1px solid #dcdee2;
-            border-color: #e8eaec;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .right {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-
-            .top {
-                flex: 1;
-                transition: all 0.2s ease-in-out;
-                margin: 0 0 10px 10px;
-                .top_tabale{
-                    background-color: #ffffff;
-                    border: 1px solid #dcdee2;
-                    border-color: #e8eaec;    
-                }
-            }
-
-            .right-bottom {
-                flex: 1;
-                margin: 10px 10px;
-                transition: all 0.2s ease-in-out;
-            }
-        }
-
-        .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-center, 
-        .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-left, 
-        .ivu-divider-horizontal.ivu-divider-small.ivu-divider-with-text-right
-        {
-            margin: 8px 0 0 0;
-            font-weight: 600;
-            color: #515a6e;
-        }
-    }
-}
+@import "~@less/basicinfo/platformManager/index";
+@import "~@less/form.less";
 </style>

@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 14:59:34
+ * @LastEditTime: 2021-02-23 09:43:24
 -->
 <template>
-<div class="brandManager-container">
-    <div class="brandManager-container-panel">
+<div class="manager-container">
+    <div class="manager-container-panel">
         <div class="left">
             <BrandManagerList :list="listData" @select-item="selectItem" @show-add="showAdd" :loading="listLoading" @del="sureDeleteConfirm" @set-filter="setFilter"></BrandManagerList>
         </div>
@@ -219,4 +219,5 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/basicinfo/platformManager/index";
+@import "~@less/form.less";
 </style>

@@ -3,6 +3,29 @@
     <div id='calendar-container' style="width: 100%;">
       <div id='calendar'></div>
     </div>
+    <Modal
+        v-model="visble"
+        :title="title"
+        @on-ok="ok"
+        @on-cancel="cancel"
+         >
+        <Form :model="note" ref="formData" :label-width="80">
+            <FormItem label="待办名称">
+                <Input  v-model="note.title"></Input >
+            </FormItem>
+            <FormItem label="优先级">
+              <Select v-model="note.level" clearable filterable>
+                <Option v-for="item in levelList" :value="item.value" :key="item.value">{{ item.name }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="日期">
+              <DatePicker v-model="note.start" @on-change="note.start=$event" format="yyyy-MM-dd HH:mm" type="date" placeholder="" style="width: 200px"></DatePicker> 
+            </FormItem>
+            <FormItem label="起止">
+              <TimePicker v-model="note.time" format="HH:mm" type="timerange" placement="bottom-end" placeholder="Select time" style="width: 168px"></TimePicker>  
+            </FormItem>
+        </Form>
+    </Modal>
   </div>
 </template>
 
@@ -11,23 +34,41 @@ import { Calendar } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import calendarjs from "@mixins/calendar";
+import {
+    TimePicker
+} from "view-design";
 
 export default {
   props:{
     config:{
       type: Object,
       default () {
-          return {}
+        return {}
       }
     }
   },
   data() {
-      return {
-        events:[],
-        eventInfo:{}
-      }
+    return {
+      events:[],
+      eventInfo:{},
+      visble:false,
+      title:'待办事项',
+      note:{
+        title:'',
+        level:'',
+        start:'',
+        time:''
+      },
+      levelList:[
+        {name:'一般',value:'0'},
+        {name:'最高',value:'1'},
+        {name:'较低',value:'2'},
+        {name:'最低',value:'3'}
+      ]
+    }
   },
   components: {
+    TimePicker
   },
   mixins:[calendarjs],
   watch:{
@@ -36,7 +77,8 @@ export default {
   methods: {
     // 点击当天
     dateClick (info) {
-        console.log('info', info)
+      console.log('info', info)
+      this.visble = true;
     },
     // 查看更多
     moreClick (day, events, jsEvent) {
@@ -114,12 +156,30 @@ export default {
         console.log('点击了右键',e);
       });
     },
+    ok(){
+      this.events.push(this.note);
+      this.initCale();
+    },
+    cancel(){
+
+    },
+    formatDate(date) {
+      const y = date.getFullYear();
+      let m = date.getMonth() + 1;
+      m = m < 10 ? '0' + m : m;
+      let d = date.getDate();
+      d = d < 10 ? ('0' + d) : d;
+      return y + '-' + m + '-' + d;
+    },
   },
   mounted(){
-      this.initCale();
+    this.initCale();
   },
   created(){
-
+    this.events=[
+      {"title":"待办","level":"1","start":"2021-02-10 00:00","time":["",""]},
+      {"title":"待办","level":"1","start":"2021-02-18 00:00","time":["",""]}
+    ]
   }
 }
 </script>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 19:23:56
+ * @LastEditTime: 2021-02-23 15:05:32
 -->
 <template>
 <div class="content">
@@ -80,7 +80,7 @@
                 <DatePicker v-model="formValidate[index]" @on-change="formValidate[index]=$event" format="yyyy-MM-dd HH:mm" type="date" placeholder="" style="width: 200px" disabled></DatePicker> 
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='password'">
-                <Input v-model="formValidate[index]" :style="{width:'300px'}" :disabled="formConfig[index]['disabled']" type="password" password :placeholder="formConfig[index]['placeholder']" ></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
+                <Input v-model="formValidate[index]" :style="{width:'300px'}" disabled type="password" password :placeholder="formConfig[index]['placeholder']" ></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <!-- 自定义下拉控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCustom'">
