@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 16:07:09
+ * @LastEditTime: 2021-02-23 20:25:36
 -->
 <template>
 <div class="head">
@@ -23,17 +23,17 @@
                 </div>
                 <DropdownMenu slot="list">
                     <DropdownItem @click.native="goUserInfo">个人档案</DropdownItem>
-                    <DropdownItem @click.native="loginOut">用户设置</DropdownItem>
+                    <DropdownItem @click.native="">用户设置</DropdownItem>
                     <Dropdown placement="right-start">
                         <DropdownItem>
                             主题设置
                             <Icon type="ios-arrow-forward"></Icon>
                         </DropdownItem>
                         <DropdownMenu slot="list">
-                            <DropdownItem>默认</DropdownItem>
-                            <DropdownItem>叶兰绿</DropdownItem>
-                            <DropdownItem>赤城红</DropdownItem>
-                            <DropdownItem>深夜黑</DropdownItem>
+                            <DropdownItem @click.native="changeTheme(0)">默认</DropdownItem>
+                            <DropdownItem @click.native="changeTheme(1)">叶兰绿</DropdownItem>
+                            <DropdownItem @click.native="changeTheme(2)">赤城红</DropdownItem>
+                            <DropdownItem @click.native="changeTheme(3)">深夜黑</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <DropdownItem @click.native="loginOut">退出</DropdownItem>
@@ -152,6 +152,20 @@ export default {
             this.$store.commit('clearMenuRouter');
             this.$store.commit('clearAuth');
             this.$router.push('/login');
+        },
+        changeTheme(colortype){
+            localStorage.setItem('themeColor',colortype);    //保存使用主题色
+            document.body.classList.remove(window.cssStyle); //去除已有主题色
+            window.cssStyle=this.colorList[Number(colortype)];    //获取新的主题色
+            document.body.classList.add(window.cssStyle);    //body添加主题色的class
+        
+            let themeColor = localStorage.getItem('themeColor'); // 判断是否已存在使用的皮肤
+            if (themeColor) {
+                window.cssStyle=this.colorList[Number(themeColor)];
+            }else {
+            localStorage.setItem('themeColor','0');  // 不存在则储存一个默认的主题色
+            }
+            document.body.classList.add(window.cssStyle);  //body 添加less中主题色的
         }
     },
     created() {
@@ -159,6 +173,10 @@ export default {
         var value = JSON.parse(storage.getItem("activeMenu"));
         this.userInfo = JSON.parse(localStorage.getItem(XZX_TOKEN_KEY))['userInfo'];
         this.activeIndex = value && value.oneLevel && value.oneLevel.value;
+        
+        this.colorList = ['default','green','red','black']; //全局变量
+        var index = localStorage.getItem('themeColor'); // 判断是否已存在使用的皮肤
+        Window.themeColor=this.colorList[index];    
     },
 };
 </script>

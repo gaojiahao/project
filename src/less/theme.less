@@ -1,0 +1,24 @@
+@theme-color : #226CDC; //默认主题色
+@red-theme-color:#fe2419;
+@green-theme-color:green;
+.header-style(@theme-color:@green-theme-color){  // less函数
+  .ivu-btn-primary {
+    background-color: @theme-color;
+  }
+}
+//调用函数生成相应的样式
+.header-style();  // 默认主题色
+ 
+.red{   // 这里需要单独添加一个class 用来换肤                           
+  .header-style(@red-theme-color); // 红色
+  .ivu-btn-primary{
+    background-color: @red-theme-color;
+  }
+}
+ 
+.green{
+  .header-style(@green-theme-color); //绿色
+  .ivu-btn-primary{
+    background-color: @green-theme-color;
+  }
+}

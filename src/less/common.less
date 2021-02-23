@@ -10,6 +10,101 @@
 @menu-blue-color              : #FFFFFF;
 @menu-blue-group-title-color  : #8696a7;
 
+@theme-color : #226CDC; //默认主题色
+@red-theme-color:#d71345;
+@green-theme-color:#84bf96;
+.header-style(@theme-color:@green-theme-color){  // less函数
+  .ivu-btn-primary {
+    background-color: @theme-color;
+  }
+}
+ 
+.red{   // 这里需要单独添加一个class 用来换肤                           
+    .header-style(@red-theme-color); // 红色
+    .ivu-layout-header{
+        background: @red-theme-color;
+    }
+    .container .container-sider .title-menu {
+        background: #bb505d;
+        color: #b22c46;
+    }
+    .ivu-menu-opened {
+        background: #f58f98;
+    }
+    .ivu-menu-vertical .ivu-menu-item:hover, .ivu-menu-vertical .ivu-menu-submenu-title:hover {
+        color: #ed1941;
+    }
+    .ivu-menu-submenu-color {
+        background: #f8aba6;
+    }
+    .ivu-menu-box-active {
+        color: #ed1941;
+        border-right: 2px solid #ed1941;
+    }
+    .container .container-sider {
+        background: #f8aba6;
+    }
+    .ivu-menu {
+        color:#b22c46
+    }
+    .ivu-menu-dark{
+        background: @red-theme-color;     
+    }
+    .ivu-btn-primary{
+        background-color: @red-theme-color;
+        border-color: @red-theme-color;
+    }
+    .ivu-input:focus {
+        border-color: @red-theme-color;
+    }
+    .ivu-input:hover {
+        border-color: @red-theme-color;
+    }
+}
+ 
+.green{
+    .header-style(@green-theme-color); //绿色
+    .ivu-layout-header{
+        background: @green-theme-color;
+    }
+    .container .container-sider .title-menu {
+        background: #5c7a29;
+        color: #2e3a1f;
+    }
+    .ivu-menu-opened {
+        background: #a3cf62;
+    }
+    .ivu-menu-vertical .ivu-menu-item:hover, .ivu-menu-vertical .ivu-menu-submenu-title:hover {
+        color: #78a355;
+    }
+    .ivu-menu-submenu-color {
+        background: #a3cf62;
+    }
+    .ivu-menu-box-active {
+        color: #78a355;
+        border-right: 2px solid #78a355;
+    }
+    .container .container-sider {
+        background: #a3cf62;
+    }
+    .ivu-menu {
+        color:#2e3a1f
+    }
+    .ivu-menu-dark{
+        background: @green-theme-color;     
+    }
+    .ivu-btn-primary{
+        background-color: @green-theme-color;
+        border-color: @green-theme-color;
+    }
+    .ivu-input:focus {
+        border-color: @green-theme-color;
+    }
+    .ivu-input:hover {
+        border-color: @green-theme-color;
+    }
+}
+
 /*form背景*/
 @form-bg-white: #FFFFFF;
 

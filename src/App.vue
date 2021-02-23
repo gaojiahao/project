@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2020-12-16 10:36:27
+ * @LastEditTime: 2021-02-23 20:26:39
 -->
 <template>
 <div id="app" v-title data-title="跨境电商ERP">
@@ -41,6 +41,11 @@ export default {
         if (token) {
             this.logginStatus = true;
         }
+        this.colorList = ['default','green','red','black']; //全局变量
+        var index = window.localStorage.getItem('themeColor'); // 判断是否已存在使用的皮肤
+        Window.themeColor=this.colorList[index];
+        window.cssStyle=this.colorList[index];    //获取新的主题色
+        document.body.classList.add(window.cssStyle);    //body添加主题色的class
     },
     mounted(){
         this.$Message.config({
