@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-05 09:49:40
+ * @LastEditTime: 2021-02-24 17:19:02
 -->
 <template>
 <div class="erp_table_container">
@@ -201,16 +201,14 @@ export default {
         },
         goEdit(){
             if(this.activatedRow.id){
-                this.formValidate = {
-                    id:this.activatedRow.id,
-                    name: this.activatedRow.name,
-                    linkUrl: this.activatedRow.linkUrl,
-                    icon:[],
-                    code:this.activatedRow.code,
-                    isMenu: this.activatedRow.isMenu,
-                    enabled:this.activatedRow.enabled,
-                    parentId:this.activatedRow.parentId,
-                },
+                this.formValidate['id'] = this.activatedRow.id;
+                this.formValidate['name'] = this.activatedRow.name;
+                this.formValidate['linkUrl'] = this.activatedRow.linkUrl;
+                this.formValidate['icon'] = [];
+                this.formValidate['code'] = this.activatedRow.code;
+                this.formValidate['isMenu'] = this.activatedRow.isMenu;
+                this.formValidate['enabled'] = this.activatedRow.enabled;
+                this.formValidate['parentId'] = this.activatedRow.parentId;
                 this.formValidate['icon'].push({filePath:this.activatedRow.icon});
                 this.showModel = true;
             }

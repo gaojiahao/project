@@ -13,6 +13,7 @@
 @theme-color : #226CDC; //默认主题色
 @red-theme-color:#d71345;
 @green-theme-color:#84bf96;
+@black-theme-color:#281f1d;
 .header-style(@theme-color:@green-theme-color){  // less函数
   .ivu-btn-primary {
     background-color: @theme-color;
@@ -68,24 +69,24 @@
         background: @green-theme-color;
     }
     .container .container-sider .title-menu {
-        background: #5c7a29;
+        background: #00ae9d;
         color: #2e3a1f;
     }
     .ivu-menu-opened {
-        background: #a3cf62;
+        background: #65c294;
     }
     .ivu-menu-vertical .ivu-menu-item:hover, .ivu-menu-vertical .ivu-menu-submenu-title:hover {
         color: #78a355;
     }
     .ivu-menu-submenu-color {
-        background: #a3cf62;
+        background: #65c294;
     }
     .ivu-menu-box-active {
-        color: #78a355;
+        color: #00ae9d;
         border-right: 2px solid #78a355;
     }
     .container .container-sider {
-        background: #a3cf62;
+        background: #65c294;
     }
     .ivu-menu {
         color:#2e3a1f
@@ -102,6 +103,49 @@
     }
     .ivu-input:hover {
         border-color: @green-theme-color;
+    }
+}
+
+.black{
+    .header-style(@black-theme-color); //绿色
+    .ivu-layout-header{
+        background: @black-theme-color;
+    }
+    .container .container-sider .title-menu {
+        background: #293047;
+        color: #2e3a1f;
+    }
+    .ivu-menu-opened {
+        background: #281f1d;
+    }
+    .ivu-menu-vertical .ivu-menu-item:hover, .ivu-menu-vertical .ivu-menu-submenu-title:hover {
+        color: #fffffb;
+    }
+    .ivu-menu-submenu-color {
+        background: #281f1d;
+    }
+    .ivu-menu-box-active {
+        color: #fffffb;
+        border-right: 2px solid #fffffb;
+    }
+    .container .container-sider {
+        background: #281f1d;
+    }
+    .ivu-menu {
+        color:#fffffb
+    }
+    .ivu-menu-dark{
+        background: @black-theme-color;     
+    }
+    .ivu-btn-primary{
+        background-color: @black-theme-color;
+        border-color: @black-theme-color;
+    }
+    .ivu-input:focus {
+        border-color: @black-theme-color;
+    }
+    .ivu-input:hover {
+        border-color: @black-theme-color;
     }
 }
 
