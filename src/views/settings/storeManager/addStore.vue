@@ -4,40 +4,38 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 09:17:32
+ * @LastEditTime: 2021-02-24 17:55:45
 -->
 <template>
 <div class="add_store">
-    <Row type="flex" justify="space-around" class="code-row-bg">
-        <Col span="11">
-            <div class="top">
-                <Divider orientation="left" size="small">店铺信息</Divider>
-                <div class="top_tabale">
-                    <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+    <div class="top">
+        <Divider orientation="left" size="small">店铺信息</Divider>
+        <div class="top_tabale">
+            <Row>
+                <Col span="12">
+                    <XForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form" style="height:550px">
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%">
-                                    <Button type="primary" @click="save" style="float: left;">保存</Button>
-                                    <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">重置</Button>
-                                    <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </div>
                             </FormItem>
                         </template>
                     </XForm>
-                </div>
-            </div>
-        </Col>
-        <Col span="11">
-            <div class="item">
-                <div class="top">
-                    <Divider orientation="left" size="small">选择系统类目绑定</Divider>
-                    <div class="top_tabale">
-                        <SystemCategoryBind type="add" :loading="loading" @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind>
+                    <div style="margin:10px 10px 20px 80px;float:left">
+                        <Button type="primary" @click="save" style="float: left;">保存</Button>
+                        <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">重置</Button>
+                        <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                     </div>
-                </div>
-            </div>
-        </Col>
-    </Row>
+                </Col>
+                <Col span="12">
+                    选择系统类目绑定
+                    <div class="" style="border-left: 1px solid #dcdee2;">
+                        <SystemCategoryBind type="add" :loading="loading" @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind>
+                    </div>   
+                </Col>
+            </Row>
+        </div>
+    </div>
 </div>
 </template>
 
