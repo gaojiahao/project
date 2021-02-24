@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 17:42:57
+ * @LastEditTime: 2021-02-24 14:25:57
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -45,7 +45,8 @@
             <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
         </div>
     </Modal> -->
-    <TypeManagerAdd v-model="formValidate2['attributeId']" :config="formConfig2['attributeId']" ref="selectorMulti" :isShow="isShow" @show-model="showModel" @add="add"></TypeManagerAdd>
+    <!-- <TypeManagerAdd v-model="formValidate2['attributeId']" :config="formConfig2['attributeId']" ref="selectorMulti" :isShow="isShow" @show-model="showModel" @add="add"></TypeManagerAdd> -->
+    <TypeManagerAdd :value="data.attributeBinds" :config="formConfig2['attributeId']" ref="selectorMulti" :isShow="isShow" @show-model="showModel" @add="add"></TypeManagerAdd>
 </Tabs>
 </template>
 
@@ -211,18 +212,28 @@ export default {
         selectTab(name) {
             this.activeTab = name;
         },
-        add() {
+        add(selectedList) {
             this.data.categoryId = this.data.categoryId?this.data.categoryId:this.$parent.formValidate.id;
-            for(var i=0;i<this.formValidate2.attributeId.length;i++){
-                if(!this.checkAttribute(this.formValidate2.attributeId[i]['value'])) {
-                    this.data.attributeBinds.push({
-                        attributeId:this.formValidate2.attributeId[i]['value'],
-                        attributeName:this.formValidate2.attributeId[i]['name'],
-                        categoryId: this.$parent.formValidate.id,
-                        categoryName: this.$parent.formValidate.name,
-                        isCheck: true
-                    });
-                }
+            // for(var i=0;i<this.formValidate2.attributeId.length;i++){
+            //     if(!this.checkAttribute(this.formValidate2.attributeId[i]['value'])) {
+            //         this.data.attributeBinds.push({
+            //             attributeId:this.formValidate2.attributeId[i]['value'],
+            //             attributeName:this.formValidate2.attributeId[i]['name'],
+            //             categoryId: this.$parent.formValidate.id,
+            //             categoryName: this.$parent.formValidate.name,
+            //             isCheck: true
+            //         });
+            //     }
+            // }
+            this.data.attributeBinds = [];
+            for(var i=0;i<selectedList.length;i++){
+                this.data.attributeBinds.push({
+                    attributeId:selectedList[i]['value'],
+                    attributeName:selectedList[i]['name'],
+                    categoryId: this.$parent.formValidate.id,
+                    categoryName: this.$parent.formValidate.name,
+                    isCheck: true
+                });
             }
         },
         checkAttribute(id){
@@ -364,6 +375,9 @@ export default {
         },
         showModel(value) {
             this.isShow = value;
+            if(value==true){
+                this.$refs.selectorMulti.init();
+            }
         },
         async init(){
             await this.GetPlatformsList();
@@ -387,5 +401,12 @@ export default {
 >>>.ivu-tabs-bar {
     border-bottom: 0;
     margin-bottom: 0;
+}
+.ivu-tabs {
+    background: #fff;
+    padding:10px 10px 0 10px;
+    border-left: 1px solid #dcdee2;
+    border-right: 1px solid #dcdee2;
+    border-bottom: 1px solid #dcdee2;
 }
 </style>

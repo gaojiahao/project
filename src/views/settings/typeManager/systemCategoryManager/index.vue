@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 09:37:16
+ * @LastEditTime: 2021-02-24 11:43:15
 -->
 <template>
 <div class="manager-container">
@@ -233,6 +233,7 @@ export default {
             this.GetAttributeCategoryPage();
             this.isShowAdd = true;
             this.isShowBind = true;
+            this.$refs.typeManagerTab.$refs.selectorMulti.initPage();
         },
         sureDeleteConfirm (root, node, data,flag) {
             if (data.id) {
