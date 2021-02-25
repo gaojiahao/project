@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 12:10:16
+ * @LastEditTime: 2021-02-25 17:42:06
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -540,22 +540,22 @@ const routes = [
             path: "logisticsManager",
             name: "logisticsManager",
             component: resolve=>(require(["@views/settings/logisticsManager"],resolve)),
-            redirect:'logisticsManager/logisticsManager',   //默认子路由
+            redirect:'logisticsManager/logisticsMoney',   //默认子路由
             meta: {
               title: "物流管理",
               group: "logisticsManager",
             },
             children:[
               {
-                path: 'logisticsManager',
-                name: 'logisticsManager',
+                path: 'logisticsMoney',
+                name: 'logisticsMoney',
                 meta:{ 
                   title:'物流管理',
                   group: "logisticsManager",
                   level: 1,
                 },
                 component: resolve=>(require(["@views/settings/logisticsManager/logisticsManager"],resolve)),
-                redirect:'logisticsManager/logisticsList',
+                redirect:'logisticsMoney/logisticsList',
                 children:[
                   {
                     path: "logisticsList",
@@ -1031,7 +1031,7 @@ const routes = [
                 path: 'viewFinishProduct',
                 name: 'viewFinishProduct',
                 meta:{ 
-                  title:'查看推品',
+                  title:'查看选品',
                   group: "sellManager",
                   level: 2,
                 },

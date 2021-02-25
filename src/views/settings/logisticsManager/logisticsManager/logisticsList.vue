@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 12:11:49
+ * @LastEditTime: 2021-02-25 16:34:31
 -->
 <template>
 <div class="erp_table_container">
@@ -52,7 +52,7 @@ import {
 } from "@service/settingsService"
 
 export default {
-    name: "StoreList",
+    name: "LogisticsList",
     mixins: [config,list],
     data() {
         return {
