@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 18:51:06
+ * @LastEditTime: 2021-02-25 16:14:50
  */
 //引用插件
 import Vue from "vue";
@@ -25,6 +25,7 @@ import '@less/common';
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import '@css/iconfont/iconfont.css'
 import router from "./router";
 import vueAudioPlayerUmdMin from "@liripeng/vue-audio-player";
 
