@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 09:38:39
+ * @LastEditTime: 2021-02-24 19:34:45
 -->
 <template>
 <div class="manager-container">
@@ -166,7 +166,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.GetAttributeList();
-                                    this.$refs['form2'].$refs['formValidate'].resetFields();
+                                    this.formValidate2.valueName = '';
                                     this.$refs['form2'].initEL('input');
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({

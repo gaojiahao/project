@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-24 11:43:15
+ * @LastEditTime: 2021-02-25 11:38:51
 -->
 <template>
 <div class="manager-container">
@@ -133,7 +133,9 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.GetCategoryList();
-                                    this.clearFormData();
+                                    //this.clearFormData();
+                                    this.formValidate.name='';
+                                    this.formValidate.level='';
                                     this.$refs['form'].initEL('input');
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
@@ -151,7 +153,9 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
-                                    this.GetCategoryList();
+                                    //this.GetCategoryList();
+                                    this.formValidate.name='';
+                                    this.formValidate.level='';
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,

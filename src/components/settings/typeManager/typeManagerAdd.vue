@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-24 18:10:16
+ * @LastEditTime: 2021-02-24 19:24:07
 -->
 <template>
 <div>
@@ -24,7 +24,7 @@
         <Tag v-for="item in selectedList" :key="item.id" :name="item.name" closable @on-close="deleteSelect(item)">{{ item.name }}</Tag>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
-                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer size="small" :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
+                <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer size="small" :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.maxResultCount" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
             </div>
         </div>
     </Modal>
@@ -282,6 +282,8 @@ export default {
         },
         initPage(){
             this.pageData.skipCount = 1;
+            this.pageData.skipTotal = 15;
+            this.pageData.maxResultCount = 15;
         }
     },
     created(){

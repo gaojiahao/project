@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-24 17:19:02
+ * @LastEditTime: 2021-02-25 10:57:49
 -->
 <template>
 <div class="erp_table_container">
@@ -80,6 +80,7 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
+            actionSelect:''
         }
     },
     computed:{
@@ -96,14 +97,12 @@ export default {
                     this.$nextTick(() => {
                         this.totalPage = res.result.item.totalCount;
                         this.data = res.result.item.items;
-                        // this.data = res.result.item.items.map((e,index)=>{
-                        //     e = {
-                        //         ...e.parent,
-                        //         children: e.children
-                        //     }
-                        //     this.$delete(e,'parent');
-                        //     return e;
-                        // });
+                        this.data = res.result.item.items.map((e,index)=>{
+                            if(e.id==this.actionSelect){
+                                e._showChildren = true;    
+                            }
+                            return e;
+                        });
                         this.loading = false;
                     });
                 }
@@ -177,6 +176,7 @@ export default {
                     });
                 });
             } else {
+                this.actionSelect = this.activatedRow.parentId||this.activatedRow.id;
                 return new Promise((resolve, reject) => {
                     this.$FromLoading.show();
                     UpdateAuthModule({...params,id:this.activatedRow.id}).then(res => {
@@ -309,6 +309,7 @@ export default {
         },
         deleteData(){
             if(this.activatedRow.id){
+                this.actionSelect = this.activatedRow.parentId;
                 this.loading = true;
                 return new Promise((resolve, reject) => {
                     DeleteAuthModule({id:this.activatedRow.id}).then(res => {

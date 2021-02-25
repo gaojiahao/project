@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 18:59:13
+ * @LastEditTime: 2021-02-25 10:01:51
 -->
 <template>
 <div class="x_tree" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
@@ -132,8 +132,8 @@ export default {
         },
         cancel(){
             this.$emit('show-modal',false);
-            this.AuthModuleList();
             this.selected=[];
+            this.fullscreen = false;
         },
         ok(){
             this.handleInput(this.selected.id);

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-29 16:59:33
+ * @LastEditTime: 2021-02-24 20:03:27
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -111,11 +111,12 @@ export default {
             this.$emit('on-page-size-change',pagesize);
         },
         del(row){
+            var me = this;
             return new Promise((resolve, reject) => {
                 DelGoodsSupplier({id:row.id}).then(res => {
                     if (res.result.code == 200) {
                         this.$Message.info('温馨提示：删除成功！');
-                        this.$parent.$parent.$parent.GetPrepGoodsPage();
+                        me.$parent.$parent.$parent.GetGoodsSupplierPage();
                         this.activatedRow = {};
                         this.loading = false;
                         this.activatedRow={};

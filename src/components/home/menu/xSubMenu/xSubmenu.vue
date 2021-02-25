@@ -9,7 +9,9 @@
     <collapse-transition v-if="mode === 'vertical'">
         <ul class="ivu-menu" v-show="opendedChild||opendedChildCom">
             <template v-for="(data,k) in item.children">
-                <li class="ivu-menu-item ivu-menu-box" :key="k" :class="[activeMenu2==data.code ? 'ivu-menu-box-active':'']" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.enabled">{{data.name}}
+                <li class="ivu-menu-item ivu-menu-box" :key="k" :class="[activeMenu2==data.code ? 'ivu-menu-box-active':'']" @click="clickMenu(parentItem&&parentItem.oneLevel,item,data,false)" v-if="data.enabled">
+                    <i class="ivu-icon ivu-icon-ios-navigate" v-if="!data.icon"></i>
+                    <span class="" v-if="!isCollapsed">{{data.name}}</span>
                 </li>
             </template>
         </ul>
@@ -181,7 +183,8 @@ export default {
     margin-right: 1px;
 }
 .ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item {
-    padding: 14px 14px 14px 40px;
+    padding: 14px 14px;
+    text-align: center;
 }
 .ivu-menu-submenu /deep/ .ivu-menu-submenu-title img {
     width: 16px;

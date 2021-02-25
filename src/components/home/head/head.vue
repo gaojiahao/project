@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-21 14:56:30
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 20:25:36
+ * @LastEditTime: 2021-02-25 10:20:09
 -->
 <template>
 <div class="head">
@@ -30,10 +30,10 @@
                             <Icon type="ios-arrow-forward"></Icon>
                         </DropdownItem>
                         <DropdownMenu slot="list">
-                            <DropdownItem @click.native="changeTheme(0)">默认</DropdownItem>
-                            <DropdownItem @click.native="changeTheme(1)">叶兰绿</DropdownItem>
-                            <DropdownItem @click.native="changeTheme(2)">赤城红</DropdownItem>
-                            <DropdownItem @click.native="changeTheme(3)">深夜黑</DropdownItem>
+                            <DropdownItem @click.native="changeTheme(0)" :selected="theme==0 ? true:false">默认</DropdownItem>
+                            <DropdownItem @click.native="changeTheme(1)" :selected="theme==1 ? true:false">叶兰绿</DropdownItem>
+                            <DropdownItem @click.native="changeTheme(2)" :selected="theme==2 ? true:false">赤城红</DropdownItem>
+                            <DropdownItem @click.native="changeTheme(3)" :selected="theme==3 ? true:false">深夜黑</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                     <DropdownItem @click.native="loginOut">退出</DropdownItem>
@@ -117,6 +117,7 @@ export default {
             theme1: "dark",
             activeIndex: 'index',
             userInfo: {},
+            theme:0
         };
     },
     methods: {
@@ -166,6 +167,7 @@ export default {
             localStorage.setItem('themeColor','0');  // 不存在则储存一个默认的主题色
             }
             document.body.classList.add(window.cssStyle);  //body 添加less中主题色的
+            this.theme = colortype;
         }
     },
     created() {
@@ -176,6 +178,7 @@ export default {
         
         this.colorList = ['default','green','red','black']; //全局变量
         var index = localStorage.getItem('themeColor'); // 判断是否已存在使用的皮肤
+        this.theme = index;
         Window.themeColor=this.colorList[index];    
     },
 };
