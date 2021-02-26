@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 14:42:36
+ * @LastEditTime: 2021-02-26 17:57:03
 -->
 <template>
 <div>
@@ -37,7 +37,7 @@
                             <div style="width:100%">
                                 <FormItem>
                                     <Button type="primary" @click="savePurchase" style="float: left;">保存</Button>
-                                    <Button @click="clearFormDataPruch" style="float: left; margin-left:10px">取消</Button>
+                                    <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </FormItem>
                             </div>
                         </template>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-26 10:30:04
+ * @LastEditTime: 2021-02-26 16:43:10
 -->
 <template>
 <div class="erp_table_container">
@@ -29,7 +29,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.saleStatus==0">审核</Button>
+                <!-- <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.saleStatus==0">审核</Button> -->
                 <Button type="warning" size="small" style="margin-right: 5px" @click="showResearchModel(row)">调研</Button>
             </template>
             <template slot="footer">

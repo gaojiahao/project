@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 10:37:20
+ * @LastEditTime: 2021-02-26 17:48:10
 -->
 <template>
 <div>
@@ -49,6 +49,7 @@
         </div>
         <div style="width:100%" v-if="!disabled">
             <Button type="primary" @click="save" style="float: left;">保存</Button>
+            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
         </div>
     </div>
 </div>
@@ -190,6 +191,9 @@ export default {
         },
         save() {
             this.$emit('save',this.uploadList);
+        },
+        goReturn(){
+            this.$router.go(-1);
         },
     },
     created(){

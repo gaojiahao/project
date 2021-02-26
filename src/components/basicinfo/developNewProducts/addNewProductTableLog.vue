@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 17:56:15
+ * @LastEditTime: 2021-02-26 17:53:55
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -14,6 +14,9 @@
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
                 <Page :total="pageData.totalPagePruch" :transfer="true" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
+                <div style="width:100%;margin-top:10px">
+                    <Button @click="goReturn" style="float: right; margin-right:10px">返回</Button>
+                </div>
             </div>
         </div>
     </div>
@@ -67,6 +70,9 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.$emit('on-page-size-change-log',pagesize);
+        },
+        goReturn(){
+            this.$router.go(-1);
         },
     }
 }

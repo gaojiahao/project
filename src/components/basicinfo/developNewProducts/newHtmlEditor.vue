@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-11 15:50:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:19:10
+ * @LastEditTime: 2021-02-26 17:54:44
 -->
 <template>
   <div class="editor-container">
@@ -35,7 +35,8 @@
         <Button icon="ios-cloud-upload-outline" ></Button>
     </Upload>
     <div style="width:100%;margin-top:10px" v-if="!disabled">
-        <Button @click="clearFormData" style="float: right;">取消</Button>
+        <Button @click="goReturn" style="float: right; margin-right:10px">返回</Button>
+        <!-- <Button @click="clearFormData" style="float: right; margin-right:10px">取消</Button> -->
         <Button type="primary" @click="save" style="float: right; margin-right:10px">保存</Button>
     </div>
   </div>
@@ -189,6 +190,9 @@ export default {
                     desc: res.result.msg
                 });    
             }
+        },
+        goReturn(){
+            this.$router.go(-1);
         },
     },
     computed: {

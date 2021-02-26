@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-07 16:32:37
+ * @LastEditTime: 2021-02-26 17:54:56
 -->
 <template>
 <div class="addAttrProductTable-container">
@@ -19,7 +19,8 @@
         </div>
         <div style="margin-bottom: 10px; padding:10px;display: inline-block;" v-if="!disabled">
             <div style="position: relative;line-height: 48px;font-size: 14px;margin-left:120px">
-                <Button @click="clearFormData" style="float: right;">取消</Button>
+                <Button @click="goReturn" style="float: right; margin-right:10px">返回</Button>
+                <!-- <Button @click="clearFormData" style="float: right;margin-right:10px">取消</Button> -->
                 <Button type="primary" @click="save" style="float: right; margin-right:10px">保存</Button>
             </div>
         </div>
@@ -110,7 +111,10 @@ export default {
                     this.list2[data.attributeId] = {tag:res.result.item.attributeId,value:res.result.item.id,label:res.result.item.valueName};
                 }
             })
-        }
+        },
+        goReturn(){
+            this.$router.go(-1);
+        },
     }
 }
 </script>
