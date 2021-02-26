@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 09:43:29
+ * @LastEditTime: 2021-02-26 09:20:52
  */
 export default {
   data() {
@@ -79,10 +79,15 @@ export default {
       },
       filtersConfig:{
         name:{
-          name:'菜单名称',
+          name:'产品名称',
           value:'name',
           type:'text',
-        },  
+        },
+        code:{
+          name:'产品编码',
+          value:'code',
+          type:'text',
+        }, 
         createTime:{
           name:'创建时间',
           value:'createTime',
