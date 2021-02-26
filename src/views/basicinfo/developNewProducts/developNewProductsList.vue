@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:24:30
+ * @LastEditTime: 2021-02-26 10:30:04
 -->
 <template>
 <div class="erp_table_container">
@@ -138,7 +138,7 @@ export default {
             this.$router.push({name:'AddNewProduct'});
         },
         goEdit(){
-            if(this.activatedRow.id){
+            if(this.activatedRow.id&&this.activatedRow.status==0){
                 this.$router.push({name:'editNewProduct',query: {id:this.activatedRow.id}});
             }
         },
@@ -295,7 +295,7 @@ export default {
                         return h("span", {
                         style: {
                             display: "inline-block",
-                            color: params.row.saleStatus==1 ? "#19be6b":  params.row.saleStatus==2 ?"#ff9900" : "#ed4014"
+                            color: params.row.saleStatus==1 ? "#19be6b":  params.row.saleStatus==2 ?"#ed4014" : "#ff9900"
                         },
                         },params.row.saleStatus==1 ? "已通过": params.row.saleStatus==2 ? "未通过" : "待审核");
                     },

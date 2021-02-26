@@ -815,7 +815,6 @@ export default {
                 return new Promise((resolve, reject) => {
                     GetWorkflowTemplateById({id:this.tpId}).then(res => {
                         if (res.result.code == 200) {
-                            debugger
                             this.$FromLoading.hide();
                             var arr = JSON.parse(res.result.item.viewJson);
                             this.nodeList = arr.nodeList;

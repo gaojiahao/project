@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 18:04:50
+ * @LastEditTime: 2021-02-26 11:04:06
 -->
 <template>
 <div class="erp_table_container">
@@ -292,7 +292,7 @@ export default {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.pieShopStatus==1 ? "#19be6b": "#ed4014"
+                        color: params.row.pieShopStatus==1 ? "#19be6b": params.row.pieShopStatus == 0 ? "#ff9900":"#ed4014"
                     },
                     },params.row.pieShopStatus==1 ?"已通过": params.row.pieShopStatus==2 ? "不通过" : "未审核");
                 },
