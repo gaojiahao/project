@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 18:01:17
+ * @LastEditTime: 2021-02-26 17:03:26
 -->
 <template>
 <div class="erp_table_container">
@@ -328,7 +328,7 @@ export default {
             },
             {
                 title: '逾期天数',
-                key: 'recommendingOfficer',
+                key: 'overdue',
                 width: 100,
                 resizable: true,
             },
@@ -341,7 +341,7 @@ export default {
                         display: "inline-block",
                         color: params.row.status==1 ? "#19be6b": "#ed4014"
                     },
-                    },params.row.status?"已完成":"未完成");
+                    },params.row.status==1?"已完成":"未完成");
                 },
                 width: 80,
                 resizable: true,

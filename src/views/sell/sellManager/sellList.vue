@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-26 10:36:48
+ * @LastEditTime: 2021-02-26 16:44:01
 -->
 <template>
 <div class="erp_table_container">
@@ -28,7 +28,7 @@
             </template>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="success" size="small" style="margin-right: 5px" @click="goNewProduct(row.id)" v-if="row.status==1">开发</Button>
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goApproval(row.id)" v-if="row.status==0">审核</Button>
+                <!-- <Button type="warning" size="small" style="margin-right: 5px" @click="goApproval(row.id)" v-if="row.status==0">审核</Button> -->
             </template>
             <template slot="footer">
                 <div class="footer_page">

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 17:58:12
+ * @LastEditTime: 2021-02-26 16:45:05
 -->
 <template>
 <div class="erp_table_container">
@@ -26,7 +26,7 @@
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="info" size="small" style="margin-right: 5px" @click="showPop(true)">比价</Button>
                 <Button type="warning" size="small" style="margin-right: 5px" @click="showPop2()">调研</Button>
-                <Button type="success" size="small" style="margin-right: 5px" @click="goResult(row)">审核</Button>
+                <!-- <Button type="success" size="small" style="margin-right: 5px" @click="goResult(row)">审核</Button> -->
             </template>
             <template slot="footer">
                 <div class="footer_page">
