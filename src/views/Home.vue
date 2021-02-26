@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-25 19:05:29
+ * @LastEditTime: 2021-02-26 15:42:19
 -->
 <template>
 <div class="layout">
@@ -22,7 +22,7 @@
                         <span v-show="!isCollapsed">{{leftMenu&&leftMenu.oneLevel&&leftMenu.oneLevel.name}}</span>
                     </div>
                     <template v-for="(item,index) in leftMenu&&leftMenu.oneLevel.children">
-                        <XSubmenu :item="item" :parentItem="leftMenu" :isCollapsed="isCollapsed">
+                        <XSubmenu :item="item" :parentItem="leftMenu" :isCollapsed="isCollapsed" @set-menu-flag="setMenuFlag">
                         </XSubmenu>
                     </template>
                 </Menu>
@@ -101,7 +101,8 @@ export default {
             theme1: "light",
             routerAlive: true,
             sessionApps:{},
-            userRole:''
+            userRole:'',
+            menuFlag:true
         };
     },
     computed: {
@@ -175,6 +176,9 @@ export default {
                 sessionStorage.setItem(ERP_MENU,JSON.stringify(me.menuList));
             }
             me.$loading.hide();
+        },
+        setMenuFlag(flag){
+            this.menuFlag = flag;
         }
     },
     created() {

@@ -72,6 +72,8 @@ export default {
             opened: false,
             dropWidth: parseFloat(getStyle(this.$el, 'width')),
             opendedChild: false,
+            sessionActiveMenu:{},
+            flag:false,
         };
     },
     computed: {
@@ -91,6 +93,9 @@ export default {
             if (this.$store.state.menuRouter.twoLevel && (this.$store.state.menuRouter.twoLevel.code == this.item.code)) {
                 return true; //需要监听的数据
             } else {
+                if(this.sessionActiveMenu.twoLevel&&this.sessionActiveMenu.twoLevel.code==this.item.code&&this.$parent.$parent.$parent.$parent.$parent.menuFlag){
+                    return true;
+                }
                 return false;
             }
         },
@@ -98,14 +103,19 @@ export default {
             if (this.$store.state.menuRouter.thirdLevel && (this.$store.state.menuRouter.thirdLevel.code)) {
                 return this.$store.state.menuRouter.thirdLevel.code; //需要监听的数据
             } else {
+                if(this.sessionActiveMenu.thirdLevel&&this.sessionActiveMenu.thirdLevel.code&&this.$parent.$parent.$parent.$parent.$parent.menuFlag){
+                    return this.sessionActiveMenu.thirdLevel.code;
+                }
                 return false;
             }
         },
         opendedChildCom() {
             if (this.$store.state.menuRouter.twoLevel && this.$store.state.menuRouter.twoLevel.code == this.item.code) {
-
                 return this.opendedChild ? false : true; //需要监听的数据
             } else {
+                if(this.sessionActiveMenu.twoLevel&&this.sessionActiveMenu.twoLevel.code==this.item.code&&this.$parent.$parent.$parent.$parent.$parent.menuFlag){
+                    return true;
+                }
                 return false;
             }
         }
@@ -152,11 +162,16 @@ export default {
             } else {
                 this.$router.push(routerPath);    
             }
+            this.$emit('set-menu-flag',false);
         },
         opendedChildFun() {
             this.opendedChild = this.opendedChild ? false : true;
         }
     },
+    created(){
+        var storage = window.sessionStorage;
+        this.sessionActiveMenu = JSON.parse(storage.getItem("activeMenu"));
+    }
 };
 </script>
 
