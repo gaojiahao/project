@@ -259,17 +259,7 @@
 							t.stopPropagation()
 						}
 					}
-				}),n('div', {
-					ref:'point',
-					style:{
-						position:'absolute',
-						top: '2000px',
-						left: '2000px',
-						width: '1px',
-						height: '1px',
-					},
-					value: '&nbsp;'
-				})], 2)
+				}),], 2)
 			},
 			a = [];
 			function u(t) {
