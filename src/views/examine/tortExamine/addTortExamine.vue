@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-06 14:57:09
+ * @LastEditTime: 2021-02-27 11:14:40
 -->
 <template>
 <div>
@@ -56,7 +56,7 @@
     <div class="top">
         <Divider orientation="left" size="small">审核建议</Divider>
         <div class="top_tabale">
-            <div style="height:40px;width:100%;padding:10px">
+            <!-- <div style="height:40px;width:100%;padding:10px">
                 <RadioGroup v-model="platform" @on-change="onChange">
                     平台：
                     <template v-for="(ditem,dIndex) in platformList">
@@ -65,7 +65,7 @@
                         </Radio>
                     </template>
                 </RadioGroup>
-            </div>
+            </div> -->
             <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
                 <template slot="button">
                     <FormItem>
@@ -223,7 +223,6 @@ export default {
                     GetPrepGoodsById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.prod
                             this.productInfoFormValidate = {
                                 id: res.result.item.id,
                                 code:res.result.item.code,
@@ -304,9 +303,14 @@ export default {
                 GetPlatformsList(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
-                            this.platformList = res.result.item;
+                            this.platformList = res.result.item.map((e,index)=>{
+                                e.value = e.id;
+                                return e;
+                            });
+                            this.formConfig2['platformId']['dataSource']['data'] = this.platformList; 
                             this.firstPlatform = this.platformList[0]['id'];
                         });
+                        
                     }
                 });
             });
@@ -318,13 +322,13 @@ export default {
             var params = {};
             var platformName = '';
             for(var i=0;i<this.platformList.length;i++){
-                if(this.platform==this.platformList[i]['id']){
+                if(this.formValidate2['platformId']==this.platformList[i]['id']){
                     platformName = this.platformList[i]['name']
                 }
             };
             params = {
                 goodsId:this.productId,
-                platformId: this.platform,
+                platformId: this.formValidate2['platformId'],
                 platformName: platformName,
                 reason:this.formValidate2.reason,
                 isTort: this.formValidate2.isTort,

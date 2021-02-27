@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-21 15:33:11
+ * @LastEditTime: 2021-02-27 09:47:23
 -->
 <template>
 <div>
@@ -223,7 +223,6 @@ export default {
                     GetPrepGoodsById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.prod
                             this.productInfoFormValidate = {
                                 id: res.result.item.id,
                                 code:res.result.item.code,

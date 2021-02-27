@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 12:18:39
+ * @LastEditTime: 2021-02-27 09:25:01
 -->
 <template>
 <div class="edit_store">
@@ -141,7 +141,7 @@ export default {
             var logisticsId = this.$route.query.id;
             if(this.formValidate.id) {
                 this.loading = true;
-                return GetFreightTemplatePage({id:logisticsId,...this.pageData}).then(res => {
+                return GetFreightTemplatePage({logisticsId:logisticsId,...this.pageData}).then(res => {
                     if (res.result.code == 200) {
                         this.templateData = res.result.item.items;
                         this.pageData.totalPage = res.result.item.totalCount;

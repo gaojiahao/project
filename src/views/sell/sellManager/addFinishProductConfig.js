@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 12:25:20
+ * @LastEditTime: 2021-02-27 12:13:06
  */
 export default {
     data() {
@@ -18,7 +18,7 @@ export default {
       return {
         formConfig:{
           code:{
-            name:'商品货号',
+            name:'商品编码',
             type:'text',
           },
           name:{

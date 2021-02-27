@@ -4,10 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 09:42:15
+ * @LastEditTime: 2021-02-27 10:55:13
  */
 export default {
   data() {
+    const platformIdVali = (rule, value, callback) => {
+      if (value == ''||value === undefined) {
+        callback(new Error('请选择平台名称'));
+      } else {
+        callback();
+      }
+    };
     const isTortSizeVali = (rule, value, callback) => {
       if (value == ''||value === undefined) {
         if(value===false){
@@ -28,6 +35,13 @@ export default {
     };
     return {
       formConfig2:{
+        platformId:{
+          name:'平台名称',
+          type:'radio',
+          dataSource:{
+           
+          }  
+        },
         isTort:{
           name:'是否侵权',
           type:'radio',
@@ -67,6 +81,12 @@ export default {
         tortStatus:''
       },
       ruleValidate2: {
+        platformId: [{
+          required: true,
+          message: '请选择平台名称',
+          trigger: 'change',
+          validator: platformIdVali
+        }],
         isTort: [{
           required: true,
           message: '是否侵权',

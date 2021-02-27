@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-26 17:53:55
+ * @LastEditTime: 2021-02-27 10:00:50
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -55,7 +55,7 @@ export default {
                 },
                 {
                     title: '操作人',
-                    key: 'createdBy'
+                    key: 'userName'
                 },
                 {
                     title: '操作时间',
