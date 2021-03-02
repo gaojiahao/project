@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-08 10:59:58
+ * @LastEditTime: 2021-03-02 14:19:58
 -->
 <template>
 <div>
@@ -29,7 +29,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :formValue="[productInfoFormValidate.imgOne,productInfoFormValidate.imgTwo,productInfoFormValidate.imgThree]" @save="saveUpload" :disabled="true"></UploadPic>
+                    <UploadPic :length="3" :formValue="[productInfoFormValidate.imgOne,productInfoFormValidate.imgTwo,productInfoFormValidate.imgThree]" :disabled="true"></UploadPic>
                 </div>
             </div>
         </TabPane>

@@ -17,7 +17,7 @@
                             <Radio label="large">全部</Radio>
                             <Radio label="default">未审核</Radio>
                             <Radio label="small">通过</Radio>
-                            <Radio label="small2">不通过</Radio>
+                            <Radio label="small2">未通过</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>

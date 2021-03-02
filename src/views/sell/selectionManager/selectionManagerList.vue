@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-26 10:48:17
+ * @LastEditTime: 2021-03-02 11:13:12
 -->
 <template>
 <div class="erp_table_container">
@@ -90,12 +90,12 @@ export default {
             selectData:{},
             filtersConfig:{
                 goodsCode:{
-                    name:'商品编号',
+                    name:'产品编码',
                     value:'goodsCode',
                     type:'text',
                 },
                 goodsName:{
-                    name:'产品名称',
+                    name:'产品编号',
                     value:'goodsName',
                     type:'text',
                 },  
@@ -267,13 +267,13 @@ export default {
                 resizable: true,
             },
             {
-                title: '商品编码',
+                title: '产品编码',
                 key: 'code',
                 resizable: true,
                 width: 318,
             },
             {
-                title: '商品名称',
+                title: '产品名称',
                 key: 'name',
                 render: (h, params) => {
                     return h("span", {

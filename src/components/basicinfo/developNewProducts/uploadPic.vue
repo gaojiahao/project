@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-26 17:48:10
+ * @LastEditTime: 2021-03-02 20:30:31
 -->
 <template>
 <div>
@@ -190,7 +190,11 @@ export default {
             }      
         },
         save() {
-            this.$emit('save',this.uploadList);
+            if(this.handleBeforeUpload()){
+                this.$emit('save',this.uploadList);
+            } else {
+                return ;  
+            }
         },
         goReturn(){
             this.$router.go(-1);

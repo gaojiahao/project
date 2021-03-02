@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 14:49:10
+ * @LastEditTime: 2021-03-02 11:07:30
  */
 export default {
     data() {
@@ -18,11 +18,11 @@ export default {
       return {
         formConfig:{
           code:{
-            name:'商品货号',
+            name:'产品编码',
             type:'text',
           },
           name:{
-            name:'商品名称',
+            name:'产品名称',
             type:'text',
           },
           categoryId:{
@@ -70,7 +70,7 @@ export default {
           name: [{
               required: true,
               type: 'string',
-              message: '请输入商品名称',
+              message: '请输入产品名称',
               trigger: 'blur'
           }],
           categoryId: [{

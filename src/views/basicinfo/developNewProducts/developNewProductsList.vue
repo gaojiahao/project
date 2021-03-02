@@ -283,7 +283,7 @@ export default {
                             display: "inline-block",
                             color: params.row.status==1 ? "#19be6b": "#ed4014"
                         },
-                        },params.row.status?"已审核":"待审核");
+                        },params.row.status?"已审核":"未审核");
                     },
                     resizable: true,
                     width: 100,
@@ -297,7 +297,7 @@ export default {
                             display: "inline-block",
                             color: params.row.saleStatus==1 ? "#19be6b":  params.row.saleStatus==2 ?"#ed4014" : "#ff9900"
                         },
-                        },params.row.saleStatus==1 ? "已通过": params.row.saleStatus==2 ? "未通过" : "待审核");
+                        },params.row.saleStatus==1 ? "通过": params.row.saleStatus==2 ? "未通过" : "未审核");
                     },
                     resizable: true,
                     width: 110,

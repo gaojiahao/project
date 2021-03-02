@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-27 12:13:06
+ * @LastEditTime: 2021-03-02 10:38:35
  */
 export default {
     data() {
@@ -18,11 +18,11 @@ export default {
       return {
         formConfig:{
           code:{
-            name:'商品编码',
+            name:'产品编码',
             type:'text',
           },
           name:{
-            name:'商品名称',
+            name:'产品名称',
             type:'text',
           },
           categoryId:{

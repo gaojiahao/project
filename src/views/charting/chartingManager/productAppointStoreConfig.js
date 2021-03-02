@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 19:09:23
+ * @LastEditTime: 2021-03-02 15:53:30
  */
 export default {
   data() {
@@ -96,7 +96,7 @@ export default {
       formConfig2:{
         img:{
           name:"文件",
-          type:"uploadImage",
+          type:"uploadFile",
         },
       },
       formValidate2:{

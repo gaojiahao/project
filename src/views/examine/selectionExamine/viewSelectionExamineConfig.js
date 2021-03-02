@@ -16,7 +16,7 @@ export default {
             dataSource:{
               data:[
                 { name:'通过',value:'1'},
-                { name:'不通过',value:'0'},
+                { name:'未通过',value:'0'},
                 { name:'强制委派',value:'2'},
               ]
             }

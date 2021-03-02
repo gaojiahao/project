@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-24 16:26:44
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-03-02 11:19:19
  */
 export default {
     data() {
@@ -14,12 +14,12 @@ export default {
             field:{
             productCode:{
               container:"productInfo",
-              name:'商品编号',
+              name:'产品编号',
               type:'text',
               disabled: false
             },
             productName:{
-              name:'商品名称',
+              name:'产品名称',
               type:'text',
               disabled: false
             },
@@ -343,16 +343,6 @@ export default {
                 {name:'灯',value:'002'}
               ],
             },
-          },
-          sku:{
-            name:'SKU',
-            value:'sku',
-            type:'text',
-          },  
-          color:{
-            name:'颜色',
-            value:'color',
-            type:'text',
           },
           producName:{
             name:'产品名称',

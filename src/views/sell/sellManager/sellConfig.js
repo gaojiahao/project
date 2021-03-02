@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 12:03:01
+ * @LastEditTime: 2021-03-02 10:36:13
  */
 export default {
   data() {
@@ -57,12 +57,12 @@ export default {
       },
       filtersConfig:{
         name:{
-          name:'商品名称',
+          name:'产品名称',
           value:'name',
           type:'text',
         },
         code:{
-          name:'商品编码',
+          name:'产品编码',
           value:'code',
           type:'text',
         },

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-26 09:20:52
+ * @LastEditTime: 2021-03-02 20:04:20
  */
 export default {
   data() {
@@ -38,7 +38,7 @@ export default {
             bindValue: 'name'
           },
           bindOtherField:[
-            {name:'storeId',type:'dataSource',parmas:{keyword:''}}
+            {name:'storeId',type:'dataSource',parmas:{name:'platformId'}}
           ]
         },
         storeId:{
@@ -49,7 +49,7 @@ export default {
               type:'dynamic',
               url:'/api/GetStoreList',
               data:[],
-              parmas:{}
+              parmas:{name:'platformId'}
           },
           bind:{
             target: 'storeName',

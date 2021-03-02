@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-27 09:56:45
+ * @LastEditTime: 2021-03-02 10:37:16
 -->
 <template>
 <div class="erp_table_container">
@@ -220,13 +220,13 @@ export default {
                 resizable: true,
             },
             {
-                title: '商品编码',
+                title: '产品编码',
                 key: 'code',
                 resizable: true,
                 width: 200,
             },
             {
-                title: '商品名称',
+                title: '产品名称',
                 key: 'name',
                 render: (h, params) => {
                     return h("span", {

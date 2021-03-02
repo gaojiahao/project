@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 17:59:32
+ * @LastEditTime: 2021-03-02 19:24:17
 -->
 <template>
 <div class="erp_table_container">
@@ -31,7 +31,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id,row.status)">委派制图</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id,row.status)" v-if="!row.status">委派制图</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">

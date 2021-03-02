@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-25 16:14:50
+ * @LastEditTime: 2021-03-02 20:22:34
  */
 //引用插件
 import Vue from "vue";
@@ -48,6 +48,15 @@ Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://cbapi.com/';
 //线上正式图片路径
 // Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL||'192.168.1.23:8073';
 // Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://192.168.1.23:8073/';
+//测试服务器
+// localhost:8080
+// http://cbapi.com/
+//线上测试
+// 192.168.1.23:8071
+// http://192.168.1.23:8071/
+//正式
+// 192.168.1.23:8073
+// http://192.168.1.23:8073/
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)

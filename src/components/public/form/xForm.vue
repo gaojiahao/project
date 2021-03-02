@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 16:01:12
+ * @LastEditTime: 2021-03-02 15:11:06
 -->
 <template>
 <div class="content">
@@ -53,6 +53,10 @@
             <!--图片上传-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='uploadImage'">
                 <UploadImg v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" :length="formConfig[index]['length']" v-show="!formConfig[index]['hidden']" ></UploadImg>
+            </FormItem>
+            <!--附件上传-->
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='uploadFile'">
+                <UploadFile v-model="formValidate[index]" :disabled="formConfig[index]['disabled']" :length="formConfig[index]['length']" v-show="!formConfig[index]['hidden']" ></UploadFile>
             </FormItem>
             <!--文本域-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='textarea'">
@@ -121,6 +125,7 @@ import {
     InputNumber
 } from "view-design";
 import UploadImg from '@components/public/upload/uploadImg';
+import UploadFile from '@components/public/upload/uploadFile';
 import Texts from '@components/public/input/texts';
 import Size from '@components/public/input/size';
 import SelectorSingle from '@components/public/xSelect/selectorSingle';
@@ -135,6 +140,7 @@ export default {
     components: {
         InputNumber,
         UploadImg,
+        UploadFile,
         Texts,
         Size,
         SelectorSingle,

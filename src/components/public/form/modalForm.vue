@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 16:16:02
+ * @LastEditTime: 2021-03-02 20:12:12
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
@@ -208,7 +208,7 @@ export default {
                         if(form.formConfig[data.tag]['bindOtherField']){
                             for(var i=0;i<form.formConfig[data.tag]['bindOtherField'].length;i++){
                                 if(form.formConfig[data.tag]['bindOtherField'][i]['name']){
-                                    form.formConfig[data.tag]['bindOtherField'][i]['parmas']['keyword'] = data.label;
+                                    form.formConfig[data.tag]['bindOtherField'][i]['parmas']['keyword'] = data.value;
                                     form.$emit('bind-change-'+form.formConfig[data.tag]['bindOtherField'][i]['name'],form.formConfig[data.tag]['bindOtherField'][i]['name'],form.formConfig[data.tag]['bindOtherField'][i]['parmas']);
                                 }
                             }
@@ -217,7 +217,7 @@ export default {
                 }
                 if((['select','selectCustom'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
                     //绑定数据源改变
-                    form.$on('bind-change-' + item,function(data){
+                    form.$on('bind-change-' + item,function(data,parmas){
                         //还未写完的参数查询
                         form.loadData(data,parmas);
                     })
@@ -250,11 +250,15 @@ export default {
         onChange(data){
             this.$emit('value-change-'+data.tag,data);
         },
-        async loadData(config,params){
-            var parmas = params ? params:{};
+        async loadData(name,params){
+            var parmas2={};
+            var a = params['name'];
+            parmas2[a] = '';
+            parmas2[a] =params.keyword;
+            var config = this.formConfig[name];
             await $flyio.post({
                 url: config.dataSource.url,
-                data:{ ...parmas,maxResultCount:200}
+                data:{ ...parmas2,maxResultCount:200}
             }).then((res) => {
                 if(res.result.code==200){
                     if(config.dataSource.col){

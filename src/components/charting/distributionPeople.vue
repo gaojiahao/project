@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-06 17:20:53
+ * @LastEditTime: 2021-03-02 14:39:29
 -->
 <template>
 <div class="size-content">
@@ -105,6 +105,7 @@ export default {
         },
         del(index){
             this.$delete(this.data,index);
+            this.$parent.validate('change');
         },
         GetFileRelationList(){
             var me = this;

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-27 09:34:35
+ * @LastEditTime: 2021-03-02 10:19:58
 -->
 <template>
 <div class="erp_table_container">
@@ -17,7 +17,7 @@
                             <Radio label="large">全部</Radio>
                             <Radio label="default">未审核</Radio>
                             <Radio label="small">通过</Radio>
-                            <Radio label="small2">不通过</Radio>
+                            <Radio label="small2">未通过</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
