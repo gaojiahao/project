@@ -48,7 +48,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :formValue="[productInfoFormValidate.imgOne,productInfoFormValidate.imgTwo,productInfoFormValidate.imgThree]" @save="saveUpload"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -415,9 +415,21 @@ export default {
                                 categoryId: res.result.item.categoryId,
                                 categoryName: res.result.item.categoryName,
                                 logisticsLabel: res.result.item.logisticsLabel,
-                                imgOne:res.result.item.imgOne,
-                                imgTwo:res.result.item.imgTwo,
-                                imgThree:res.result.item.imgThree,
+                                imgUrl: [{
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                },
+                                {
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                },
+                                {
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                }],
                                 characteristic:res.result.item.characteristic,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,

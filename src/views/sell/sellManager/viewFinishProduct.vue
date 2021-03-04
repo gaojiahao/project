@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 11:07:01
+ * @LastEditTime: 2021-03-03 14:22:32
 -->
 <template>
     <div class="addFinishProduct">
@@ -108,7 +108,15 @@ export default {
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
                                 categoryName: res.result.item.categoryName,
-                                imgUrl: res.result.item.imgUrl,
+                                imgUrl: [{
+                                    filePath:res.result.item.imgOne
+                                },
+                                {
+                                    filePath:res.result.item.imgTwo
+                                },
+                                {
+                                    filePath:res.result.item.imgThree
+                                }],
                                 urlOne: res.result.item.urlOne,
                                 remark: res.result.item.remark,
                             }

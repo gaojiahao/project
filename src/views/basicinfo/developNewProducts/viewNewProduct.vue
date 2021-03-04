@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-08 10:58:12
+ * @LastEditTime: 2021-03-03 16:11:08
 -->
 <template>
 <div>
@@ -32,7 +32,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :formValue="[productInfoFormValidate.imgOne,productInfoFormValidate.imgTwo,productInfoFormValidate.imgThree]" @save="saveUpload" :disabled="true"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" :disabled="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -342,9 +342,21 @@ export default {
                                 categoryName: res.result.item.categoryName,
                                 characteristic:res.result.item.characteristic,
                                 logisticsLabel: res.result.item.logisticsLabel,
-                                imgOne:res.result.item.imgOne,
-                                imgTwo:res.result.item.imgTwo,
-                                imgThree:res.result.item.imgThree,
+                                imgUrl: [{
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                },
+                                {
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                },
+                                {
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                }],
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
                                 isPackage: res.result.item.isPackage,

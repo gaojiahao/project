@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 14:50:24
+ * @LastEditTime: 2021-03-03 20:01:34
 -->
 <template>
     <div class="addFinishProduct">
@@ -49,6 +49,12 @@ export default {
     methods: {
         save() {
             var params = this.formValidate;
+            params = {
+                ...params,
+                imgOne:params['imgUrl'][0]&&params['imgUrl'][0].filePath||'',
+                imgTwo:params['imgUrl'][1]&&params['imgUrl'][1].filePath||'',
+                imgThree:params['imgUrl'][2]&&params['imgUrl'][2].filePath||'',
+            }   
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (!this.formValidate.id) {
@@ -100,18 +106,33 @@ export default {
         },
         getFormData(){
             this.id = this.$route.query.id;
+            var me = this;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetRecommendGoodsById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
-                            this.$FromLoading.hide();
-                            this.formValidate = {
+                            me.$FromLoading.hide();
+                            me.formValidate = {
                                 id: res.result.item.id,
                                 code: res.result.item.code,
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
                                 categoryName: res.result.item.categoryName,
-                                imgUrl: res.result.item.imgUrl,
+                                imgUrl: [{
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                },
+                                {
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                },
+                                {
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                }],
                                 urlOne: res.result.item.urlOne,
                                 remark: res.result.item.remark,
                                 merchantId: res.result.item.merchantId

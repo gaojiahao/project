@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 12:05:36
+ * @LastEditTime: 2021-03-03 12:10:50
 -->
 <template>
     <div class="addFinishProduct">
@@ -48,6 +48,12 @@ export default {
     methods: {
         save() {
             var params = this.formValidate;
+            params = {
+                ...params,
+                imgOne:params['imgUrl'][0]&&params['imgUrl'][0].filePath||'',
+                imgTwo:params['imgUrl'][1]&&params['imgUrl'][1].filePath||'',
+                imgThree:params['imgUrl'][2]&&params['imgUrl'][2].filePath||'',
+            }
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (!this.formValidate.id) {

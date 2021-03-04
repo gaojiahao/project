@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-25 17:42:06
+ * @LastEditTime: 2021-03-03 19:30:54
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -269,6 +269,16 @@ const routes = [
                 component: resolve=>(require(["@views/settings/userManager/editUser"],resolve)),
                 meta: {
                   title: "编辑用户",
+                  group: "userManager",
+                  level: 2,
+                },
+              },
+              {
+                path: "viewUser",
+                name: "viewUser",
+                component: resolve=>(require(["@views/settings/userManager/viewUser"],resolve)),
+                meta: {
+                  title: "查看用户",
                   group: "userManager",
                   level: 2,
                 },

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 10:22:09
+ * @LastEditTime: 2021-03-03 19:32:41
 -->
 <template>
 <div class="erp_table_container">
@@ -122,6 +122,19 @@ export default {
                     key: 'userName',
                     resizable: true,
                     width: 200,
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                                color: "#2d8cf0"
+                            },
+                            on:{
+                                click:()=>{
+                                    this.goDetail(params.row.id)    
+                                }
+                            }
+                        },params.row.userName);
+                    }
                 },
                 {
                     title: '昵称',
@@ -250,6 +263,10 @@ export default {
         setFilter(value){
             this.pageData.keyWord=value;
             this.GetUserInfoPage(); 
+        },
+        goDetail(id){
+            if(id)
+                this.$router.push({name:'viewUser',query: {id:id}});
         },
     },
     created() {

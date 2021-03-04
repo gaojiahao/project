@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-10 14:41:37
+ * @LastEditTime: 2021-03-03 19:24:18
  */
 export default {
   data() {
@@ -39,10 +39,10 @@ export default {
           name:'昵称',
           type:'text',
         },
-        merchantCode:{
-          name:'商户号',
-          type:'text',  
-        },
+        // merchantCode:{
+        //   name:'商户号',
+        //   type:'text',  
+        // },
         email:{
           name:'邮箱',
           type:'text',
