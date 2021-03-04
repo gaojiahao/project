@@ -12,7 +12,7 @@
             <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
         </template>
     </div>
-    <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:60px;" v-if="!disabled">
+    <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" :on-progress="handleProgress" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:60px;" v-if="!disabled">
         <div style="width: 58px;height:58px;line-height: 58px;">
             <Icon type="ios-add" size="20"></Icon>
         </div>
@@ -20,7 +20,7 @@
     <div class="demo-upload-file-list" v-for="(item,index) in uploadList" v-if="['jpg','jpeg','png','bmp','gif'].indexOf(item.type)==-1">
         <template v-if="item.status === 'finished'">
             <template>
-                <a :href="baseUrl + item.filePath" class="text"target="_blank">{{item.name}}</a>
+                <a :href="baseUrl + item.filePath" class="text" target="_blank">{{item.name}}</a><Button type="error" size="small" icon="ios-close" @click="handleRemove(index)" class="marginRight" v-if="!disabled" style="margin-left:10px"></Button>
             </template>
         </template>
         <template v-else>
@@ -45,6 +45,7 @@ import {
 import tokenService from "@service/tokenService";
 
 export default {
+    name: 'UploaFile',
     components: {
         Upload,
         Progress,
@@ -124,9 +125,9 @@ export default {
                 this.handleInput(file);
             } else {
                 this.$Notice.warning({
-                title: '上传失败',
-                desc: res.result.msg
-            });    
+                    title: '上传失败',
+                    desc: res.result.msg
+                });    
             }
         },
         handleFormatError(file) {
@@ -151,8 +152,19 @@ export default {
             return check;
         },
         handleInput(data) {
-            this.uploadList.push(data); 
+            if(this.checkFile(data)){
+                this.uploadList.push(data);     
+            }
+            // this.uploadList.push(data); 
             this.$emit('change', this.uploadList);
+        },
+        checkFile(data){
+            for(var i=0;i<this.uploadList.length;i++){
+                if(this.uploadList[i]['name']==data.name){
+                    return false;
+                }
+            }
+            return true;
         },
         prePic(){
             this.indexPic = (this.indexPic - 1) > -1 ? this.indexPic - 1 : 0;
@@ -170,9 +182,21 @@ export default {
             this.$emit('save',this.uploadList);
         },
         downLoadFile(item){
-            debugger
             var url = this.baseUrl+item.filePath;
             window.location.href = url;
+        },
+        handleProgress(event, file, fileList){
+            // console.log('上传中', event); // 继承了原生函数的 event 事件
+            // console.log('上传中 file', file); // 上传的文件
+            // console.log('上传中 fileList', fileList); // 上传文件列表包含file
+            // 调用监听 上传进度 的事件
+            event.target.onprogress = (event) => {
+                let uploadPercent = parseFloat(((event.loaded / event.total) * 100).toFixed(2))	// 保留两位小数，具体根据自己需求做更改
+            
+                // 手动设置显示上传进度条 以及上传百分比
+                file.showProgress = true
+                file.percentage = uploadPercent
+            }
         }
     },
     created(){
@@ -180,6 +204,10 @@ export default {
         this.headers['Utoken'] =  tokenService.getToken();
         this.baseUrl = this.$base_url;
     },
+    mounted () {
+        this.uploadList = this.$refs.upload.fileList;
+    }
+
 }
 </script>
 

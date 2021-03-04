@@ -7,6 +7,7 @@
 
       <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
         <div class='fc-event-main'>产品名称：{{eventInfo.goodsName}}</div>
+         <div class='fc-event-main'>制作类型：{{eventInfo.fileTypeName}}</div>
         <div class='fc-event-main'>制作人员：{{eventInfo.userName}}</div>
         <div class='fc-event-main'>预计开始时间：{{eventInfo.startTime}}</div>
         <div class='fc-event-main'>预计完成时间：{{eventInfo.endTime}}</div>
@@ -145,10 +146,8 @@ export default {
                     this.$FromLoading.hide();
                     this.$Message.info('温馨提示：调换成功！');
                     this.GetFileDistributionPageById();
-                    this.$nextTick(() => {
-                      this.eventInfo.startTime = res.result.item.startTime;
-                      this.eventInfo.endTime = res.result.item.endTime;
-                    })
+                    me.$set(me.eventInfo,'startTime',res.result.item.startTime);
+                    me.$set(me.eventInfo,'endTime',res.result.item.endTime);
                 } else if (res.result.code == 400) {
                     this.$Message.error({
                         background: true,
@@ -192,7 +191,7 @@ export default {
         // ],
         //事件点击
         eventClick : function( event ){
-          me.eventInfo = event['event']['_def']['extendedProps'];
+          me.eventInfo = {...event['event']['_def']['extendedProps']};
         },
         //事件调整大小
         eventResize: function(event) {

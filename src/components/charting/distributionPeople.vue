@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 17:34:35
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 14:39:29
+ * @LastEditTime: 2021-03-04 10:13:51
 -->
 <template>
 <div class="size-content">
@@ -14,8 +14,8 @@
     <div class="box" v-for="(item,index) in data" :key="index">
         <div class="list">
             <span style="float:left; line-height:34px">制作类型：</span>
-            <Select v-model="item.fileType" :style="{width:'200px',float: 'left'}" clearable filterable>
-                <Option v-for="item in typeList" :value="item.value" :key="item.value" >{{ item.name }}</Option>
+            <Select v-model="item.fileType" :style="{width:'200px',float: 'left'}" clearable filterable  @on-select="onChange">
+                <Option v-for="item in typeList" :value="item.value" :key="item.value" :tag="index">{{ item.name }}</Option>
             </Select>
         </div>
         <div class="list">
@@ -76,6 +76,7 @@ export default {
             data:[
                 {
                     fileType:'',
+                    fileTypeName:'',
                     userId:'',
                     date:''
                 }
@@ -95,6 +96,7 @@ export default {
         add() {
             this.data.push({
                 fileType:'',
+                fileTypeName:'',
                 userId:'',
                 date:''
             });
@@ -135,6 +137,9 @@ export default {
                     this.peopleList = data;
                 }
             }).catch(e =>{console.log(e)}); 
+        },
+        onChange(data){
+            this.data[data.tag]['fileTypeName']=data.label;
         },
     },
     created() {

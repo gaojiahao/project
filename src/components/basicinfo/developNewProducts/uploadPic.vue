@@ -4,53 +4,59 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 20:30:31
+ * @LastEditTime: 2021-03-04 12:20:41
 -->
 <template>
 <div>
-    <div>
-        <div style="height:28px">
-            <div style="float:left;font-size: 16px;">
-                <Icon type="md-image" />商品图片
-            </div>
+    <div style="height:28px">
+        <div style="float:left;font-size: 16px;">
+            <Icon type="md-image" />商品图片
         </div>
-        <div style="width:100%;margin-bottom: 5px;display: inline-block;">
-            <div v-for="(item,index) in uploadList" class="left demo-upload">
-                <div class="demo-upload-list">
-                    <template v-if="item.status === 'finished'">
-                        <Poptip trigger='hover' content="content" placement="right" :transfer="true">
-                            <img :src="baseUrl + item.filePath">
-                            <img slot="content" :src="baseUrl + item.filePath" style="width:300px;height:300px" />
-                            <div class="demo-upload-list-cover">
-                                <Icon type="ios-eye-outline" @click.native="handleView(item.fileName,index)"></Icon>
-                                <Icon type="ios-trash-outline" @click.native="handleRemove(index)" v-if="!disabled"></Icon>
-                            </div>
-                        </Poptip>
-                    </template>
-                    <template v-else>
-                        <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-                    </template>
-                </div>
-                <div style="width:120px">{{item.fileName}}</div>
+    </div>
+    <div class="demo-upload">
+        <div>
+            <div v-for="(item,index) in uploadList" class="left demo-upload-list" v-if="['jpg','jpeg','png','bmp','gif'].indexOf(item.type)!=-1">
+                <template v-if="item.status === 'finished'">
+                    <Poptip trigger='hover' content="content" placement="right" :transfer="true">
+                        <img :src="baseUrl + item.filePath">
+                        <img slot="content" :src="baseUrl + item.filePath" style="width:300px;height:300px" />
+                        <div class="demo-upload-list-cover">
+                            <Icon type="ios-eye-outline" @click.native="handleView(item.fileName,index)"></Icon>
+                            <Icon type="ios-trash-outline" @click.native="handleRemove(index)" v-if="!disabled"></Icon>
+                        </div>
+                    </Poptip>
+                </template>
+                <template v-else>
+                    <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                </template>
+                <!-- <div style="width:120px">{{item.fileName}}</div> -->
             </div>
-            <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:78px;" v-if="!disabled">
+            <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" :on-progress="handleProgress" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display:inline-block;" v-if="!disabled">
                 <div style="width: 120px;height:120px;line-height: 120px;">
                     <Icon type="ios-camera" size="30"></Icon>
                 </div>
             </Upload>
-            <Modal :title="uploadList&&uploadList[indexPic]&&uploadList[indexPic].fileName" v-model="visible" fullscreen>
-                <!--<img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">-->
-                <img :src="baseUrl + uploadList[indexPic].filePath" v-if="visible" style="width: 100%">
-                <div slot="footer">
-                    <Button type="primary" size="small" @click="prePic">上一张</Button>
-                    <Button type="primary" size="small" @click="nextPic">下一张</Button>
-                </div>
-            </Modal>
+            <div v-for="(item,index) in uploadList" class="" v-if="['jpg','jpeg','png','bmp','gif'].indexOf(item.type)==-1">
+                <template v-if="item.status === 'finished'">
+                    <a :href="baseUrl + item.filePath" class="text"target="_blank">{{item.name}}</a><Button type="error" size="small" icon="ios-close" @click="handleRemove(index)" class="marginRight" v-if="!disabled" style="margin-left:10px"></Button>
+                </template>
+                <template v-else>
+                    <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                </template>
+            </div>
         </div>
-        <div style="width:100%" v-if="!disabled">
-            <Button type="primary" @click="save" style="float: left;">保存</Button>
-            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
-        </div>
+        <Modal :title="uploadList&&uploadList[indexPic]&&uploadList[indexPic].fileName" v-model="visible" fullscreen>
+            <!--<img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">-->
+            <img :src="baseUrl + uploadList[indexPic].filePath" v-if="visible" style="width: 100%">
+            <div slot="footer">
+                <Button type="primary" size="small" @click="prePic">上一张</Button>
+                <Button type="primary" size="small" @click="nextPic">下一张</Button>
+            </div>
+        </Modal>
+    </div>
+    <div style="width:100%" v-if="!disabled">
+        <Button type="primary" @click="save" style="float: left;">保存</Button>
+        <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
     </div>
 </div>
 </template>
@@ -59,7 +65,6 @@
 import tokenService from "@service/tokenService";
 import {
     Upload,
-    Modal,
     Progress,
 } from "view-design";
 
@@ -67,7 +72,6 @@ export default {
     name: 'UploadPic',
     components: {
         Upload,
-        Modal,
         Progress,
     },
     model: {
@@ -85,32 +89,28 @@ export default {
             type:Number,
             default:3,
         },
-        formValue:{
-            type: Array,
-            default () {
-                return []
-            }
-        },
         disabled:{
             type: Boolean,
             default: false
         }
     },
     watch:{
-        formValue:{
+        value:{
             handler(val){
-                this.uploadList = [];
+                this.uploadList = this.$refs.upload.fileList;
                 for(var i=0;i<val.length;i++){
                     var obj={};
                     obj= {
+                        ...val[i],
                         status:'finished',
-                        filePath:val[i],
                     }
                     if(obj.filePath){
                         this.uploadList.push(obj);
                     }
                 }
-            }
+            },
+            deep:true,
+            immediate:true
         }
     },
     data() {
@@ -140,16 +140,18 @@ export default {
         },
         handleRemove(index) {
             this.uploadList.splice(index, 1);
+            this.$emit('change', this.uploadList);
         },
         handleSuccess(res, file) {
             if(res.result.code==200){
                 file.filePath = res.result.item[0]['filePath'];
+                file.type = file.name.substring(file.name.lastIndexOf('.') + 1);
                 this.handleInput(file);
             } else {
                 this.$Notice.warning({
-                title: '上传失败',
-                desc: res.result.msg
-            });    
+                    title: '上传失败',
+                    desc: res.result.msg
+                });    
             }
         },
         handleFormatError(file) {
@@ -174,8 +176,19 @@ export default {
             return check;
         },
         handleInput(data) {
-            this.uploadList.push(data); 
+            if(this.checkFile(data)){
+                this.uploadList.push(data);     
+            }
+            // this.uploadList.push(data); 
             this.$emit('change', this.uploadList);
+        },
+        checkFile(data){
+            for(var i=0;i<this.uploadList.length;i++){
+                if(this.uploadList[i]['name']==data.name){
+                    return false;
+                }
+            }
+            return true;
         },
         prePic(){
             this.indexPic = (this.indexPic - 1) > -1 ? this.indexPic - 1 : 0;
@@ -190,20 +203,37 @@ export default {
             }      
         },
         save() {
-            if(this.handleBeforeUpload()){
-                this.$emit('save',this.uploadList);
-            } else {
-                return ;  
-            }
+            this.$refs.upload.fileList=[];
+            this.$emit('save',this.uploadList);
         },
         goReturn(){
             this.$router.go(-1);
         },
+        downLoadFile(item){
+            var url = this.baseUrl+item.filePath;
+            window.location.href = url;
+        },
+        handleProgress(event, file, fileList){
+            // console.log('上传中', event); // 继承了原生函数的 event 事件
+            // console.log('上传中 file', file); // 上传的文件
+            // console.log('上传中 fileList', fileList); // 上传文件列表包含file
+            // 调用监听 上传进度 的事件
+            event.target.onprogress = (event) => {
+                let uploadPercent = parseFloat(((event.loaded / event.total) * 100).toFixed(2))	// 保留两位小数，具体根据自己需求做更改
+            
+                // 手动设置显示上传进度条 以及上传百分比
+                file.showProgress = true
+                file.percentage = uploadPercent
+            }
+        }
     },
     created(){
         this.uploadUrl = this.$upload_url?this.$upload_url:'localhost:8080';
         this.headers['Utoken'] =  tokenService.getToken();
         this.baseUrl = this.$base_url;
+    },
+    mounted () {
+        this.uploadList = this.$refs.upload.fileList;
     }
 
 }
@@ -220,9 +250,13 @@ export default {
 }
 </style><style lang="less" scoped>
 .demo-upload {
-    display: inline-block;
-    height: 170px;
-
+    // margin-left: 120px;
+    display: flex;
+    position: relative;
+    line-height: 32px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    
     .demo-upload-list {
         // display: inline-block;
         width: 120px;

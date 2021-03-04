@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 14:19:58
+ * @LastEditTime: 2021-03-04 10:07:34
 -->
 <template>
 <div>
@@ -105,7 +105,7 @@ import {
     TabPane,
 } from "view-design";
 export default {
-    name: 'ExamineNewProduct',
+    name: 'Appoint',
     components: {
         Tabs,
         TabPane,
@@ -279,6 +279,7 @@ export default {
                 var obj={};
                 obj={
                     fileType: data[i].fileType,
+                    fileTypeName: data[i].fileTypeName,
                     userId: data[i].userId,
                     remark: this.formValidate2.remark,
                     startTime: data[i].date[0],
