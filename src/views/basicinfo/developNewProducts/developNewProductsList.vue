@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-26 16:43:10
+ * @LastEditTime: 2021-03-04 19:58:33
 -->
 <template>
 <div class="erp_table_container">
@@ -20,7 +20,11 @@
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
                         <Button type="warning" size="small" @click="goCopy" class="marginRight"><Icon type="ios-copy-outline"></Icon>复制</Button>
-                        <Button type="primary" size="small" @click="exportData(false)" :loading="exportLoading" class="marginRight"><Icon type="ios-download-outline"></Icon>导出</Button>
+                        <Button type="primary" size="small" @click="downLoad" :loading="exportLoading" class="marginRight"><Icon type="ios-cloud-upload-outline"></Icon>导出</Button>
+                        <Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :on-progress="handleProgress"  :on-error="onError" :action="'//'+`${uploadUrl}`+'/api/ImportPrepGoods'" :headers="headers"  style="display: inline-block;width:50px; margin-right: 10px;">
+                            <Button type="primary" size="small" :loading="importLoading" class="marginRight"><Icon type="ios-cloud-download-outline"></Icon>导入</Button>
+                        </Upload>
+                        <a type="primary" size="small" :href="baseUrl + 'File/excel/Template.xlsx'" target="_blank" class="marginRight"><Icon type="ios-cloud-download"></Icon>导入模板下载</a>
                         <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
                     </div>
                     <div class="filter-search">
@@ -47,21 +51,34 @@
     <!-- <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm> -->
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
+    <UploadProgress :showProgress="showProgress" :percent="percentage"></UploadProgress>
 </div>
 </template>
 
 <script>
+import {
+    Upload,
+    Progress,
+} from "view-design";
+import UploadProgress from '@components/public/upload/uploadProgress';
 import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
 import list from "@mixins/list";
 import {
     GetPrepGoodsPage,
     DelPrepGoods,
-    GetPrepGoodsList
+    GetPrepGoodsList,
+    ExportPrepGoods
 } from "@service/basicinfoService";
-import table2excel from 'js-table2excel'
+import table2excel from 'js-table2excel';
+import tokenService from "@service/tokenService";
 
 export default {
     name: "DevelopNewProductsList",
+    components: {
+        Upload,
+        Progress,
+        UploadProgress
+    },
     mixins: [config,list],
     data() {
         return {
@@ -81,9 +98,15 @@ export default {
             },
             totalPage:0,
             exportLoading:false,
+            importLoading:false,
             newsList:[],
 	        pageNum:1,
-	        pageSize:3
+	        pageSize:3,
+            formats:['xlsx'],
+            uploadUrl:'',
+            headers:{},
+            showProgress:false,
+            percentage:0
         }
     },
     methods: {
@@ -429,8 +452,91 @@ export default {
                 });
             }
         },
+        handleSuccess(res, file) {
+            if(res.result.code==200){
+                this.$Notice.success({
+                    title: '导入成功',
+                    desc: ''
+                });
+                this.importLoading = false;
+                this.GetPrepGoodsPage();
+                this.showProgress = false;
+                this.percentage = 0;
+            } else {
+                this.$Notice.error({
+                    title: '导入失败',
+                    desc: res.result.msg
+                });
+                this.importLoading = false;    
+            }
+        },
+        handleFormatError(file) {
+            this.$Notice.warning({
+                title: '上传文件格式错误',
+                desc: '文件 ' + file.name + '不是表格格式'
+            });
+            this.importLoading = false;
+        },
+        handleMaxSize(file) {
+            this.$Notice.warning({
+                title: '超出文件上传大小',
+                desc: '文件  ' + file.name + '超过100M'
+            });
+            this.importLoading = false;
+        },
+        handleProgress(event, file, fileList){
+            debugger
+            this.importLoading = true;
+            event.target.onprogress = (event) => {
+                let uploadPercent = parseFloat(((event.loaded / event.total) * 100).toFixed(2))
+                this.showProgress = true
+                this.percentage = uploadPercent
+            }
+        },
+        onError(error, file, fileList){
+            this.$Notice.error({
+                title: '导入失败',
+                desc: error
+            });
+            this.importLoading = false;
+        },
+        downLoad(){
+            this.exportLoading= true;
+            return new Promise((resolve, reject) => {
+                ExportPrepGoods().then(res => {
+                    if (res.result.code == 200) {
+                        var blob = this.dataURLtoBlob(res.result.item);
+                        var downloadUrl = window.URL.createObjectURL(blob);
+                        var anchor = document.createElement("a");
+                        anchor.href = downloadUrl;
+                        anchor.setAttribute("download", '新品开发'+new Date().getTime()+'.xls');
+                        this.exportLoading=false;
+                        // anchor.download = decodeURI("");
+                        anchor.click();
+                    } else {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.msg
+                        });
+                        this.exportLoading=false;
+                    }
+                });
+            });  
+        },
+        dataURLtoBlob(base64Str) {
+            var bstr = atob(base64Str),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: "application/vnd.ms-excel" });
+        }
     },
     created(){
+        this.uploadUrl = this.$upload_url?this.$upload_url:'localhost:8080';
+        this.headers['Utoken'] =  tokenService.getToken();
+        this.baseUrl = this.$base_url;
         this.GetPrepGoodsPage();
     }
 }
