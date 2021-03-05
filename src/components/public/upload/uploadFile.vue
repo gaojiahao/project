@@ -2,11 +2,14 @@
 <div>
     <div class="demo-upload-list" v-for="(item,index) in uploadList" v-if="['jpg','jpeg','png','bmp','gif'].indexOf(item.type)!=-1">
         <template v-if="item.status === 'finished'">
-            <img :src="baseUrl + item.filePath">
-            <div class="demo-upload-list-cover">
-                <Icon type="ios-eye-outline" @click.native="handleView(item.fileName,index)"></Icon>
-                <Icon type="ios-trash-outline" @click.native="handleRemove(index)" v-if="!disabled"></Icon>
-            </div>
+            <Poptip trigger='hover' content="content" placement="right" :transfer="true">
+                <img :src="baseUrl + item.filePath">
+                <img slot="content" :src="baseUrl + item.filePath" style="width:300px;height:300px" />
+                <div class="demo-upload-list-cover">
+                    <Icon type="ios-eye-outline" @click.native="handleView(item.fileName,index)"></Icon>
+                    <Icon type="ios-trash-outline" @click.native="handleRemove(index)" v-if="!disabled"></Icon>
+                </div>
+            </Poptip>
         </template>
         <template v-else>
             <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>

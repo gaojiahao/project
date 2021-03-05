@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-03 14:22:32
+ * @LastEditTime: 2021-03-05 19:24:49
 -->
 <template>
     <div class="addFinishProduct">
@@ -34,7 +34,7 @@ import {
     GetRecommendGoodsById
 } from "@service/sellService"
 export default {
-    name: "EditFinishProduct",
+    name: "ViewFinishProduct",
     components: {
         ViewForm,
     },
@@ -109,13 +109,19 @@ export default {
                                 categoryId: res.result.item.categoryId,
                                 categoryName: res.result.item.categoryName,
                                 imgUrl: [{
-                                    filePath:res.result.item.imgOne
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
                                 },
                                 {
-                                    filePath:res.result.item.imgTwo
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
                                 },
                                 {
-                                    filePath:res.result.item.imgThree
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
                                 }],
                                 urlOne: res.result.item.urlOne,
                                 remark: res.result.item.remark,

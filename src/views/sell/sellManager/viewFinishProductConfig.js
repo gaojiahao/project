@@ -44,7 +44,7 @@ export default {
           },
           imgUrl:{
             name:'商品图片',
-            type:'uploadImage',
+            type:'uploadFile',
             length: 3,
             disabled:true
           },
