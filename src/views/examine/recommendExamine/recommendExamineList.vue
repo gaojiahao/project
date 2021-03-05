@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 11:17:20
+ * @LastEditTime: 2021-03-05 19:44:29
 -->
 <template>
 <div class="erp_table_container">
@@ -288,20 +288,14 @@ export default {
                 resizable: true,
             },
             {
-                title: '创建时间',
-                key: 'createdOn',
-                resizable: true,
-                width: 180,
-            },
-            {
                 title: '创建者',
                 key: 'createdName',
                 resizable: true,
                 width: 80,
             },
             {
-                title: '修改时间',
-                key: 'modifyOn',
+                title: '创建时间',
+                key: 'createdOn',
                 resizable: true,
                 width: 180,
             },
@@ -310,6 +304,12 @@ export default {
                 key: 'modifyName',
                 resizable: true,
                 width: 80,
+            },
+            {
+                title: '修改时间',
+                key: 'modifyOn',
+                resizable: true,
+                width: 180,
             },
             {
                 title: '操作',

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 11:33:19
+ * @LastEditTime: 2021-03-05 19:30:59
 -->
 <template>
 <div class="erp_table_container">
@@ -171,17 +171,14 @@ export default {
                     width: 200,
                 },
                 {
-                    title: '创建时间',
-                    key: 'createdOn',
-                    // render: (h, params) => {
-                    //     return h('div', this.formatDate(this.list[params.index].createTime));
-                    // }
+                    title: '创建者',
+                    key: 'createdName',
                     resizable: true,
                     width: 200,
                 },
                 {
-                    title: '创建者',
-                    key: 'createdName',
+                    title: '创建时间',
+                    key: 'createdOn',
                     resizable: true,
                     width: 200,
                 },]

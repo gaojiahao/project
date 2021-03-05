@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 11:54:19
+ * @LastEditTime: 2021-03-05 19:32:22
 -->
 <template>
 <div class="erp_table_container">
@@ -155,14 +155,15 @@ export default {
                     resizable: true,
                     width: 439,
                 },
+                 {
+                    title: '创建者',
+                    key: 'createdName',
+                    resizable: true,
+                    width: 300,
+                },
                 {
                     title: '创建时间',
                     key: 'createdOn',
-                    resizable: true,
-                    width: 300,
-                }, {
-                    title: '创建者',
-                    key: 'createdName',
                     resizable: true,
                     width: 300,
                 },
