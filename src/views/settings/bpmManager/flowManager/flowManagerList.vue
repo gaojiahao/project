@@ -195,7 +195,7 @@ export default {
                     width: 200,
                 }, {
                     title: '创建者',
-                    key: 'createdBy',
+                    key: 'createdName',
                     resizable: true,
                     width: 200,
                 },
@@ -207,7 +207,7 @@ export default {
                 }, 
                 {
                     title: '修改者',
-                    key: 'modifyBy',
+                    key: 'modifyName',
                     resizable: true,
                     width: 200,
                 },

@@ -101,9 +101,9 @@ export default {
             ],
           },
         },
-        createdBy:{
+        createdName:{
           name:'创建者',
-          value:'createdBy',
+          value:'createdName',
           type:'text',
         },
         createdOn:{

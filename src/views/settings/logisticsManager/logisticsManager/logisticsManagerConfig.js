@@ -89,9 +89,9 @@ export default {
           value:'code',
           type:'text',
         },  
-        createdBy:{
+        createdName:{
           name:'创建者',
-          value:'createdBy',
+          value:'createdName',
           type:'text',
         },
         createdOn:{
@@ -99,9 +99,9 @@ export default {
           value:'createdOn',
           type:'dateTime',
         },
-        modifyBy:{
+        modifyName:{
           name:'修改者',
-          value:'modifyBy',
+          value:'modifyName',
           type:'text',
         },
         modifyOn:{

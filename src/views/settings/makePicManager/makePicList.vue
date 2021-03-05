@@ -154,7 +154,7 @@ export default {
                 },
                 {
                     title: '创建者',
-                    key: 'createdBy'
+                    key: 'createdName'
                 },
                 {
                     title: '创建时间',
@@ -163,7 +163,7 @@ export default {
                 },
                 {
                     title: '修改者',
-                    key: 'modifyBy'
+                    key: 'modifyName'
                 },
                 {
                     title: '修改时间',

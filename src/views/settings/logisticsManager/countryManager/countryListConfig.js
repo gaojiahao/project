@@ -35,9 +35,9 @@ export default {
           value:'areaLevel',
           type:'dateTime',
         },
-        modifyBy:{
+        modifyName:{
           name:'修改者',
-          value:'modifyBy',
+          value:'modifyName',
           type:'text',
         },
         modifyOn:{

@@ -203,7 +203,7 @@ export default {
                 },
                 {
                     title: '创建者',
-                    key: 'createdBy',
+                    key: 'createdName',
                     resizable: true,
                     width: 200,
                 },]
