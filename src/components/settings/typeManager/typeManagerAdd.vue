@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-24 19:24:07
+ * @LastEditTime: 2021-03-04 20:56:53
 -->
 <template>
 <div>
@@ -14,7 +14,7 @@
             <Icon type="ios-expand" @click.native="fullModel()" class="ivu-modal-full" />
         </p>
         <div style="">
-            <Input v-model="searchValue" search enter-button placeholder="" size="small" style="width: 200px" @on-search="initData" clearable />
+            <Input v-model="searchValue" suffix="ios-search" search placeholder="" size="small" style="width: 200px" @on-search="initData" clearable @on-clear="onClear" />
         </div>
         <Table border ref="selection" :columns="columns" :data="data" stripe style="margin-top:20px" highlight-row @on-row-click="onSelect" @on-selection-change="onSelectChange" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel">
             <template slot-scope="{ row }" slot="number">
@@ -186,8 +186,6 @@ export default {
             this.fullscreen = this.fullscreen ? false : true;
         },
         onSelect(selection,row){
-            debugger
-        
             if(!this.checkSelectList(selection)){
                 this.selectedList.push(selection);
             }
@@ -284,6 +282,11 @@ export default {
             this.pageData.skipCount = 1;
             this.pageData.skipTotal = 15;
             this.pageData.maxResultCount = 15;
+            this.onClear();
+        },
+        onClear(){
+            this.pageData.keyword ='';
+            this.init(); 
         }
     },
     created(){

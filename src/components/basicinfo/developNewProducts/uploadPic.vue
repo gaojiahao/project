@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-04 12:20:41
+ * @LastEditTime: 2021-03-05 17:28:54
 -->
 <template>
 <div>
@@ -36,14 +36,6 @@
                     <Icon type="ios-camera" size="30"></Icon>
                 </div>
             </Upload>
-            <div v-for="(item,index) in uploadList" class="" v-if="['jpg','jpeg','png','bmp','gif'].indexOf(item.type)==-1">
-                <template v-if="item.status === 'finished'">
-                    <a :href="baseUrl + item.filePath" class="text"target="_blank">{{item.name}}</a><Button type="error" size="small" icon="ios-close" @click="handleRemove(index)" class="marginRight" v-if="!disabled" style="margin-left:10px"></Button>
-                </template>
-                <template v-else>
-                    <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
-                </template>
-            </div>
         </div>
         <Modal :title="uploadList&&uploadList[indexPic]&&uploadList[indexPic].fileName" v-model="visible" fullscreen>
             <!--<img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%">-->
@@ -53,6 +45,14 @@
                 <Button type="primary" size="small" @click="nextPic">下一张</Button>
             </div>
         </Modal>
+    </div>
+    <div v-for="(item,index) in uploadList" class="demo-upload-text-list" v-if="['jpg','jpeg','png','bmp','gif'].indexOf(item.type)==-1">
+        <template v-if="item.status === 'finished'">
+            <a :href="baseUrl + item.filePath" class="text"target="_blank">{{item.name}}</a><Button type="error" size="small" icon="ios-close" @click="handleRemove(index)" class="marginRight" v-if="!disabled" style="margin-left:10px"></Button>
+        </template>
+        <template v-else>
+            <Progress v-if="item.showProgress" :percent="item.percentage"></Progress>
+        </template>
     </div>
     <div style="width:100%" v-if="!disabled">
         <Button type="primary" @click="save" style="float: left;">保存</Button>
@@ -97,7 +97,7 @@ export default {
     watch:{
         value:{
             handler(val){
-                this.uploadList = this.$refs.upload.fileList;
+                this.uploadList = this.$refs&&this.$refs.upload&&this.$refs.upload.fileList||[];
                 for(var i=0;i<val.length;i++){
                     var obj={};
                     obj= {
@@ -233,7 +233,7 @@ export default {
         this.baseUrl = this.$base_url;
     },
     mounted () {
-        this.uploadList = this.$refs.upload.fileList;
+        this.uploadList = this.$refs&&this.$refs.upload&&this.$refs.upload.fileList||[];
     }
 
 }
@@ -297,5 +297,8 @@ export default {
         cursor: pointer;
         margin: 0 2px;
     }
+}
+.demo-upload-text-list{
+    margin: 5px 0;
 }
 </style>

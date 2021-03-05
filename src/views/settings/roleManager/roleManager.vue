@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 11:33:49
+ * @LastEditTime: 2021-03-05 11:33:19
 -->
 <template>
 <div class="erp_table_container">
@@ -255,6 +255,7 @@ export default {
                             this.$Message.info('温馨提示：分配权限成功！');
                         });
                         this.AuthRolePage();
+                        this.activatedRow = {};
                     }
                 });
             });    

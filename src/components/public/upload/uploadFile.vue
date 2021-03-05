@@ -24,7 +24,7 @@
             </template>
         </template>
         <template v-else>
-            <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+            <Progress v-if="item.showProgress" :percent="item.percentage"></Progress>
         </template>
     </div>
     <Modal :title="uploadList&&uploadList[indexPic]&&uploadList[indexPic].fileName" v-model="visible" fullscreen>
@@ -205,7 +205,7 @@ export default {
         this.baseUrl = this.$base_url;
     },
     mounted () {
-        this.uploadList = this.$refs.upload.fileList;
+        this.uploadList = this.$refs&&this.$refs.upload&&this.$refs.upload.fileList||[];
     }
 
 }

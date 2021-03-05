@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-04 20:05:49
+ * @LastEditTime: 2021-03-05 18:01:12
  */
 //引用插件
 import Vue from "vue";
@@ -48,13 +48,13 @@ Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://cbapi.com/';
 //线上正式图片路径
 // Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL||'192.168.1.23:8073';
 // Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://192.168.1.23:8073/';
-//测试服务器
+//开发环境
 // localhost:8080
 // http://cbapi.com/
-//线上测试
+//测试环境
 // 192.168.1.23:8071
 // http://192.168.1.23:8071/
-//正式
+//正式环境
 // 192.168.1.23:8073
 // http://192.168.1.23:8073/
 const originalPush = VueRouter.prototype.push;

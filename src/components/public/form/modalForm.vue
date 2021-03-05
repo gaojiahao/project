@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 20:12:12
+ * @LastEditTime: 2021-03-05 16:00:51
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800" class="model_box">
     <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="120">
         <template v-for="(item, index) in formValidate">
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="(formConfig[index]&&formConfig[index]['type']=='text')&&!formConfig[index]['hidden']">
-                <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" :maxlength="formConfig[index]['length']||20"></Input>
+                <Input v-model="formValidate[index]" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" :maxlength="formConfig[index]['length']||20"></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="(formConfig[index]&&formConfig[index]['type']=='number')&&!formConfig[index]['hidden']">
                <Input v-model="formValidate[index]" type="number" :number="true" :style="{width:'200px'}" :disabled="formConfig[index]['disabled']" ></Input><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
@@ -287,4 +287,12 @@ export default {
     }
 }
 </script>
+<style scoped>
+.content {
+    padding: 10px 10px 10px 10px;
+}
+>>>.ivu-form-item-content {
+    display: flex;
+}
+</style>
 

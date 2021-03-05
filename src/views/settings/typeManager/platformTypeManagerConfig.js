@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-13 18:56:48
+ * @LastEditTime: 2021-03-05 17:05:25
  */
 export default {
     data() {
@@ -82,8 +82,8 @@ export default {
           level: [{
             required: true,
             message: '请输入正确的类目层级',
-            trigger: 'change',
-            pattern: /^[0-9]\d*$/,
+            trigger: 'blur',
+            validator:levelVali
           }],
           platformId: [{ required: true, message: '请选择平台名称',validator: platformIdVali, trigger: 'change' }],
         },

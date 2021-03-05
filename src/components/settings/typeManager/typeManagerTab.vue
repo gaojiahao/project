@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-24 14:25:57
+ * @LastEditTime: 2021-03-05 10:25:37
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -169,8 +169,10 @@ export default {
                                 width: '100px',
                             },
                             props: {
-                                value: this.filesData[params.index][params.column.key]
+                                value: this.filesData[params.index][params.column.key],
+                                type:'number'
                             },
+                            number:'true',
                             on: {
                                 'on-change': (event) => {
                                     this.filesData[params.index][params.column.key] = event.currentTarget.value;
@@ -358,14 +360,12 @@ export default {
             return GetFileRelationList({categoryId:this.categoryId,platformId:this.platform}).then(res => {
                 if (res.result.code == 200) {
                     var data = res.result.item;
-                    for(var i=0;i<data.length;i++){
-                        for(var j=0;j<a.length;j++){
-                            if(data[i].fileTypeId==a[j].id){
-                                a[j] = {
-                                    ...a[j],
-                                    quantity: data[i]['quantity'],
-                                    isCheck: true   
-                                }
+                    for(var i=0;i<a.length;i++){
+                        a[i]['quantity']=0;
+                        for(var j=0;j<data.length;j++){
+                            if(a[i].id==data[j].fileTypeId){
+                                a[i]['quantity'] = data[j]['quantity'];
+                                a[i]['isCheck'] = true;
                             }
                         }
                     }

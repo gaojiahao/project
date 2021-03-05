@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-25 10:57:49
+ * @LastEditTime: 2021-03-05 11:54:06
 -->
 <template>
 <div class="erp_table_container">
@@ -188,6 +188,7 @@ export default {
                             this.$refs['form'].initEL('input');
                             this.loading = true;
                             this.getMenuList();
+                            this.activatedRow = {};
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,

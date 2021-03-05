@@ -298,8 +298,6 @@ export default {
   padding: 0 10px;
   border: 1px solid #ccc;
   background: #eee;
-  height: 135px;
-
 }
 
 #external-events .fc-event {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 19:17:42
+ * @LastEditTime: 2021-03-05 16:30:52
 -->
 <template>
 <div class="manager-container">
@@ -84,6 +84,7 @@ export default {
                 totalPage:0,
                 pageSizeOpts:[10,50,200],
             },
+            activatedRow:{}
         }
     },
     computed:{
@@ -154,6 +155,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
                                     this.GetCategoryList();
+                                    this.activatedRow = {};
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -213,6 +215,7 @@ export default {
             this.formValidate.parentId=0;
         },
         edit(root,node,data){
+            this.activatedRow = data;
             var parentName = "";
             if(data.parentId){
                 parentName = root.find(el => el.node.id === node.node.parentId).node.name;
@@ -238,17 +241,17 @@ export default {
             this.$refs.typeManagerTab.$refs.selectorMulti.initPage();
         },
         sureDeleteConfirm (root, node, data,flag) {
-            if (data.id) {
-            this.$Modal.confirm({
-                title: '温馨提示',
-                content: '数据删除后将无法恢复！',
-                onCancel: () => {
-                    this.$Message.info('取消');
-                },
-                onOk: () => {
-                    flag ? this.deletesData() : this.deleteData(root, node, data);
-                },
-            });
+            if (data.id&&this.activatedRow.id) {
+                this.$Modal.confirm({
+                    title: '温馨提示',
+                    content: '数据删除后将无法恢复！',
+                    onCancel: () => {
+                        this.$Message.info('取消');
+                    },
+                    onOk: () => {
+                        flag ? this.deletesData() : this.deleteData(root, node, data);
+                    },
+                });
             }
         },
         deleteData(root, node, data) {
