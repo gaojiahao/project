@@ -106,7 +106,8 @@ export default {
                             root:root,
                             node:node,
                             data:data
-                        }
+                        };
+                        this.$emit('select-item', this.selectItem);
                     }
                 }
             }, [
@@ -209,7 +210,10 @@ export default {
         },
         onCler(){
             this.$emit('set-filter','');
-        }
+        },
+        // onSelectChange(selectedAll,selectedItem){
+        //     this.$emit('select-item', selectedItem);  
+        // }
     },
     created() {
         

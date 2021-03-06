@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 15:57:12
+ * @LastEditTime: 2021-03-06 15:43:56
  */
 export default {
   data() {
@@ -69,11 +69,11 @@ export default {
             ],
           },
         },
-        password:{
-          name:'密码',
-          type:'password',
-          placeholder:'密码由6-20位数字加大小写字母特殊字符组成',
-        },
+        // password:{
+        //   name:'密码',
+        //   type:'password',
+        //   placeholder:'密码由6-20位数字加大小写字母特殊字符组成',
+        // },
         enabled:{
           name:'是否启用',
           type:'radio',

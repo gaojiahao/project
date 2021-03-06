@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 19:03:47
+ * @LastEditTime: 2021-03-06 15:38:39
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -435,6 +435,12 @@ export let GetUserInfoPage = (data = {}) => {
 export let GetUserInfoList = (data = {}) => {
   return $flyio.post({
     url: '/api/GetUserInfoList',
+    data: data
+  })
+};
+export let UpdatePassword = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdatePassword',
     data: data
   })
 };

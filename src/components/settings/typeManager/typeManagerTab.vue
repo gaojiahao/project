@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 10:25:37
+ * @LastEditTime: 2021-03-06 14:42:37
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">
@@ -35,7 +35,7 @@
                 </RadioGroup>
             </div>
         </div>
-        <Table border :columns="columns2" :data="filesData" stripe v-if="platform"></Table>
+        <Table border :columns="columns2" :data="filesData" stripe v-if="platform" :loading="filedLoading"></Table>
     </TabPane>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="showModel(true)">添加属性</Button>
     <Button type="primary" size="small" slot="extra" v-show="activeTab==0" class="tabsButton" @click.native="save()">保存</Button>
@@ -110,11 +110,14 @@ export default {
             handler(val){
                 this.platform = this.firstPlatform;
                 this.GetSystemConfigList();
+                this.filedLoading = true;
+                this.initFile();
             }
         },
         platform:{
             handler(val){
                 this.filesData = [];
+                this.filedLoading = true;
                 this.initFile();
             }
         }
@@ -207,7 +210,8 @@ export default {
             titleText: '添加属性',
             isShow: false,
             platformList:[],
-            fileSettings:[]
+            fileSettings:[],
+            filedLoading:true,
         }
     },
     methods: {
@@ -370,6 +374,7 @@ export default {
                         }
                     }
                     me.filesData=a;
+                    this.filedLoading = false;
                 }
             }).catch(e =>{console.log(e)}); 
         },

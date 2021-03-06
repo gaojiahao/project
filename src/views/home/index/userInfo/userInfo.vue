@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-02-23 11:29:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-23 16:17:41
+ * @LastEditTime: 2021-03-06 16:08:03
 -->
 <template>
     <div class="userInfo">
@@ -12,7 +12,11 @@
             <Col span="12">
                 <Card>
                     <div>
-                        <div>基本资料<Button type="primary" @click="showPop(true)" style="float: right; margin-right:10px">修改档案</Button></div>
+                        <div>
+                            基本资料
+                            <Button type="primary" @click="showPwd(true)" style="float: right; margin-right:10px">修改密码</Button>
+                            <Button type="primary" @click="showPop(true)" style="float: right; margin-right:10px">修改档案</Button>
+                        </div>
                     </div>
                     <div class="top">
                         <Divider orientation="left" size="small"></Divider>
@@ -76,6 +80,7 @@
             </Col>
         </Row>
         <ModalForm :titleText="title" :formValidate="formValidate2" :ruleValidate="ruleValidate2" :showModel='showModel' :formConfig="formConfig2" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
+        <ModalForm :titleText="titlePwd" :formValidate="formValidate3" :ruleValidate="ruleValidate3" :showModel='showModelPwd' :formConfig="formConfig3" @save="savePwd" @show-pop="showPwd" @clear-form-data="clearFormDataPwd" ref="form2"></ModalForm>
     </div>
 </template>
 <script>
@@ -85,12 +90,14 @@ import {
 } from "view-design";
 import {
     GetUserInfoById,
-    UpdateUserInfo
+    UpdateUserInfo,
+    UpdatePassword
 } from "@service/settingsService";
 import ViewForm from "@components/public/form/viewForm";
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/home/index/userInfo/userInfoConfig";
 import config2 from "@views/home/index/userInfo/editUserInfoConfig";
+import config3 from "@views/home/index/userInfo/pwdUserInfoConfig";
 
 export default {
     name: 'UserInfo',
@@ -98,7 +105,9 @@ export default {
         return {
             showModel: false,
             title: '编辑',
-            userInfo:{}
+            userInfo:{},
+            showModelPwd:false,
+            titlePwd:'修改密码'
         }
     },
     components: {
@@ -107,7 +116,7 @@ export default {
         Row,
         Col
     },
-    mixins: [config,config2],
+    mixins: [config,config2,config3],
     methods:{
         showPop(flag, row) {
             this.showModel = flag;
@@ -181,6 +190,39 @@ export default {
         goReturn(){
             this.$router.go(-1);
         },
+        showPwd(flag){
+            this.showModelPwd = flag;
+        },
+        savePwd(){
+            this.formValidate3.id = this.formValidate.id;
+            var params = this.formValidate3;
+            this.$refs['form2'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    if (this.formValidate3.id) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            UpdatePassword(params).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：更新成功！');
+                                    this.showModelPwd = false;
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });
+                    }
+                }
+            })    
+        },
+        clearFormDataPwd(){
+            this.formValidate3['original'] = '';
+            this.formValidate3['newPwd'] = '';
+        }
     },
     created() {
         this.getFomrData();

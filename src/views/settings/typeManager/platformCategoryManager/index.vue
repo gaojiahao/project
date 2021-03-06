@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 16:51:56
+ * @LastEditTime: 2021-03-06 12:20:42
 -->
 <template>
 <div class="manager-container">
@@ -163,8 +163,8 @@ export default {
                 }
             })
         },
-        selectItem(index) {
-            this.isShowBind = true;
+        selectItem(selectItem) {
+            this.activatedRow = selectItem;
         },
         selectPlatformBind(data) {
             this.selectPBind = data;
@@ -195,9 +195,9 @@ export default {
             this.isShowAdd = true;
             this.isShowBind = false;
             this.formValidate.platformId = this.$refs.list.platFormId;
-            if(data.id){
-                this.formValidate.parentName = data.name;
-                this.formValidate.parentId = data.id;
+            if(this.activatedRow.data.id){
+                this.formValidate.parentName = this.activatedRow.data.name;
+                this.formValidate.parentId = this.activatedRow.data.id;
             }
             this.$refs['form'].initEL('input');
         },
@@ -209,19 +209,18 @@ export default {
             this.formValidate.parentId=0;
         },
         edit(root,node,data){
-            this.activatedRow = data;
             var parentName = "";
-            if(data.parentId){
-                parentName = root.find(el => el.node.id === node.node.parentId).node.name;
+            if(this.activatedRow.data.parentId){
+                parentName =  this.activatedRow.root.find(el => el.node.id === this.activatedRow.node.node.parentId).node.name;
             }
             this.formValidate = {
-                parentId: data.parentId,
+                parentId: this.activatedRow.data.parentId,
                 parentName :parentName,
-                platformId: data.platformId,
-                platformName: data.platformName,
-                name: data.name,
-                level: data.level,
-                id: data.id,
+                platformId: this.activatedRow.data.platformId,
+                platformName: this.activatedRow.data.platformName,
+                name: this.activatedRow.data.name,
+                level: this.activatedRow.data.level,
+                id: this.activatedRow.data.id,
             };
             this.pageAttrData={
                 skipCount: 1,
@@ -235,7 +234,7 @@ export default {
             this.isShowBind = true;
         },
         sureDeleteConfirm (root, node, data,flag) {
-            if (data.id&&this.activatedRow.id) {
+            if (this.activatedRow.data.id) {
                 this.$Modal.confirm({
                     title: '温馨提示',
                     content: '数据删除后将无法恢复！',
@@ -243,7 +242,7 @@ export default {
                         this.$Message.info('取消');
                     },
                     onOk: () => {
-                        flag ? this.deletesData() : this.deleteData(root, node, data);
+                        flag ? this.deletesData() : this.deleteData(root, node, this.activatedRow.data);
                     },
                 });
             }
@@ -258,6 +257,7 @@ export default {
                             this.$Message.info('温馨提示：删除成功！');
                             this.GetEcommerceCategoryList();
                             this.clearFormData();
+                            this.activatedRow = {};
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,

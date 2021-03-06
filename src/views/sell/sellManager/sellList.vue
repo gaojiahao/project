@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 19:37:34
+ * @LastEditTime: 2021-03-05 19:50:58
 -->
 <template>
 <div class="erp_table_container">
@@ -246,7 +246,7 @@ export default {
             },
             {
                 title: '类目',
-                key: 'categoryInfo',
+                key: 'categoryName',
                 resizable: true,
                 width: 100
             },

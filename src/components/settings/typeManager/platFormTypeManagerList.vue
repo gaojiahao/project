@@ -37,7 +37,7 @@
         </Spin>
         <template v-else>
             <template v-if="data.length">
-                <Tree :data="data" :render="renderContent" @on-select-change="onSelectChange" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()" ref="tree">
+                <Tree :data="data" :render="renderContent" class="demo-tree-render" expand-node @on-contextmenu="handleContextMenu()" ref="tree">
                 </Tree>
             </template>
             <template v-else>
@@ -123,7 +123,8 @@ export default {
                             root:root,
                             node:node,
                             data:data
-                        }
+                        };
+                        this.$emit('select-item', this.selectItem);  
                     }
                 }
             }, [
@@ -182,9 +183,6 @@ export default {
         },
         add() {
             this.$emit('show-add');
-        },
-        onSelectChange(index){
-            this.$emit('select-item', index);
         },
         // append(e,data) {
         //     e.stopPropagation();
