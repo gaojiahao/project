@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-24 19:34:45
+ * @LastEditTime: 2021-03-06 15:31:15
 -->
 <template>
 <div class="manager-container">
     <div class="manager-container-panel">
         <div class="left">
-            <PropertyManagerList :list="listData" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @show-add-child="showAddChild" @edit="edit" @edit-child="editChild" @del="sureDeleteConfirm" @del-child="sureDeleteConfirmChild" @set-filter="setFilter"></PropertyManagerList>
+            <PropertyManagerList :list="listData" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @show-add-child="showAddChild" @edit="edit" @edit-child="editChild" @del="sureDeleteConfirm" @del-child="sureDeleteConfirmChild" @set-filter="setFilter" ref="list"></PropertyManagerList>
         </div>
         <div class="right" v-show="isShowAdd">
             <div class="top">
@@ -83,7 +83,8 @@ export default {
             pageData:{
                 maxResultCount: 200,
                 keyword:''
-            }
+            },
+            activatedRow:{}
         }
     },
     computed:{
@@ -139,6 +140,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
                                     this.GetAttributeList();
+                                    this.activatedRow = {};
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -185,6 +187,7 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
                                     this.GetAttributeList();
+                                    this.activatedRow = {};
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -209,8 +212,8 @@ export default {
             this.formValidate2.attributeId='';
             this.$refs['form2'].$refs['formValidate'].resetFields();
         },
-        selectItem(id) {
-
+        selectItem(selectItem) {
+            this.activatedRow = selectItem;
         },
         showAdd() {
             this.$delete(this.formValidate,'id');
@@ -227,44 +230,46 @@ export default {
             this.$refs['form2'].$refs['formValidate'].resetFields();
             this.isShowChild=true;
             this.isShowAdd=false;
-            this.formValidate2.attributeId = data.id;
-            this.formValidate2.attributeName = data.title;
+            this.formValidate2.attributeId = this.activatedRow.data.id;
+            this.formValidate2.attributeName = this.activatedRow.data.title;
         },
         edit(root,node,data){   
             this.clearFormData();         
             this.formValidate = {
-                name: data.name,
-                groupName :data.groupName,
-                id: data.id,
+                name: this.activatedRow.data.name,
+                groupName :this.activatedRow.data.groupName,
+                id: this.activatedRow.data.id,
             };
             this.isShowAdd = true;
             this.isShowChild = false;
         },
         editChild(root,node,data){
             var attributeName = "";
-            if(data.attributeId){
-                attributeName = root.find(el => el.node.id === data.attributeId).node.name;
+            if(this.activatedRow.data.attributeId){
+                attributeName = this.activatedRow.root.find(el => el.node.id === this.activatedRow.data.attributeId).node.name;
             }
             this.formValidate2 = {
-                attributeId: data.attributeId,
+                attributeId: this.activatedRow.data.attributeId,
                 attributeName: attributeName,
-                valueName :data.valueName,
-                id: data.id,
+                valueName :this.activatedRow.data.valueName,
+                id: this.activatedRow.data.id,
             };
             this.isShowAdd = false;
             this.isShowChild = true;
         },
         sureDeleteConfirm (root, node, data,flag) {
-            this.$Modal.confirm({
-                title: '温馨提示',
-                content: '数据删除后将无法恢复！',
-                onCancel: () => {
-                    this.$Message.info('取消');
-                },
-                onOk: () => {
-                    flag ? this.deletesData() : this.deleteData(root, node, data);
-                },
-            });
+            if(this.activatedRow.data.id) {
+                this.$Modal.confirm({
+                    title: '温馨提示',
+                    content: '数据删除后将无法恢复！',
+                    onCancel: () => {
+                        this.$Message.info('取消');
+                    },
+                    onOk: () => {
+                        flag ? this.deletesData() : this.deleteData(root, node, this.activatedRow.data);
+                    },
+                });
+            }
         },
         deleteData(root, node, data) {
             if (data.id) {
@@ -277,6 +282,7 @@ export default {
                             this.GetAttributeList();
                             this.clearFormData();
                             this.showAdd();
+                            this.$refs.list.selectItem={};
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
@@ -289,16 +295,18 @@ export default {
             }
         },
         sureDeleteConfirmChild (root, node, data,flag) {
-            this.$Modal.confirm({
-                title: '温馨提示',
-                content: '数据删除后将无法恢复！',
-                onCancel: () => {
-                    this.$Message.info('取消');
-                },
-                onOk: () => {
-                    flag ? this.deletesData() : this.deleteDataChild(root, node, data);
-                },
-            });
+            if(this.activatedRow.data.id) {
+                this.$Modal.confirm({
+                    title: '温馨提示',
+                    content: '数据删除后将无法恢复！',
+                    onCancel: () => {
+                        this.$Message.info('取消');
+                    },
+                    onOk: () => {
+                        flag ? this.deletesData() : this.deleteDataChild(root, node, this.activatedRow.data);
+                    },
+                });
+            }
         },
         deleteDataChild(root, node, data) {
             if (data.id) {
@@ -309,7 +317,8 @@ export default {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：删除成功！');
                             this.GetAttributeList();
-                            this.clearFormDataChild();
+                            //this.clearFormDataChild();
+                            this.$refs.list.selectItem={};
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,

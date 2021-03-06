@@ -100,13 +100,14 @@ export default {
                 },
                 on: {
                     click: () => {
-                    if (!node.node.selected)
-                        this.$refs.tree.handleSelect(node.nodeKey); //手动选择树节点
+                        if (!node.node.selected)
+                            this.$refs.tree.handleSelect(node.nodeKey); //手动选择树节点
                         this.selectItem = {
                             root:root,
                             node:node,
                             data:data
-                        }
+                        };
+                        this.$emit('select-item', this.selectItem);
                     }
                 }
             }, 
@@ -223,24 +224,39 @@ export default {
         //     this.$emit('del-child',root, node, data)
         // },
         appendChild(){
-            if(this.selectItem.data.attributesValues){
-                this.$emit('show-add-child',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+            if(this.selectItem&&this.selectItem.data){
+                if(this.selectItem&&this.selectItem.data&&this.selectItem.data.attributesValues){
+                    this.$emit('show-add-child',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+                } else {
+                    //this.$Message.info('温馨提示：请选择属性，再新建子类！');
+                }
+            } else {
+                //this.$Message.info('温馨提示：请选择属性，再新建子类！'); 
             }
         },
         edit(){
-            if(this.selectItem.data.attributesValues){
-                this.$emit('edit',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+            if(this.selectItem&&this.selectItem.data){
+                if(this.selectItem&&this.selectItem.data&&this.selectItem.data.attributesValues){
+                    this.$emit('edit',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+                } else {
+                    this.$emit('edit-child',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+                }
             } else {
-                this.$emit('edit-child',this.selectItem.root,this.selectItem.node,this.selectItem.data); 
-            }  
+                //this.$Message.info('温馨提示：请选择属性，再编辑！');     
+            }
         },
         remove() {
-            if(this.selectItem.data.attributesValues){
-                this.$emit('del',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+            if(this.selectItem&&this.selectItem.data){
+                if(this.selectItem&&this.selectItem.data&&this.selectItem.data.attributesValues){
+                    this.$emit('del',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+                    // this.selectItem = {};
+                } else {
+                    this.$emit('del-child',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+                    // this.selectItem = {};
+                }
             } else {
-                this.$emit('del-child',this.selectItem.root,this.selectItem.node,this.selectItem.data);
+                //this.$Message.info('温馨提示：请选择属性，再删除！');     
             }
-            this.selectItem = {};
         },
         handleContextMenu(e,data) {
             this.contextData = data;
