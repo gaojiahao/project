@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-25 11:55:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-01 16:50:02
+ * @LastEditTime: 2021-03-06 16:49:25
 -->
 <template>
 <div class="add_store">
@@ -48,6 +48,7 @@ export default {
     methods: {
         save() {
             var params = this.formValidate;
+            params['password'] = params['password']||params['oldPassword'];
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (this.formValidate.id) {
@@ -95,7 +96,8 @@ export default {
                             phoneNumber:res.result.item.phoneNumber,
                             birthday:res.result.item.birthday,
                             sex:res.result.item.sex,
-                            password:res.result.item.password,
+                            oldPassword:res.result.item.password,
+                            password:'',
                             enabled:res.result.item.enabled,
                             remark:res.result.item.remark,
                             userRoleId:res.result.item.userRoleId,

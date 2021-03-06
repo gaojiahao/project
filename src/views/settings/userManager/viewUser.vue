@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-25 11:55:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-03 19:28:32
+ * @LastEditTime: 2021-03-06 16:53:41
 -->
 <template>
 <div class="add_store">
@@ -27,7 +27,7 @@
 
 <script>
 import ViewForm from "@components/public/form/viewForm";
-import config from "@views/settings/userManager/editUserManagerConfig";
+import config from "@views/settings/userManager/viewUserManagerConfig";
 import {
     UpdateUserInfo,
     GetUserInfoById

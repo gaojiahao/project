@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-02-23 11:29:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 16:08:03
+ * @LastEditTime: 2021-03-06 16:27:45
 -->
 <template>
     <div class="userInfo">
@@ -35,7 +35,7 @@
                 </Card>
             </Col>
             <Col span="12">
-                <Card style="height:729px">
+                <Card style="height:687px">
                     <div>
                         <div>个人贡献</div>
                     </div>
@@ -201,7 +201,7 @@ export default {
                     if (this.formValidate3.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
-                            UpdatePassword(params).then(res => {
+                            UpdatePassword({...params}).then(res => {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
