@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 19:35:11
+ * @LastEditTime: 2021-03-06 18:21:07
 -->
 <template>
 <div class="erp_table_container">
@@ -40,7 +40,7 @@
                 <div class="footer_page">
                     <Button size="small" style="margin-right: 5px" @click.native="openMult">多选</Button>
                     <Button size="small" style="margin-right: 5px" @click.native="exportData(true)" v-if="isMult">导出</Button>
-                    <!-- <Button size="small" style="margin-right: 5px" @click.native="sureDeleteConfirm(true)" v-if="isMult">删除</Button> -->
+                    <Button size="small" style="margin-right: 5px" @click.native="sureDeleteConfirm(true)" v-if="isMult">删除</Button>
                     <div class="footer_page_right">
                         <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
                     </div>
@@ -67,7 +67,8 @@ import {
     GetPrepGoodsPage,
     DelPrepGoods,
     GetPrepGoodsList,
-    ExportPrepGoods
+    ExportPrepGoods,
+    BatchDelPrepGoods
 } from "@service/basicinfoService";
 import table2excel from 'js-table2excel';
 import tokenService from "@service/tokenService";
@@ -531,6 +532,40 @@ export default {
                 u8arr[n] = bstr.charCodeAt(n);
             }
             return new Blob([u8arr], { type: "application/vnd.ms-excel" });
+        },
+        deletesData(){
+            var data = [];
+            for(var i=0;i<this.selectedList.length;i++){
+                data.push(this.selectedList[i]['id']);
+            }
+            data = data.toString();
+            this.loading = true;
+                return new Promise((resolve, reject) => {
+                    BatchDelPrepGoods({IdList:data}).then(res => {
+                        if (res.result.code == 200) {
+                            for(var i=0;i<this.selectedList.length;i++){
+                                for(var j=0;j<this.data.length;j++){
+                                    if(this.selectedList[i].id==this.data[j].id){
+                                        this.data.splice(j, 1);   
+                                    }
+                                }
+                            }
+                            this.$Message.info('温馨提示：删除成功！');
+                            if(this.data.length<1){
+                                this.pageData.skipCount-1;
+                            }
+                            this.GetPrepGoodsPage();
+                            this.activatedRow = {};
+                            this.loading = false;
+                        } else {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                            this.loading = false;
+                        }
+                    });
+                });
         }
     },
     created(){

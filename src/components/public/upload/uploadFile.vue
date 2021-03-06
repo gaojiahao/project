@@ -106,7 +106,7 @@ export default {
             data:{
                 'BusinessType':''
             },
-            formats:['jpg','jpeg','png','bmp','gif','raw','tif','webp','wmf','3GP','ASF','AVI','MOV',
+            formats:['jpg','jpeg','png','bmp','gif','wmf','3GP','ASF','AVI','MOV',
             'MPEG','WMV','mp4','AAC','AIFF','AMR','FLAC','MIDI','mpeg','WMA','mp3','3dm','3ds','asm',
             'ade','drw','dwg','max','obj','prt','stl','stp','x-t','igs']
         }
@@ -136,7 +136,7 @@ export default {
         handleFormatError(file) {
             this.$Notice.warning({
                 title: '上传文件格式错误',
-                desc: '文件 ' + file.name + '不是图片格式'
+                desc: '文件 ' + file.name + '不是指定的上传格式'
             });
         },
         handleMaxSize(file) {
@@ -146,13 +146,13 @@ export default {
             });
         },
         handleBeforeUpload() {
-            const check = this.uploadList.length < this.length;
-            if (!check) {
-                this.$Notice.warning({
-                    title: '已达到图片最大上传数！'
-                });
-            }
-            return check;
+            // const check = this.uploadList.length < this.length;
+            // if (!check) {
+            //     this.$Notice.warning({
+            //         title: '已达到图片最大上传数！'
+            //     });
+            // }
+            // return check;
         },
         handleInput(data) {
             if(this.checkFile(data)){
@@ -182,7 +182,14 @@ export default {
             }      
         },
         save() {
-            this.$emit('save',this.uploadList);
+            const check = this.uploadList.length <= this.length;
+            if (!check) {
+                this.$Notice.warning({
+                    title: '已达到图片最大上传数！'
+                });
+            } else{
+                this.$emit('save',this.uploadList);
+            }
         },
         downLoadFile(item){
             var url = this.baseUrl+item.filePath;

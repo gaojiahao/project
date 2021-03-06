@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-03 15:59:30
+ * @LastEditTime: 2021-03-06 17:25:28
 -->
 <template>
 <div>
@@ -49,7 +49,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload"></UploadPic>
+                    <UploadPic :length="upLoadSize" :value="productInfoFormValidate['imgUrl']" @save="saveUpload"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -99,7 +99,10 @@ import {
     UpdatePrepGoodsAttribute,
     GetOperationLogPage,
     UpdateGoodsSupplier
-} from "@service/basicinfoService"
+} from "@service/basicinfoService";
+import {
+    GetSystemConfigList
+} from "@service/settingsService";
 import {
     Tabs,
     TabPane,
@@ -150,7 +153,8 @@ export default {
                 totalPagePruch:0
             },
             dataLog:[],
-            loadingLog:true
+            loadingLog:true,
+            upLoadSize:0
         }
     },
     computed:{
@@ -524,6 +528,15 @@ export default {
         },
         copy(){
             this.$router.push({name:'AddNewProduct',params:{flag:'copy',id:this.productId}});
+        },
+        GetSystemConfigList(){
+            return new Promise((resolve, reject) => {
+                GetSystemConfigList({name:'图片张数'}).then(res => {
+                    if(res.result.code==200){
+                        this.upLoadSize = res.result.item[0]['code'];
+                    }
+                });
+            });    
         }
     },
     created() {
@@ -532,6 +545,7 @@ export default {
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
+        this.GetSystemConfigList();
     }
 }
 </script>

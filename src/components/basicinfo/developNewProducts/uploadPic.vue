@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 17:28:54
+ * @LastEditTime: 2021-03-06 18:22:31
 -->
 <template>
 <div>
@@ -127,7 +127,7 @@ export default {
             data:{
                 'BusinessType':''
             },
-            formats:['jpg','jpeg','png','bmp','gif','raw','tif','webp','wmf','3GP','ASF','AVI','MOV',
+            formats:['jpg','jpeg','png','bmp','gif','wmf','3GP','ASF','AVI','MOV',
             'MPEG','WMV','mp4','AAC','AIFF','AMR','FLAC','MIDI','mpeg','WMA','mp3','3dm','3ds','asm',
             'ade','drw','dwg','max','obj','prt','stl','stp','x-t','igs']
         }
@@ -151,13 +151,13 @@ export default {
                 this.$Notice.warning({
                     title: '上传失败',
                     desc: res.result.msg
-                });    
+                });
             }
         },
         handleFormatError(file) {
             this.$Notice.warning({
                 title: '上传文件格式错误',
-                desc: '文件 ' + file.name + '不是图片格式'
+                desc: '文件 ' + file.name + '不是指定的上传格式'
             });
         },
         handleMaxSize(file) {
@@ -167,13 +167,13 @@ export default {
             });
         },
         handleBeforeUpload() {
-            const check = this.uploadList.length < this.length;
-            if (!check) {
-                this.$Notice.warning({
-                    title: '已达到图片最大上传数！'
-                });
-            }
-            return check;
+            // const check = this.uploadList.length < this.length;
+            // if (!check) {
+            //     this.$Notice.warning({
+            //         title: '已达到图片最大上传数！'
+            //     });
+            // }
+            // return check;
         },
         handleInput(data) {
             if(this.checkFile(data)){
@@ -203,8 +203,15 @@ export default {
             }      
         },
         save() {
-            this.$refs.upload.fileList=[];
-            this.$emit('save',this.uploadList);
+            const check = this.uploadList.length <= this.length;
+            if (!check) {
+                this.$Notice.warning({
+                    title: '已达到最大上传数！'
+                });
+            } else{
+                this.$refs.upload.fileList=[];
+                this.$emit('save',this.uploadList);
+            }
         },
         goReturn(){
             this.$router.go(-1);

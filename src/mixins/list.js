@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-18 14:29:46
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-29 12:20:08
+ * @LastEditTime: 2021-03-06 18:21:18
  */
 import ModalForm from "@components/public/form/modalForm";
 import SeniorFilter from "@components/public/filter/seniorFilter";
@@ -86,7 +86,7 @@ export default {
             this.activatedRow = currentRow;    
         },
         sureDeleteConfirm (flag) {
-            if(this.activatedRow.id){
+            if(flag){
                 this.$Modal.confirm({
                     title: '温馨提示',
                     content: '数据删除后将无法恢复！',
@@ -97,6 +97,19 @@ export default {
                         flag ? this.deletesData() : this.deleteData();
                     },
                 });
+            } else {
+                if(this.activatedRow.id){
+                    this.$Modal.confirm({
+                        title: '温馨提示',
+                        content: '数据删除后将无法恢复！',
+                        onCancel: () => {
+                            this.$Message.info('取消');
+                        },
+                        onOk: () => {
+                            flag ? this.deletesData() : this.deleteData();
+                        },
+                    });
+                }    
             }
         },
         openMult(){
