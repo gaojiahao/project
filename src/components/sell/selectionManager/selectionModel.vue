@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 11:08:40
+ * @LastEditTime: 2021-03-08 11:15:48
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -55,12 +55,6 @@ export default {
         titleText: {
             type: String,
             default: '',
-        },
-        formValidate: {
-            type: Object,
-            default () {
-                return {}
-            }
         },
         showModel: {
             type: Boolean,

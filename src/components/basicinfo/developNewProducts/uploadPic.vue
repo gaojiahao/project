@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 18:22:31
+ * @LastEditTime: 2021-03-08 11:35:58
 -->
 <template>
 <div>
@@ -206,7 +206,7 @@ export default {
             const check = this.uploadList.length <= this.length;
             if (!check) {
                 this.$Notice.warning({
-                    title: '已达到最大上传数！'
+                    title: '已达到最大上传数'+this.length+'个文件！'
                 });
             } else{
                 this.$refs.upload.fileList=[];
@@ -280,8 +280,8 @@ export default {
     }
 
     .demo-upload-list img {
-        width: 100%;
-        height: 100%;
+        width: 120px;
+        height: 120px;
     }
 
     .demo-upload-list-cover {
@@ -292,6 +292,8 @@ export default {
         left: 0;
         right: 0;
         background: rgba(0, 0, 0, .6);
+        width: 120px;
+        height: 120px;
     }
 
     .demo-upload-list:hover .demo-upload-list-cover {

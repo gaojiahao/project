@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-03 12:10:50
+ * @LastEditTime: 2021-03-08 12:30:05
 -->
 <template>
     <div class="addFinishProduct">
@@ -33,7 +33,10 @@ import config from "@views/sell/sellManager/addFinishProductConfig";
 import {
     CreateRecommendGoods,
     UpdateRecommendGoods
-} from "@service/sellService"
+} from "@service/sellService";
+import {
+    GetSystemConfigList
+} from "@service/settingsService";
 export default {
     name: "AddFinishProduct",
     components: {
@@ -41,13 +44,20 @@ export default {
     },
     data() {
         return {
-
+            upLoadSize:0,
         }
     },
     mixins: [config],
     methods: {
         save() {
             var params = this.formValidate;
+            var check = params['imgUrl'].length <= this.upLoadSize;
+            if (!check) {
+                this.$Notice.warning({
+                    title: '已达到最大上传数'+this.upLoadSize+'个文件！'
+                });
+                return ;
+            }
             params = {
                 ...params,
                 imgOne:params['imgUrl'][0]&&params['imgUrl'][0].filePath||'',
@@ -102,9 +112,18 @@ export default {
         goReturn(){
             this.$router.go(-1);
         },
+        GetSystemConfigList(){
+            return new Promise((resolve, reject) => {
+                GetSystemConfigList({name:'图片张数'}).then(res => {
+                    if(res.result.code==200){
+                        this.upLoadSize = res.result.item[0]['code'];
+                    }
+                });
+            });    
+        }
     },
     created() {
-
+        this.GetSystemConfigList();
     }
 }
 </script>

@@ -185,7 +185,7 @@ export default {
             const check = this.uploadList.length <= this.length;
             if (!check) {
                 this.$Notice.warning({
-                    title: '已达到图片最大上传数！'
+                    title: '已达到最大上传数'+this.length+'个文件！'
                 });
             } else{
                 this.$emit('save',this.uploadList);
@@ -241,8 +241,8 @@ export default {
 }
 
 .demo-upload-list img {
-    width: 100%;
-    height: 100%;
+    width: 60px;
+    height: 60px;
 }
 
 .demo-upload-list-cover {

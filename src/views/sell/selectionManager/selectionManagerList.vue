@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 19:38:41
+ * @LastEditTime: 2021-03-08 11:04:45
 -->
 <template>
 <div class="erp_table_container">
@@ -14,10 +14,10 @@
                 <div class="filter">
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
-                            <Radio label="large">全部</Radio>
-                            <Radio label="default">已选</Radio>
-                            <Radio label="small">未选</Radio>
-                            <Radio label="small2">不选</Radio>
+                            <!-- <Radio label="large">全部</Radio> -->
+                            <Radio label="1">已选</Radio>
+                            <Radio label="0">未选</Radio>
+                            <Radio label="2">不选</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -30,7 +30,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true,row)">选品</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true,row)" v-if="row.selectStatus==0">选品</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -112,13 +112,23 @@ export default {
                     },
                 },
             },
-            filter:"small",
+            filter:"0",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetGoodsSelectionPage();
+            }
         }
     },
     methods: {
         GetGoodsSelectionPage() {
+            var params = {
+                selectStatus: this.filter
+            }
             return new Promise((resolve, reject) => {
-                GetGoodsSelectionPage(this.pageData).then(res => {
+                GetGoodsSelectionPage({...this.pageData,...params}).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -293,6 +303,20 @@ export default {
             },
             {
                 title: '状态',
+                key: 'selectStatus',
+                render: (h, params) => {
+                    return h("span", {
+                    style: {
+                        display: "inline-block",
+                        color: params.row.selectStatus==1 ? "#19be6b": params.row.selectStatus == 0 ? "#ff9900":"#ed4014"
+                    },
+                    },params.row.selectStatus == 1 ?"已选":params.row.selectStatus == 0 ? '未选':"不选");
+                },
+                width: 100,
+                resizable: true,
+            },
+            {
+                title: '审核状态',
                 key: 'status',
                 render: (h, params) => {
                     return h("span", {
@@ -302,29 +326,29 @@ export default {
                     },
                     },params.row.status == 1 ?"通过":params.row.status == 0 ? '未审核':"未通过");
                 },
-                width: 200,
+                width: 100,
                 resizable: true,
             },
             {
-                title: '创建者',
+                title: '选品人',
                 key: 'createdName',
                 resizable: true,
                 width: 80,
             },
             {
-                title: '创建时间',
+                title: '选品时间',
                 key: 'createdOn',
                 resizable: true,
                 width: 200,
             },
             {
-                title: '修改者',
+                title: '审核人',
                 key: 'modifyName',
                 resizable: true,
                 width: 80,
             },
             {
-                title: '修改时间',
+                title: '审核时间',
                 key: 'modifyOn',
                 resizable: true,
                 width: 200,

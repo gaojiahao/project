@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 18:21:07
+ * @LastEditTime: 2021-03-08 12:18:44
 -->
 <template>
 <div class="erp_table_container">
@@ -39,8 +39,8 @@
             <template slot="footer">
                 <div class="footer_page">
                     <Button size="small" style="margin-right: 5px" @click.native="openMult">多选</Button>
-                    <Button size="small" style="margin-right: 5px" @click.native="exportData(true)" v-if="isMult">导出</Button>
-                    <Button size="small" style="margin-right: 5px" @click.native="sureDeleteConfirm(true)" v-if="isMult">删除</Button>
+                    <Button size="small" style="margin-right: 5px" @click.native="exportData(true)" v-if="isMult&&selectedList.length">导出</Button>
+                    <Button size="small" style="margin-right: 5px" @click.native="sureDeleteConfirm(true)" v-if="isMult&&selectedList.length">删除</Button>
                     <div class="footer_page_right">
                         <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
                     </div>
@@ -119,6 +119,7 @@ export default {
                             this.totalPage = res.result.item.totalCount;
                             this.data = res.result.item.items;
                             this.loading = false;
+                            this.selectedList = [];
                         });
                     }
                 });

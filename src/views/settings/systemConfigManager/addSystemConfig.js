@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-18 19:16:51
+ * @LastEditTime: 2021-03-08 11:12:45
  */
 export default {
   data() {
@@ -22,6 +22,7 @@ export default {
           //     {name:'制图选项',value:'filetype'}
           //   ],
           // }
+          length:100
         },
         name:{
           name:'名称',

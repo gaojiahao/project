@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-18 14:29:46
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 18:21:18
+ * @LastEditTime: 2021-03-08 09:59:14
  */
 import ModalForm from "@components/public/form/modalForm";
 import SeniorFilter from "@components/public/filter/seniorFilter";
@@ -43,7 +43,12 @@ export default {
             this.selectedList.push(row);
         },
         onSelectCancel(selection,row){
-            this.selectedList.splice(row.id, 1);
+            for(var i=0;i<this.selectedList.length;i++){
+                if(row.id==this.selectedList[i]['id']){
+                    this.selectedList.splice(i, 1);
+                    break;
+                }
+            }
         },
         onSelectAllCancel(selection){
             this.selectedList = [];
