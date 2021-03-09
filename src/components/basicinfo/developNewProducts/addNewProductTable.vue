@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-24 20:03:27
+ * @LastEditTime: 2021-03-09 12:12:45
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -78,8 +78,16 @@ export default {
                     key: 'purchasePrices'
                 },
                 {
-                    title: '链接地址',
-                    key: 'url'
+                    title: '参考链接',
+                    key: 'url',
+                    render: (h, params) => {
+                        return h("a", {
+                            attrs:{
+                                href:params.row.url,
+                                target:'_blank' 
+                            }
+                        },params.row.url);
+                    },
                 },
                 {
                     title: '备注',
