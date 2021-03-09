@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 17:30:59
+ * @LastEditTime: 2021-03-08 15:15:16
  */
 //引用插件
 import Vue from "vue";
@@ -18,6 +18,7 @@ import 'video.js/dist/video-js.css';
 import AudioPlayer from '@liripeng/vue-audio-player';
 import '@liripeng/vue-audio-player/lib/vue-audio-player.css';
 import VueQuillEditor from 'vue-quill-editor';
+import jsPlumb from 'jsplumb';
 //引用自定义组件
 import Loading from "@plugins/loading/pageLoad/loading";
 import FromLoading from "@components/public/loading/loading.js";
@@ -58,6 +59,8 @@ Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://192.168.1.23:8071/'
 // 192.168.1.23:8073
 // http://192.168.1.23:8073/
 const originalPush = VueRouter.prototype.push;
+//流程插件挂载
+Vue.prototype.$jsPlumb = jsPlumb.jsPlumb;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }

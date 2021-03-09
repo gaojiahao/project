@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-03 19:30:54
+ * @LastEditTime: 2021-03-08 14:55:30
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -409,23 +409,13 @@ const routes = [
                     component: resolve=>(require(["@views/settings/bpmManager/flowManager/saveBpm"],resolve)),
                   },
                   {
-                    path: 'saveBpm2',
-                    name: 'SaveBpm2',
+                    path: 'saveBpm3',
+                    name: 'SaveBpm3',
                     meta:{ 
                       title:'新建流程',
                       group: "flowManager",
                     },
-                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/saveBpm2"],resolve)),
-                  },
-                  {
-                    path: 'updataBpm',
-                    name: 'UpdataBpm',
-                    meta:{ 
-                      title:'更新流程',
-                      group: "flowManager",
-                      level: 3,
-                    },
-                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/updataBpm"],resolve)),
+                    component: resolve=>(require(["@views/settings/bpmManager/flowManager/saveBpm3"],resolve)),
                   },
                 ]
               },

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 15:50:54
+ * @LastEditTime: 2021-03-09 09:45:05
  */
 export default {
   data() {
@@ -190,6 +190,11 @@ export default {
             target: 'brandName',
             bindValue: 'name'
           },
+        },
+        url:{
+          name:'参考链接',
+          type:'link',
+          length:2000
         },
         isPackage:{
           name:'是否带包装',
@@ -386,6 +391,7 @@ export default {
         logisticsLabel:'',
         brandId:'',
         brandName:'',
+        url:'',
         isPackage: true,
         weight:'',
         productSize:{},
