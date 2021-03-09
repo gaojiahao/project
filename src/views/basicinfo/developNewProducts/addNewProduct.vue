@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 17:29:57
+ * @LastEditTime: 2021-03-09 09:35:29
 -->
 <template>
 <div>
@@ -431,6 +431,7 @@ export default {
                                 characteristic:res.result.item.characteristic,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
+                                url:res.result.item.url,
                                 isPackage: res.result.item.isPackage,
                                 weight:res.result.item.weight,
                                 productSize:{

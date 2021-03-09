@@ -4,10 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-03 16:11:08
+ * @LastEditTime: 2021-03-09 11:32:39
 -->
 <template>
 <div>
+    <div class="prevPage" v-if="preId"  @click="prePage">
+        <Icon type="ios-arrow-back" />
+    </div>
     <Tabs type="card" :animated="false" :value="tabName">
         <TabPane label="基本信息" name="basicInfo">
             <div class="top">
@@ -56,7 +59,9 @@
             <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
-    
+    <div class="nextPage" v-if="nextId" @click="nextPage">
+        <Icon type="ios-arrow-forward" />
+    </div>
 </div>
 </template>
 
@@ -132,12 +137,22 @@ export default {
                 totalPagePruch:0
             },
             dataLog:[],
-            loadingLog:true
+            loadingLog:true,
+            preId:'',
+            nextId:''
         }
     },
     computed:{
         disabled(){
             return this.productId ? false : false;
+        }
+    },
+    watch:{
+        $route:function(to,from){
+            if(to.query.id!=from.query.id){
+                this.productId = to.query.id;
+                this.init();
+            }
         }
     },
     methods: {
@@ -359,6 +374,7 @@ export default {
                                 }],
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
+                                url:res.result.item.url,
                                 isPackage: res.result.item.isPackage,
                                 weight:res.result.item.weight,
                                 productSize:{
@@ -450,13 +466,33 @@ export default {
             this.pageDataLog.maxResultCount = pagesize;
             this.GetOperationLogPage();
         },
+        getNextPre(id){
+            var listID = JSON.parse(window.localStorage.getItem("listID"));
+            for(var i=0;i<listID.length;i++){
+                if(id==listID[i]){
+                    this.preId = listID[i-1];
+                    this.nextId = listID[i+1];
+                }
+            }
+        },
+        prePage(){
+            this.$router.push({name:'ViewNewProduct',query: {id:this.preId}});
+        },
+        nextPage(){
+            this.$router.push({name:'ViewNewProduct',query: {id:this.nextId}});
+        },
+        init(){
+            this.$FromLoading.show();
+            this.getFormData();
+            this.GetGoodsSupplierPage();
+            this.GetPrepGoodsAttributeById();
+            this.GetOperationLogPage();
+            this.getNextPre(this.productId);
+        }
     },
     created() {
         this.productId = this.$route.query.id;
-        this.getFormData();
-        this.GetGoodsSupplierPage();
-        this.GetPrepGoodsAttributeById();
-        this.GetOperationLogPage();
+        this.init();
     }
 }
 </script>

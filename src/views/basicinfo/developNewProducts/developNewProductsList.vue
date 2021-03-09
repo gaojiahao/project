@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-08 12:18:44
+ * @LastEditTime: 2021-03-09 10:00:20
 -->
 <template>
 <div class="erp_table_container">
@@ -107,7 +107,7 @@ export default {
             uploadUrl:'',
             headers:{},
             showProgress:false,
-            percentage:0
+            percentage:0,
         }
     },
     methods: {
@@ -120,6 +120,11 @@ export default {
                             this.data = res.result.item.items;
                             this.loading = false;
                             this.selectedList = [];
+                            var listID= [];
+                            for(var j = 0; j < this.data.length; j++) {
+                                listID.push(this.data[j]['id']);
+                            };
+                            window.localStorage.setItem("listID", JSON.stringify(listID));
                         });
                     }
                 });
@@ -541,33 +546,33 @@ export default {
             }
             data = data.toString();
             this.loading = true;
-                return new Promise((resolve, reject) => {
-                    BatchDelPrepGoods({IdList:data}).then(res => {
-                        if (res.result.code == 200) {
-                            for(var i=0;i<this.selectedList.length;i++){
-                                for(var j=0;j<this.data.length;j++){
-                                    if(this.selectedList[i].id==this.data[j].id){
-                                        this.data.splice(j, 1);   
-                                    }
+            return new Promise((resolve, reject) => {
+                BatchDelPrepGoods({IdList:data}).then(res => {
+                    if (res.result.code == 200) {
+                        for(var i=0;i<this.selectedList.length;i++){
+                            for(var j=0;j<this.data.length;j++){
+                                if(this.selectedList[i].id==this.data[j].id){
+                                    this.data.splice(j, 1);   
                                 }
                             }
-                            this.$Message.info('温馨提示：删除成功！');
-                            if(this.data.length<1){
-                                this.pageData.skipCount-1;
-                            }
-                            this.GetPrepGoodsPage();
-                            this.activatedRow = {};
-                            this.loading = false;
-                        } else {
-                            this.$Message.error({
-                                background: true,
-                                content: res.result.msg
-                            });
-                            this.loading = false;
                         }
-                    });
+                        this.$Message.info('温馨提示：删除成功！');
+                        if(this.data.length<1){
+                            this.pageData.skipCount-1;
+                        }
+                        this.GetPrepGoodsPage();
+                        this.activatedRow = {};
+                        this.loading = false;
+                    } else {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.msg
+                        });
+                        this.loading = false;
+                    }
                 });
-        }
+            });
+        },
     },
     created(){
         this.uploadUrl = this.$upload_url?this.$upload_url:'localhost:8080';
