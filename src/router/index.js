@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-08 14:55:30
+ * @LastEditTime: 2021-03-10 10:18:53
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -980,11 +980,20 @@ const routes = [
               path: 'selectionResultList',
               name: 'SelectionResultList',
               meta:{ 
-                title:'选品结果',
+                title:'选品管理',
                 group: "selectionResultList",
               },
               component: resolve=>(require(["@views/sell/selectionManager/selectionResultList"],resolve)),
-             }
+             },
+             {
+              path: 'viewSelection',
+              name: 'viewSelection',
+              meta:{ 
+                title:'查看选品',
+                group: "viewSelection",
+              },
+              component: resolve=>(require(["@views/sell/selectionManager/viewSelection"],resolve)),
+             },
             ]
           },
           {
@@ -1031,7 +1040,7 @@ const routes = [
                 path: 'viewFinishProduct',
                 name: 'viewFinishProduct',
                 meta:{ 
-                  title:'查看选品',
+                  title:'查看推品',
                   group: "sellManager",
                   level: 2,
                 },
@@ -1078,6 +1087,16 @@ const routes = [
                   level: 1,
                 },
                 component: resolve=>(require(["@views/sell/pieShowManager/pieShowList"],resolve)),
+              },
+              {
+                path: 'viewPieShow',
+                name: 'viewPieShow',
+                meta:{ 
+                  title:'查看派店',
+                  group: "查看派店",
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/sell/pieShowManager/viewPieShow"],resolve)),
               },
             ]
           },
@@ -1184,11 +1203,21 @@ const routes = [
                 path: 'productAppointStore',
                 name: 'productAppointStore',
                 meta:{ 
-                  title:'产品派店',
+                  title:'审核',
                   group: 'appointStoreExamine',
                   level: 2,
                 },
                 component: resolve=>(require(["@views/examine/appointStoreExamine/productAppointStore"],resolve)),
+              },
+              {
+                path: 'viewProductAppointStore',
+                name: 'viewProductAppointStore',
+                meta:{ 
+                  title:'查看审核',
+                  group: 'appointStoreExamine',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/examine/appointStoreExamine/viewProductAppointStore"],resolve)),
               }
             ]
           },
@@ -1248,7 +1277,7 @@ const routes = [
                 path: 'tortExamineList',
                 name: 'tortExamineList',
                 meta:{ 
-                  title:'侵权审核列表',
+                  title:'侵权审核',
                   group: 'tortExamine',
                   level: 1,
                 },
@@ -1258,7 +1287,7 @@ const routes = [
                 path: 'addTortExamine',
                 name: 'addTortExamine',
                 meta:{ 
-                  title:'侵权审核',
+                  title:'审核',
                   group: 'tortExamine',
                   level: 2,
                 },
@@ -1268,7 +1297,7 @@ const routes = [
                 path: 'viewTortExamine',
                 name: 'viewTortExamine',
                 meta:{ 
-                  title:'查看侵权审核',
+                  title:'查看审核',
                   group: 'tortExamine',
                   level: 2,
                 },
@@ -1290,7 +1319,7 @@ const routes = [
                 path: 'selectionExamineList',
                 name: 'selectionExamineList',
                 meta:{ 
-                  title:'选品审核列表',
+                  title:'选品审核',
                   group: 'selectionExamine',
                   level: 1,
                 },
@@ -1300,7 +1329,7 @@ const routes = [
                 path: 'addSelectionExamine',
                 name: 'addSelectionExamine',
                 meta:{ 
-                  title:'选品审核',
+                  title:'审核',
                   group: 'selectionExamine',
                   level: 2,
                 },
@@ -1310,7 +1339,7 @@ const routes = [
                 path: 'viewSelectionExamine',
                 name: 'viewSelectionExamine',
                 meta:{ 
-                  title:'查看选品审核',
+                  title:'查看审核',
                   group: 'selectionExamine',
                   level: 2,
                 },
@@ -1332,7 +1361,7 @@ const routes = [
                 path: 'mainResearchExamineList',
                 name: 'mainResearchExamineList',
                 meta:{ 
-                  title:'主推审核列表',
+                  title:'主推审核',
                   group: 'mainResearchExamine',
                 },
                 component: resolve=>(require(["@views/examine/mainResearchExamine/mainResearchExamineList"],resolve)),
@@ -1341,7 +1370,7 @@ const routes = [
                 path: 'addMainResearchExamine',
                 name: 'addMainResearchExamine',
                 meta:{ 
-                  title:'主推审核',
+                  title:'审核',
                   group: 'mainResearchExamine',
                   level: 2,
                 },
@@ -1351,7 +1380,7 @@ const routes = [
                 path: 'viewMainResearchExamine',
                 name: 'viewMainResearchExamine',
                 meta:{ 
-                  title:'查看主推审核',
+                  title:'查看审核',
                   group: 'mainResearchExamine',
                   level: 2,
                 },

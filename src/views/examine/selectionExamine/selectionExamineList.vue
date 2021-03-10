@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 19:46:15
+ * @LastEditTime: 2021-03-09 19:18:38
 -->
 <template>
 <div class="erp_table_container">
@@ -84,6 +84,11 @@ export default {
                             this.totalPage = res.result.item.totalCount;
                             this.data = res.result.item.items;
                             this.loading = false;
+                            var listID= [];
+                            for(var j = 0; j < this.data.length; j++) {
+                                listID.push(this.data[j]['id']);
+                            };
+                            window.localStorage.setItem("listID", JSON.stringify(listID));
                         });
                     }
                 });
@@ -147,7 +152,7 @@ export default {
         },
         goDetail(id){
             if(id)
-            this.$router.push({name:'viewFinishProduct',query: {id:id}});
+            this.$router.push({name:'viewSelectionExamine',query: {id:id}});
         },
         changeCoulmns(data){
             let datas = [];

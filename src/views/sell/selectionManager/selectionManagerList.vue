@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-08 11:04:45
+ * @LastEditTime: 2021-03-10 10:17:48
 -->
 <template>
 <div class="erp_table_container">
@@ -167,6 +167,7 @@ export default {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
                                 this.GetGoodsSelectionPage();
+                                this.$refs.form.$refs['formValidate'].resetFields();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({
                                     background: true,
@@ -195,7 +196,7 @@ export default {
         },
         goDetail(id){
             if(id)
-            this.$router.push({name:'viewFinishProduct',query: {id:id}});
+            this.$router.push({name:'viewSelection',query: {id:id}});
         },
         changeCoulmns(data){
             let datas = [];

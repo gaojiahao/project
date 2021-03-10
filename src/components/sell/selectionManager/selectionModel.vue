@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-08 11:15:48
+ * @LastEditTime: 2021-03-09 19:57:37
 -->
 <template>
 <Modal v-model="show" :title="titleText" @on-ok="ok" @on-cancel="cancel" width="800">
@@ -49,7 +49,7 @@
 <script>
 import config from "@views/sell/selectionManager/selectionResultListConfig";
 export default {
-    name: 'ModalForm',
+    name: 'SelectionModel',
     mixins: [config],
     props: {
         titleText: {

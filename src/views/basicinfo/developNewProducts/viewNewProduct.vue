@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-09 11:32:39
+ * @LastEditTime: 2021-03-09 16:56:02
 -->
 <template>
 <div>
@@ -151,6 +151,7 @@ export default {
         $route:function(to,from){
             if(to.query.id!=from.query.id){
                 this.productId = to.query.id;
+                if(this.productId)
                 this.init();
             }
         }

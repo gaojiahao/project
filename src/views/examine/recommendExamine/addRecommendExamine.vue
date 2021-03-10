@@ -4,38 +4,64 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-06 12:16:44
+ * @LastEditTime: 2021-03-09 17:35:21
 -->
 <template>
 <div>
-    <div class="addFinishProduct">
+    <div v-if="formStatus">
+        <div class="addFinishProduct">
+            <div class="top">
+                <Divider orientation="left" size="small">推品信息</Divider>
+                <div class="top_tabale">
+                    <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form">
+                        <template slot="button">
+                            <FormItem>
+                                <div style="width:100%">
+                                    <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                                </div>
+                            </FormItem>
+                        </template>
+                    </ViewForm>
+                </div>
+            </div>
+        </div>    
+    </div>
+    <div v-else>
+        <div class="addFinishProduct">
+            <div class="top">
+                <Divider orientation="left" size="small">推品信息</Divider>
+                <div class="top_tabale">
+                    <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" ref="form">
+                        <template slot="button">
+                            <FormItem>
+                            </FormItem>
+                        </template>
+                    </ViewForm>
+                </div>
+            </div>
+        </div>
         <div class="top">
-            <Divider orientation="left" size="small">推品信息</Divider>
+            <Divider orientation="left" size="small">审核建议</Divider>
             <div class="top_tabale">
-                <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" ref="form">
+                <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
                     <template slot="button">
                         <FormItem>
+                            <div style="width:100%">
+                                <Button type="primary" @click="save(true)" style="float: left;">同意</Button>
+                                <Button @click="save(false)" style="float: left; margin-left:10px">不同意</Button>
+                                <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>   
+                            </div>
                         </FormItem>
                     </template>
-                </ViewForm>
+                </XForm>
             </div>
         </div>
     </div>
-    <div class="top">
-        <Divider orientation="left" size="small">审核建议</Divider>
-        <div class="top_tabale">
-            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
-                <template slot="button">
-                    <FormItem>
-                        <div style="width:100%">
-                            <Button type="primary" @click="save(true)" style="float: left;">同意</Button>
-                            <Button @click="save(false)" style="float: left; margin-left:10px">不同意</Button>
-                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>   
-                        </div>
-                    </FormItem>
-                </template>
-            </XForm>
-        </div>
+    <div class="prevPage" v-if="preId"  @click="prePage">
+        <Icon type="ios-arrow-back" />
+    </div>
+    <div class="nextPage" v-if="nextId" @click="nextPage">
+        <Icon type="ios-arrow-forward" />
     </div>
 </div>
 </template>
@@ -68,11 +94,26 @@ export default {
     data(){
         return{
             platForm: '亚马逊',
+            formStatus:false,
+            preId:'',
+            nextId:'',
+            id:''
+        }
+    },
+    watch:{
+        $route:function(to,from){
+            if(to.query.id!=from.query.id){
+                this.id = to.query.id;
+                if(this.id)
+                    this.init();
+            }
         }
     },
     methods: {
+        clearFormData(){
+                 
+        },
         getFormData(){
-            this.id = this.$route.query.id;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetRecommendGoodsById({id:this.id}).then(res => {
@@ -89,6 +130,7 @@ export default {
                                 remark: res.result.item.remark,
                                 status: res.result.item.status,
                             }
+                            this.formStatus = res.result.item.status;
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
@@ -100,7 +142,7 @@ export default {
             }
         },
         goReturn(){
-            this.$router.go(-1);
+            this.$router.push({name:'recommendExamineList'});
         },
         save(status){
             var params = this.formValidate2;
@@ -120,7 +162,8 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：审核成功！');
-                                    this.goReturn();
+                                    this.getFormData();
+                                    // this.goReturn();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -135,10 +178,31 @@ export default {
                     this.$Message.error('保存失败');
                 }
             })
+        },
+        getNextPre(id){
+            var listID = JSON.parse(window.localStorage.getItem("listID"));
+            for(var i=0;i<listID.length;i++){
+                if(id==listID[i]){
+                    this.preId = listID[i-1];
+                    this.nextId = listID[i+1];
+                }
+            }
+        },
+        prePage(){
+            this.$router.push({name:'addRecommendExamine',query: {id:this.preId}});
+        },
+        nextPage(){
+            this.$router.push({name:'addRecommendExamine',query: {id:this.nextId}});
+        },
+        init(){
+            this.$FromLoading.show();
+            this.getFormData();
+            this.getNextPre(this.id);
         }
     },
     created() {
-        this.getFormData();
+        this.id = this.$route.query.id;
+        this.init();
     }
 }
 </script>
