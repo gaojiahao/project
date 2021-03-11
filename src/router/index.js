@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-10 20:13:23
+ * @LastEditTime: 2021-03-11 16:20:14
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1502,6 +1502,16 @@ const routes = [
                   level: 1,
                 },
                 component: resolve=>(require(["@views/charting/chartingTimeExchange/changeTime"],resolve)),
+              },
+              {
+                path: 'viewChangeTime',
+                name: 'viewChangeTime',
+                meta:{ 
+                  title:'查看产品',
+                  group: 'chartingTimeExchange',
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/charting/chartingTimeExchange/viewChangeTime"],resolve)),
               },
             ]
           },

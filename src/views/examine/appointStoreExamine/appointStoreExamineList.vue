@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-09 19:43:35
+ * @LastEditTime: 2021-03-11 20:06:23
 -->
 <template>
 <div class="erp_table_container">
@@ -352,7 +352,11 @@ export default {
     },
     created(){
         this.GetPieShopReviewPage();
+    },
+    activated() {
+        this.GetPieShopReviewPage();
     }
+
 }
 </script>
 <style lang="less" scoped>

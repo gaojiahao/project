@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-10 20:08:39
+ * @LastEditTime: 2021-03-11 15:46:22
 -->
 <template>
 <div class="erp_table_container">
@@ -175,7 +175,7 @@ export default {
                     },
                     on:{
                         click:()=>{
-                            this.goDetail(params.row.id)    
+                            this.goDetail(params.row.gId)    
                         }
                     }
                     },params.row.name);

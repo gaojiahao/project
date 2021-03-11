@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-08 11:14:53
+ * @LastEditTime: 2021-03-11 19:08:33
 -->
 <template>
 <div>
@@ -80,7 +80,7 @@
 import config2 from "@views/charting/chartingDelegation/productAppointStoreConfig";
 import ViewForm from "@components/public/form/viewForm";
 import ChartingFullCalendar from "@components/charting/chartingFullCalendar";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
+import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
@@ -177,7 +177,7 @@ export default {
                 },
                 {
                     title: '制作类型',
-                    key: 'fileType',
+                    key: 'fileTypeName',
                 },
                 {
                     title: '制作人',
@@ -351,6 +351,21 @@ export default {
                                 logisticsLabel: res.result.item.logisticsLabel,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
+                                imgUrl: [{
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                },
+                                {
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                },
+                                {
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                }],
                                 isPackage: res.result.item.isPackage,
                                 weight:res.result.item.weight,
                                 productSize:{

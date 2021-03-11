@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-10 11:29:38
+ * @LastEditTime: 2021-03-11 16:57:18
  */
 export default {
     data() {
@@ -51,7 +51,7 @@ export default {
           },
           urlOne:{
             name:'参考链接',
-            type:'text',
+            type:'link',
           },
           remark:{
             name:'推荐备注',

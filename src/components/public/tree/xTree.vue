@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-25 10:01:51
+ * @LastEditTime: 2021-03-11 20:17:50
 -->
 <template>
 <div class="x_tree" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
@@ -88,7 +88,7 @@ export default {
         },
         value:{
             handler(val){
-                
+                this.calleArr(this.datas);
             },
             deep:true,
             immediate:true,

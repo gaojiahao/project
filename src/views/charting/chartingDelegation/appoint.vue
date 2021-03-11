@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-10 19:11:41
+ * @LastEditTime: 2021-03-11 19:40:38
 -->
 <template>
 <div>
@@ -228,7 +228,10 @@ export default {
                             on: {
                                 'on-change': (event) => {
                                     this.filesData[params.index][params.column.key] = event;
-                                }
+                                },
+                                'on-clear': (event) => {
+                                    this.filesData[params.index][params.column.key] = '';
+                                },
                             }
                         });
                     }
@@ -297,8 +300,24 @@ export default {
                                 categoryName: res.result.item.categoryName,
                                 characteristic:res.result.item.characteristic,
                                 logisticsLabel: res.result.item.logisticsLabel,
+                                imgUrl: [{
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                },
+                                {
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                },
+                                {
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                }],
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
+                                url:res.result.item.url,
                                 isPackage: res.result.item.isPackage,
                                 weight:res.result.item.weight,
                                 productSize:{
@@ -331,7 +350,7 @@ export default {
             }
         },
         goReturn(){
-            this.$router.go(-1);
+            this.$router.push({name:'chartingDelegationList'});
         },
         GetOperationLogPage(){
             if(this.productId){
@@ -358,6 +377,12 @@ export default {
         },
         save() {
             var data = this.storeList[0];
+             for(var i=0;i<this.filesData.length;i++){
+                if(!(this.filesData[i].userId&&this.filesData[i].date&&this.filesData[i].date[0]&&this.filesData[i].date[1])){
+                    this.$Message.error('人员，制作时间未填写完整');   
+                    return ; 
+                }
+            }
             for(var i=0;i<this.filesData.length;i++){
                 var obj={};
                 obj={

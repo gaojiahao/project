@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-03 19:21:44
+ * @LastEditTime: 2021-03-11 15:01:30
  */
 export default {
   data() {
@@ -16,53 +16,12 @@ export default {
       }
     };
     return {
-      formConfig:{
-        code:{
-          name:'产品货号',
-          type:'text',
-        },
-        categoryId:{
-          name:'类目',
-          type:'text',
-          hidden:true
-        },
-        categoryName:{
-          name:'类目',
-          type:'text',
-        },
-        productImg:{
-            name:'产品图片',
-            type:'uploadImage',
-            disabled: true
-        },
-        name:{
-            name:'产品名称',
-            type:'text'
-        },
-        // selectionPeople:{
-        //     name:'选品人员',
-        //     type:'table'    
-        // },
-        // unSelectionPeople:{
-        //     name:'未选人员',
-        //     type:'table'    
-        // },
-        // appointStorePeople:{
-        //     name:'派店人员',
-        //     type:'table'    
-        // },
-      },
-      formValidate: {
-        code:'',
-        name:'',
-        categoryId:'',
-        productImg:[],
-      },
-      ruleValidate: {
-
-      },
       formConfig3:{
-        fileType:{
+        // fileType:{
+        //   name:"制作类型",
+        //   type:"text",
+        // },
+        fileTypeName:{
           name:"制作类型",
           type:"text",
         },
@@ -85,6 +44,7 @@ export default {
       },
       formValidate3: {
         fileType:'',
+        fileTypeName:'',
         userId:'',
         remark: '',
         startTime:'',

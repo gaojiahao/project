@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-10 20:12:34
+ * @LastEditTime: 2021-03-11 15:58:53
 -->
 <template>
 <div>
@@ -35,7 +35,6 @@
         </TabPane>
         <TabPane label="属性" name="propertyInfo" :disabled="disabled">
             <div class="top">
-                <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
                     <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true"></AddAttrProductTable>
                 </div>
@@ -79,33 +78,6 @@
             </XForm>
         </div>
     </div>
-    <!-- <div class="top">
-        <Divider orientation="left" size="small">上传文件</Divider>
-        <div class="top_tabale">
-            <div class="myTable">
-                <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-current-change="onCurrentChange">
-                </Table>
-                <div style="margin: 10px;overflow: hidden">
-                    <div style="float: right;">
-                        <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
-                    </div>
-                </div>
-            </div>
-            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form" v-if="isForm">
-                <div slot="other">
-                    <MultUpload v-model="formValidate2['data']" :config="config"></MultUpload> 
-                </div>
-                <template slot="button">
-                    <div style="line-height:32px height:32px; display:flex">
-                        <div style="width:100%">
-                            <Button type="primary" size="small" @click="save" style="float: left;">保存</Button>
-                            <Button size="small" @click="cancel" style="float: left; margin-left:10px">取消</Button>
-                        </div>
-                    </div>
-                </template>
-            </XForm>
-        </div>
-    </div> -->
 </div>
 </template>
 
@@ -125,7 +97,8 @@ import NewHtmlEditor from "@components/basicinfo/developNewProducts/newHtmlEdito
 import AddAttrProductTable from "@components/basicinfo/developNewProducts/addAttrProductTable";
 import {
     GetFileDistributionById,
-    CreateGoodsFile
+    CreateGoodsFile,
+    GetDistributionAndRelation
 } from "@service/tortExamineService";
 import {
     CreatePrepGoods,
@@ -321,7 +294,7 @@ export default {
             this.GetGoodsSupplierPage();
         },
         getFormData(){
-            this.id = this.$route.query.id;
+            this.id = this.$route.query.goodsId;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetPrepGoodsById({id:this.id}).then(res => {
@@ -335,8 +308,24 @@ export default {
                                 categoryName: res.result.item.categoryName,
                                 characteristic:res.result.item.characteristic,
                                 logisticsLabel: res.result.item.logisticsLabel,
+                                imgUrl: [{
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                },
+                                {
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                },
+                                {
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                }],
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
+                                url:res.result.item.url,
                                 isPackage: res.result.item.isPackage,
                                 weight:res.result.item.weight,
                                 productSize:{
@@ -395,7 +384,7 @@ export default {
             this.GetOperationLogPage();
         },
         GetFileDistributionById(){
-            this.id = this.$route.query.id;
+            this.id = this.$route.query.goodsId;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetFileDistributionById({id:this.id}).then(res => {
@@ -404,6 +393,7 @@ export default {
                             this.formValidate3 = {
                                 id: res.result.item.id,
                                 fileType: res.result.item.fileType,
+                                fileTypeName: res.result.item.fileTypeName,
                                 remark: res.result.item.remark,
                                 startTime: res.result.item.startTime,
                                 endTime: res.result.item.endTime,
@@ -416,7 +406,7 @@ export default {
                         }
                     });
                 });    
-            }    
+            }
         },
         clearFormData() {
             this.formValidate2 = {
@@ -474,18 +464,41 @@ export default {
         },
         showForm(flag){
             this.isForm = flag;
+        },
+        GetDistributionAndRelation(){
+            this.id = this.$route.query.goodsId;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetDistributionAndRelation({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formValidate3 = {
+                                id: res.result.item.id,
+                                fileType: res.result.item.fileType,
+                                fileTypeName: res.result.item.fileTypeName,
+                                remark: res.result.item.remark,
+                                startTime: res.result.item.startTime,
+                                endTime: res.result.item.endTime,
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }    
         }
     },
     created() {
-        this.productId = this.$route.query.id;
+        this.productId = this.$route.query.goodsId;
         this.getFormData();
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
-        this.GetFileDistributionById();
-        setTimeout(() => {
-            this.loading = false;
-        }, 1000);
+        //this.GetFileDistributionById();
+        this.GetDistributionAndRelation();
     }
 }
 </script>

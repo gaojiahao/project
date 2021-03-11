@@ -4,111 +4,83 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-08 11:25:32
+ * @LastEditTime: 2021-03-11 15:29:09
 -->
 <template>
-<div>
-    <Tabs type="card" :animated="false" :value="tabName">
-        <TabPane label="基本信息" name="basicInfo">
-            <div class="top">
-                <Divider orientation="left" size="small">基本信息</Divider>
-                <div class="top_tabale">
-                    <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" ref="form" :divisionField="divisionField">
-                        <template slot="button">
-                            <FormItem>
-                            </FormItem>
-                        </template>
-                    </ViewForm>
-                </div>
-            </div>
-        </TabPane>
-        <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
-            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
-        </TabPane>
-        <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
-            <div class="top">
-                <Divider orientation="left" size="small">上传信息</Divider>
-                <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true"></UploadPic>
-                </div>
-            </div>
-        </TabPane>
-        <TabPane label="属性" name="propertyInfo" :disabled="disabled">
-            <div class="top">
-                <!-- <Divider orientation="left" size="small">属性</Divider> -->
-                <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true"></AddAttrProductTable>
-                </div>
-            </div>
-        </TabPane>
-        <TabPane label="详细描述" name="detailInfo" :disabled="disabled">
-            <div class="top">
-                <Divider orientation="left" size="small">详细描述</Divider>
-                <div class="top_tabale1">
-                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
-                </div>
-            </div>
-        </TabPane>
-        <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
-        </TabPane>
-    </Tabs>
-    <div class="top">
-        <Divider orientation="left" size="small">制作信息</Divider>
-        <div class="top_tabale">
-            <ViewForm :formValidate="formValidate3" :ruleValidate="ruleValidate3" :formConfig="formConfig3">
-                <template slot="button">
-                    <div style="width:100%">   
-                    </div>
-                </template>
-            </ViewForm>
-        </div>
-    </div>
-    <div class="top">
-        <Divider orientation="left" size="small">上传</Divider>
-        <div class="top_tabale">
-            <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form">
-                <template slot="button">
-                    <div style="width:100%">
-                    </div>
-                </template>
-            </ViewForm>
-        </div>
-    </div>
-    <!-- <div class="top">
-        <Divider orientation="left" size="small">上传文件</Divider>
-        <div class="top_tabale">
-            <div class="myTable">
-                <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-current-change="onCurrentChange">
-                </Table>
-                <div style="margin: 10px;overflow: hidden">
-                    <div style="float: right;">
-                        <Page :total="100" :current="1" @on-change="changePage" show-elevator></Page>
+    <div>
+        <Tabs type="card" :animated="false" :value="tabName">
+            <TabPane label="基本信息" name="basicInfo">
+                <div class="top">
+                    <Divider orientation="left" size="small">基本信息</Divider>
+                    <div class="top_tabale">
+                        <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" ref="form" :divisionField="divisionField">
+                            <template slot="button">
+                                <FormItem>
+                                </FormItem>
+                            </template>
+                        </ViewForm>
                     </div>
                 </div>
-            </div>
-            <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form" v-if="isForm">
-                <div slot="other">
-                    <MultUpload v-model="formValidate2['data']" :config="config"></MultUpload> 
+            </TabPane>
+            <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
+                <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
+            </TabPane>
+            <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
+                <div class="top">
+                    <Divider orientation="left" size="small">上传信息</Divider>
+                    <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
+                        <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true"></UploadPic>
+                    </div>
                 </div>
-                <template slot="button">
-                    <div style="line-height:32px height:32px; display:flex">
-                        <div style="width:100%">
-                            <Button type="primary" size="small" @click="save" style="float: left;">保存</Button>
-                            <Button size="small" @click="cancel" style="float: left; margin-left:10px">取消</Button>
+            </TabPane>
+            <TabPane label="属性" name="propertyInfo" :disabled="disabled">
+                <div class="top">
+                    <div class="top_tabale">
+                        <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true"></AddAttrProductTable>
+                    </div>
+                </div>
+            </TabPane>
+            <TabPane label="详细描述" name="detailInfo" :disabled="disabled">
+                <div class="top">
+                    <Divider orientation="left" size="small">详细描述</Divider>
+                    <div class="top_tabale1">
+                        <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
+                    </div>
+                </div>
+            </TabPane>
+            <TabPane label="日志文件" name="logInfo" :disabled="disabled">
+                <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
+            </TabPane>
+        </Tabs>
+        <div class="top">
+            <Divider orientation="left" size="small">制作信息</Divider>
+            <div class="top_tabale">
+                <ViewForm :formValidate="formValidate3" :ruleValidate="ruleValidate3" :formConfig="formConfig3">
+                    <template slot="button">
+                        <div style="width:100%">   
                         </div>
-                    </div>
-                </template>
-            </XForm>
+                    </template>
+                </ViewForm>
+            </div>
         </div>
-    </div> -->
-</div>
+        <div class="top">
+            <Divider orientation="left" size="small">上传</Divider>
+            <div class="top_tabale">
+                <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form">
+                    <template slot="button">
+                        <div style="width:100%">
+                        </div>
+                    </template>
+                </ViewForm>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import config2 from "@views/charting/chartingManager/editProductAppointStoreConfig";
 import ViewForm from "@components/public/form/viewForm";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
+import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
@@ -317,7 +289,7 @@ export default {
             this.GetGoodsSupplierPage();
         },
         getFormData(){
-            this.id = this.$route.query.id;
+            this.id = this.$route.query.goodsId;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetPrepGoodsById({id:this.id}).then(res => {
@@ -331,8 +303,24 @@ export default {
                                 categoryName: res.result.item.categoryName,
                                 characteristic:res.result.item.characteristic,
                                 logisticsLabel: res.result.item.logisticsLabel,
+                                imgUrl: [{
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                },
+                                {
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                },
+                                {
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                }],
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
+                                url:res.result.item.url,
                                 isPackage: res.result.item.isPackage,
                                 weight:res.result.item.weight,
                                 productSize:{
@@ -391,7 +379,7 @@ export default {
             this.GetOperationLogPage();
         },
         GetFileDistributionById(){
-            this.id = this.$route.query.id;
+            this.id = this.$route.query.goodsId;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetFileDistributionById({id:this.id}).then(res => {
@@ -400,6 +388,7 @@ export default {
                             this.formValidate3 = {
                                 id: res.result.item.id,
                                 fileType: res.result.item.fileType,
+                                fileTypeName: res.result.item.fileTypeName,
                                 remark: res.result.item.remark,
                                 startTime: res.result.item.startTime,
                                 endTime: res.result.item.endTime,
@@ -472,7 +461,7 @@ export default {
         }
     },
     created() {
-        this.productId = this.$route.query.id;
+        this.productId = this.$route.query.goodsId;
         this.getFormData();
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();

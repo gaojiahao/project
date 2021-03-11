@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 15:11:06
+ * @LastEditTime: 2021-03-11 20:29:02
 -->
 <template>
 <div class="content">
@@ -197,6 +197,11 @@ export default {
                 this.show = val
             }
         },
+        'formValidate.id':{
+            handler(val){
+                this.initForm();
+            }
+        }
     },
     methods: {
         ok() {

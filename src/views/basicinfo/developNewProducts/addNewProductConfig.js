@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-09 09:25:37
+ * @LastEditTime: 2021-03-11 18:28:06
  */
 import $flyio from '@plugins/ajax';
 
@@ -265,6 +265,7 @@ export default {
           purchasePrices:{
             name:'采购单价',
             type:'text',
+            unit:'CNY'
           },
           // url:{
           //   name:'参考链接',

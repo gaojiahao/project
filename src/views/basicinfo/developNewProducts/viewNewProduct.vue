@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-09 16:56:02
+ * @LastEditTime: 2021-03-11 14:26:57
 -->
 <template>
 <div>
@@ -20,7 +20,7 @@
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%"> 
-                                    <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                                    <Button @click="goReturn" style="float: left;">返回</Button>
                                 </div>
                             </FormItem>
                         </template>

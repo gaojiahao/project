@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-10 20:19:29
+ * @LastEditTime: 2021-03-11 16:19:32
 -->
 <template>
 <div class="erp_table_container">
@@ -89,7 +89,7 @@ export default {
         },
         goDetail(id){
             if(id)
-            this.$router.push({name:'viewChartingDelegation',query: {id:id}});
+            this.$router.push({name:'viewChangeTime',query: {id:id}});
         },
         getTableColumn(){
             var columns2 = [
@@ -161,7 +161,7 @@ export default {
                     },
                     on:{
                         click:()=>{
-                            this.goDetail(params.row.id)    
+                            this.goDetail(params.row.gId)    
                         }
                     }
                     },params.row.name);
