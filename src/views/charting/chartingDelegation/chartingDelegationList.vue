@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 19:41:50
+ * @LastEditTime: 2021-03-10 20:08:39
 -->
 <template>
 <div class="erp_table_container">
@@ -14,11 +14,11 @@
                 <div class="filter">
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
-                            <Radio label="large">全部</Radio>
-                            <Radio label="default2">未委派</Radio>
-                            <Radio label="default">已委派</Radio>
-                            <Radio label="small">已完成</Radio>
-                            <Radio label="small2">待返工</Radio>
+                            <Radio label="-1">全部</Radio>
+                            <Radio label="0">未委派</Radio>
+                            <Radio label="1">待制作</Radio>
+                            <Radio label="2">已完成</Radio>
+                            <Radio label="3">待返工</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -31,7 +31,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id,row.status)" v-if="!row.status">委派制图</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.gId,row.assignmentStatus)" v-if="!row.assignmentStatus">委派制图</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -52,8 +52,8 @@
 import config from "@views/charting/chartingDelegation/chartingDelegationCongfig";
 import list from "@mixins/list";
 import {
-    GetPrepGoodsPage,
-} from "@service/basicinfoService"
+    GetDistributionPage,
+} from "@service/tortExamineService"
 
 export default {
     name: "ChartingDelegationList",
@@ -72,13 +72,22 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
-            filter:"default2",
+            filter:"0",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetDistributionPage();
+            }
         }
     },
     methods: {
-        GetPrepGoodsPage() {
+        GetDistributionPage() {
+            this.pageData['AssignmentStatus']= this.filter;
+            this.pageData['FileDistributionStatus']= -1;
             return new Promise((resolve, reject) => {
-                GetPrepGoodsPage(this.pageData).then(res => {
+                GetDistributionPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -177,13 +186,13 @@ export default {
             {
                 title: '委派完成日期',
                 key: 'color',
-                width: 160,
+                width: 140,
                 resizable: true,
             },
             {
                 title: '实际完成日期',
                 key: 'supplier',
-                width: 160,
+                width: 140,
                 resizable: true,
             },
             {
@@ -199,23 +208,37 @@ export default {
                 resizable: true,
             },
             {
-                title: '状态',
-                key: 'status',
+                title: '委派状态',
+                key: 'assignmentStatus',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status==1 ? "#19be6b": "#ed4014"
+                        color: params.row.assignmentStatus==1 ? "#19be6b": "#ed4014"
                     },
-                    },params.row.status?"已委派":"未委派");
+                    },params.row.assignmentStatus?"已委派":"未委派");
                 },
-                width:80,
+                width:100,
+                resizable: true,
+            },
+            {
+                title: '制图状态',
+                key: 'fileDistributionStatus',
+                render: (h, params) => {
+                    return h("span", {
+                    style: {
+                        display: "inline-block",
+                        color: params.row.fileDistributionStatus==1 ? "#19be6b": "#ed4014"
+                    },
+                    },params.row.fileDistributionStatus?"已完成":"未完成");
+                },
+                width:100,
                 resizable: true,
             },
             {
                 title: '创建者',
                 key: 'createdName',
-                width: 120,
+                width: 80,
                 resizable: true,
             },
             {
@@ -227,7 +250,7 @@ export default {
             {
                 title: '修改者',
                 key: 'modifyName',
-                width: 120,
+                width: 80,
                 resizable: true,
             },
             {
@@ -284,7 +307,7 @@ export default {
                             if (res.result.code == 200) {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
-                                this.GetPrepGoodsPage();
+                                this.GetDistributionPage();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({
                                     background: true,
@@ -304,12 +327,12 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetPrepGoodsPage();
+            this.GetDistributionPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetPrepGoodsPage();
+            this.GetDistributionPage();
         },
         goDetail(id){
             if(id)
@@ -333,7 +356,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetPrepGoodsPage();
+            this.GetDistributionPage();
         },
         checkALl(){
             this.$nextTick(function () {
@@ -342,11 +365,11 @@ export default {
         },
         setFilter(value){
             this.pageData.keyword = value
-            this.GetPrepGoodsPage(); 
+            this.GetDistributionPage(); 
         },
     },
     created(){
-        this.GetPrepGoodsPage();    
+        this.GetDistributionPage();    
     }
 }
 </script>

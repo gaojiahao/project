@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 19:42:44
+ * @LastEditTime: 2021-03-10 20:19:29
 -->
 <template>
 <div class="erp_table_container">
@@ -24,7 +24,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goChangeTime(row.id)">调换</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goChangeTime(row.gId)">调换</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -44,8 +44,8 @@
 import config from "@views/charting/chartingManager/chartingDelegationCongfig";
 import list from "@mixins/list";
 import {
-    GetPrepGoodsPage
-} from "@service/basicinfoService";
+    GetDistributionPage,
+} from "@service/tortExamineService"
 
 export default {
     name: "ChartingTimeExchangeList",
@@ -67,8 +67,10 @@ export default {
     },
     methods: {
         GetPrepGoodsPage() {
+            this.pageData['AssignmentStatus']= 1;
+            this.pageData['FileDistributionStatus']= -1;
             return new Promise((resolve, reject) => {
-                GetPrepGoodsPage(this.pageData).then(res => {
+                GetDistributionPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -175,20 +177,20 @@ export default {
             },
             {
                 title: '委派完成日期',
-                key: 'color',
+                key: 'endTime',
                 width: 160,
                 resizable: true,
             },
             {
                 title: '状态',
-                key: 'status',
+                key: 'assignmentStatus',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status==1 ? "#19be6b": "#ed4014"
+                        color: params.row.assignmentStatus==1 ? "#ed4014": "#ed4014"
                     },
-                    },params.row.status?"已委派":"未委派");
+                    },params.row.assignmentStatus?"待制作":"未委派");
                 },
                 resizable: true,
                 width:80

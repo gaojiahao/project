@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-08 11:21:02
+ * @LastEditTime: 2021-03-10 20:12:34
 -->
 <template>
 <div>
@@ -113,7 +113,7 @@
 import config2 from "@views/charting/chartingManager/productAppointStoreConfig";
 import ViewForm from "@components/public/form/viewForm";
 import XForm from "@components/public/form/xForm";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
+import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";

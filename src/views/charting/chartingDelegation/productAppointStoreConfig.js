@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 14:37:37
+ * @LastEditTime: 2021-03-10 17:57:11
  */
 export default {
     data() {
@@ -74,11 +74,11 @@ export default {
 
         },
         formConfig2:{
-          data:{
-            name:'分配人员',
-            type:"distributionPeople",
-            parmas: ['categoryId','platformId']
-          },
+          // data:{
+          //   name:'分配人员',
+          //   type:"distributionPeople",
+          //   parmas: ['categoryId','platformId']
+          // },
           morePic:{
             name:'是否多店多主图',
             type:'radio',
@@ -96,7 +96,7 @@ export default {
           }
         },
         formValidate2: {
-          data:[],
+          // data:[],
           morePic:'true',
           remark:''
         },

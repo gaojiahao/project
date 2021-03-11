@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-05 20:22:37
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 14:42:37
+ * @LastEditTime: 2021-03-10 16:26:30
 -->
 <template>
 <Tabs type="card" :animated="false" @on-click="selectTab">

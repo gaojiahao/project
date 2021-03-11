@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 19:43:46
+ * @LastEditTime: 2021-03-10 20:10:18
 -->
 <template>
 <div class="erp_table_container">
@@ -14,9 +14,11 @@
                 <div class="filter">
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
-                            <Radio label="large">全部</Radio>
-                            <Radio label="default">未完成</Radio>
-                            <Radio label="small">已完成</Radio>
+                            <Radio label="-1">全部</Radio>
+                            <Radio label="0">待确认</Radio>
+                            <Radio label="1">未完成</Radio>
+                            <Radio label="2">已完成</Radio>
+                            <Radio label="3">待返工</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -51,8 +53,8 @@
 import config from "@views/charting/chartingManager/chartingDelegationCongfig";
 import list from "@mixins/list";
 import {
-    GetFileDistributionPage,
-} from "@service/tortExamineService";
+    GetDistributionPage,
+} from "@service/tortExamineService"
 
 export default {
     name: "ChartingManagerList",
@@ -65,110 +67,7 @@ export default {
             showModel2: false,
             showResearh: false,
             columns: this.getTableColumn(),
-            data: [
-                {
-                    id:'fds',
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "2010-11-23",
-                    productName: "积木",
-                    supplier: "2010-11-24",
-                    supplierNum: "否",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '1',
-                    status: "待确认",
-                    status2: "未逾期",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-                {
-                    id:1,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "2010-11-23",
-                    productName: "积木",
-                    supplier: "2010-11-24",
-                    supplierNum: "否",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '1',
-                    status: "待制作",
-                    status2: "未逾期",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-                {
-                    id:2,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "2010-11-23",
-                    productName: "积木",
-                    supplier: "2010-11-24",
-                    supplierNum: "否",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '1',
-                    status: "1",
-                    status2: "1",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-                {
-                    id:2,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "2010-11-23",
-                    productName: "积木",
-                    supplier: "2010-11-24",
-                    supplierNum: "否",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '1',
-                    status: "1",
-                    status2: "1",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-                {
-                    id:2,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "2010-11-23",
-                    productName: "积木",
-                    supplier: "2010-11-24",
-                    supplierNum: "是",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '1',
-                    status: "1",
-                    status2: "1",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-                {
-                    id:2,
-                    img: '',
-                    type: '玩具',
-                    sku: 'PD00026',
-                    color: "2010-11-23",
-                    productName: "积木",
-                    supplier: "2010-11-24",
-                    supplierNum: "是",
-                    createTime: "2020-11-06",
-                    recommendingOfficer: '1',
-                    status: "0",
-                    status2: "0",
-                    modifyTime:"2020-11-06",
-                    modifyer:"李四",
-                    creater:"王五"
-                },
-            ],
+            data: [],
             pageData:{
                 skipCount: 1,
                 skipTotal: 15,
@@ -177,13 +76,22 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
-            filter:"default",
+            filter:"1",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetFileDistributionPage();
+            }
         }
     },
     methods: {
         GetFileDistributionPage() {
+            this.pageData['AssignmentStatus']= this.filter;
+            this.pageData['FileDistributionStatus']= -1;
             return new Promise((resolve, reject) => {
-                GetFileDistributionPage(this.pageData).then(res => {
+                GetDistributionPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -339,9 +247,9 @@ export default {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status==1 ? "#19be6b": "#ed4014"
+                        color: params.row.status ==1 ? "#19be6b": params.row.status==2 ? "#19be6b" : params.row.status==3 ? "#19be6b" :"#ed4014"
                     },
-                    },params.row.status==1?"已完成":"未完成");
+                    },params.row.status ==1 ? "未完成":  params.row.status==2 ? "已完成" : params.row.status==3 ? "待返工":"待确认");
                 },
                 width: 80,
                 resizable: true,

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 11:07:30
+ * @LastEditTime: 2021-03-10 11:29:38
  */
 export default {
     data() {
@@ -27,7 +27,7 @@ export default {
           },
           categoryId:{
             name:'类目',
-            type:'select',
+            type:'tree',
             dataSource:{
               type:'dynamic',
               url:'/api/GetCategoryList',
@@ -40,7 +40,8 @@ export default {
             bind:{
               target: 'categoryName',
               bindValue: 'name'
-            }
+            },
+            disabled:true
           },
           imgUrl:{
             name:'商品图片',

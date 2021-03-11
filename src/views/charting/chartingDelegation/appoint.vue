@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-04 10:07:34
+ * @LastEditTime: 2021-03-10 19:11:41
 -->
 <template>
 <div>
@@ -56,17 +56,33 @@
     <div class="top">
         <Divider orientation="left" size="small">人员分配</Divider>
         <div class="top_tabale">
+            <div style="width:100%;height:100%;margin-top:10px;padding: 10px 10px 10px 50px;">
+                店铺选择：
+                <RadioGroup v-model="store" @on-change="onChange">
+                    <template v-for="(ditem,dIndex) in storeList">
+                        <Radio :label="ditem.storeId" :key="ditem.storeId">
+                            {{ditem.storeName}}
+                        </Radio>
+                    </template>
+                </RadioGroup>
+            </div>
+            <div style="width:100%;height:100%;margin-top:10px;padding: 0 10px 10px 50px;">
+                <Table border :columns="columns" :data="filesData" stripe v-if="store" :loading="filedLoading"></Table>
+            </div>
             <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="examine">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
-                            <Button type="primary" @click="save" style="float: left;">保存</Button>
-                            <Button @click="clearFormData" style="float: left; margin-left:10px">重置</Button>
-                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                         </div>
                     </FormItem>
                 </template>
             </XForm>
+            <div style="width:100%;height:100%;margin-top:10px;padding: 0 10px 10px 50px;">
+                <div style="line-height: 32px;display: flex;">
+                    <Button type="primary" @click="save" style="float: left;">保存</Button>
+                    <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -75,7 +91,7 @@
 <script>
 import ViewForm from "@components/public/form/viewForm";
 import XForm from "@components/public/form/xForm";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
+import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
 import config2 from "@views/charting/chartingDelegation/productAppointStoreConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
@@ -98,7 +114,11 @@ import {
 } from "@service/basicinfoService"
 import {
     CreateFileDistribution,
+    GetFileDistributionInfo
 } from "@service/tortExamineService";
+import {
+    GetUserInfoList
+} from "@service/settingsService";
 
 import {
     Tabs,
@@ -151,7 +171,71 @@ export default {
                 totalPagePruch:0
             },
             dataLog:[],
-            loadingLog:true
+            loadingLog:true,
+            store:'',
+            storeList:[],
+            filesData:[],
+            columns: [
+                {
+                    title: '制作文件类型',
+                    key: 'fileTypeName'
+                },
+                {
+                    title: '数量',
+                    key: 'quantity',
+                    align: 'center',
+                },
+                {
+                    title: '人员',
+                    key: 'userId',
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('Select',{
+                                props:{
+                                    value: params.row.logisticsMode,
+                                    transfer:true
+                                },
+                                on: {
+                                    'on-change':(event) => {
+                                        this.filesData[params.index].userId = event;
+                                    }
+                                },
+                            },
+                            this.peopleList.map((item) =>{
+                                return h('Option', {
+                                    props: {
+                                        value: item.id,
+                                        label: item.userName
+                                    },
+                                    value: params.row.userId
+                                })
+                            })
+                        )
+                    }
+                },
+                {
+                    title: '制作时间',
+                    key: 'date',
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('DatePicker', {
+                            props: {
+                                value: this.filesData[params.index][params.column.key],
+                                format:"yyyy-MM-dd HH:mm", 
+                                type:"datetimerange",
+                                transfer:true,
+                            },
+                            on: {
+                                'on-change': (event) => {
+                                    this.filesData[params.index][params.column.key] = event;
+                                }
+                            }
+                        });
+                    }
+                },
+            ],
+            peopleList:[],
+            filedLoading:true
         }
     },
     computed:{
@@ -182,7 +266,7 @@ export default {
                     GetPrepGoodsAttributeById({id:this.productId}).then(res => {
                         if(res.result.code==200){
                             this.$nextTick(() => {
-                                this.dataProp = res.result.item.attributesList;
+                                this.dataProp = res.result.item.attributesList||[];
                                 this.loadingProp = false;
                             });
                         }
@@ -273,22 +357,23 @@ export default {
             this.GetOperationLogPage();
         },
         save() {
-            var data = this.formValidate2.data;
-            var params = [];
-            for(var i=0;i<data.length;i++){
+            var data = this.storeList[0];
+            for(var i=0;i<this.filesData.length;i++){
                 var obj={};
                 obj={
-                    fileType: data[i].fileType,
-                    fileTypeName: data[i].fileTypeName,
-                    userId: data[i].userId,
+                    fileType: this.filesData[i].fileTypeId,
+                    fileTypeName: this.filesData[i].fileTypeName,
+                    userId: this.filesData[i].userId,
                     remark: this.formValidate2.remark,
-                    startTime: data[i].date[0],
-                    endTime: data[i].date[1],
-                    goodsId: this.formValidate.id,
-                    goodsName: this.formValidate.name,
-                    // status:1,
+                    startTime: this.filesData[i].date[0],
+                    endTime: this.filesData[i].date[1],
+                    goodsId: this.productInfoFormValidate.id,
+                    goodsName: this.productInfoFormValidate.name,
+                    platformId: data['platfromId'],
+                    platformName: data['platfromName'],
+                    storeId: data['storeId'],
+                    storeName: data['storeName']
                 };
-                // params.push(obj);
                 this.$refs['examine'].$refs['formValidate'].validate((valid) => {
                     if (valid) {
                         return new Promise((resolve, reject) => {
@@ -312,28 +397,35 @@ export default {
                     }
                 })
             }
+        },
+        GetFileDistributionInfo(){
+            if(this.productId){
+                return new Promise((resolve, reject) => {
+                    GetFileDistributionInfo({id:this.productId}).then(res => {
+                        if(res.result.code==200){
+                            this.storeList = res.result.item;
+                            this.store = this.storeList[0]['storeId'];
+                            this.filesData = this.storeList[0]['fileRelations'];
+                            this.filedLoading = false;
+                        }
+                    });
+                });
+            }    
+        },
+        onChange(){
             
-            // this.$refs['form'].$refs['formValidate'].validate((valid) => {
-            //     if (valid) {
-            //         return new Promise((resolve, reject) => {
-            //             this.$FromLoading.show();
-            //             CreateFileDistribution(params).then(res => {
-            //                 if (res.result.code == 200) {
-            //                     this.$FromLoading.hide();
-            //                     this.$Message.info('温馨提示：保存成功！');
-            //                 } else if (res.result.code == 400) {
-            //                     this.$Message.error({
-            //                         background: true,
-            //                         content: res.result.msg
-            //                     });
-            //                     this.$FromLoading.hide();
-            //                 }
-            //             });
-            //         });   
-            //     } else {
-            //         this.$Message.error('保存失败');
-            //     }
-            // })
+        },
+        GetUserInfoList(){
+            return GetUserInfoList().then(res => {
+                if (res.result.code == 200) {
+                    var data = res.result.item;
+                    for(var i=0;i<data.length;i++){
+                        data[i]['name'] = data[i]['userName'];
+                        data[i]['value'] = data[i]['id'];
+                    }
+                    this.peopleList = data;
+                }
+            }).catch(e =>{console.log(e)}); 
         },
     },
     created() {
@@ -342,6 +434,8 @@ export default {
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
+        this.GetFileDistributionInfo();
+        this.GetUserInfoList();
     }
 }
 </script>

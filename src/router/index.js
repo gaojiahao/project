@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-10 10:18:53
+ * @LastEditTime: 2021-03-10 20:13:23
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1528,7 +1528,7 @@ const routes = [
                 path: 'chartingManagerList',
                 name: 'chartingManagerList',
                 meta:{ 
-                  title:'制图管理',
+                  title:'美工制图',
                   group: 'chartingManager',
                   level: 1,
                 },
@@ -1538,7 +1538,7 @@ const routes = [
                 path: 'uploadProgress',
                 name: 'uploadProgress',
                 meta:{ 
-                  title:'制作进度',
+                  title:'进度上传',
                   group: 'chartingManager',
                   level: 2,
                 },
@@ -1548,7 +1548,7 @@ const routes = [
                 path: 'viewUploadProgress',
                 name: 'viewUploadProgress',
                 meta:{ 
-                  title:'查看',
+                  title:'制图查看',
                   group: 'chartingManager',
                   level: 2,
                 },
