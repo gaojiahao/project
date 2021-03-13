@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 11:46:33
+ * @LastEditTime: 2021-03-13 14:58:34
  */
 import $flyio from '@plugins/ajax';
 
@@ -569,17 +569,19 @@ export default {
     },
     methods: {
       isPackageHiddenFun(value){
+        var config = {...this.productInfo}
         if(value){
-          this.productInfo['material']['hidden']=false;
-          this.productInfo['packageCost']['hidden']=false;
-          this.productInfo['packageWeight']['hidden']=false;
-          this.productInfo['packagingSize']['hidden']=false;
+          config['material']['hidden']=false;
+          config['packageCost']['hidden']=false;
+          config['packageWeight']['hidden']=false;
+          config['packagingSize']['hidden']=false;
         } else {
-          this.productInfo['material']['hidden']=true;
-          this.productInfo['packageCost']['hidden']=true;
-          this.productInfo['packageWeight']['hidden']=true;
-          this.productInfo['packagingSize']['hidden']=true;
+          config['material']['hidden']=true;
+          config['packageCost']['hidden']=true;
+          config['packageWeight']['hidden']=true;
+          config['packagingSize']['hidden']=true;
         }
+        this.productInfo = config;
       },
       async brandIdCreateFun(value){
         await $flyio.post({

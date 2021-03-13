@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 20:28:12
+ * @LastEditTime: 2021-03-13 14:57:15
 -->
 <template>
 <div class="content">
@@ -131,7 +131,7 @@ import XTree from "@components/public/tree/xTree";
 import $flyio from '@plugins/ajax'
 
 export default {
-    name: 'XForm',
+    name: 'ViewForm',
     components: {
         InputNumber,
         UploadImg,
@@ -181,9 +181,10 @@ export default {
     },
     watch: {
         formConfig: {
-            handler(val) {
-                console.log(val)
-            }
+            handler(val) {  
+            },
+            deep:true,
+            immediate:true
         },
         showModel: {
             handler(val) {
