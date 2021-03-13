@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 09:48:34
+ * @LastEditTime: 2021-03-13 10:44:05
 -->
 <template>
 <div>
@@ -97,7 +97,7 @@ export default {
     watch:{
         value:{
             handler(val){
-                this.uploadList = this.$refs&&this.$refs.upload&&this.$refs.upload.fileList||[];
+                this.uploadList = [];
                 for(var i=0;i<val.length;i++){
                     var obj={};
                     obj= {
