@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-26 15:42:19
+ * @LastEditTime: 2021-03-13 15:58:29
 -->
 <template>
 <div class="layout">
@@ -107,6 +107,14 @@ export default {
     },
     computed: {
         menuitemClasses: function () {
+            var prevPage = document.getElementsByClassName('prevPage')[0];
+            if(prevPage){
+                if(this.isCollapsed){
+                    prevPage.style.left = '85px';
+                } else {
+                    prevPage.style.left = '160px';   
+                }
+            }
             return ["menu-item", this.isCollapsed ? "collapsed-menu" : ""];
         },
         rotateIcon() {
