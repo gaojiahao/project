@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-10 10:17:48
+ * @LastEditTime: 2021-03-12 17:54:29
 -->
 <template>
 <div class="erp_table_container">
@@ -15,9 +15,8 @@
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
                             <!-- <Radio label="large">全部</Radio> -->
-                            <Radio label="1">已选</Radio>
-                            <Radio label="0">未选</Radio>
-                            <Radio label="2">不选</Radio>
+                            <Radio label="0">未审核</Radio>
+                            <Radio label="1">已审核</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -125,7 +124,7 @@ export default {
     methods: {
         GetGoodsSelectionPage() {
             var params = {
-                selectStatus: this.filter
+                status: this.filter
             }
             return new Promise((resolve, reject) => {
                 GetGoodsSelectionPage({...this.pageData,...params}).then(res => {
@@ -303,20 +302,6 @@ export default {
                 resizable: true,
             },
             {
-                title: '状态',
-                key: 'selectStatus',
-                render: (h, params) => {
-                    return h("span", {
-                    style: {
-                        display: "inline-block",
-                        color: params.row.selectStatus==1 ? "#19be6b": params.row.selectStatus == 0 ? "#ff9900":"#ed4014"
-                    },
-                    },params.row.selectStatus == 1 ?"已选":params.row.selectStatus == 0 ? '未选':"不选");
-                },
-                width: 100,
-                resizable: true,
-            },
-            {
                 title: '审核状态',
                 key: 'status',
                 render: (h, params) => {
@@ -383,7 +368,11 @@ export default {
     },
     created(){
         this.GetGoodsSelectionPage();
-    }
+    },
+    activated() {
+        if(this.data.length)
+            this.GetGoodsSelectionPage();
+    },
 }
 </script>
 <style lang="less" scoped>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 19:50:58
+ * @LastEditTime: 2021-03-12 16:26:54
 -->
 <template>
 <div class="erp_table_container">
@@ -80,6 +80,7 @@ export default {
     },
     methods: {
         GetRecommendGoodsPage() {
+            this.pageData['status'] = -1;
             return new Promise((resolve, reject) => {
                 GetRecommendGoodsPage(this.pageData).then(res => {
                     if(res.result.code==200){
@@ -360,7 +361,11 @@ export default {
     },
     created(){
         this.GetRecommendGoodsPage();
-    }
+    },
+    activated() {
+        if(this.data.length)
+            this.GetRecommendGoodsPage();
+    },
 }
 </script>
 <style lang="less" scoped>

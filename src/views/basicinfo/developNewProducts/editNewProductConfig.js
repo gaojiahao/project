@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-09 09:35:50
+ * @LastEditTime: 2021-03-12 11:46:33
  */
 import $flyio from '@plugins/ajax';
 
@@ -441,13 +441,13 @@ export default {
             // validator: weightVali
             trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
           }],
-          productSize: [{ 
-            required: true, 
-            type: 'string',
-            message: '请输入商品尺寸', 
-            trigger: 'blur',
-            validator: productSizeVali
-          }],
+          // productSize: [{ 
+          //   required: true, 
+          //   type: 'string',
+          //   message: '请输入商品尺寸', 
+          //   trigger: 'blur',
+          //   validator: productSizeVali
+          // }],
           material:[{ 
             required: true, 
             message: '请选择包装材料', 

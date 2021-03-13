@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 20:06:23
+ * @LastEditTime: 2021-03-12 18:00:47
 -->
 <template>
 <div class="erp_table_container">
@@ -14,10 +14,10 @@
                 <div class="filter">
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
-                            <Radio label="large">全部</Radio>
-                            <Radio label="default">未审核</Radio>
-                            <Radio label="small">通过</Radio>
-                            <Radio label="small2">未通过</Radio>
+                            <Radio label="-1">全部</Radio>
+                            <Radio label="0">未审核</Radio>
+                            <Radio label="1">通过</Radio>
+                            <Radio label="2">未通过</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -41,7 +41,6 @@
             </template>
         </Table>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
 </div>
@@ -72,11 +71,19 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
-            filter:"default",
+            filter:"0",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetPieShopReviewPage();
+            }
         }
     },
     methods: {
         GetPieShopReviewPage () {
+            this.pageData['pieShopStatus'] = this.filter;
             return new Promise((resolve, reject) => {
                 GetPieShopReviewPage (this.pageData).then(res => {
                     if(res.result.code==200){
@@ -354,7 +361,8 @@ export default {
         this.GetPieShopReviewPage();
     },
     activated() {
-        this.GetPieShopReviewPage();
+        if(this.data.length)
+            this.GetPieShopReviewPage();
     }
 
 }

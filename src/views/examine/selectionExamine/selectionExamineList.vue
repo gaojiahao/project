@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-09 19:18:38
+ * @LastEditTime: 2021-03-12 15:21:50
 -->
 <template>
 <div class="erp_table_container">
@@ -14,10 +14,10 @@
                 <div class="filter">
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
-                            <Radio label="large">全部</Radio>
-                            <Radio label="default">未审核</Radio>
-                            <Radio label="small">通过</Radio>
-                            <Radio label="small2">未通过</Radio>
+                            <Radio label="-1">全部</Radio>
+                            <Radio label="0">未审核</Radio>
+                            <Radio label="1">通过</Radio>
+                            <Radio label="2">未通过</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -72,11 +72,19 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
-            filter:"default",
+            filter:"0",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetGoodsSelectionReviewPage();
+            }
         }
     },
     methods: {
         GetGoodsSelectionReviewPage () {
+            this.pageData['selectStatus'] = this.filter;
             return new Promise((resolve, reject) => {
                 GetGoodsSelectionReviewPage (this.pageData).then(res => {
                     if(res.result.code==200){
@@ -289,14 +297,14 @@ export default {
             },
             {
                 title: '状态',
-                key: 'selectionStatus',
+                key: 'selectStatus',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.selectionStatus==1 ? "#19be6b": params.row.selectionStatus == 0 ? "#ff9900":"#ed4014"
+                        color: params.row.selectStatus==1 ? "#19be6b": params.row.selectStatus == 0 ? "#ff9900":"#ed4014"
                     },
-                    },params.row.selectionStatus==1 ?"通过": params.row.selectionStatus==0 ? "未审核" : "未通过");
+                    },params.row.selectStatus==1 ?"通过": params.row.selectStatus==0 ? "未审核" : "未通过");
                 },
                 resizable: true,
                 width: 100,

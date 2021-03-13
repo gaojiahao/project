@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 15:46:22
+ * @LastEditTime: 2021-03-12 17:57:17
 -->
 <template>
 <div class="erp_table_container">
@@ -165,6 +165,12 @@ export default {
                 resizable: true,
             },
             {
+                title: '产品编码',
+                key: 'code',
+                resizable: true,
+                width: 240,
+            },
+            {
                 title: '产品名称',
                 key: 'name',
                 render: (h, params) => {
@@ -236,29 +242,29 @@ export default {
                 resizable: true,
             },
             {
-                title: '创建者',
+                title: '委派人',
                 key: 'createdName',
                 width: 80,
                 resizable: true,
             },
             {
-                title: '创建时间',
+                title: '委派时间',
                 key: 'createdOn',
                 width: 160,
                 resizable: true,
             },
-            {
-                title: '修改者',
-                key: 'modifyName',
-                width: 80,
-                resizable: true,
-            },
-            {
-                title: '修改时间',
-                key: 'modifyOn',
-                width: 160,
-                resizable: true,
-            },
+            // {
+            //     title: '修改者',
+            //     key: 'modifyName',
+            //     width: 80,
+            //     resizable: true,
+            // },
+            // {
+            //     title: '修改时间',
+            //     key: 'modifyOn',
+            //     width: 160,
+            //     resizable: true,
+            // },
             {
                 title: '操作',
                 slot: 'action',
@@ -370,6 +376,10 @@ export default {
     },
     created(){
         this.GetDistributionPage();    
+    },
+    activated() {
+        if(this.data.length)
+            this.GetDistributionPage();
     }
 }
 </script>

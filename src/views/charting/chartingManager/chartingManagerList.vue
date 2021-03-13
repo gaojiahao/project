@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-10 20:10:18
+ * @LastEditTime: 2021-03-12 17:58:14
 -->
 <template>
 <div class="erp_table_container">
@@ -347,6 +347,10 @@ export default {
     },
     created(){
         this.GetFileDistributionPage();    
+    },
+    activated() {
+        if(this.data.length)
+            this.GetFileDistributionPage();
     }
 }
 </script>

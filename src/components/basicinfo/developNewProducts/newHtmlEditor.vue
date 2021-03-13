@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-11 15:50:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-26 17:54:44
+ * @LastEditTime: 2021-03-12 14:32:21
 -->
 <template>
   <div class="editor-container">
@@ -215,10 +215,10 @@ export default {
 
 <style lang="less" scoped>
 .editor-container {
-  margin-top:5px;
+    margin-top:5px;
 }
-.editor-container /deep/ .quill-editor /deep/ .ql-container /deep/ {
-  height: 600px;
+.editor-container /deep/ .ql-container {
+    height: 600px;
 }
 .ivu-upload {
     display: none;

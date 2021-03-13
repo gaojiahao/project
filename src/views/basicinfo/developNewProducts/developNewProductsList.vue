@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-09 10:00:20
+ * @LastEditTime: 2021-03-12 16:24:08
 -->
 <template>
 <div class="erp_table_container">
@@ -19,10 +19,10 @@
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
-                        <Button type="warning" size="small" @click="goCopy" class="marginRight"><Icon type="ios-copy-outline"></Icon>复制</Button>
-                        <Button type="primary" size="small" @click="downLoad" :loading="exportLoading" class="marginRight"><Icon type="ios-cloud-upload-outline"></Icon>导出</Button>
+                        <Button type="warning" size="small" icon="ios-copy-outline" @click="goCopy" class="marginRight">复制</Button>
+                        <Button type="primary" size="small" icon="ios-cloud-upload-outline" @click="downLoad" :loading="exportLoading" class="marginRight">导出</Button>
                         <Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :on-progress="handleProgress"  :on-error="onError" :action="'//'+`${uploadUrl}`+'/api/ImportPrepGoods'" :headers="headers"  style="display: inline-block;width:50px; margin-right: 10px;">
-                            <Button type="primary" size="small" :loading="importLoading" class="marginRight"><Icon type="ios-cloud-download-outline"></Icon>导入</Button>
+                            <Button type="primary" size="small" icon="ios-cloud-download-outline" :loading="importLoading" class="marginRight">导入</Button>
                         </Upload>
                         <a type="primary" size="small" :href="baseUrl + 'File/excel/Template.xlsx'" target="_blank" class="marginRight"><Icon type="ios-cloud-download"></Icon>导入模板下载</a>
                         <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
@@ -39,7 +39,7 @@
             <template slot="footer">
                 <div class="footer_page">
                     <Button size="small" style="margin-right: 5px" @click.native="openMult">多选</Button>
-                    <Button size="small" style="margin-right: 5px" @click.native="exportData(true)" v-if="isMult&&selectedList.length">导出</Button>
+                    <Button size="small" style="margin-right: 5px" @click.native="downLoad" v-if="isMult&&selectedList.length">导出</Button>
                     <Button size="small" style="margin-right: 5px" @click.native="sureDeleteConfirm(true)" v-if="isMult&&selectedList.length">删除</Button>
                     <div class="footer_page_right">
                         <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
@@ -509,8 +509,13 @@ export default {
         },
         downLoad(){
             this.exportLoading= true;
+            var params = {},data=[];
+            for(var i=0;i<this.selectedList.length;i++){
+                data.push(this.selectedList[i]['id']);
+            }
+            params['IdList'] = data;
             return new Promise((resolve, reject) => {
-                ExportPrepGoods().then(res => {
+                ExportPrepGoods({...params}).then(res => {
                     if (res.result.code == 200) {
                         var blob = this.dataURLtoBlob(res.result.item);
                         var downloadUrl = window.URL.createObjectURL(blob);
@@ -579,7 +584,11 @@ export default {
         this.headers['Utoken'] =  tokenService.getToken();
         this.baseUrl = this.$base_url;
         this.GetPrepGoodsPage();
-    }
+    },
+    activated() {
+        if(this.data.length)
+            this.GetPrepGoodsPage();    
+    },
 }
 </script>
 <style lang="less" scoped>

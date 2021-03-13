@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 19:30:59
+ * @LastEditTime: 2021-03-12 16:04:47
 -->
 <template>
 <div class="erp_table_container">
@@ -274,7 +274,11 @@ export default {
     },
     created() {
         this.AuthRolePage();
-    }
+    },
+    activated() {
+        if(this.data.length)
+            this.AuthRolePage();    
+    },
 }
 </script>
 <style lang="less" scoped>

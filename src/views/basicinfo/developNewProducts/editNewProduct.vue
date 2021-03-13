@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 19:55:34
+ * @LastEditTime: 2021-03-12 16:19:31
 -->
 <template>
 <div>
@@ -520,7 +520,7 @@ export default {
             });    
         },
         goReturn(){
-            this.$router.go(-1);
+            this.$router.push({name:'DevelopNewProductsList'});
         },
         GetOperationLogPage(){
             if(this.productId){

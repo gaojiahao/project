@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-08 11:35:58
+ * @LastEditTime: 2021-03-12 09:48:34
 -->
 <template>
 <div>
@@ -129,7 +129,7 @@ export default {
             },
             formats:['jpg','jpeg','png','bmp','gif','wmf','3GP','ASF','AVI','MOV',
             'MPEG','WMV','mp4','AAC','AIFF','AMR','FLAC','MIDI','mpeg','WMA','mp3','3dm','3ds','asm',
-            'ade','drw','dwg','max','obj','prt','stl','stp','x-t','igs']
+            'ade','drw','dwg','max','obj','prt','stl','stp','x-t','igs','rar','zip','7z']
         }
     },
     methods: {

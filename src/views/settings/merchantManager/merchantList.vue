@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 12:18:43
+ * @LastEditTime: 2021-03-12 16:14:00
 -->
 <template>
 <div class="erp_table_container">
@@ -278,7 +278,11 @@ export default {
     },
     created(){
         this.GetMerchantInfoPage();
-    }
+    },
+    activated() {
+        if(this.data.length)
+            this.GetMerchantInfoPage();    
+    },
 }
 </script>
 <style lang="less" scoped>

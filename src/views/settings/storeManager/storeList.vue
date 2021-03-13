@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-03 18:10:24
+ * @LastEditTime: 2021-03-12 15:50:23
 -->
 <template>
 <div class="erp_table_container">
@@ -316,7 +316,11 @@ export default {
     },
     created(){
         this.GetStorePage();
-    }
+    },
+    activated() {
+        if(this.data.length)
+            this.GetStorePage();    
+    },
 }
 </script>
 <style lang="less" scoped>

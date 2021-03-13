@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 11:54:06
+ * @LastEditTime: 2021-03-12 16:02:34
 -->
 <template>
 <div class="erp_table_container">
@@ -351,6 +351,10 @@ export default {
     },
     created() {
         this.getMenuList();
+    },
+    activated() {
+        if(this.data.length)
+            this.getMenuList();    
     },
 }
 </script>
