@@ -489,6 +489,7 @@ export default {
                     this.nextId = listID[i+1];
                 }
             }
+            this.$FromLoading.hide();
         },
         prePage(){
             this.$router.push({name:'viewTortExamine',query: {id:this.preId}});

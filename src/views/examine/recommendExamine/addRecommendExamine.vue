@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 16:52:02
+ * @LastEditTime: 2021-03-13 11:16:28
 -->
 <template>
 <div>
@@ -102,10 +102,12 @@ export default {
     },
     watch:{
         $route:function(to,from){
-            if(to.query.id!=from.query.id){
-                this.id = to.query.id;
-                if(this.id)
+            if(to.name==from.name){
+                if(to.query.id!=from.query.id){
+                    this.id = to.query.id;
+                    if(this.id)
                     this.init();
+                }
             }
         }
     },
@@ -201,6 +203,7 @@ export default {
                     this.nextId = listID[i+1];
                 }
             }
+            this.$FromLoading.hide();
         },
         prePage(){
             this.$router.push({name:'addRecommendExamine',query: {id:this.preId}});

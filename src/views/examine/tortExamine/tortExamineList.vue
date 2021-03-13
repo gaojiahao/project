@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 17:59:51
+ * @LastEditTime: 2021-03-13 11:51:19
 -->
 <template>
 <div class="erp_table_container">
@@ -361,8 +361,10 @@ export default {
         this.GetGoodsTortReviewPage();
     },
     activated() {
-        if(this.data.length)
+        if(this.data.length){
+            this.filter = '0';
             this.GetGoodsTortReviewPage();
+        }
     },
 }
 </script>

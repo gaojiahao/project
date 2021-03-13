@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 17:59:06
+ * @LastEditTime: 2021-03-13 11:50:33
 -->
 <template>
 <div class="erp_table_container">
@@ -356,8 +356,10 @@ export default {
         this.GetRecommendGoodsPage();
     },
     activated() {
-        if(this.data.length)
+        if(this.data.length){
+            this.filter = '0';
             this.GetRecommendGoodsPage();
+        }
     },
 }
 </script>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 17:55:41
+ * @LastEditTime: 2021-03-13 11:18:12
 -->
 <template>
     <div class="addFinishProduct">
@@ -54,10 +54,12 @@ export default {
     mixins: [config],
     watch:{
         $route:function(to,from){
-            if(to.query.id!=from.query.id){
-                this.id = to.query.id;
-                if(this.id)
+            if(to.name==from.name){
+                if(to.query.id!=from.query.id){
+                    this.id = to.query.id;
+                    if(this.id)
                     this.init();
+                }
             }
         }
     },
@@ -161,6 +163,7 @@ export default {
                     this.nextId = listID[i+1];
                 }
             }
+            this.$FromLoading.hide();
         },
         prePage(){
             this.$router.push({name:'viewRecommendExamine',query: {id:this.preId}});

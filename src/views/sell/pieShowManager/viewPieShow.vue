@@ -476,6 +476,7 @@ export default {
                     this.nextId = listID[i+1];
                 }
             }
+            this.$FromLoading.hide();
         },
         prePage(){
             this.$router.push({name:'viewPieShow',query: {id:this.preId}});
