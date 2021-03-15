@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 16:20:14
+ * @LastEditTime: 2021-03-13 17:54:35
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1408,7 +1408,28 @@ const routes = [
                 component: resolve=>(require(["@views/examine/chartingExamine/chartingExamineList"],resolve)),
               },
             ]
-          }
+          },
+          {
+            path: 'developExamine',
+            name: 'developExamine',
+            meta:{ 
+              title:'开发审核',
+              group: 'developExamine',
+            },
+            component: resolve=>(require(["@views/examine/developExamine/index"],resolve)),
+            redirect:'developExamine/developExamineList',
+            children:[
+              {
+                path: 'developExamineList',
+                name: 'developExamineList',
+                meta:{ 
+                  title:'开发审核',
+                  group: 'developExamineList',
+                },
+                component: resolve=>(require(["@views/examine/developExamine/developExamineList"],resolve)),
+              },
+            ]
+          },
         ]
       },
       {
