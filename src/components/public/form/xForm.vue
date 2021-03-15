@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 20:29:02
+ * @LastEditTime: 2021-03-15 20:52:53
 -->
 <template>
 <div class="content">
@@ -96,8 +96,8 @@
             </FormItem>
             <!-- 自定义下拉控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCustom'">
-                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" allow-create filterable @on-create="formConfig[index]['createFun']" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"  @on-select="onChange">
-                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
+                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" :allow-create="formConfig[index]['allow']" filterable multiple @on-create="formConfig[index]['createFun']" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"  @on-select="onChange">
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="item.name">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <!-- 下拉关联层级控件 -->
@@ -188,12 +188,14 @@ export default {
     watch: {
         formConfig: {
             handler(val) {
-                console.log(val)
-            }
+                // console.log(val)
+            },
+            deep:true,
+            immediate:true
         },
         showModel: {
             handler(val) {
-                console.log(val)
+                // console.log(val)
                 this.show = val
             }
         },

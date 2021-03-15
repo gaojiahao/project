@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-27 10:55:13
+ * @LastEditTime: 2021-03-15 20:40:52
  */
 export default {
   data() {
@@ -37,34 +37,20 @@ export default {
       formConfig2:{
         platformId:{
           name:'平台名称',
-          type:'radio',
+          type:'selectCustom',
           dataSource:{
-           
-          }  
+
+          },
+          allow:false
         },
         isTort:{
           name:'是否侵权',
-          type:'radio',
+          type:'checkbox',
           dataSource:{
             data:[
-              { name:'侵权',value:true},
-              { name:'不侵权',value:false},
+              { name:'是',value:true},
             ]
           }
-        },
-        reason:{
-          name:'原因',
-          type:'select',
-          dataSource:{
-            type:'dynamic',
-              url:'/api/GetSystemConfigList',
-              data:[],
-              parmas:{congfigType:'isTort'},
-              col:[
-                {k:'name',v:'name'},
-                {k:'value',v:'id'}
-              ]
-            }
         },
         remark:{
           name:'备注',

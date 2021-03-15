@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 17:54:35
+ * @LastEditTime: 2021-03-15 15:14:17
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1097,6 +1097,16 @@ const routes = [
                   level: 1,
                 },
                 component: resolve=>(require(["@views/sell/pieShowManager/viewPieShow"],resolve)),
+              },
+              {
+                path: 'addPieShow',
+                name: 'AddPieShow',
+                meta:{ 
+                  title:'产品派店',
+                  group: "产品派店",
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/sell/pieShowManager/addPieShow"],resolve)),
               },
             ]
           },

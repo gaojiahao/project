@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 11:44:07
+ * @LastEditTime: 2021-03-15 17:03:09
 -->
 <template>
 <div class="edit_store">
@@ -154,11 +154,23 @@ export default {
                                 platformId: res.result.item.platformId,
                                 platformName: res.result.item.platformName,
                                 chargeId: res.result.item.chargeId,
-                                member: res.result.item.chargeId,
+                                storeUsers: res.result.item.storeUsers,
                                 status: res.result.item.status,
                                 remark: res.result.item.remark,
                                 storeBinds: res.result.item.storeBinds,
                             }
+                            var data = [];
+                            for(var i=0;i<res.result.item.storeUsers.length;i++){
+                                if(res.result.item.storeUsers[i]['isPrincipal']){
+                                    this.formValidate['chargeId'] = res.result.item.storeUsers[i]['userId'];
+                                }
+                                var obj = {
+                                    name:res.result.item.storeUsers[i]['userName'],
+                                    id:res.result.item.storeUsers[i]['userId'],
+                                }
+                                data.push(obj);
+                            }
+                            this.formValidate['storeUsers'] = data;
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,

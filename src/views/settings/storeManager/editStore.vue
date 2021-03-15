@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 11:37:03
+ * @LastEditTime: 2021-03-15 19:08:48
 -->
 <template>
 <div class="edit_store">
@@ -92,6 +92,26 @@ export default {
                 cSelectData.push(arr);
             }
             params.storeBinds = cSelectData;
+
+            var storeUsers = [];
+            for(var i=0;i<params['storeUsers'].length;i++){
+                var obj = {
+                    storeName:params['name'],
+                    storeId:params['id'],
+                    userName:params['storeUsers'][i]['name'],
+                    userId:params['storeUsers'][i]['id'],
+                    name:params['storeUsers'][i]['name'],
+                    value:params['storeUsers'][i]['id'],
+                    id:params['storeUsers'][i]['id'],
+                }
+                if(params['storeUsers'][i]['id']==params['chargeId']){
+                    obj['isPrincipal'] = true;
+                } else {
+                    obj['isPrincipal'] = false;    
+                }
+                storeUsers.push(obj);
+            };
+            params['storeUsers'] = storeUsers;
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (!this.formValidate.id) {
@@ -167,11 +187,24 @@ export default {
                                 platformId: res.result.item.platformId,
                                 platformName: res.result.item.platformName,
                                 chargeId: res.result.item.chargeId,
-                                member: res.result.item.chargeId,
+                                storeUsers: res.result.item.storeUsers,
                                 status: res.result.item.status,
                                 remark: res.result.item.remark,
                                 storeBinds: res.result.item.storeBinds,
                             }
+                            var data = [];
+                            for(var i=0;i<res.result.item.storeUsers.length;i++){
+                                if(res.result.item.storeUsers[i]['isPrincipal']){
+                                    this.formValidate['chargeId'] = res.result.item.storeUsers[i]['userId'];
+                                }
+                                var obj = {
+                                    userName:res.result.item.storeUsers[i]['userName'],
+                                    name:res.result.item.storeUsers[i]['userName'],
+                                    id:res.result.item.storeUsers[i]['userId'],
+                                }
+                                data.push(obj);
+                            }
+                            this.formValidate['storeUsers'] = data;
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,

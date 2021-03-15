@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-15 10:40:36
+ * @LastEditTime: 2021-03-15 12:18:43
  */
 export default {
     data() {
@@ -53,7 +53,7 @@ export default {
         // },
         formValidate: {
           isSelect:true,
-          isMain:true,
+          // isMain:true,
           remark:'',
         },
         ruleValidate: {

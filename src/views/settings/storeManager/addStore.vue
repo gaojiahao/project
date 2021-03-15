@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 11:29:21
+ * @LastEditTime: 2021-03-15 17:36:22
 -->
 <template>
 <div class="add_store">
@@ -70,6 +70,25 @@ export default {
     methods: {
         save() {
             var params = this.formValidate;
+            var storeUsers = [];
+            for(var i=0;i<params['storeUsers'].length;i++){
+                var obj = {
+                    storeName:params['name'],
+                    storeId:params['id'],
+                    userName:params['storeUsers'][i]['name'],
+                    userId:params['storeUsers'][i]['id'],
+                    name:params['storeUsers'][i]['name'],
+                    value:params['storeUsers'][i]['id'],
+                    id:params['storeUsers'][i]['id'],
+                }
+                if(params['storeUsers'][i]['id']==params['chargeId']){
+                    obj['isPrincipal'] = true;
+                } else {
+                    obj['isPrincipal'] = false;    
+                }
+                storeUsers.push(obj);
+            };
+            params['storeUsers'] = storeUsers;
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (!this.formValidate.id) {

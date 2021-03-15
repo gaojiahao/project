@@ -25,7 +25,7 @@
                 </Radio>
             </RadioGroup>
         </FormItem>
-        <FormItem label="是否主推：" prop="isMain">
+        <!-- <FormItem label="是否主推：" prop="isMain">
             <RadioGroup v-model="formValidate.isMain">
                 <Radio :label="true">
                     是
@@ -34,7 +34,7 @@
                     否
                 </Radio>
             </RadioGroup>
-        </FormItem>
+        </FormItem> -->
         <FormItem label="备注：" prop="remark">
             <Input v-model="formValidate.remark" type="textarea" :autosize="{minRows: 5,maxRows: 10}" :style="{width:'400px'}" />
         </FormItem>

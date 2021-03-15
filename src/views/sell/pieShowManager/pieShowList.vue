@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 17:56:26
+ * @LastEditTime: 2021-03-15 15:13:16
 -->
 <template>
 <div class="erp_table_container">
@@ -29,7 +29,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true,row)" v-if="row.status!=1">派店</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="goPieShow(row.id)" v-if="row.status!=1">派店</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -327,12 +327,9 @@ export default {
             this.pageData.keyword=value;
             this.GetPrepGoodsPage(); 
         },
-        exportData(){
-            this.$refs.selection.exportCsv({
-                filename: 'Custom data',
-                columns: this.columns,
-                data: this.data,
-            });    
+        goPieShow(id){
+            if(id)
+                this.$router.push({name:'AddPieShow',query: {id:id}});     
         }
     },
     created(){

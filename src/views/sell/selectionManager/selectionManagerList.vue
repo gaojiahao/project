@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 17:54:29
+ * @LastEditTime: 2021-03-15 12:13:17
 -->
 <template>
 <div class="erp_table_container">
@@ -15,8 +15,9 @@
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
                             <!-- <Radio label="large">全部</Radio> -->
-                            <Radio label="0">未审核</Radio>
-                            <Radio label="1">已审核</Radio>
+                            <Radio label="0">未选</Radio>
+                            <Radio label="1">已选</Radio>
+                            <Radio label="2">不选</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -302,7 +303,7 @@ export default {
                 resizable: true,
             },
             {
-                title: '审核状态',
+                title: '选取状态',
                 key: 'status',
                 render: (h, params) => {
                     return h("span", {
@@ -310,7 +311,7 @@ export default {
                         display: "inline-block",
                         color: params.row.status==1 ? "#19be6b": params.row.status == 0 ? "#ff9900":"#ed4014"
                     },
-                    },params.row.status == 1 ?"通过":params.row.status == 0 ? '未审核':"未通过");
+                    },params.row.status == 1 ?"已选":params.row.status == 0 ? '未选':"不选");
                 },
                 width: 100,
                 resizable: true,

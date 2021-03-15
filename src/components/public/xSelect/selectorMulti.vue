@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 11:40:59
+ * @LastEditTime: 2021-03-15 17:23:17
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" v-if="!hidden">
@@ -285,6 +285,7 @@ export default {
                     // break;
                 }
             }
+            this.$emit('change', this.selectedList);
         },
         initPage(){
             this.pageData.skipCount = 1;

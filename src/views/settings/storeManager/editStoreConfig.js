@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 11:36:37
+ * @LastEditTime: 2021-03-15 17:28:44
  */
 export default {
     data() {
@@ -14,7 +14,14 @@ export default {
         } else {
           callback();
         }
-    };
+      };
+      const chargeIdVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请选择负责人'));
+        } else {
+          callback();
+        }
+      };
       return {
         formConfig:{
           name:{
@@ -74,7 +81,7 @@ export default {
               bindValue: 'name'
             }
           },
-          member:{
+          storeUsers:{
             name:'成员',
             type:'selectorMulti',
             isName:true,
@@ -125,7 +132,7 @@ export default {
           chargeId:'',
           platformId:'',
           platformName:'',
-          member:[],
+          storeUsers:[],
           status:'',
           remark:'',
           storeBinds:[]
@@ -142,7 +149,19 @@ export default {
               trigger: 'blur'
           }],
           platformId: [{ required: true, message: '请选择平台名称',validator: platformIdVali, trigger: 'change' }],
+          chargeId: [{ required: true, message: '请选择负责人',validator: chargeIdVali, trigger: 'change' }],
       }, 
       }
-    }
+    },
+    watch:{
+      "formValidate.storeUsers":{
+        handler(val){
+          var config = {...this.formConfig};
+          config['chargeId']['dataSource']['data']=this.formValidate.storeUsers;
+          this.formConfig = config;
+        }
+      },
+      deep:true,
+      immediate:true
+    },
   }

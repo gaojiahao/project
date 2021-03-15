@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-01-14 10:49:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 10:43:25
+ * @LastEditTime: 2021-03-15 19:11:57
  */
 import $flyio from '@plugins/ajax';
 //分页获取产品审核/销售审核/侵权审核
@@ -79,6 +79,12 @@ export let GetGoodsTortReviewPage = (data = {}) => {
 export let GetGoodsTortById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetGoodsTortById',
+    data: data
+  })
+};
+export let GetPlatfromOptional = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetPlatfromOptional',
     data: data
   })
 };

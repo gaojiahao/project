@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-27 11:14:40
+ * @LastEditTime: 2021-03-15 19:22:39
 -->
 <template>
 <div>
@@ -85,7 +85,7 @@
 <script>
 import ViewForm from "@components/public/form/viewForm";
 import XForm from "@components/public/form/xForm";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
+import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
 import config2 from "@views/examine/tortExamine/addTortExamineConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
@@ -107,6 +107,7 @@ import {
 } from "@service/settingsService";
 import {
     CreateGoodsTort,
+    GetPlatfromOptional
 } from "@service/tortExamineService";
 
 import {
@@ -310,19 +311,19 @@ export default {
         close(){
             this.$router.go(-1)
         },
-        GetPlatformsList() {
+        GetPlatfromOptional() {
             return new Promise((resolve, reject) => {
-                GetPlatformsList(this.pageData).then(res => {
+                GetPlatfromOptional({id:this.productId,...this.pageData}).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.platformList = res.result.item.map((e,index)=>{
-                                e.value = e.id;
+                                e.value = e.platformsId;
+                                e.name = e.platformName;
                                 return e;
                             });
                             this.formConfig2['platformId']['dataSource']['data'] = this.platformList; 
-                            this.firstPlatform = this.platformList[0]['id'];
+                            this.firstPlatform = this.platformList[0]['value'];
                         });
-                        
                     }
                 });
             });
@@ -378,7 +379,7 @@ export default {
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
-        this.GetPlatformsList();
+        this.GetPlatfromOptional();
     }
 }
 </script>
