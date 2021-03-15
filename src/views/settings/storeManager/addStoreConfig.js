@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-06 16:53:23
+ * @LastEditTime: 2021-03-15 10:21:31
  */
 export default {
     data() {
@@ -46,6 +46,20 @@ export default {
             name:'备注',
             type:'textarea',
           },
+          chargeId:{
+            name:'负责人',
+            type:'select',
+            isName:true,
+            dataSource:{
+              type:'dynamic',
+              url:'/api/GetUserInfoList',
+              data:[],
+              col:[
+                {k:'name',v:'userName'},
+                {k:'value',v:'id'}
+              ]
+            },
+          },
           platformId:{
             name:'平台名称',
             type:'select',
@@ -59,6 +73,39 @@ export default {
               target: 'platformName',
               bindValue: 'name'
             }
+          },
+          member:{
+            name:'成员',
+            type:'selectorMulti',
+            isName:true,
+            dataSource:{
+              type:'dynamic',
+              url:'/api/GetUserInfoPage',
+              data:[],
+              col:[
+                {k:'name',v:'userName'},
+                {k:'value',v:'id'}
+              ]
+            },
+            // bind:{
+            //   target: 'attributeName',
+            //   bindValue: 'name'
+            // },
+            proertyContext: {
+              "dataSourceCols": [
+                {
+                  "title": "id",
+                  "key": "value",
+                  "hidden": true
+                },
+                {
+                  "title": "名称",
+                  "key": "name"
+                },
+              ]
+            },
+            valueField: "id",  //值字段
+            displayField: "name", //显示字段
           },
           status:{
             name:'是否启用',
@@ -79,8 +126,10 @@ export default {
           login_Id: '',
           app_Key:'',
           app_Secret:'',
+          chargeId:'',
           platformId:'',
           platformName:'',
+          member:[],
           status:1,
           remark:'',
           storeBinds:[]

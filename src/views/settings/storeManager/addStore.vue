@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-24 17:55:45
+ * @LastEditTime: 2021-03-15 11:29:21
 -->
 <template>
 <div class="add_store">
@@ -21,7 +21,7 @@
                             </FormItem>
                         </template>
                     </XForm>
-                    <div style="margin:10px 10px 20px 80px;float:left">
+                    <div style="margin:10px 10px 20px 130px;float:left">
                         <Button type="primary" @click="save" style="float: left;">保存</Button>
                         <Button @click="clearFormData" style="float: left; margin-left:10px" v-if="!formValidate.id">重置</Button>
                         <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>

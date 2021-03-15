@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 14:57:15
+ * @LastEditTime: 2021-03-15 11:42:10
 -->
 <template>
 <div class="content">
@@ -72,7 +72,7 @@
             </FormItem>
             <!--多项选择器-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectorMulti'">
-                <SelectorMulti v-model="formValidate[index]" :config="formConfig[index]"></SelectorMulti>
+                <SelectorMulti v-model="formValidate[index]" :config="formConfig[index]" :disabled="true"></SelectorMulti>
             </FormItem>
             <!--人员分配-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='distributionPeople'">
