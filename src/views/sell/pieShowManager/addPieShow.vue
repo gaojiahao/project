@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 18:35:58
+ * @LastEditTime: 2021-03-16 20:50:47
 -->
 <template>
 <div>
@@ -22,9 +22,7 @@
                 <div class="ivu-form-item">
                     <label class="ivu-form-item-label" style="width: 120px;">选品人员:</label> 
                     <div class="ivu-form-item-content" style="margin-left: 120px;">
-                        <Table :columns="selectionPeopleColumns" :data="selectionPeopleData" height="300" width="820">
-
-                        </Table>
+                        <Table :columns="selectionPeopleColumns" :data="selectedGoods" height="300" width="820"></Table>
                         <span style="margin-left: 10px;"></span>
                     </div>
                 </div>
@@ -33,9 +31,7 @@
                 <div class="ivu-form-item">
                     <label class="ivu-form-item-label" style="width: 120px;">未选人员:</label> 
                     <div class="ivu-form-item-content" style="margin-left: 120px;">
-                        <Table :columns="selectionPeopleColumns" :data="selectionPeopleData" height="300" width="820">
-
-                        </Table>
+                        <Table :columns="selectionPeopleColumns" :data="notSelectedGoods" height="300" width="820"></Table>
                         <span style="margin-left: 10px;"></span>
                     </div>
                 </div>
@@ -44,9 +40,7 @@
             <div class="ivu-form-item">
                 <label class="ivu-form-item-label" style="width: 120px;">不选人员:</label> 
                 <div class="ivu-form-item-content" style="margin-left: 120px;">
-                    <Table :columns="appointStoreColumns" :data="appointStorePeopleData" height="300" width="820">
-
-                    </Table>
+                    <Table :columns="selectionPeopleColumns" :data="dontSelectedGoods" height="300" width="820"></Table>
                     <span style="margin-left: 10px;"></span>
                 </div>
             </div>
@@ -83,6 +77,9 @@ import {
 import {
     CreateReviewAction
 } from "@service/tortExamineService";
+import {
+    GetPieShopById
+} from "@service/sellService";
 
 import {
     Tabs,
@@ -120,17 +117,17 @@ export default {
                 },
                 {
                     title: '平台',
-                    key: 'title',
+                    key: 'platformName',
                     width:120
                 },
                 {
                     title: '店铺',
-                    key: 'store',
+                    key: 'storeName',
                     width:120
                 },
                  {
                     title: '选品人',
-                    key: 'user',
+                    key: 'createName',
                     width:120
                 },
                 // {
@@ -139,12 +136,12 @@ export default {
                 // },
                 {
                     title: '选品时间',
-                    key: 'date',
+                    key: 'createOn',
                     width:160
                 },
                 {
                     title: '意见',
-                    key: 'address',
+                    key: 'remark',
                 }
             ],
             selectionPeopleData: [
@@ -291,6 +288,9 @@ export default {
                     user:"gaojiahao"
                 },
             ],
+            selectedGoods:[],
+            dontSelectedGoods:[],
+            notSelectedGoods:[]
         }
     },
     methods: {
@@ -355,10 +355,30 @@ export default {
                     this.$Message.error('保存失败');
                 }
             })
-        }
+        },
+        GetPieShopById(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetPieShopById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.selectedGoods = res.result.item.selectedGoods;
+                            this.dontSelectedGoods = res.result.item.dontSelectedGoods;
+                            this.notSelectedGoods = res.result.item.notSelectedGoods;
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
     },
     created() {
         this.getFormData();
+        this.GetPieShopById();
     }
 }
 </script>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 17:47:13
+ * @LastEditTime: 2021-03-16 12:20:07
 -->
 <template>
 <div class="erp_table_container">
@@ -14,10 +14,10 @@
                 <div class="filter">
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
-                            <Radio label="large">全部</Radio>
-                            <Radio label="default">未审核</Radio>
-                            <Radio label="small">通过</Radio>
-                            <Radio label="small2">未通过</Radio>
+                            <Radio label="-1">全部</Radio>
+                            <Radio label="0">未审核</Radio>
+                            <Radio label="1">通过</Radio>
+                            <Radio label="2">未通过</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -30,7 +30,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.tortStatus==0">审核</Button>
+                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.saleStatus==0">审核</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -51,8 +51,8 @@
 import config from "@views/examine/mainResearchExamine/productConfig";
 import list from "@mixins/list";
 import {
-    GetGoodsTortReviewPage 
-} from "@service/tortExamineService"
+    GetPrepGoodsPage
+} from "@service/basicinfoService";
 
 export default {
     name: "developExamineList",
@@ -71,13 +71,21 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
-            filter:"default",
+            filter:"0",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetPrepGoodsPage();
+            }
         }
     },
     methods: {
-        GetGoodsTortReviewPage () {
+        GetPrepGoodsPage () {
+            this.pageData['saleStatus'] = this.filter;
             return new Promise((resolve, reject) => {
-                GetGoodsTortReviewPage (this.pageData).then(res => {
+                GetPrepGoodsPage (this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -101,10 +109,7 @@ export default {
             this.showModel = flag;
         },
         goTortExamine(row) {
-            this.$router.push({name:'addMainResearchExamine',query: {id:row.id}});    
-        },
-        goViewTortExamine(row){
-            this.$router.push({path:'/examine/tortExamine/viewTortExamine',query: {id:row.id}});        
+            this.$router.push({name:'addDevelopExamine',query: {id:row.id}});    
         },
         save(data) {
             var params = {};
@@ -125,7 +130,7 @@ export default {
                             if (res.result.code == 200) {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
-                                this.GetGoodsTortReviewPage();
+                                this.GetPrepGoodsPage();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({
                                     background: true,
@@ -145,16 +150,16 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetGoodsTortReviewPage();
+            this.GetPrepGoodsPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetGoodsTortReviewPage();
+            this.GetPrepGoodsPage();
         },
         goDetail(id){
             if(id)
-            this.$router.push({name:'viewMainResearchExamine',query: {id:id}});
+            this.$router.push({name:'viewDevelopExamine',query: {id:id}});
         },
         changeCoulmns(data){
             let datas = [];
@@ -174,7 +179,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetGoodsTortReviewPage();
+            this.GetPrepGoodsPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -285,14 +290,14 @@ export default {
             },
             {
                 title: '状态',
-                key: 'tortStatus',
+                key: 'saleStatus',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.tortStatus==1 ? "#19be6b": params.row.tortStatus == 0 ? "#ff9900":"#ed4014"
+                        color: params.row.saleStatus==1 ? "#19be6b": params.row.saleStatus == 0 ? "#ff9900":"#ed4014"
                     },
-                    },params.row.tortStatus==1 ?"通过": params.row.tortStatus==0 ? "未审核" : "未通过");
+                    },params.row.saleStatus==1 ?"通过": params.row.saleStatus==0 ? "未审核" : "未通过");
                 },
                 resizable: true,
                 width: 100,
@@ -338,7 +343,7 @@ export default {
         },
         setFilter(value){
             this.pageData.keyword=value;
-            this.GetGoodsTortReviewPage(); 
+            this.GetPrepGoodsPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -350,7 +355,7 @@ export default {
         
     },
     created(){
-        this.GetGoodsTortReviewPage();
+        this.GetPrepGoodsPage();
     }
 }
 </script>

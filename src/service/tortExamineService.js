@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-01-14 10:49:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 19:11:57
+ * @LastEditTime: 2021-03-16 17:00:52
  */
 import $flyio from '@plugins/ajax';
 //分页获取产品审核/销售审核/侵权审核
@@ -136,6 +136,13 @@ export let GetGoodsFileById = (data = {}) => {
 export let GetDistributionAndRelation = (data = {}) => {
   return $flyio.post({
     url: '/api/GetDistributionAndRelation',
+    data: data
+  })
+};
+//产品派店
+export let GetPieShopById = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetPieShopById',
     data: data
   })
 };

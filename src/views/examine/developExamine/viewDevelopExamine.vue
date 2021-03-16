@@ -4,13 +4,10 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 15:15:00
+ * @LastEditTime: 2021-03-16 12:13:52
 -->
 <template>
 <div>
-    <div class="prevPage" v-if="preId"  @click="prePage">
-        <Icon type="ios-arrow-back" />
-    </div>
     <Tabs type="card" :animated="false" :value="tabName">
         <TabPane label="基本信息" name="basicInfo">
             <div class="top">
@@ -20,7 +17,6 @@
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%"> 
-                                    <Button @click="goReturn" style="float: left;">返回</Button>
                                 </div>
                             </FormItem>
                         </template>
@@ -30,13 +26,12 @@
         </TabPane>
         <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
             <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch" :disabled="true"></AddNewProductTable>
-            <Button @click="goReturn" style="float: left;">返回</Button>
         </TabPane>
         <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" :disabled="true" @go-return="goReturn"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" :disabled="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -44,7 +39,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" :disabled="true" @go-return="goReturn"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" :disabled="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -52,7 +47,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn"></NewHtmlEditor>
+                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
@@ -60,6 +55,23 @@
             <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
+    <div class="top">
+        <Divider orientation="left" size="small">审核建议</Divider>
+        <div class="top_tabale">
+            <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
+                <template slot="button">
+                    <FormItem>
+                        <div style="width:100%">
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button> 
+                        </div>
+                    </FormItem>
+                </template>
+            </ViewForm>
+        </div>
+    </div>
+    <div class="prevPage" v-if="preId"  @click="prePage">
+        <Icon type="ios-arrow-back" />
+    </div>
     <div class="nextPage" v-if="nextId" @click="nextPage">
         <Icon type="ios-arrow-forward" />
     </div>
@@ -78,6 +90,7 @@ import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addN
 import UploadPic from "@components/basicinfo/developNewProducts/uploadPic";
 import NewHtmlEditor from "@components/basicinfo/developNewProducts/newHtmlEditor";
 import AddAttrProductTable from "@components/basicinfo/developNewProducts/addAttrProductTable";
+import config2 from "@views/examine/developExamine/viewDevelopExamineConfig";
 import {
     CreatePrepGoods,
     CraeteGoodsSupplier,
@@ -93,7 +106,7 @@ import {
     TabPane,
 } from "view-design";
 export default {
-    name: 'ViewNewProduct',
+    name: 'viewDevelopExamine',
     components: {
         Tabs,
         TabPane,
@@ -108,7 +121,7 @@ export default {
         NewHtmlEditor,
         AddAttrProductTable
     },
-    mixins: [config],
+    mixins: [config,config2],
     data(){
         return{
             tabName:'basicInfo',
@@ -150,12 +163,10 @@ export default {
     },
     watch:{
         $route:function(to,from){
-            if(to.name==from.name){
-                if(to.query.id!=from.query.id){
-                    this.productId = to.query.id;
-                    if(this.productId)
-                    this.init();
-                }
+            if(to.query.id!=from.query.id){
+                this.productId = to.query.id;
+                if(this.productId)
+                this.init();
             }
         }
     },
@@ -445,7 +456,7 @@ export default {
             });    
         },
         goReturn(){
-           this.$router.push({name:'DevelopNewProductsList'});
+            this.$router.push({name:'tortExamineList'});
         },
         GetOperationLogPage(){
             if(this.productId){
@@ -481,36 +492,10 @@ export default {
             this.$FromLoading.hide();
         },
         prePage(){
-            if(this.preId) {
-                return new Promise((resolve, reject) => {
-                    GetPrepGoodsById({id:this.preId}).then(res => {
-                        if (res.result.code == 200) {
-                            if (res.result.code == 200) {
-                                if(res.result.item.status){
-                                    this.$router.push({name:'ViewNewProduct',query: {id:this.preId}});
-                                } else {
-                                    this.$router.push({name:'editNewProduct',query: {id:this.preId}});    
-                                }
-                            }
-                        }
-                    });
-                });    
-            }
+            this.$router.push({name:'viewTortExamine',query: {id:this.preId}});
         },
         nextPage(){
-            if(this.nextId) {
-                return new Promise((resolve, reject) => {
-                    GetPrepGoodsById({id:this.nextId}).then(res => {
-                        if (res.result.code == 200) {
-                            if(res.result.item.status){
-                                this.$router.push({name:'ViewNewProduct',query: {id:this.nextId}});
-                            } else {
-                                this.$router.push({name:'editNewProduct',query: {id:this.nextId}});    
-                            }
-                        }
-                    });
-                });    
-            }
+            this.$router.push({name:'viewTortExamine',query: {id:this.nextId}});
         },
         init(){
             this.$FromLoading.show();

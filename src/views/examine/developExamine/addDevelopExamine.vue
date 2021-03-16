@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 17:46:21
+ * @LastEditTime: 2021-03-16 14:21:44
 -->
 <template>
 <div>
@@ -29,7 +29,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -37,7 +37,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -45,7 +45,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor :value="productInfoFormValidate.description"></NewHtmlEditor>
+                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
@@ -56,7 +56,7 @@
     <div class="top">
         <Divider orientation="left" size="small">审核建议</Divider>
         <div class="top_tabale">
-            <div style="height:40px;width:100%;padding:10px">
+            <!-- <div style="height:40px;width:100%;padding:10px">
                 <RadioGroup v-model="platform" @on-change="onChange">
                     平台：
                     <template v-for="(ditem,dIndex) in platformList">
@@ -65,14 +65,14 @@
                         </Radio>
                     </template>
                 </RadioGroup>
-            </div>
+            </div> -->
             <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
                             <Button type="primary" @click="save(true)" style="float: left;">同意</Button>
-                            <Button @click="save(false)" style="float: left; margin-left:10px">不同意</Button>   
-                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button> 
+                            <Button @click="save(false)" style="float: left; margin-left:10px">不同意</Button>
+                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>   
                         </div>
                     </FormItem>
                 </template>
@@ -85,8 +85,8 @@
 <script>
 import ViewForm from "@components/public/form/viewForm";
 import XForm from "@components/public/form/xForm";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
-import config2 from "@views/examine/mainResearchExamine/addMainResearchExamine";
+import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
+import config2 from "@views/examine/developExamine/addDevelopExamineConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
@@ -107,6 +107,8 @@ import {
 } from "@service/settingsService";
 import {
     CreateGoodsTort,
+    GetPlatfromOptional,
+    CreateReviewAction
 } from "@service/tortExamineService";
 
 import {
@@ -228,6 +230,23 @@ export default {
                                 code:res.result.item.code,
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                logisticsLabel: res.result.item.logisticsLabel,
+                                imgUrl: [{
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                },
+                                {
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                },
+                                {
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                }],
                                 characteristic:res.result.item.characteristic,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
@@ -293,13 +312,18 @@ export default {
         close(){
             this.$router.go(-1)
         },
-        GetPlatformsList() {
+        GetPlatfromOptional() {
             return new Promise((resolve, reject) => {
-                GetPlatformsList(this.pageData).then(res => {
+                GetPlatfromOptional({id:this.productId,...this.pageData}).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
-                            this.platformList = res.result.item;
-                            this.firstPlatform = this.platformList[0]['id'];
+                            this.platformList = res.result.item.map((e,index)=>{
+                                e.value = e.platformsId;
+                                e.name = e.platformName;
+                                return e;
+                            });
+                            this.formConfig2['platformId']['dataSource']['data'] = this.platformList; 
+                            this.firstPlatform = this.platformList[0]['value'];
                         });
                     }
                 });
@@ -309,27 +333,21 @@ export default {
 
         },
         save(status){
-            var params = {};
-            var platformName = '';
-            for(var i=0;i<this.platformList.length;i++){
-                if(this.platform==this.platformList[i]['id']){
-                    platformName = this.platformList[i]['name']
-                }
-            };
+            var params = this.formValidate2;
             params = {
-                goodsId:this.productId,
-                platformId: this.platform,
-                platformName: platformName,
-                reason:this.formValidate2.reason,
-                isTort: this.formValidate2.isTort,
-                remark: status
+                ...params,
+                reviewType:'salesReview',
+                relatedId: this.productId,
+                reviewResult:0,
+                reviewBefore: status,
+                isPass: status
             }
             this.$refs['examine'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
-                    if (params.goodsId) {
+                    if (params.relatedId) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
-                            CreateGoodsTort(params).then(res => {
+                            CreateReviewAction(params).then(res => {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：审核成功！');
@@ -356,7 +374,7 @@ export default {
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
-        this.GetPlatformsList();
+        this.GetPlatfromOptional();
     }
 }
 </script>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 15:13:16
+ * @LastEditTime: 2021-03-16 16:51:00
 -->
 <template>
 <div class="erp_table_container">
@@ -14,9 +14,9 @@
                 <div class="filter">
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
-                            <Radio label="large">全部</Radio>
-                            <Radio label="default">已派</Radio>
-                            <Radio label="small">未派</Radio>
+                            <Radio label="-1">全部</Radio>
+                            <Radio label="0">未派</Radio>
+                            <Radio label="1">已派</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -90,11 +90,19 @@ export default {
             totalPage:0,
             selectData:{},
             filtersConfig:{},
-            filter:"small",
+            filter:"0",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetPrepGoodsPage();
+            }
         }
     },
     methods: {
         GetPrepGoodsPage() {
+            this.pageData['status'] = this.filter;
             return new Promise((resolve, reject) => {
                 GetPrepGoodsPage(this.pageData).then(res => {
                     if(res.result.code==200){
@@ -279,7 +287,7 @@ export default {
                         display: "inline-block",
                         color: params.row.status==1 ? "#19be6b": "#ed4014"
                     },
-                    },params.row.status == 1 ? '已派店':"未派店");
+                    },params.row.status == 1 ? '已派':"未派");
                 },
                 width: 200,
                 resizable: true,

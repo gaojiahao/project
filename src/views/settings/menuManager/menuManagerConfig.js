@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-24 17:09:49
+ * @LastEditTime: 2021-03-16 10:40:05
  */
 export default {
   data() {
@@ -26,6 +26,11 @@ export default {
         },
         code:{
           name:'标签',
+          type:'text',
+          length:50
+        },
+        orderSort:{
+          name:'排序',
           type:'text',
           length:50
         },
@@ -63,6 +68,7 @@ export default {
         linkUrl: '',
         icon:'',
         code:'',
+        orderSort:'',
         isMenu: true,
         enabled:true,
         parentId:0,

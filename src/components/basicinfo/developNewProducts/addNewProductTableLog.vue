@@ -4,20 +4,20 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-27 10:00:50
+ * @LastEditTime: 2021-03-16 15:21:46
 -->
 <template>
 <div class="addNewProductTable-container">
     <div>
         <Table border :columns="columns" :data="data" :loading="loading" stripe>
         </Table>
-        <div style="margin: 10px;overflow: hidden">
+        <div style="margin: 10px 10px 10px 0px;overflow: hidden">
             <div style="float: right;">
                 <Page :total="pageData.totalPagePruch" :transfer="true" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" @on-page-size-change="onPageSizeChange"></Page>
-                <div style="width:100%;margin-top:10px">
-                    <Button @click="goReturn" style="float: right; margin-right:10px">返回</Button>
-                </div>
             </div>
+        </div>
+        <div style="width:100%;">
+            <Button @click="goReturn" style="float: left;">返回</Button>
         </div>
     </div>
 </div>

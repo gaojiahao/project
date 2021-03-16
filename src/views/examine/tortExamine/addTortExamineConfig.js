@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 20:40:52
+ * @LastEditTime: 2021-03-16 10:38:05
  */
 export default {
   data() {
@@ -41,7 +41,9 @@ export default {
           dataSource:{
 
           },
-          allow:false
+          allow:false,
+          createFun:'',
+          multiple:true
         },
         isTort:{
           name:'是否侵权',
@@ -67,24 +69,24 @@ export default {
         tortStatus:''
       },
       ruleValidate2: {
-        platformId: [{
-          required: true,
-          message: '请选择平台名称',
-          trigger: 'change',
-          validator: platformIdVali
-        }],
-        isTort: [{
-          required: true,
-          message: '是否侵权',
-          trigger: 'change',
-          validator: isTortSizeVali
-        }],
-        reason: [{
-          required: true,
-          message: '请选择原因',
-          trigger: 'change',
-          validator: reasonVali
-        }],
+        // platformId: [{
+        //   required: true,
+        //   message: '请选择平台名称',
+        //   trigger: 'change',
+        //   validator: platformIdVali
+        // }],
+        // isTort: [{
+        //   required: true,
+        //   message: '是否侵权',
+        //   trigger: 'change',
+        //   validator: isTortSizeVali
+        // }],
+        // reason: [{
+        //   required: true,
+        //   message: '请选择原因',
+        //   trigger: 'change',
+        //   validator: reasonVali
+        // }],
         opinion: [{
             required: true,
             type: 'string',

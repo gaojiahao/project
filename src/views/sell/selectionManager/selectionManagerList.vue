@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 12:13:17
+ * @LastEditTime: 2021-03-16 11:28:46
 -->
 <template>
 <div class="erp_table_container">
@@ -326,7 +326,7 @@ export default {
                 title: '选品时间',
                 key: 'createdOn',
                 resizable: true,
-                width: 200,
+                width: 250,
             },
             {
                 title: '审核人',
@@ -338,13 +338,13 @@ export default {
                 title: '审核时间',
                 key: 'modifyOn',
                 resizable: true,
-                width: 200,
+                width: 250,
             },
             {
                 title: '操作',
                 slot: 'action',
                 align: 'center',
-                width: 150,
+                width: 151,
                 resizable: true,
             }
         ];

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 16:02:34
+ * @LastEditTime: 2021-03-16 11:10:07
 -->
 <template>
 <div class="erp_table_container">
@@ -85,7 +85,7 @@ export default {
     },
     computed:{
         title(){
-            return this.formValidate.id ? '编辑':'新建'
+            return this.activatedRow.id ? '编辑':'新建'
         }
     },
     methods: {
@@ -207,6 +207,7 @@ export default {
                 this.formValidate['linkUrl'] = this.activatedRow.linkUrl;
                 this.formValidate['icon'] = [];
                 this.formValidate['code'] = this.activatedRow.code;
+                this.formValidate['orderSort'] = this.activatedRow.orderSort;
                 this.formValidate['isMenu'] = this.activatedRow.isMenu;
                 this.formValidate['enabled'] = this.activatedRow.enabled;
                 this.formValidate['parentId'] = this.activatedRow.parentId;

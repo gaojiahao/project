@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 19:22:39
+ * @LastEditTime: 2021-03-16 18:00:02
 -->
 <template>
 <div>
@@ -70,8 +70,7 @@
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
-                            <Button type="primary" @click="save(true)" style="float: left;">同意</Button>
-                            <Button @click="save(false)" style="float: left; margin-left:10px">不同意</Button>   
+                            <Button type="primary" @click="save(true)" style="float: left;">保存</Button>
                             <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button> 
                         </div>
                     </FormItem>
@@ -333,20 +332,27 @@ export default {
         },
         save(status){
             var params = {};
-            var platformName = '';
+            var platformNames = [];
+            params['tortPlatfroms'] = [];
             for(var i=0;i<this.platformList.length;i++){
-                if(this.formValidate2['platformId']==this.platformList[i]['id']){
-                    platformName = this.platformList[i]['name']
+                var obj = {};
+                obj = {
+                    platformsId:this.platformList[i]['platformsId'],
+                    platformName:this.platformList[i]['platformName'],
+                    isTort: false
                 }
+                for(var j=0;j<this.formValidate2['platformId'].length;j++){
+                    if(this.formValidate2['platformId'][j]==this.platformList[i]['platformsId']){
+                        obj['isTort']=true;
+                    }
+                }
+                platformNames.push(obj);
             };
             params = {
                 goodsId:this.productId,
-                platformId: this.formValidate2['platformId'],
-                platformName: platformName,
-                reason:this.formValidate2.reason,
-                isTort: this.formValidate2.isTort,
-                remark: status
+                remark: this.formValidate2.remark
             }
+            params['tortPlatfroms'] = platformNames;
             this.$refs['examine'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (params.goodsId) {

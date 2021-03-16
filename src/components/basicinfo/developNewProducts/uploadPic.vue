@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 10:44:05
+ * @LastEditTime: 2021-03-16 15:17:35
 -->
 <template>
 <div>
@@ -54,8 +54,8 @@
             <Progress v-if="item.showProgress" :percent="item.percentage"></Progress>
         </template>
     </div>
-    <div style="width:100%" v-if="!disabled">
-        <Button type="primary" @click="save" style="float: left;">保存</Button>
+    <div style="width:100%">
+        <Button type="primary" @click="save" style="float: left;" v-if="!disabled">保存</Button>
         <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
     </div>
 </div>
@@ -214,7 +214,7 @@ export default {
             }
         },
         goReturn(){
-            this.$router.go(-1);
+            this.$emit('go-return');
         },
         downLoadFile(item){
             var url = this.baseUrl+item.filePath;

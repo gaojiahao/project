@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 11:11:47
+ * @LastEditTime: 2021-03-16 15:25:42
 -->
 <template>
 <div>
@@ -52,7 +52,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="upLoadSize" :value="productInfoFormValidate['imgUrl']" @save="saveUpload"></UploadPic>
+                    <UploadPic :length="upLoadSize" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" @go-return="goReturn"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -60,7 +60,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" @go-return="goReturn"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -68,7 +68,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description"></NewHtmlEditor>
+                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" @go-return="goReturn"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
@@ -571,10 +571,36 @@ export default {
             this.$FromLoading.hide();
         },
         prePage(){
-            this.$router.push({name:'editNewProduct',query: {id:this.preId}});
+            if(this.preId) {
+                return new Promise((resolve, reject) => {
+                    GetPrepGoodsById({id:this.preId}).then(res => {
+                        if (res.result.code == 200) {
+                            if (res.result.code == 200) {
+                                if(res.result.item.status){
+                                    this.$router.push({name:'ViewNewProduct',query: {id:this.preId}});
+                                } else {
+                                    this.$router.push({name:'editNewProduct',query: {id:this.preId}});    
+                                }
+                            }
+                        }
+                    });
+                });    
+            }
         },
         nextPage(){
-            this.$router.push({name:'editNewProduct',query: {id:this.nextId}});
+            if(this.nextId) {
+                return new Promise((resolve, reject) => {
+                    GetPrepGoodsById({id:this.nextId}).then(res => {
+                        if (res.result.code == 200) {
+                            if(res.result.item.status){
+                                this.$router.push({name:'ViewNewProduct',query: {id:this.nextId}});
+                            } else {
+                                this.$router.push({name:'editNewProduct',query: {id:this.nextId}});    
+                            }
+                        }
+                    });
+                });    
+            }
         },
         init(){
             this.$FromLoading.show();

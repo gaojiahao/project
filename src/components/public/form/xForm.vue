@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 20:52:53
+ * @LastEditTime: 2021-03-16 10:36:19
 -->
 <template>
 <div class="content">
@@ -96,7 +96,7 @@
             </FormItem>
             <!-- 自定义下拉控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCustom'">
-                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" :allow-create="formConfig[index]['allow']" filterable multiple @on-create="formConfig[index]['createFun']" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"  @on-select="onChange">
+                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" :allow-create="formConfig[index]['allow']" filterable :multiple="formConfig[index]['multiple']" @on-create="formConfig[index]['createFun']" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"  @on-select="onChange">
                     <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="item.name">{{ item.name }}</Option>
                 </Select>
             </FormItem>

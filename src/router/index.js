@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 15:14:17
+ * @LastEditTime: 2021-03-16 16:58:54
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1102,8 +1102,8 @@ const routes = [
                 path: 'addPieShow',
                 name: 'AddPieShow',
                 meta:{ 
-                  title:'产品派店',
-                  group: "产品派店",
+                  title:'派店',
+                  group: "派店",
                   level: 1,
                 },
                 component: resolve=>(require(["@views/sell/pieShowManager/addPieShow"],resolve)),
@@ -1434,9 +1434,30 @@ const routes = [
                 name: 'developExamineList',
                 meta:{ 
                   title:'开发审核',
-                  group: 'developExamineList',
+                  group: 'developExamine',
+                  level: 1,
                 },
                 component: resolve=>(require(["@views/examine/developExamine/developExamineList"],resolve)),
+              },
+              {
+                path: 'addDevelopExamine',
+                name: 'addDevelopExamine',
+                meta:{ 
+                  title:'审核',
+                  group: 'developExamine',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/examine/developExamine/addDevelopExamine"],resolve)),
+              },
+              {
+                path: 'viewDevelopExamine',
+                name: 'viewDevelopExamine',
+                meta:{ 
+                  title:'查看审核',
+                  group: 'developExamine',
+                  level: 2,
+                },
+                component: resolve=>(require(["@views/examine/developExamine/viewDevelopExamine"],resolve)),
               },
             ]
           },

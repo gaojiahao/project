@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-14 14:49:10
+ * @LastEditTime: 2021-03-16 16:51:44
  */
 export default {
     data() {
@@ -53,7 +53,7 @@ export default {
             type:'text',
           },
           remark:{
-            name:'推荐备注',
+            name:'备注',
             type:'textarea',
           },
         },
