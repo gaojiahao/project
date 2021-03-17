@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 15:50:23
+ * @LastEditTime: 2021-03-17 19:08:30
 -->
 <template>
 <div class="erp_table_container">
@@ -275,7 +275,7 @@ export default {
             if(this.activatedRow.id){
                 this.loading = true;
                 return new Promise((resolve, reject) => {
-                    DelStore({id:this.activatedRow.id,storeBinds:[]}).then(res => {
+                    DelStore({id:this.activatedRow.id,storeBinds:[],storeUsers:[]}).then(res => {
                         if (res.result.code == 200) {
                             for(var i=0;i<this.selectedList.length;i++){
                                 for(var j=0;j<this.data.length;j++){
@@ -291,7 +291,7 @@ export default {
                             this.GetStorePage();
                             this.activatedRow = {};
                             this.loading = false;
-                        } else if (res.result.code == 400) {
+                        } else {
                             this.$Message.error({
                                 background: true,
                                 content: res.result.msg
@@ -305,7 +305,7 @@ export default {
         setFilter(value){
             this.pageData.keyword=value;
             this.pageData.skipCount = 1;
-            this.GetStorePage(); 
+            this.GetStorePage();
         },
         onDragDrop(first, end) {
             this.data.splice(

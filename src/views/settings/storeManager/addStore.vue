@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 10:47:07
+ * @LastEditTime: 2021-03-17 19:55:57
 -->
 <template>
 <div class="add_store">
@@ -28,9 +28,9 @@
                     </div>
                 </Col>
                 <Col span="12">
-                    <span class="ivu-form-item-label"></span>选择系统类目绑定
+                    <span class="ivu-form-item-label"></span>系统类目绑定<span style="color:red;margin-left:10px" v-show="systemBindFlag">请选择系统类目绑定</span>
                     <div class="" style="border-left: 1px solid #dcdee2;">
-                        <SystemCategoryBind type="add" :loading="loading" @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind>
+                        <SystemCategoryBind type="add" :loading="loading" @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData" :formData="formValidate"></SystemCategoryBind>
                     </div>   
                 </Col>
             </Row>
@@ -63,19 +63,20 @@ export default {
         return {
             selectPBind: {},
             systemCategoryData:[],
-            loading:true
+            loading:true,
+            systemBindFlag:false,
         }
     },
     mixins: [config],
     methods: {
         save() {
             var params = this.formValidate;
-            var cData = this.$refs.selectSystemBind.$refs.tree.getCheckedAndIndeterminateNodes();
+            var cData = this.$refs.selectSystemBind.$refs&&this.$refs.selectSystemBind.$refs.tree&&this.$refs.selectSystemBind.$refs.tree.getCheckedAndIndeterminateNodes()||[];
             var cSelectData = [];
             for(var i=0;i<cData.length;i++){
                 var arr = {
-                    categoryId:cData[i]['id'],
-                    categoryName:cData[i]['name'],
+                    categoryId:cData[i]['categoryId'],
+                    categoryName:cData[i]['categoryName'],
                 };
                 cSelectData.push(arr);
             }
@@ -99,12 +100,15 @@ export default {
                 storeUsers.push(obj);
             };
             params['storeUsers'] = storeUsers;
-            if(!params['storeBinds'].length){
-                this.$Message.error('保存失败');
-                return false;    
-            }
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
+                    if(!params['storeBinds'].length){
+                        this.$Message.error('保存失败');
+                        this.systemBindFlag = true;
+                        return false;    
+                    } else {
+                        this.systemBindFlag = false;
+                    }
                     if (!this.formValidate.id) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();

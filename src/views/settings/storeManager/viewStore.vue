@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 11:03:56
+ * @LastEditTime: 2021-03-17 18:08:25
 -->
 <template>
 <div class="edit_store">
@@ -28,7 +28,7 @@
                 <Col span="12">
                     <span class="ivu-form-item-label"></span>选择系统类目绑定
                     <div class="" style="border-left: 1px solid #dcdee2;">
-                        <SystemCategoryBind type="view" :loading="loading" @select-system-bind="selectSystemBind" @set-filter="setSystemCategoryFilter" ref="selectSystemBind" :data="systemCategoryData" :formData="formValidate.storeBinds"></SystemCategoryBind>
+                        <SystemCategoryBind type="view" :loading="loading" @select-system-bind="selectSystemBind" @set-filter="setSystemCategoryFilter" ref="selectSystemBind" :data="systemCategoryData" :formData="formValidate"></SystemCategoryBind>
                     </div>
                 </Col>
             </Row>
@@ -73,6 +73,12 @@ export default {
     methods: {
         goReturn(){
             this.$router.go(-1);
+        },
+        selectSystemBind(data){
+            this.formValidate.storeBinds = data;
+        },
+        setSystemCategoryFilter(value){
+            this.GetCategoryList(value);
         },
         getFormData(){
             this.id = this.$route.query.id;

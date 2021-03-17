@@ -4,11 +4,11 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 12:18:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 17:04:38
+ * @LastEditTime: 2021-03-17 19:35:19
 -->
 <template>
 <div class="content">
-    <div style="margin:0 10px; padding:10px 0">
+    <div style="margin:0 10px; padding:10px 0" v-if="type!='view'">
         <Input search clearable placeholder="" size="small" @on-search="onSearch" @on-clear="onCler" />
     </div>
     <div :class="[type=='add'? 'list':'list_view']">
@@ -21,7 +21,7 @@
                 <Tree ref="tree" :data="systemCategoryData" show-checkbox  multiple @on-check-change="checkChange" ></Tree>
             </template>
             <template v-else>
-                暂无数据
+                <span style="margin-left:10px">暂无数据</span>
             </template>
         </template>
     </div>
@@ -30,15 +30,15 @@
 
 <script>
 import {
-    GetCategoryList
+    GetCategoryRelatedList
 } from "@service/settingsService"
 export default {
     name: 'SystemCategoryBind',
     props:{
         formData:{
-            type:Array,
+            type:Object,
             default () {
-                return []
+                return {}
             } 
         },
         type:{
@@ -51,16 +51,18 @@ export default {
             loop: 0,
             selectData:[],
             systemCategoryData:[],
-            loading:true,
+            loading:false,
             datas:[],
-            keyword:''
+            keyword:'',
+            flagSelect:0,
         }
     },
     watch:{
-        formData:{
+        'formData.platformId':{
             handler(val){
-                // this.datas = this.systemCategoryData;
-                // this.calleArr(this.datas);
+                this.GetCategoryRelatedList(val);
+                this.flagSelect++;
+                this.clear();
             }
         }
     },
@@ -94,7 +96,7 @@ export default {
             // this.$emit('select-system-bind',this.selectData);
         },
         clear(){
-            var checkData = this.$refs.tree.getCheckedNodes();
+            var checkData = this.$refs&&this.$refs.tree&&this.$refs.tree.getCheckedNodes()||[];
             if(checkData.length){
                 for(var i=0;i<checkData.length;i++){
                     checkData[i].checked = false;
@@ -102,43 +104,51 @@ export default {
             }
         },
         onSearch(value){
-            this.GetCategoryList(value);
+            this.flagSelect++;
+            this.GetCategoryRelatedList(value);
         },
         onCler(){
-            this.GetCategoryList(value);
+            this.flagSelect++;
+            this.GetCategoryRelatedList('');
         },
-        GetCategoryList(value) {
+        GetCategoryRelatedList(value) {
             this.loading = true;
-            return new Promise((resolve, reject) => {
-                GetCategoryList({keyword:value,maxResultCount:200}).then(res => {
-                    if(res.result.code==200){
-                        this.$nextTick(() => {
-                            this.systemCategoryData = res.result.item;
-                            this.calleArr(this.systemCategoryData);
-                            this.loading = false;
-                        });
-                    }
+            if(this.formData.platformId){
+                return new Promise((resolve, reject) => {
+                    GetCategoryRelatedList({platformId:this.formData.platformId,keyWord:value}).then(res => {
+                        if(res.result.code==200){
+                            this.$nextTick(() => {
+                                this.systemCategoryData = res.result.item;
+                                this.calleArr(this.systemCategoryData);
+                                this.loading = false;
+                            });
+                        }
+                    });
                 });
-            });
+            }
         },
         calleArr: function(data){
             for(var i in data){
                 data[i] = {
                     ...data[i],
-                    title:data[i].name
+                    title:data[i].categoryName
                 }
                 if(this.type=='view'){
                     data[i]['disabled'] = true;    
                 }
                 var flag=false;
-                for(var j=0;j<this.formData.length;j++){
-                    if(this.formData[j]['categoryId']==data[i]['id']){
-                        data[i]['checked'] = true;
-                        flag = true;
-                    } 
-                }
-                if(flag){
-                    data[i]['expand'] = true; 
+                if(this.flagSelect<=1){
+                    for(var j=0;j<this.formData.storeBinds.length;j++){
+                        if(this.formData.storeBinds[j]['categoryId']==data[i]['categoryId']){
+                            data[i]['checked'] = true;
+                            flag = true;
+                        } 
+                    }
+                    if(flag){
+                        data[i]['expand'] = true; 
+                    }
+                } else {
+                    data[i]['checked'] = false;    
                 }
                 if(data[i].children&&data[i].children.length){
                     data[i]['checked'] = false;
@@ -148,7 +158,7 @@ export default {
         },
     },
     created(){
-        this.GetCategoryList();
+        //this.GetCategoryRelatedList();
     }
 }
 </script>

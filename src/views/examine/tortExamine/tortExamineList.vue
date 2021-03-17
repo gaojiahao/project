@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:24:13
+ * @LastEditTime: 2021-03-17 21:04:48
 -->
 <template>
 <div class="erp_table_container">
@@ -31,6 +31,7 @@
             </template>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.tortStatus==0">审核</Button>
+                <Button size="small" style="margin-right: 5px" @click="showDetail(row)">明细</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -44,18 +45,23 @@
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
+    <ModalDetail @show-pop="showPop"></ModalDetail>
 </div>
 </template>
 
 <script>
 import config from "@views/examine/tortExamine/productConfig";
 import list from "@mixins/list";
+import ModalDetail from "@components/public/form/modalDetail";
 import {
     GetGoodsTortReviewPage 
 } from "@service/tortExamineService"
 
 export default {
     name: "TortExamineList",
+    components:{
+        ModalDetail    
+    },
     mixins: [config,list],
     data() {
         return {
@@ -355,8 +361,10 @@ export default {
                 columns: this.columns,
                 data: this.data,
             });    
+        },
+        showDetail(){
+            
         }
-        
     },
     created(){
         this.GetGoodsTortReviewPage();

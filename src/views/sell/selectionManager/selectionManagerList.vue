@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:24:37
+ * @LastEditTime: 2021-03-17 19:34:24
 -->
 <template>
 <div class="erp_table_container">
@@ -101,7 +101,7 @@ export default {
                 },  
                 status:{
                     name:'状态',
-                    value:'status',
+                    value:'selectStatus',
                     type:'radio',
                     dataSource:{
                         type:'static',
@@ -125,7 +125,7 @@ export default {
     methods: {
         GetGoodsSelectionPage() {
             var params = {
-                status: this.filter
+                selectStatus: this.filter
             }
             return new Promise((resolve, reject) => {
                 GetGoodsSelectionPage({...this.pageData,...params}).then(res => {
@@ -281,7 +281,7 @@ export default {
                 title: '产品编码',
                 key: 'code',
                 resizable: true,
-                width: 318,
+                width: 368,
             },
             {
                 title: '产品名称',
@@ -299,23 +299,23 @@ export default {
                     }
                     },params.row.name);
                 },
-                width: 350,
+                width: 400,
                 resizable: true,
             },
-            {
-                title: '选取状态',
-                key: 'status',
-                render: (h, params) => {
-                    return h("span", {
-                    style: {
-                        display: "inline-block",
-                        color: params.row.status==1 ? "#19be6b": params.row.status == 0 ? "#ff9900":"#ed4014"
-                    },
-                    },params.row.status == 1 ?"已选":params.row.status == 0 ? '未选':"不选");
-                },
-                width: 100,
-                resizable: true,
-            },
+            // {
+            //     title: '选取状态',
+            //     key: 'status',
+            //     render: (h, params) => {
+            //         return h("span", {
+            //         style: {
+            //             display: "inline-block",
+            //             color: params.row.status==1 ? "#19be6b": params.row.status == 0 ? "#ff9900":"#ed4014"
+            //         },
+            //         },params.row.status == 1 ?"已选":params.row.status == 0 ? '未选':"不选");
+            //     },
+            //     width: 100,
+            //     resizable: true,
+            // },
             {
                 title: '选品人',
                 key: 'createdName',
