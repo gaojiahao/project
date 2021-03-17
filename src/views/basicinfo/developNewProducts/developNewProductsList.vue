@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 16:24:08
+ * @LastEditTime: 2021-03-17 12:22:53
 -->
 <template>
 <div class="erp_table_container">
@@ -168,7 +168,7 @@ export default {
             this.$router.push({name:'AddNewProduct'});
         },
         goEdit(){
-            if(this.activatedRow.id&&this.activatedRow.status==0){
+            if(this.activatedRow.id&&this.activatedRow.saleStatus==0){
                 this.$router.push({name:'editNewProduct',query: {id:this.activatedRow.id}});
             }
         },
@@ -319,7 +319,7 @@ export default {
                     width: 100,
                 },
                 {
-                    title: '销售状态',
+                    title: '开发审核',
                     key: 'saleStatus',
                     render: (h, params) => {
                         return h("span", {
@@ -403,7 +403,8 @@ export default {
             } 
         },
         setFilter(value){
-            this.pageData.keyword = value
+            this.pageData.keyword = value;
+            this.pageData.skipCount = 1;
             this.GetPrepGoodsPage(); 
         },
         exportData(flag){

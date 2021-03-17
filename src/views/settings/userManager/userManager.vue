@@ -262,6 +262,7 @@ export default {
         },
         setFilter(value){
             this.pageData.keyWord=value;
+            this.pageData.skipCount = 1;
             this.GetUserInfoPage(); 
         },
         goDetail(id){

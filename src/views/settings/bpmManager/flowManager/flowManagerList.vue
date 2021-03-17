@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 16:09:50
+ * @LastEditTime: 2021-03-17 12:24:52
 -->
 <template>
 <div class="erp_table_container">
@@ -290,6 +290,7 @@ export default {
         },
         setFilter(value){
             this.pageData.keyword=value;
+            this.pageData.skipCount = 1;
             this.GetWorkflowClausePage(); 
         },
         goSaveBpm(row){

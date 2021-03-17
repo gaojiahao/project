@@ -341,7 +341,8 @@ export default {
             })
         },
         setFilter(value){
-            this.pageData.keyword = value
+            this.pageData.keyword = value;
+            this.pageData.skipCount = 1;
             this.GetFileDistributionPage();
         },
     },

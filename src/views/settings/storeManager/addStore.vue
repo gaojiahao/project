@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 17:36:22
+ * @LastEditTime: 2021-03-17 10:47:07
 -->
 <template>
 <div class="add_store">
@@ -28,7 +28,7 @@
                     </div>
                 </Col>
                 <Col span="12">
-                    选择系统类目绑定
+                    <span class="ivu-form-item-label"></span>选择系统类目绑定
                     <div class="" style="border-left: 1px solid #dcdee2;">
                         <SystemCategoryBind type="add" :loading="loading" @select-system-bind="selectSystemBind" ref="selectSystemBind" :data="systemCategoryData"></SystemCategoryBind>
                     </div>   
@@ -70,6 +70,16 @@ export default {
     methods: {
         save() {
             var params = this.formValidate;
+            var cData = this.$refs.selectSystemBind.$refs.tree.getCheckedAndIndeterminateNodes();
+            var cSelectData = [];
+            for(var i=0;i<cData.length;i++){
+                var arr = {
+                    categoryId:cData[i]['id'],
+                    categoryName:cData[i]['name'],
+                };
+                cSelectData.push(arr);
+            }
+            params.storeBinds = cSelectData;
             var storeUsers = [];
             for(var i=0;i<params['storeUsers'].length;i++){
                 var obj = {
@@ -89,6 +99,10 @@ export default {
                 storeUsers.push(obj);
             };
             params['storeUsers'] = storeUsers;
+            if(!params['storeBinds'].length){
+                this.$Message.error('保存失败');
+                return false;    
+            }
             this.$refs['form'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
                     if (!this.formValidate.id) {
@@ -170,4 +184,13 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/form.less";
+.ivu-form-item-label:before {
+    content: '*';
+    display: inline-block;
+    margin-right: 4px;
+    line-height: 1;
+    font-family: SimSun;
+    font-size: 14px;
+    color: #ed4014;
+}
 </style>

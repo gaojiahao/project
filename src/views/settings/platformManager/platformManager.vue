@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-19 16:11:57
+ * @LastEditTime: 2021-03-17 12:25:54
 -->
 <template>
 <div class="platformManager-container">
@@ -323,6 +323,7 @@ export default {
         },
         setFilter(value){
             this.pageData.keyword = value;
+            this.pageData.skipCount = 1;
             this.GetPlatformsPage();
         },
         setPlatformCategoryFilter(value){

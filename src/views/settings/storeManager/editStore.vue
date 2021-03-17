@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 19:08:48
+ * @LastEditTime: 2021-03-17 10:55:28
 -->
 <template>
 <div class="edit_store">
@@ -27,7 +27,7 @@
                     </div>
                 </Col>
                 <Col span="12">
-                    选择系统类目绑定
+                    <span class="ivu-form-item-label"></span>选择系统类目绑定
                     <div class="" style="border-left: 1px solid #dcdee2;">
                         <SystemCategoryBind type="edit" :loading="loading" @select-system-bind="selectSystemBind" @set-filter="setSystemCategoryFilter" ref="selectSystemBind" :data="systemCategoryData" :formData="formValidate.storeBinds"></SystemCategoryBind>
                     </div>   
@@ -186,8 +186,8 @@ export default {
                                 app_Secret: res.result.item.app_Secret,
                                 platformId: res.result.item.platformId,
                                 platformName: res.result.item.platformName,
-                                chargeId: res.result.item.chargeId,
                                 storeUsers: res.result.item.storeUsers,
+                                chargeId: res.result.item.chargeId,
                                 status: res.result.item.status,
                                 remark: res.result.item.remark,
                                 storeBinds: res.result.item.storeBinds,
@@ -223,4 +223,13 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/form.less";
+.ivu-form-item-label:before {
+    content: '*';
+    display: inline-block;
+    margin-right: 4px;
+    line-height: 1;
+    font-family: SimSun;
+    font-size: 14px;
+    color: #ed4014;
+}
 </style>

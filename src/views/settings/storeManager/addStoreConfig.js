@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 17:48:19
+ * @LastEditTime: 2021-03-17 10:45:05
  */
 export default {
     data() {
@@ -59,7 +59,7 @@ export default {
             isName:true,
             dataSource:{
               type:'dynamic',
-              url:'/api/GetUserInfoList',
+              url:'',
               data:[],
               col:[
                 {k:'name',v:'userName'},

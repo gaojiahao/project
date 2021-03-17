@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 11:42:10
+ * @LastEditTime: 2021-03-17 11:03:05
 -->
 <template>
 <div class="content">
@@ -267,7 +267,7 @@ export default {
                     })
                     this.radioOnChangeFun(item,form.formValidate[item]);
                 }
-                if((['select','selectCustom','tree'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'){
+                if((['select','selectCustom','tree'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'&&this.formConfig[item].dataSource.url){
                     var parmas = this.formConfig[item].dataSource.parmas ? this.formConfig[item].dataSource.parmas:{};
                     await $flyio.post({
                         url: this.formConfig[item].dataSource.url,

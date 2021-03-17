@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 10:23:06
+ * @LastEditTime: 2021-03-17 12:26:25
 -->
 <template>
 <div class="manager-container">
@@ -277,6 +277,7 @@ export default {
         },
         setFilter(value){
             this.pageData.keyword = value;
+            this.pageData.skipCount = 1;
             this.GetCategoryList(); 
         },
         changePage(page) {

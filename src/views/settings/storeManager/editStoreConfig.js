@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 17:28:44
+ * @LastEditTime: 2021-03-17 11:43:23
  */
 export default {
     data() {
@@ -59,7 +59,7 @@ export default {
             isName:true,
             dataSource:{
               type:'dynamic',
-              url:'/api/GetUserInfoList',
+              url:'',
               data:[],
               col:[
                 {k:'name',v:'userName'},
@@ -129,10 +129,10 @@ export default {
           login_Id: '',
           app_Key:'',
           app_Secret:'',
-          chargeId:'',
           platformId:'',
           platformName:'',
           storeUsers:[],
+          chargeId:'',
           status:'',
           remark:'',
           storeBinds:[]

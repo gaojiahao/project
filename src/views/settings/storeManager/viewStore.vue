@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 17:03:09
+ * @LastEditTime: 2021-03-17 11:03:56
 -->
 <template>
 <div class="edit_store">
@@ -13,7 +13,7 @@
         <div class="top_tabale">
             <Row>
                 <Col span="12">
-                    <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" @save="save" @clear-form-data="clearFormData" ref="form" style="height:550px">
+                    <ViewForm :formValidate="formValidate" :ruleValidate="ruleValidate" :formConfig="formConfig" ref="form" style="height:550px">
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%">
@@ -26,7 +26,7 @@
                     </div>
                 </Col>
                 <Col span="12">
-                    选择系统类目绑定
+                    <span class="ivu-form-item-label"></span>选择系统类目绑定
                     <div class="" style="border-left: 1px solid #dcdee2;">
                         <SystemCategoryBind type="view" :loading="loading" @select-system-bind="selectSystemBind" @set-filter="setSystemCategoryFilter" ref="selectSystemBind" :data="systemCategoryData" :formData="formValidate.storeBinds"></SystemCategoryBind>
                     </div>
@@ -34,14 +34,6 @@
             </Row>
         </div>
     </div>
-    <!-- <div class="item">
-        <div class="top">
-            <Divider orientation="left" size="small">选择系统类目</Divider>
-            <div class="top_tabale">
-                <SystemCategoryBind type="view" :loading="loading" @select-system-bind="selectSystemBind" @set-filter="setSystemCategoryFilter" ref="selectSystemBind" :data="systemCategoryData" :formData="formValidate.storeBinds"></SystemCategoryBind>
-            </div>
-        </div>
-    </div> -->
 </div>
 </template>
 
@@ -53,7 +45,7 @@ import {
 import ViewForm from "@components/public/form/viewForm";
 import config from "@views/settings/storeManager/editStoreConfig";
 import SystemCategoryBind from "@components/settings/storeManager/systemCategoryBind";
-import NowCategoryBind from "@components/settings/platformManager/nowCategoryBind";
+
 import {
     CreateStore,
     UpdateStore,
@@ -62,7 +54,7 @@ import {
 } from "@service/settingsService"
 
 export default {
-    name: "EditStore",
+    name: "ViewStore",
     components: {
         ViewForm,
         SystemCategoryBind,
@@ -79,62 +71,8 @@ export default {
     },
     mixins: [config],
     methods: {
-        save() {
-            var params = this.formValidate;
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    if (!this.formValidate.id) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            CreateStore(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：新建成功！');
-                                    this.$refs['form'].$refs['formValidate'].resetFields();
-                                    this.$refs['form'].initEL('input');
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    } else {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            UpdateStore(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })
-        },
-        clearFormData() {},
-        selectPlatformBind(data) {
-            this.selectPBind = data;
-        },
         goReturn(){
             this.$router.go(-1);
-        },
-        setSystemCategoryFilter(value){
-            this.GetCategoryList(value);
-        },
-        selectSystemBind(data){
-            this.formValidate.storeBinds = data;
         },
         getFormData(){
             this.id = this.$route.query.id;
@@ -153,8 +91,8 @@ export default {
                                 app_Secret: res.result.item.app_Secret,
                                 platformId: res.result.item.platformId,
                                 platformName: res.result.item.platformName,
-                                chargeId: res.result.item.chargeId,
                                 storeUsers: res.result.item.storeUsers,
+                                chargeId: res.result.item.chargeId,
                                 status: res.result.item.status,
                                 remark: res.result.item.remark,
                                 storeBinds: res.result.item.storeBinds,
@@ -165,6 +103,7 @@ export default {
                                     this.formValidate['chargeId'] = res.result.item.storeUsers[i]['userId'];
                                 }
                                 var obj = {
+                                    userName:res.result.item.storeUsers[i]['userName'],
                                     name:res.result.item.storeUsers[i]['userName'],
                                     id:res.result.item.storeUsers[i]['userId'],
                                 }
@@ -189,4 +128,13 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/form.less";
+.ivu-form-item-label:before {
+    content: '*';
+    display: inline-block;
+    margin-right: 4px;
+    line-height: 1;
+    font-family: SimSun;
+    font-size: 14px;
+    color: #ed4014;
+}
 </style>

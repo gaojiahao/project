@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-04 20:56:53
+ * @LastEditTime: 2021-03-17 11:56:02
 -->
 <template>
 <div>
@@ -180,6 +180,7 @@ export default {
         },
         initData(){
             this.pageData.keyword = this.searchValue; 
+            this.pageData.skipCount = 1;
             this.init();
         },
         fullModel() {
@@ -286,6 +287,7 @@ export default {
         },
         onClear(){
             this.pageData.keyword ='';
+            this.pageData.skipCount = 1;
             this.init(); 
         }
     },

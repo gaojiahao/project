@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 16:12:41
+ * @LastEditTime: 2021-03-17 12:25:12
 -->
 <template>
 <div class="erp_table_container">
@@ -247,6 +247,7 @@ export default {
         },
         setFilter(value){
             this.pageData.keyword=value;
+            this.pageData.skipCount = 1;
             this.GetAreaPage(); 
         },
         onDragDrop(first, end) {

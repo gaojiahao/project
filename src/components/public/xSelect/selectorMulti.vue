@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-15 17:23:17
+ * @LastEditTime: 2021-03-17 11:23:27
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" v-if="!hidden">
@@ -187,7 +187,8 @@ export default {
             this.init();
         },
         initData(){
-            this.pageData.keyword = this.searchValue; 
+            this.pageData.keyword = this.searchValue;
+            this.pageData.skipCount = 1;
             this.init();
         },
         fullModel() {
@@ -295,6 +296,7 @@ export default {
         },
         onClear(){
             this.pageData.keyword ='';
+            this.pageData.skipCount = 1;
             this.init(); 
         }
     },
