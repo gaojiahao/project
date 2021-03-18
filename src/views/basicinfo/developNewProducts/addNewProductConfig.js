@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 14:58:57
+ * @LastEditTime: 2021-03-18 17:05:39
  */
 import $flyio from '@plugins/ajax';
 
@@ -77,9 +77,23 @@ export default {
           callback();
         }
       };
+      const purchasePricesVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请输入采购单价'));
+        } else {
+          callback();
+        }
+      };
+      const minQuantityVali = (rule, value, callback) => {
+        if (value == ''||value === undefined) {
+            callback(new Error('请输入最小采购量'));
+        } else {
+          callback();
+        }
+      };
       const packageCostVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
-            callback(new Error('请输入包装成本'));
+            callback(new Error('请输入正确的包装成本'));
         } else {
           callback();
         }
@@ -198,7 +212,7 @@ export default {
           },
           weight:{
             name:'商品重量',
-            type:'text',
+            type:'number',
             unit:'kg',
             disabled: false
           },
@@ -223,12 +237,12 @@ export default {
           }, 
           packageCost:{
             name:'包装成本',
-            type:'text',
+            type:'number',
             unit:'CNY'
           }, 
           packageWeight:{
             name:'包装重量',
-            type:'text',
+            type:'number',
             unit:'KG'
           }, 
           packagingSize:{
@@ -260,11 +274,11 @@ export default {
           }, 
           minQuantity:{
             name:'最小采购量',
-            type:'text',
+            type:'number',
           }, 
           purchasePrices:{
             name:'采购单价',
-            type:'text',
+            type:'number',
             unit:'CNY'
           },
           // url:{
@@ -443,14 +457,9 @@ export default {
           // }],
           weight:[{ 
             required: true,
-            // type: 'number',
             message: '请输入正确的商品重量', 
-            // trigger: 'blur',
-            // transform(value) {
-            //   return Number(value);
-            // },
-            // validator: weightVali
-            trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+            validator: weightVali,
+            trigger:'change',
           }],
           // productSize: [{ 
           //   required: true, 
@@ -465,21 +474,16 @@ export default {
             trigger: 'change',
             validator: materialSizeVali
           }],
-          // packageCost:[{ 
-          //   required: true, 
-          //   message: '请输入包装成本', 
-          //   trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
-          // }],
+          packageCost:[{ 
+            message: '请输入正确的包装成本', 
+            trigger:'change',
+            validator: packageCostVali
+          }],
           packageWeight:[{ 
             required: true,
-            // type: 'number',
             message: '请输入正确的包装重量', 
-            // trigger: 'blur',
-            // transform(value) {
-            //   return Number(value);
-            // },
-            // validator: packageWeightVali
-            trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+            validator: packageWeightVali,
+            trigger:'change',
           }],
           packagingSize: [{ 
             required: true, 
@@ -496,17 +500,15 @@ export default {
           }],
           purchasePrices:[{ 
             required: true, 
-            // type: 'string',
             message: '请输入采购单价', 
-            // trigger: 'blur',
-            trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+            trigger:'change',
+            validator: purchasePricesVali
           }],
           minQuantity:[{ 
             required: true, 
-            // type: 'string',
             message: '请输入最小采购量', 
-            // trigger: 'blur',
-            trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+            trigger:'change',
+            validator: minQuantityVali
           }],
           logisticsLabel:[{
             required: true, 

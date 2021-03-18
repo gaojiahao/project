@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-04 20:23:09
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 20:17:50
+ * @LastEditTime: 2021-03-18 19:31:30
 -->
 <template>
 <div class="x_tree" :class="[isCheck ? 'ivu-form-item-error':'']" style="width:250px" v-if="!hidden">
@@ -22,7 +22,7 @@
             <Input v-model="searchValue" search enter-button placeholder="" size="small" style="width: 200px" @on-search="initData" clearable />
         </div>
         <div style="overflow-y: scroll;height: 400px;position: relative;">
-            <Tree :data="datas" @on-select-change="onSelectChange" ref="tree"></Tree>
+            <Tree :data="datas" :render="renderContent" expand-node ref="tree"></Tree>
         </div>
     </Modal>
 </div>
@@ -88,13 +88,49 @@ export default {
         },
         value:{
             handler(val){
-                this.calleArr(this.datas);
+                //this.calleArr(this.datas);
             },
             deep:true,
             immediate:true,
         }
     },
     methods: {
+        renderContent (h, { root, node, data }) {
+            var t = this,
+            e = t.$createElement;
+            return h('span', {
+                style: {
+                    display: 'inline-block',
+                    width: '100%'
+                },
+                on: {
+                    click: () => {
+                    if (!node.node.selected)
+                        this.$refs.tree.handleSelect(node.nodeKey); //手动选择树节点
+                        this.selected = data;
+                    }
+                }
+            }, [
+                h('span', [
+                    // h('Icon', {
+                    //     props: {
+                    //         type: 'ios-paper-outline'
+                    //     },
+                    //     style: {
+                    //         marginRight: '8px'
+                    //     }
+                    // }),
+                    h('span', data.name)
+                ]),
+                h('span', {
+                    style: {
+                        display: 'inline-block',
+                        float: 'right',
+                        marginRight: '32px'
+                    }
+                }, [])
+            ]);
+        },
         showModel() {
             this.show = true;
         },
@@ -103,29 +139,21 @@ export default {
         },
         calleArr: function(data){
             for(var i in data){
-                if(data[i].parent){ 
-                    data[i] = {
-                        ...data[i].parent,
-                        title: data[i].parent.name,
-                        children: data[i].children ? data[i].children:[]
-                    };
-                    this.$delete(data[i],'parent');
-                } else {
-                    if(this.value == data[i].id){
-                        this.name = data[i].name;
-                        data[i]['checked'] = true;
-                        data[i]['selected'] = true;
-                    }
-                    data[i] = {
-                        ...data[i],
-                        title:data[i].name
-                    }
+                if(this.value == data[i].id){
+                    this.name = data[i].name;
+                    // data[i]['checked'] = true;
+                    data[i]['selected'] = true;
                 }
-                // if(this.roleAuthData.indexOf(data[i]['id'])!=-1){
-                //     data[i]['checked'] = true;
-                //     data[i]['expand'] = true;
-                // }
-                if(data[i].children){
+                data[i] = {
+                    ...data[i],
+                    title:data[i].name
+                }
+                if(data[i].children.length){
+                    for(var j=0;j<data[i].children.length;j++){
+                        if(data[i].children[j]['id']==this.value){
+                            data[i]['expand'] = true;
+                        }    
+                    }
                     this.calleArr(data[i].children);
                 }
             }

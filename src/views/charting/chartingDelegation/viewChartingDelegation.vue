@@ -4,10 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 12:13:52
+ * @LastEditTime: 2021-03-18 15:22:42
 -->
 <template>
 <div>
+    <div class="prevPage" v-if="preId"  @click="prePage">
+        <Icon type="ios-arrow-back" />
+    </div>
     <Tabs type="card" :animated="false" :value="tabName">
         <TabPane label="基本信息" name="basicInfo">
             <div class="top">
@@ -17,6 +20,7 @@
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%"> 
+                                    <Button @click="goReturn" style="float: left;">返回</Button>
                                 </div>
                             </FormItem>
                         </template>
@@ -26,6 +30,7 @@
         </TabPane>
         <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
             <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch" :disabled="true"></AddNewProductTable>
+            <Button @click="goReturn" style="float: left;">返回</Button>
         </TabPane>
         <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
             <div class="top">
@@ -55,23 +60,6 @@
             <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
-    <div class="top">
-        <Divider orientation="left" size="small">审核建议</Divider>
-        <div class="top_tabale">
-            <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
-                <template slot="button">
-                    <FormItem>
-                        <div style="width:100%">
-                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button> 
-                        </div>
-                    </FormItem>
-                </template>
-            </ViewForm>
-        </div>
-    </div>
-    <div class="prevPage" v-if="preId"  @click="prePage">
-        <Icon type="ios-arrow-back" />
-    </div>
     <div class="nextPage" v-if="nextId" @click="nextPage">
         <Icon type="ios-arrow-forward" />
     </div>
@@ -90,7 +78,6 @@ import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addN
 import UploadPic from "@components/basicinfo/developNewProducts/uploadPic";
 import NewHtmlEditor from "@components/basicinfo/developNewProducts/newHtmlEditor";
 import AddAttrProductTable from "@components/basicinfo/developNewProducts/addAttrProductTable";
-import config2 from "@views/examine/developExamine/viewDevelopExamineConfig";
 import {
     CreatePrepGoods,
     CraeteGoodsSupplier,
@@ -106,7 +93,7 @@ import {
     TabPane,
 } from "view-design";
 export default {
-    name: 'viewDevelopExamine',
+    name: 'ViewChartingDelegation',
     components: {
         Tabs,
         TabPane,
@@ -121,7 +108,7 @@ export default {
         NewHtmlEditor,
         AddAttrProductTable
     },
-    mixins: [config,config2],
+    mixins: [config],
     data(){
         return{
             tabName:'basicInfo',
@@ -163,10 +150,12 @@ export default {
     },
     watch:{
         $route:function(to,from){
-            if(to.query.id!=from.query.id){
-                this.productId = to.query.id;
-                if(this.productId)
-                this.init();
+            if(to.name==from.name){
+                if(to.query.id!=from.query.id){
+                    this.productId = to.query.id;
+                    if(this.productId)
+                    this.init();
+                }
             }
         }
     },
@@ -372,21 +361,7 @@ export default {
                                 categoryName: res.result.item.categoryName,
                                 characteristic:res.result.item.characteristic,
                                 logisticsLabel: res.result.item.logisticsLabel,
-                                imgUrl: [{
-                                    filePath:res.result.item.imgOne,
-                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgOne,
-                                },
-                                {
-                                    filePath:res.result.item.imgTwo,
-                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgTwo,
-                                },
-                                {
-                                    filePath:res.result.item.imgThree,
-                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgThree,
-                                }],
+                                imgUrl: [],
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
                                 url:res.result.item.url,
@@ -410,6 +385,30 @@ export default {
                                 features:res.result.item.features,
                                 remark:res.result.item.remark,
                                 description:res.result.item.description,
+                            }
+                            if(res.result.item.imgOne){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgTwo){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgThree){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                    status:'finished',
+                                });
                             }
                         } else if (res.result.code == 400) {
                             this.$Message.error({
@@ -456,7 +455,7 @@ export default {
             });    
         },
         goReturn(){
-            this.$router.push({name:'tortExamineList'});
+           this.$router.push({name:'chartingDelegationList'});
         },
         GetOperationLogPage(){
             if(this.productId){
@@ -492,10 +491,10 @@ export default {
             this.$FromLoading.hide();
         },
         prePage(){
-            this.$router.push({name:'viewTortExamine',query: {id:this.preId}});
+            this.$router.push({name:'ViewNewProduct',query: {id:this.preId}});
         },
         nextPage(){
-            this.$router.push({name:'viewTortExamine',query: {id:this.nextId}});
+            this.$router.push({name:'ViewNewProduct',query: {id:this.nextId}});
         },
         init(){
             this.$FromLoading.show();

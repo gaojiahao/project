@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-09 09:35:29
+ * @LastEditTime: 2021-03-18 16:40:46
 -->
 <template>
 <div>
@@ -49,7 +49,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="upLoadSize" :value="productInfoFormValidate['imgUrl']" @save="saveUpload"></UploadPic>
+                    <UploadPic :length="upLoadSize" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" @go-return="goReturn"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -57,7 +57,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" @go-return="goReturn"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -65,7 +65,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description"></NewHtmlEditor>
+                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" @go-return="goReturn"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
@@ -100,6 +100,9 @@ import {
     GetOperationLogPage,
     UpdateGoodsSupplier
 } from "@service/basicinfoService"
+import {
+    GetSystemConfigList
+} from "@service/settingsService";
 import {
     Tabs,
     TabPane,
@@ -299,6 +302,9 @@ export default {
                 packageWidth:params.packagingSize.wide,
                 packageHigh:params.packagingSize.high,
                 description:value,
+                imgOne:params['imgUrl'][0]&&params['imgUrl'][0]['filePath']||'',
+                imgTwo:params['imgUrl'][1]&&params['imgUrl'][1]['filePath']||'',
+                imgThree:params['imgUrl'][2]&&params['imgUrl'][2]['filePath']||'',
             }
             if (this.productId) {
                 return new Promise((resolve, reject) => {
@@ -379,6 +385,7 @@ export default {
                     if (res.result.code == 200) {
                         this.$FromLoading.hide();
                         this.$Message.info('温馨提示：保存成功！');
+                        this.getFormData();
                         this.GetOperationLogPage();
                     } else if (res.result.code == 400) {
                         this.$Message.error({
@@ -401,7 +408,7 @@ export default {
             this.tabName = 'logInfo';   
         },
         getFormData(){
-            this.id = this.$route.query.id;
+            this.id = this.productId;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetPrepGoodsById({id:this.id}).then(res => {
@@ -413,21 +420,8 @@ export default {
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
                                 categoryName: res.result.item.categoryName,
-                                imgUrl: [{
-                                    filePath:res.result.item.imgOne,
-                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgOne,
-                                },
-                                {
-                                    filePath:res.result.item.imgTwo,
-                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgTwo,
-                                },
-                                {
-                                    filePath:res.result.item.imgThree,
-                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgThree,
-                                }],
+                                logisticsLabel: res.result.item.logisticsLabel,
+                                imgUrl: [],
                                 characteristic:res.result.item.characteristic,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
@@ -452,6 +446,30 @@ export default {
                                 features:res.result.item.features,
                                 remark:res.result.item.remark,
                                 description:res.result.item.description,
+                            }
+                            if(res.result.item.imgOne){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgTwo){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgThree){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                    status:'finished',
+                                });
                             }
                         } else if (res.result.code == 400) {
                             this.$Message.error({

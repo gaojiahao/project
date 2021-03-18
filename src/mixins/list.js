@@ -11,6 +11,7 @@ import SeniorFilter from "@components/public/filter/seniorFilter";
 import AutoCompleteSearch from "@components/public/search/autoCompleteSearch";
 import CustomColumns from "@components/public/customColumns/customColumns";
 import ImageModel from "@components/public/model/imageModel";
+import ModalDetail from "@components/public/form/modalDetail";
 
 export default {
     components: {
@@ -18,7 +19,8 @@ export default {
         SeniorFilter,
         AutoCompleteSearch,
         ImageModel,
-        CustomColumns
+        CustomColumns,
+        ModalDetail
     },
     data() {
         return {

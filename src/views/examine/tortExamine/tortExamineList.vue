@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 21:04:48
+ * @LastEditTime: 2021-03-18 09:46:11
 -->
 <template>
 <div class="erp_table_container">
@@ -45,23 +45,19 @@
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
-    <ModalDetail @show-pop="showPop"></ModalDetail>
+    <ModalDetail @show-modal-detail="showModalDetail" ref="showModalDetail"></ModalDetail>
 </div>
 </template>
 
 <script>
 import config from "@views/examine/tortExamine/productConfig";
 import list from "@mixins/list";
-import ModalDetail from "@components/public/form/modalDetail";
 import {
     GetGoodsTortReviewPage 
 } from "@service/tortExamineService"
 
 export default {
     name: "TortExamineList",
-    components:{
-        ModalDetail    
-    },
     mixins: [config,list],
     data() {
         return {

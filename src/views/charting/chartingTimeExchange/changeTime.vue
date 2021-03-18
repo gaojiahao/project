@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-11 19:08:33
+ * @LastEditTime: 2021-03-18 15:33:54
 -->
 <template>
 <div>
@@ -29,7 +29,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true" @go-return="goReturn"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -37,7 +37,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true" @go-return="goReturn"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -45,7 +45,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
+                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
@@ -59,7 +59,8 @@
             <div class="myTable">
                 <Table border :loading="loading" highlight-row :columns="columns" :data="data" stripe ref="selection" @on-current-change="onCurrentChange">
                 </Table>
-                <div style="margin: 10px;overflow: hidden">
+                <div style="margin: 10px 0;overflow: hidden">
+                    <Button @click="goReturn" style="float: left;">返回</Button>
                     <div style="float: right;">
                         <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.skipTotal" :transfer="true"></Page>
                     </div>
@@ -351,21 +352,7 @@ export default {
                                 logisticsLabel: res.result.item.logisticsLabel,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
-                                imgUrl: [{
-                                    filePath:res.result.item.imgOne,
-                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgOne,
-                                },
-                                {
-                                    filePath:res.result.item.imgTwo,
-                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgTwo,
-                                },
-                                {
-                                    filePath:res.result.item.imgThree,
-                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgThree,
-                                }],
+                                imgUrl: [],
                                 isPackage: res.result.item.isPackage,
                                 weight:res.result.item.weight,
                                 productSize:{
@@ -386,6 +373,30 @@ export default {
                                 features:res.result.item.features,
                                 remark:res.result.item.remark,
                                 description:res.result.item.description,
+                            }
+                            if(res.result.item.imgOne){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgTwo){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgThree){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                    status:'finished',
+                                });
                             }
                         } else if (res.result.code == 400) {
                             this.$Message.error({

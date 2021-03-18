@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 19:34:24
+ * @LastEditTime: 2021-03-18 09:58:00
 -->
 <template>
 <div class="erp_table_container">
@@ -30,7 +30,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true,row)" v-if="row.selectStatus==0">选品</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="showPop(true,row)" v-if="filter==0">选品</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -124,6 +124,7 @@ export default {
     },
     methods: {
         GetGoodsSelectionPage() {
+            this.loading = true;
             var params = {
                 selectStatus: this.filter
             }

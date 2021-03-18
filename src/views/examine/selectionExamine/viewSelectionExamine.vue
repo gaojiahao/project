@@ -31,7 +31,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" :disabled="true"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" :disabled="true" @go-return="goReturn"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -39,7 +39,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" :disabled="true"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" :disabled="true" @go-return="goReturn"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -47,7 +47,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
+                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>

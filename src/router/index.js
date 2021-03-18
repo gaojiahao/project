@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 16:58:54
+ * @LastEditTime: 2021-03-18 10:54:07
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1176,6 +1176,50 @@ const routes = [
                 ]
               } 
             ]
+          },
+          {
+            path: 'applyMainPush',
+            name: 'applyMainPush',
+            meta:{ 
+              title:'申请主推',
+              group: "applyMainPush",
+            },
+            component: resolve=>(require(["@views/sell/applyMainPush"],resolve)),
+            redirect:'applyMainPush/applyMainPushList',
+            children:[
+              {
+                path: 'applyMainPushList',
+                name: 'applyMainPushList',
+                meta:{ 
+                  title:'申请主推',
+                  group: "applyMainPush",
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/sell/applyMainPush/applyMainPushList"],resolve)),
+              },
+            ]
+          },
+          {
+            path: 'upProduct',
+            name: 'upProduct',
+            meta:{ 
+              title:'上架管理',
+              group: "upProduct",
+            },
+            component: resolve=>(require(["@views/sell/upProduct"],resolve)),
+            redirect:'upProduct/upProductList',
+            children:[
+              {
+                path: 'upProductList',
+                name: 'upProductList',
+                meta:{ 
+                  title:'上架管理',
+                  group: "upProduct",
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/sell/upProduct/upProductList"],resolve)),
+              },
+            ]
           }
         ]
       },
@@ -1501,7 +1545,7 @@ const routes = [
                   group: 'chartingDelegation',
                   level: 2,
                 },
-                component: resolve=>(require(["@views/basicinfo/developNewProducts/viewNewProduct"],resolve)),
+                component: resolve=>(require(["@views/charting/chartingDelegation/viewChartingDelegation"],resolve)),
               },
               {
                 path: 'appoint',

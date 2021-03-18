@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 18:00:02
+ * @LastEditTime: 2021-03-18 10:06:08
 -->
 <template>
 <div>
@@ -343,7 +343,9 @@ export default {
                 }
                 for(var j=0;j<this.formValidate2['platformId'].length;j++){
                     if(this.formValidate2['platformId'][j]==this.platformList[i]['platformsId']){
-                        obj['isTort']=true;
+                        if(this.formValidate2['isTort']){
+                            obj['isTort']=true;
+                        }
                     }
                 }
                 platformNames.push(obj);

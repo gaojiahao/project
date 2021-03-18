@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 15:17:35
+ * @LastEditTime: 2021-03-18 17:19:03
 -->
 <template>
 <div>
     <div style="height:28px">
         <div style="float:left;font-size: 16px;">
-            <Icon type="md-image" />商品图片
+            <Icon type="md-image" />文件信息
         </div>
     </div>
     <div class="demo-upload">
@@ -27,7 +27,7 @@
                     </Poptip>
                 </template>
                 <template v-else>
-                    <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+                    <Progress v-if="item.showProgress" :percent="item.percentage"></Progress>
                 </template>
                 <!-- <div style="width:120px">{{item.fileName}}</div> -->
             </div>
@@ -86,7 +86,7 @@ export default {
             }
         },
         length: {
-            type:Number,
+            type:[Number,String],
             default:3,
         },
         disabled:{
@@ -97,17 +97,7 @@ export default {
     watch:{
         value:{
             handler(val){
-                this.uploadList = [];
-                for(var i=0;i<val.length;i++){
-                    var obj={};
-                    obj= {
-                        ...val[i],
-                        status:'finished',
-                    }
-                    if(obj.filePath){
-                        this.uploadList.push(obj);
-                    }
-                }
+                this.uploadList = val;
             },
             deep:true,
             immediate:true
@@ -221,6 +211,7 @@ export default {
             window.location.href = url;
         },
         handleProgress(event, file, fileList){
+            this.uploadList=this.uploadList.concat(file);
             // console.log('上传中', event); // 继承了原生函数的 event 事件
             // console.log('上传中 file', file); // 上传的文件
             // console.log('上传中 fileList', fileList); // 上传文件列表包含file
@@ -240,7 +231,7 @@ export default {
         this.baseUrl = this.$base_url;
     },
     mounted () {
-        this.uploadList = this.$refs&&this.$refs.upload&&this.$refs.upload.fileList||[];
+        //this.uploadList = this.$refs&&this.$refs.upload&&this.$refs.upload.fileList||[];
     }
 
 }

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-02 17:28:29
+ * @LastEditTime: 2021-03-18 19:43:11
 -->
 <template>
 <div>
@@ -37,7 +37,7 @@
                             <div style="width:100%">
                                 <FormItem>
                                     <Button type="primary" @click="savePurchase" style="float: left;">保存</Button>
-                                    <Button @click="clearFormDataPruch" style="float: left; margin-left:10px">取消</Button>
+                                    <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                                 </FormItem>
                             </div>
                         </template>
@@ -49,7 +49,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="[productInfoFormValidate.imgOne,productInfoFormValidate.imgTwo,productInfoFormValidate.imgThree]" @save="saveUpload"></UploadPic>
+                    <UploadPic :length="upLoadSize" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" @go-return="goReturn"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -57,7 +57,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" @go-return="goReturn"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -65,12 +65,12 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description"></NewHtmlEditor>
+                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" @go-return="goReturn"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
         <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-            <AddNewProductTableLog></AddNewProductTableLog>
+            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
     
@@ -107,6 +107,9 @@ import {
     Tabs,
     TabPane,
 } from "view-design";
+import {
+    GetSystemConfigList
+} from "@service/settingsService";
 export default {
     name: 'SellNewProduct',
     components: {
@@ -144,6 +147,17 @@ export default {
             loadingPruch:true,
             dataProp:[],
             loadingProp:true,
+		pageDataLog:{
+                skipCount: 1,
+                skipTotal: 5,
+                maxResultCount: 5,
+                keyword:'',
+                pageSizeOpts:[5,50,200],
+                totalPagePruch:0
+            },
+            dataLog:[],
+            loadingLog:true,
+            upLoadSize:0
         }
     },
     computed:{
@@ -200,10 +214,12 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.productId = res.result.item.id;
+				    this.productInfoFormValidate.id =  res.result.item.id;
                                     this.productInfoFormValidate.code = res.result.item.code;
                                     this.GetGoodsSupplierPage();
                                     this.GetPrepGoodsAttributeById();
                                     this.GetOperationLogPage();
+				    this.GetSystemConfigList();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -402,9 +418,33 @@ export default {
                             this.productInfoFormValidate['name'] = res.result.item.name;
                             this.productInfoFormValidate['categoryId'] = res.result.item.categoryId;
                             this.productInfoFormValidate['categoryName'] = res.result.item.categoryName;
-                            this.productInfoFormValidate['imgUrl'] = res.result.item.imgUrl;
+                            this.productInfoFormValidate['imgUrl'] = [],                            
                             this.productInfoFormValidate['urlOne'] = res.result.item.urlOne;
                             this.productInfoFormValidate['remark'] = res.result.item.remark;
+                            if(res.result.item.imgOne){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgTwo){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgThree){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                    status:'finished',
+                                });
+                            }
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
@@ -458,7 +498,7 @@ export default {
         GetOperationLogPage(){
             if(this.productId){
                 return new Promise((resolve, reject) => {
-                    GetOperationLogPage({goodsId:this.productId}).then(res => {
+                    GetOperationLogPage({goodsId:this.productId,...this.pageDataLog}).then(res => {
                         if(res.result.code==200){
                             this.$nextTick(() => {
                                 this.dataLog = res.result.item.items;
@@ -469,16 +509,34 @@ export default {
                 });
             }    
         },
+	changePageLog(page){
+            this.pageDataLog.skipCount = page;
+            this.GetOperationLogPage();
+        },
+        onPageSizeChangeLog(pagesize){
+            this.pageDataLog.maxResultCount = pagesize;
+            this.GetOperationLogPage();
+        },
         copy(){
             if(this.productId){
                 this.$router.push({name:'AddNewProduct',params:{flag:'copy',id:this.productId}});
-            }
+            }        
+	},
+	GetSystemConfigList(){
+            return new Promise((resolve, reject) => {
+                GetSystemConfigList({name:'图片张数'}).then(res => {
+                    if(res.result.code==200){
+                        this.upLoadSize = res.result.item[0]['code'];
+                    }
+                });
+            });    
         }
     },
     created() {
         this.getFormData();
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
+	this.GetSystemConfigList();
     }
 }
 </script>

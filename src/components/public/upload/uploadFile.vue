@@ -12,7 +12,7 @@
             </Poptip>
         </template>
         <template v-else>
-            <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+            <Progress v-if="item.showProgress" :percent="item.percentage"></Progress>
         </template>
     </div>
     <Upload ref="upload" :show-upload-list="false" :default-file-list="defaultList" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :before-upload="handleBeforeUpload" :on-progress="handleProgress" multiple type="drag" :action="'//'+`${uploadUrl}`+'/api/InsertPic'" :headers="headers" style="display: inline-block;width:60px;" v-if="!disabled">
@@ -76,17 +76,7 @@ export default {
     watch:{
         value:{
             handler(val){
-                this.uploadList = [];
-                for(var i=0;i<val.length;i++){
-                    var obj={};
-                    obj= {
-                        ...val[i],
-                        status:'finished',
-                    }
-                    if(obj.filePath){
-                        this.uploadList.push(obj);
-                    }
-                }
+                this.uploadList = val;
             },
             deep:true,
             immediate:true
@@ -196,6 +186,7 @@ export default {
             window.location.href = url;
         },
         handleProgress(event, file, fileList){
+            this.uploadList=this.uploadList.concat(file);
             // console.log('上传中', event); // 继承了原生函数的 event 事件
             // console.log('上传中 file', file); // 上传的文件
             // console.log('上传中 fileList', fileList); // 上传文件列表包含file
@@ -215,7 +206,7 @@ export default {
         this.baseUrl = this.$base_url;
     },
     mounted () {
-        this.uploadList = this.$refs&&this.$refs.upload&&this.$refs.upload.fileList||[];
+        //this.uploadList = this.$refs&&this.$refs.upload&&this.$refs.upload.fileList||[];
     }
 
 }
