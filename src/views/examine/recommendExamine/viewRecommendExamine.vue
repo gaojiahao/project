@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 11:18:12
+ * @LastEditTime: 2021-03-18 20:50:22
 -->
 <template>
     <div class="addFinishProduct">
@@ -126,23 +126,33 @@ export default {
                                 name: res.result.item.name,
                                 categoryId: res.result.item.categoryId,
                                 categoryName: res.result.item.categoryName,
-                                imgUrl: [{
+                                imgUrl: [],
+                                urlOne: res.result.item.urlOne,
+                                remark: res.result.item.remark,
+                            }
+                            if(res.result.item.imgOne){
+                                this.formValidate['imgUrl'].push({
                                     filePath:res.result.item.imgOne,
                                     type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
                                     name:res.result.item.imgOne,
-                                },
-                                {
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgTwo){
+                                this.formValidate['imgUrl'].push({
                                     filePath:res.result.item.imgTwo,
                                     type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
                                     name:res.result.item.imgTwo,
-                                },
-                                {
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgThree){
+                                this.formValidate['imgUrl'].push({
                                     filePath:res.result.item.imgThree,
                                     type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
                                     name:res.result.item.imgThree,
-                                }],
-                                urlOne: res.result.item.urlOne,
-                                remark: res.result.item.remark,
+                                    status:'finished',
+                                });
                             }
                         } else  {
                             this.$FromLoading.hide();

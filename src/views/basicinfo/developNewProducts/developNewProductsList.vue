@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:22:53
+ * @LastEditTime: 2021-03-19 16:43:14
 -->
 <template>
 <div class="erp_table_container">
@@ -112,6 +112,8 @@ export default {
     },
     methods: {
         GetPrepGoodsPage() {
+            this.pageData['saleStatus'] =-1;
+            this.pageData['pieStatus'] =-1;
             return new Promise((resolve, reject) => {
                 GetPrepGoodsPage(this.pageData).then(res => {
                     if(res.result.code==200){

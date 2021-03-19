@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-19 10:46:19
+ * @LastEditTime: 2021-03-19 10:22:03
  */
 export default {
     data() {
@@ -25,7 +25,6 @@ export default {
           },
           ruleValidate2: {
             reviewRemark: [{
-                required: true,
                 type: 'string',
                 message: '请输入审核意见',
                 trigger: 'blur'

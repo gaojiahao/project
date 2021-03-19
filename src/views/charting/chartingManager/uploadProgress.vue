@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 15:31:46
+ * @LastEditTime: 2021-03-19 17:49:01
 -->
 <template>
 <div>
@@ -247,7 +247,8 @@ export default {
                 disabled:false,
             },
             loading: true,
-            isForm: false
+            isForm: false,
+            upLoadSize:0,
         }
     },
     computed:{
@@ -394,20 +395,18 @@ export default {
             this.GetOperationLogPage();
         },
         GetFileDistributionById(){
-            this.id = this.$route.query.goodsId;
+            this.id = this.$route.query.id;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetFileDistributionById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.formValidate3 = {
-                                id: res.result.item.id,
-                                fileType: res.result.item.fileType,
-                                fileTypeName: res.result.item.fileTypeName,
-                                remark: res.result.item.remark,
-                                startTime: res.result.item.startTime,
-                                endTime: res.result.item.endTime,
-                            }
+                            this.formValidate3['id']=res.result.item.id;
+                            this.formValidate3['fileType']=res.result.item.fileType;
+                            this.formValidate3['fileTypeName']=res.result.item.fileTypeName;
+                            this.formValidate3['remark']=res.result.item.remark;
+                            this.formValidate3['startTime']=res.result.item.startTime;
+                            this.formValidate3['endTime']=res.result.item.endTime;
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
@@ -424,23 +423,31 @@ export default {
             }
         },
         goReturn(){
-            this.$router.go(-1);
+            this.$router.push({name:'chartingManagerList'});
         },
         save() {
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    for(var i=0;i<this.formValidate2.img.length;i++){
-                        var obj = {}
-                        obj = {
-                            name: this.formValidate2.img[i].name,
-                            suffix: '',
-                            fileType: this.formValidate3.fileType,
-                            fileTypeName:'',
-                            fileSize: this.formValidate2.img[i].size,
-                            fileUrl: this.formValidate2.img[i].filePath,
-                            status:1,
-                            goodsId: this.formValidate.id,
-                        };
+            var check = this.formValidate2['img'].length <= this.upLoadSize;
+            if (!check) {
+                this.$Notice.warning({
+                    title: '已达到最大上传数'+this.upLoadSize+'个文件！'
+                });
+                return ;
+            }
+            for(var i=0;i<this.formValidate2.img.length;i++){
+                var obj = {}
+                obj = {
+                    fileDistributionId: this.$route.query.id,
+                    name: this.formValidate2.img[i].name,
+                    suffix: '',
+                    fileType: this.formValidate3.fileType,
+                    fileTypeName:'',
+                    fileSize: this.formValidate2.img[i].size,
+                    fileUrl: this.formValidate2.img[i].filePath,
+                    status:1,
+                    goodsId: this.formValidate.id,
+                }
+                this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                    if (valid) {
                         return new Promise((resolve, reject) => {
                             this.$FromLoading.show();
                             CreateGoodsFile(obj).then(res => {
@@ -456,12 +463,12 @@ export default {
                                     this.$FromLoading.hide();
                                 }
                             });
-                        });
-                    }    
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })    
+                        });     
+                    } else {
+                        this.$Message.error('保存失败');
+                    }
+                })
+            }  
         },
         cancel(){
             this.clearFormData();
@@ -476,20 +483,14 @@ export default {
             this.isForm = flag;
         },
         GetDistributionAndRelation(){
-            this.id = this.$route.query.goodsId;
+            this.id = this.$route.query.id;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetDistributionAndRelation({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.formValidate3 = {
-                                id: res.result.item.id,
-                                fileType: res.result.item.fileType,
-                                fileTypeName: res.result.item.fileTypeName,
-                                remark: res.result.item.remark,
-                                startTime: res.result.item.startTime,
-                                endTime: res.result.item.endTime,
-                            }
+                            this.formValidate3['quantity'] = res.result.item.quantity;
+                            this.upLoadSize = res.result.item.quantity;
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
@@ -507,7 +508,7 @@ export default {
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
-        //this.GetFileDistributionById();
+        this.GetFileDistributionById();
         this.GetDistributionAndRelation();
     }
 }

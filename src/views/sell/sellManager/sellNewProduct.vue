@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 19:43:11
+ * @LastEditTime: 2021-03-19 15:14:24
 -->
 <template>
 <div>
@@ -79,7 +79,7 @@
 
 <script>
 import XForm from "@components/public/form/xForm";
-import config from "@views/basicinfo/developNewProducts/addNewProductConfig";
+import config from "@views/sell/sellManager/sellNewProductConfig.js";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
@@ -214,12 +214,12 @@ export default {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.productId = res.result.item.id;
-				    this.productInfoFormValidate.id =  res.result.item.id;
+				                    this.productInfoFormValidate.id =  res.result.item.id;
                                     this.productInfoFormValidate.code = res.result.item.code;
                                     this.GetGoodsSupplierPage();
                                     this.GetPrepGoodsAttributeById();
                                     this.GetOperationLogPage();
-				    this.GetSystemConfigList();
+				                    this.GetSystemConfigList();
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -306,6 +306,9 @@ export default {
                 packageWidth:params.packagingSize.wide,
                 packageHigh:params.packagingSize.high,
                 description:value,
+                imgOne:params['imgUrl'][0]&&params['imgUrl'][0]['filePath']||'',
+                imgTwo:params['imgUrl'][1]&&params['imgUrl'][1]['filePath']||'',
+                imgThree:params['imgUrl'][2]&&params['imgUrl'][2]['filePath']||'',
             }
             if (this.productId) {
                 return new Promise((resolve, reject) => {
@@ -386,6 +389,7 @@ export default {
                     if (res.result.code == 200) {
                         this.$FromLoading.hide();
                         this.$Message.info('温馨提示：保存成功！');
+                        this.getFormData();
                         this.GetOperationLogPage();
                     } else if (res.result.code == 400) {
                         this.$Message.error({
@@ -407,7 +411,7 @@ export default {
             this.disabledLog = false;    
             this.tabName = 'logInfo';   
         },
-        getFormData(){
+        GetRecommendGoodsById(){
             this.id = this.$route.query.id;
             if(this.id) {
                 return new Promise((resolve, reject) => {
@@ -418,9 +422,84 @@ export default {
                             this.productInfoFormValidate['name'] = res.result.item.name;
                             this.productInfoFormValidate['categoryId'] = res.result.item.categoryId;
                             this.productInfoFormValidate['categoryName'] = res.result.item.categoryName;
+                            this.productInfoFormValidate['url'] = res.result.item.url;
                             this.productInfoFormValidate['imgUrl'] = [],                            
                             this.productInfoFormValidate['urlOne'] = res.result.item.urlOne;
                             this.productInfoFormValidate['remark'] = res.result.item.remark;
+                            if(res.result.item.imgOne){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgTwo){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgThree){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                    status:'finished',
+                                });
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
+        getFormData(){
+            this.id = this.productId;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetPrepGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.productInfoFormValidate = {
+                                id: res.result.item.id,
+                                code:res.result.item.code,
+                                name: res.result.item.name,
+                                categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                logisticsLabel: res.result.item.logisticsLabel,
+                                imgUrl: [],
+                                characteristic:res.result.item.characteristic,
+                                brandId:res.result.item.brandId,
+                                brandName:res.result.item.brandName,
+                                url:res.result.item.url,
+                                isPackage: res.result.item.isPackage,
+                                weight:res.result.item.weight,
+                                productSize:{
+                                    long: res.result.item.howlong,
+                                    wide: res.result.item.width,
+                                    high: res.result.item.high,
+                                    volume: res.result.item.volume,
+                                },
+                                material:res.result.item.material,
+                                packageCost:res.result.item.packageCost,
+                                packageWeight:res.result.item.packageWeight,
+                                packagingSize:{
+                                    long: res.result.item.packageLong,
+                                    wide: res.result.item.packageWidth,
+                                    high: res.result.item.packageHigh,
+                                    volume: res.result.item.packageVolume,
+                                },
+                                features:res.result.item.features,
+                                remark:res.result.item.remark,
+                                description:res.result.item.description,
+                            }
                             if(res.result.item.imgOne){
                                 this.productInfoFormValidate['imgUrl'].push({
                                     filePath:res.result.item.imgOne,
@@ -509,7 +588,7 @@ export default {
                 });
             }    
         },
-	changePageLog(page){
+	    changePageLog(page){
             this.pageDataLog.skipCount = page;
             this.GetOperationLogPage();
         },
@@ -521,8 +600,8 @@ export default {
             if(this.productId){
                 this.$router.push({name:'AddNewProduct',params:{flag:'copy',id:this.productId}});
             }        
-	},
-	GetSystemConfigList(){
+	    },
+	    GetSystemConfigList(){
             return new Promise((resolve, reject) => {
                 GetSystemConfigList({name:'图片张数'}).then(res => {
                     if(res.result.code==200){
@@ -533,10 +612,10 @@ export default {
         }
     },
     created() {
-        this.getFormData();
+        this.GetRecommendGoodsById();
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
-	this.GetSystemConfigList();
+	    this.GetSystemConfigList();
     }
 }
 </script>

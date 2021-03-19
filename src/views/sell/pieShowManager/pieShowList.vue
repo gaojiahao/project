@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 20:29:02
+ * @LastEditTime: 2021-03-19 16:17:48
 -->
 <template>
 <div class="erp_table_container">
@@ -29,7 +29,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="success" size="small" style="margin-right: 5px" @click="goPieShow(row.id)" v-if="row.status!=1">派店</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="goPieShow(row.id)">派店</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -58,9 +58,6 @@ import {
     CreatePieShop,
     GetPieShopPage
 } from "@service/sellService"
-import {
-    GetPrepGoodsPage,
-} from "@service/basicinfoService"
 
 export default {
     name: "PieShowList",
@@ -96,15 +93,15 @@ export default {
     watch:{
         filter:{
             handler(val){
-                this.GetPrepGoodsPage();
+                this.GetPieShopPage();
             }
         }
     },
     methods: {
-        GetPrepGoodsPage() {
+        GetPieShopPage() {
             this.pageData['status'] = this.filter;
             return new Promise((resolve, reject) => {
-                GetPrepGoodsPage(this.pageData).then(res => {
+                GetPieShopPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -143,7 +140,7 @@ export default {
                                 this.$Message.info('温馨提示：保存成功！');
                                 this.showPop(false);
                                 this.$refs['form'].$refs['formValidate'].resetFields();
-                                this.GetPrepGoodsPage();
+                                this.GetPieShopPage();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({
                                     background: true,
@@ -163,12 +160,12 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetPrepGoodsPage();
+            this.GetPieShopPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetPrepGoodsPage();
+            this.GetPieShopPage();
         },
         goDetail(id){
             if(id)
@@ -192,7 +189,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetPrepGoodsPage();
+            this.GetPieShopPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -334,7 +331,7 @@ export default {
         setFilter(value){
             this.pageData.keyword=value;
             this.pageData.skipCount=1;
-            this.GetPrepGoodsPage(); 
+            this.GetPieShopPage(); 
         },
         goPieShow(id){
             if(id)
@@ -342,11 +339,11 @@ export default {
         }
     },
     created(){
-        this.GetPrepGoodsPage();
+        this.GetPieShopPage();
     },
     activated() {
         if(this.data.length)
-            this.GetPrepGoodsPage();
+            this.GetPieShopPage();
     },
 }
 </script>
