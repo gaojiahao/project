@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 10:54:07
+ * @LastEditTime: 2021-03-20 10:03:12
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1456,10 +1456,19 @@ const routes = [
                 path: 'chartingExamineList',
                 name: 'chartingExamineList',
                 meta:{ 
-                  title:'制图审核列表',
+                  title:'制图审核',
                   group: 'chartingExamine',
                 },
                 component: resolve=>(require(["@views/examine/chartingExamine/chartingExamineList"],resolve)),
+              },
+              {
+                path: 'addChartingExamine',
+                name: 'addChartingExamine',
+                meta:{ 
+                  title:'审核',
+                  group: 'chartingExamine',
+                },
+                component: resolve=>(require(["@views/examine/chartingExamine/addChartingExamine"],resolve)),
               },
             ]
           },

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-19 17:51:38
+ * @LastEditTime: 2021-03-20 10:23:34
 -->
 <template>
 <div>
@@ -396,7 +396,7 @@ export default {
             for(var i=0;i<this.filesData.length;i++){
                 var obj={};
                 obj={
-                    fileType: this.filesData[i].fileTypeId,
+                    fileType: this.filesData[i].id,
                     fileTypeName: this.filesData[i].fileTypeName,
                     userId: this.filesData[i].userId,
                     remark: this.formValidate2.remark,

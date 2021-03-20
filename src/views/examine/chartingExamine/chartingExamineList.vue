@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:23:35
+ * @LastEditTime: 2021-03-20 10:04:14
 -->
 <template>
 <div class="erp_table_container">
@@ -14,10 +14,10 @@
                 <div class="filter">
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
-                            <Radio label="large">全部</Radio>
-                            <Radio label="default">未审核</Radio>
-                            <Radio label="small">通过</Radio>
-                            <Radio label="small2">未通过</Radio>
+                            <Radio label="-1">全部</Radio>
+                            <Radio label="0">未审核</Radio>
+                            <Radio label="1">通过</Radio>
+                            <Radio label="2">未通过</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -30,7 +30,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.tortStatus==0">审核</Button>
+                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.fileStatus==0">审核</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -51,7 +51,7 @@
 import config from "@views/examine/tortExamine/productConfig";
 import list from "@mixins/list";
 import {
-    GetGoodsTortReviewPage 
+    GetDistributionReviewPage
 } from "@service/tortExamineService"
 
 export default {
@@ -71,13 +71,21 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
-            filter:"default",
+            filter:"0",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetDistributionReviewPage();
+            }
         }
     },
     methods: {
-        GetGoodsTortReviewPage () {
+        GetDistributionReviewPage() {
+            this.pageData['fileStatus'] = this.filter;
             return new Promise((resolve, reject) => {
-                GetGoodsTortReviewPage (this.pageData).then(res => {
+                GetDistributionReviewPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -96,7 +104,7 @@ export default {
             this.showModel = flag;
         },
         goTortExamine(row) {
-            this.$router.push({name:'addTortExamine',query: {id:row.id}});    
+            this.$router.push({name:'addChartingExamine',query: {id:row.id}});    
         },
         goViewTortExamine(row){
             this.$router.push({path:'/examine/tortExamine/viewTortExamine',query: {id:row.id}});        
@@ -120,7 +128,7 @@ export default {
                             if (res.result.code == 200) {
                                 this.$FromLoading.hide();
                                 this.$Message.info('温馨提示：保存成功！');
-                                this.GetGoodsTortReviewPage();
+                                this.GetDistributionReviewPage();
                             } else if (res.result.code == 400) {
                                 this.$Message.error({
                                     background: true,
@@ -140,12 +148,12 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetGoodsTortReviewPage();
+            this.GetDistributionReviewPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetGoodsTortReviewPage();
+            this.GetDistributionReviewPage();
         },
         goDetail(id){
             if(id)
@@ -169,7 +177,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetGoodsTortReviewPage();
+            this.GetDistributionReviewPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -234,7 +242,7 @@ export default {
                 title: '产品编码',
                 key: 'code',
                 resizable: true,
-                width: 220,
+                width: 313,
             },
             {
                 title: '产品名称',
@@ -253,14 +261,14 @@ export default {
                     }
                     },params.row.name);//  展示的内容
                 },
-                width: 220,
+                width: 310,
                 resizable: true,
             },
             {
                 title: '类目',
                 key: 'categoryName',
                 resizable: true,
-                width: 165,
+                width: 186,
             },
             // {
             //     title:'平台名称',
@@ -273,21 +281,15 @@ export default {
             //     resizable: true,
             // },
             {
-                title:'品牌名称',
-                key: 'brandName',
-                resizable: true,
-                width: 193,
-            },
-            {
                 title: '状态',
-                key: 'tortStatus',
+                key: 'fileStatus',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.tortStatus==1 ? "#19be6b": params.row.tortStatus == 0 ? "#ff9900":"#ed4014"
+                        color: params.row.fileStatus==1 ? "#19be6b": params.row.fileStatus == 0 ? "#ff9900":"#ed4014"
                     },
-                    },params.row.tortStatus==1 ?"通过": params.row.tortStatus==0 ? "未审核" : "未通过");
+                    },params.row.fileStatus==1 ?"通过": params.row.fileStatus==0 ? "未审核" : "未通过");
                 },
                 resizable: true,
                 width: 100,
@@ -334,7 +336,7 @@ export default {
         setFilter(value){
             this.pageData.keyword=value;
             this.pageData.skipCount = 1;
-            this.GetGoodsTortReviewPage(); 
+            this.GetDistributionReviewPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -346,7 +348,7 @@ export default {
         
     },
     created(){
-        this.GetGoodsTortReviewPage();
+        this.GetDistributionReviewPage();
     }
 }
 </script>

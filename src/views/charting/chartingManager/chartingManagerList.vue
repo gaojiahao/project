@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 17:58:14
+ * @LastEditTime: 2021-03-20 10:20:09
 -->
 <template>
 <div class="erp_table_container">
@@ -88,8 +88,8 @@ export default {
     },
     methods: {
         GetFileDistributionPage() {
-            this.pageData['AssignmentStatus']= this.filter;
-            this.pageData['FileDistributionStatus']= -1;
+            this.pageData['assignmentStatus']= this.filter;
+            this.pageData['fileDistributionStatus']= -1;
             return new Promise((resolve, reject) => {
                 GetDistributionPage(this.pageData).then(res => {
                     if(res.result.code==200){
@@ -242,14 +242,14 @@ export default {
             },
             {
                 title: '状态',
-                key: 'status',
+                key: 'assignmentStatus',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status ==1 ? "#19be6b": params.row.status==2 ? "#19be6b" : params.row.status==3 ? "#19be6b" :"#ed4014"
+                        color: params.row.assignmentStatus ==1 ? "#ff9900": params.row.assignmentStatus==2 ? "#19be6b" : params.row.assignmentStatus==3 ? "#ff9900" :"#ed4014"
                     },
-                    },params.row.status ==1 ? "未完成":  params.row.status==2 ? "已完成" : params.row.status==3 ? "待返工":"待确认");
+                    },params.row.assignmentStatus ==1 ? "未完成":  params.row.assignmentStatus==2 ? "已完成" : params.row.assignmentStatus==3 ? "待返工":"待确认");
                 },
                 width: 80,
                 resizable: true,

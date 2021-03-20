@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-19 17:49:01
+ * @LastEditTime: 2021-03-19 17:59:26
 -->
 <template>
 <div>
@@ -427,6 +427,12 @@ export default {
         },
         save() {
             var check = this.formValidate2['img'].length <= this.upLoadSize;
+            if(!this.upLoadSize){
+                this.$Notice.error({
+                    title: '制作数量为空，请联系管理员！'
+                });
+                return ;    
+            }
             if (!check) {
                 this.$Notice.warning({
                     title: '已达到最大上传数'+this.upLoadSize+'个文件！'

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-19 16:43:14
+ * @LastEditTime: 2021-03-20 09:26:55
 -->
 <template>
 <div class="erp_table_container">
@@ -313,9 +313,9 @@ export default {
                         return h("span", {
                         style: {
                             display: "inline-block",
-                            color: params.row.status==1 ? "#19be6b": "#ed4014"
+                            color: params.row.status==1 ? "#19be6b":  params.row.status==2 ?"#ed4014" : "#ff9900"
                         },
-                        },params.row.status?"已审核":"未审核");
+                        },params.row.status==1 ? "通过": params.row.status==2 ? "未通过" : "未审核");
                     },
                     resizable: true,
                     width: 100,
