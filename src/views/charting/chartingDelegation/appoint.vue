@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-20 10:23:34
+ * @LastEditTime: 2021-03-22 10:59:39
 -->
 <template>
 <div>
@@ -407,7 +407,8 @@ export default {
                     platformId: data['platfromId'],
                     platformName: data['platfromName'],
                     storeId: data['storeId'],
-                    storeName: data['storeName']
+                    storeName: data['storeName'],
+                    relationId: this.filesData[i].id,
                 };
                 this.$refs['examine'].$refs['formValidate'].validate((valid) => {
                     if (valid) {

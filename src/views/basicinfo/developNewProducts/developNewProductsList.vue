@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-20 09:26:55
+ * @LastEditTime: 2021-03-22 10:16:52
 -->
 <template>
 <div class="erp_table_container">
@@ -170,7 +170,7 @@ export default {
             this.$router.push({name:'AddNewProduct'});
         },
         goEdit(){
-            if(this.activatedRow.id&&this.activatedRow.saleStatus==0){
+            if(this.activatedRow.id){
                 this.$router.push({name:'editNewProduct',query: {id:this.activatedRow.id}});
             }
         },
@@ -516,7 +516,8 @@ export default {
             for(var i=0;i<this.selectedList.length;i++){
                 data.push(this.selectedList[i]['id']);
             }
-            params['IdList'] = data;
+            var data2 = data.join(",");
+            params['IdList'] = data2;
             return new Promise((resolve, reject) => {
                 ExportPrepGoods({...params}).then(res => {
                     if (res.result.code == 200) {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-20 12:50:56
+ * @LastEditTime: 2021-03-22 15:06:29
 -->
 <template>
 <div>
@@ -119,18 +119,55 @@ export default {
                 },
                 {
                     title: '下载地址',
-                    key: 'url',
+                    key: 'goodsFiles',
                     width:400,
                     render: (h, params) => {
-                        this.logisticsModeList.map((item) =>{
-                            return h('a', {
-                                props: {
-                                    value: item.value,
-                                    label: item.name
-                                },
-                                value: params.row.logisticsMode
-                            })
-                        })
+                        var arr = params.row.goodsFiles,
+                        e= this;
+                        return h('ul', arr.map(function (item,index) {
+                            // return h('a',{
+                            //     domProps:{
+                            //     href: e.baseUrl+item.fileUrl,
+                            //     target: '_black'
+                            //     },
+                            //     style: {
+                            //     marginRight: '5px'
+                            //     }
+                            // }, '文件'+parseInt(index+1)+':'+item.name)
+                            return h('div', 
+                                [
+                                    h('Poptip',{
+                                        props: {
+                                            trigger:'hover',
+                                            content:"content",
+                                            placement:"right",
+                                            transfer:true,
+                                        },
+                                    },[
+                                        h('a', {
+                                            domProps:{
+                                                href: e.baseUrl+item.fileUrl,
+                                                target: '_black'
+                                            },
+                                            style: {
+                                                marginRight: '5px'
+                                            },
+                                        }, '文件'+parseInt(index+1)+':'+item.name),
+                                        h('img',{
+                                            slot:"content",
+                                            attrs: {
+                                                src: e.baseUrl+item.fileUrl || require("@assets/default/logo.png")
+                                            },
+                                            style: {
+                                                width: '300px',
+                                                height: '300px'
+                                            },
+                                            class:'api'
+                                        })
+                                    ])    
+                                ]
+                            );
+                        }))
                     }
                 },
                 {
@@ -251,6 +288,7 @@ export default {
                 }
             ],
             selectedGoods:[],
+            baseUrl:''
         }
     },
     methods: {
@@ -333,8 +371,14 @@ export default {
                 });    
             }
         },
+        handleSelectAll(status){
+            for(var i=0;i<this.selectedGoods.length;i++){
+                this.$set(this.selectedGoods[i],'isPass',status);
+            }
+        },
     },
     created() {
+        this.baseUrl = this.$base_url;
         this.getFormData();
         this.GetDistributionReviewInfo();
     }

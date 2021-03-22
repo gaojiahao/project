@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 14:21:44
+ * @LastEditTime: 2021-03-22 09:37:40
 -->
 <template>
 <div>
@@ -232,21 +232,7 @@ export default {
                                 categoryId: res.result.item.categoryId,
                                 categoryName: res.result.item.categoryName,
                                 logisticsLabel: res.result.item.logisticsLabel,
-                                imgUrl: [{
-                                    filePath:res.result.item.imgOne,
-                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgOne,
-                                },
-                                {
-                                    filePath:res.result.item.imgTwo,
-                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgTwo,
-                                },
-                                {
-                                    filePath:res.result.item.imgThree,
-                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
-                                    name:res.result.item.imgThree,
-                                }],
+                                imgUrl: [],
                                 characteristic:res.result.item.characteristic,
                                 brandId:res.result.item.brandId,
                                 brandName:res.result.item.brandName,
@@ -270,6 +256,30 @@ export default {
                                 features:res.result.item.features,
                                 remark:res.result.item.remark,
                                 description:res.result.item.description,
+                            }
+                            if(res.result.item.imgOne){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgTwo){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgThree){
+                                this.productInfoFormValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                    status:'finished',
+                                });
                             }
                         } else if (res.result.code == 400) {
                             this.$Message.error({
@@ -311,23 +321,6 @@ export default {
         },
         close(){
             this.$router.go(-1)
-        },
-        GetPlatfromOptional() {
-            return new Promise((resolve, reject) => {
-                GetPlatfromOptional({id:this.productId,...this.pageData}).then(res => {
-                    if(res.result.code==200){
-                        this.$nextTick(() => {
-                            this.platformList = res.result.item.map((e,index)=>{
-                                e.value = e.platformsId;
-                                e.name = e.platformName;
-                                return e;
-                            });
-                            this.formConfig2['platformId']['dataSource']['data'] = this.platformList; 
-                            this.firstPlatform = this.platformList[0]['value'];
-                        });
-                    }
-                });
-            });
         },
         onChange(e){
 
@@ -374,7 +367,6 @@ export default {
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
-        this.GetPlatfromOptional();
     }
 }
 </script>
