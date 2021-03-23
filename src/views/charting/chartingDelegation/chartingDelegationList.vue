@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:23:10
+ * @LastEditTime: 2021-03-22 20:30:15
 -->
 <template>
 <div class="erp_table_container">
@@ -191,27 +191,51 @@ export default {
             },
             {
                 title: '委派完成日期',
-                key: 'color',
+                key: 'endTime',
                 width: 140,
                 resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                        style: {
+                            textAlign: "center",
+                            color: params.row.assignmentStatus==1 ? "#19be6b": "#ed4014"
+                        },
+                    },params.row.assignmentStatus ? params.row.startTime+'-'+params.row.endTime:'/');
+                },
             },
             {
                 title: '实际完成日期',
-                key: 'supplier',
+                key: 'expectedTime',
                 width: 140,
                 resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                    },params.row.assignmentStatus&&params.row.expectedTime?params.row.expectedTime:"");
+                },
             },
             {
                 title: '是否逾期',
-                key: 'supplierNum',
+                key: 'overdue',
                 width: 100,
                 resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                        style: {
+                        display: "inline-block",
+                        color: params.row.overdue>0 ? "#ed4014": "#ed4014"
+                    },
+                    },params.row.assignmentStatus&&params.row.overdue>0?"逾期":"");
+                },
             },
             {
                 title: '逾期天数',
-                key: 'recommendingOfficer',
+                key: 'overdue',
                 width: 100,
                 resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                    },params.row.assignmentStatus&&params.row.overdue>0?params.row.overdue:"");
+                },
             },
             {
                 title: '委派状态',

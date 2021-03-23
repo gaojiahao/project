@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 09:30:44
+ * @LastEditTime: 2021-03-22 17:53:39
 -->
 <template>
 <div>
@@ -54,7 +54,7 @@
         </TabPane>
     </Tabs>
     <div class="top">
-        <Divider orientation="left" size="small">审核建议</Divider>
+        <Divider orientation="left" size="small">审核</Divider>
         <div class="top_tabale">
             <!-- <div style="height:40px;width:100%;padding:10px">
                 <RadioGroup v-model="platform" @on-change="onChange">

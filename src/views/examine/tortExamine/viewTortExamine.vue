@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 09:31:00
+ * @LastEditTime: 2021-03-22 17:54:17
 -->
 <template>
 <div>
@@ -56,7 +56,7 @@
         </TabPane>
     </Tabs>
     <div class="top">
-        <Divider orientation="left" size="small">审核建议</Divider>
+        <Divider orientation="left" size="small">审核</Divider>
         <div class="top_tabale">
             <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
                 <template slot="button">

@@ -4,14 +4,14 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 12:15:12
+ * @LastEditTime: 2021-03-22 16:10:10
  */
 export default {
     data() {
       return {
         formConfig2:{
           opinion:{
-            name:'侵权审核意见',
+            name:'审核意见',
             type:'textarea',
           },
         },
@@ -22,7 +22,7 @@ export default {
           opinion: [{
               required: true,
               type: 'string',
-              message: '请输入侵权审核意见',
+              message: '请输入审核意见',
               trigger: 'blur'
           }],
         }, 

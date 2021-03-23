@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 21:03:00
+ * @LastEditTime: 2021-03-22 16:19:55
 -->
 <template>
 <div class="erp_table_container">
@@ -122,7 +122,7 @@ export default {
             this.$router.push({name:'addFinishProduct'});
         },
         goEdit(){
-            if(this.activatedRow.id&&this.activatedRow.status==0){
+            if(this.activatedRow.id){
                 this.$router.push({name:'editFinishProduct',query: {id:this.activatedRow.id}});
             }
         },
@@ -315,6 +315,35 @@ export default {
             this.$nextTick(function () {
                 this.columns = this.getTableColumn();
             })
+        },
+        sureDeleteConfirm(flag) {
+            if(flag){
+                this.$Modal.confirm({
+                    title: '温馨提示',
+                    content: '数据删除后将无法恢复！',
+                    onCancel: () => {
+                        this.$Message.info('取消');
+                    },
+                    onOk: () => {
+                        flag ? this.deletesData() : this.deleteData();
+                    },
+                });
+            } else {
+                if(this.activatedRow.id&&this.activatedRow.status==0){
+                    this.$Modal.confirm({
+                        title: '温馨提示',
+                        content: '数据删除后将无法恢复！',
+                        onCancel: () => {
+                            this.$Message.info('取消');
+                        },
+                        onOk: () => {
+                            flag ? this.deletesData() : this.deleteData();
+                        },
+                    });
+                } else {
+                    this.$Message.error('温馨提示：该数据无法删除！');
+                }   
+            }
         },
         deleteData(){
             if(this.activatedRow.id){

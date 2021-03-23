@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-19 17:59:26
+ * @LastEditTime: 2021-03-22 16:48:09
 -->
 <template>
 <div>
@@ -426,7 +426,7 @@ export default {
             this.$router.push({name:'chartingManagerList'});
         },
         save() {
-            var check = this.formValidate2['img'].length <= this.upLoadSize;
+            var check = this.formValidate2['img'].length >= this.upLoadSize;
             if(!this.upLoadSize){
                 this.$Notice.error({
                     title: '制作数量为空，请联系管理员！'
@@ -435,7 +435,7 @@ export default {
             }
             if (!check) {
                 this.$Notice.warning({
-                    title: '已达到最大上传数'+this.upLoadSize+'个文件！'
+                    title: '至少上传'+this.upLoadSize+'个文件！'
                 });
                 return ;
             }

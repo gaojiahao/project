@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 09:29:27
+ * @LastEditTime: 2021-03-22 16:29:11
 -->
 <template>
 <div>
@@ -466,7 +466,7 @@ export default {
             });    
         },
         goReturn(){
-            this.$router.push({name:'tortExamineList'});
+            this.$router.push({name:'developExamineList'});
         },
         GetOperationLogPage(){
             if(this.productId){

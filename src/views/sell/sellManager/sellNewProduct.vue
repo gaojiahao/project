@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-19 15:14:24
+ * @LastEditTime: 2021-03-22 17:47:39
 -->
 <template>
 <div>
@@ -197,6 +197,7 @@ export default {
                                     this.productId = res.result.item.id;
                                     this.GetGoodsSupplierPage();
                                     this.GetOperationLogPage();
+                                    this.tabName='sellInfo';
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -220,6 +221,7 @@ export default {
                                     this.GetPrepGoodsAttributeById();
                                     this.GetOperationLogPage();
 				                    this.GetSystemConfigList();
+                                    this.tabName='sellInfo';
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -256,6 +258,7 @@ export default {
                                     this.$Message.info('温馨提示：新建成功！');
                                     this.GetGoodsSupplierPage();
                                     this.GetOperationLogPage();
+                                    this.tabName='uploadInfo';
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -274,6 +277,7 @@ export default {
                                     this.$Message.info('温馨提示：更新成功！');
                                     this.GetGoodsSupplierPage();
                                     this.GetOperationLogPage();
+                                    this.tabName='uploadInfo';
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -318,6 +322,7 @@ export default {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：更新成功！');
                             this.GetOperationLogPage();
+                            this.tabName='logInfo';
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
@@ -391,6 +396,7 @@ export default {
                         this.$Message.info('温馨提示：保存成功！');
                         this.getFormData();
                         this.GetOperationLogPage();
+                        this.tabName='propertyInfo';
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,
@@ -561,6 +567,7 @@ export default {
                         this.$Message.info('温馨提示：保存成功！');
                         this.GetPrepGoodsAttributeById();
                         this.GetOperationLogPage();
+                        this.tabName = 'detailInfo';
                     } else if (res.result.code == 400) {
                         this.$Message.error({
                             background: true,

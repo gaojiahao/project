@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 11:03:05
+ * @LastEditTime: 2021-03-22 15:56:22
 -->
 <template>
 <div class="content">
@@ -101,7 +101,7 @@
                 <XTree :name="index" v-model="formValidate[index]" :config="formConfig[index]" v-show="!formConfig[index]['hidden']" :disabled="formConfig[index]['disabled']"></XTree>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='link'">
-                <a :href="formValidate[index]" v-show="!formConfig[index]['hidden']" target="_blank">{{formValidate[index]}}</a>
+                <a :href="formValidate[index]" v-show="!formConfig[index]['hidden']" target="_blank">{{formValidate[index]}}<Icon type="ios-link" v-if="formValidate[index]" /></a>
             </FormItem>
         </template>
         <slot name='button'>
