@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 15:13:39
+ * @LastEditTime: 2021-03-23 11:47:40
 -->
 <template>
 <div class="addAttrProductTable-container">
@@ -19,7 +19,7 @@
         </div>
         <div style="margin-bottom: 10px; padding:10px;display: inline-block;">
             <div style="position: relative;line-height: 48px;font-size: 14px;margin-left:120px">
-                <Button @click="goReturn" style="float: right; margin-right:10px">返回</Button>
+                <Button @click="goReturn" style="float: right; margin-right:10px" v-if="!hidden">返回</Button>
                 <!-- <Button @click="clearFormData" style="float: right;margin-right:10px">取消</Button> -->
                 <Button type="primary" @click="save" style="float: right; margin-right:10px" v-if="!disabled">保存</Button>
             </div>
@@ -55,6 +55,10 @@ export default {
         disabled:{
             type: Boolean,
             default: false
+        },
+        hidden:{
+            type: Boolean,
+            default: false    
         }
     },
     data() {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 20:50:22
+ * @LastEditTime: 2021-03-23 15:56:12
 -->
 <template>
     <div class="addFinishProduct">
@@ -15,7 +15,20 @@
                     <template slot="button">
                         <FormItem>
                             <div style="width:100%">
-                                <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+                            </div>
+                        </FormItem>
+                    </template>
+                </ViewForm>
+            </div>
+        </div>
+        <div class="top">
+            <Divider orientation="left" size="small">审核</Divider>
+            <div class="top_tabale">
+                <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
+                    <template slot="button">
+                        <FormItem>
+                            <div style="width:100%">
+                                <Button @click="goReturn" style="float: left">返回</Button>   
                             </div>
                         </FormItem>
                     </template>
@@ -34,6 +47,7 @@
 <script>
 import ViewForm from "@components/public/form/viewForm";
 import config from "@views/sell/sellManager/viewFinishProductConfig";
+import config2 from "@views/examine/recommendExamine/addRecommendConfig";
 import {
     CreateRecommendGoods,
     UpdateRecommendGoods,
@@ -51,7 +65,7 @@ export default {
             id:''
         }
     },
-    mixins: [config],
+    mixins: [config,config2],
     watch:{
         $route:function(to,from){
             if(to.name==from.name){

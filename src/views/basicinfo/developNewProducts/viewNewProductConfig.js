@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 14:56:25
+ * @LastEditTime: 2021-03-23 16:23:36
  */
 export default {
   data() {
@@ -453,7 +453,7 @@ export default {
         //   trigger: 'change'
         // }],
         weight:[{ 
-          required: true,
+          // required: true,
           // type: 'number',
           message: '请输入正确的商品重量', 
           // trigger: 'blur',
@@ -509,14 +509,14 @@ export default {
           validator: supplierIdSizeVali
         }],
         purchasePrices:[{ 
-          required: true, 
+          // required: true, 
           // type: 'string',
           message: '请输入采购单价', 
           // trigger: 'blur',
           trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
         }],
         minQuantity:[{ 
-          required: true, 
+          // required: true, 
           // type: 'string',
           message: '请输入最小采购量', 
           // trigger: 'blur',

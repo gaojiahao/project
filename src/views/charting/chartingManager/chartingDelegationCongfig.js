@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-27 15:45:17
+ * @LastEditTime: 2021-03-23 14:53:47
  */
 export default {
   data() {
@@ -51,6 +51,16 @@ export default {
         }],
       },
       filtersConfig:{
+        name:{
+          name:'产品名称',
+          value:'name',
+          type:'text',
+        },
+        code:{
+          name:'产品编码',
+          value:'code',
+          type:'text',
+        },
         productType:{
           name:'类目',
           value:'productType',
@@ -63,40 +73,10 @@ export default {
             ],
           },
         },
-        sku:{
-          name:'SKU',
-          value:'sku',
-          type:'text',
-        },  
-        color:{
-          name:'颜色',
-          value:'color',
-          type:'text',
-        },
-        producName:{
-          name:'产品名称',
-          value:'producName',
-          type:'text',
-        },
-        supplier:{
-          name:'产商',
-          value:'supplier',
-          type:'text',
-        },
-        supplierNum:{
-          name:'产商货号',
-          value:'supplierNum',
-          type:'text',
-        },
         createTime:{
           name:'创建时间',
           value:'createTime',
           type:'dateTime',
-        },
-        recommendingOfficer:{
-          name:'推荐人员',
-          value:'recommendingOfficer',
-          type:'text',
         },
         status:{
           name:'状态',
@@ -105,10 +85,8 @@ export default {
           dataSource:{
             type:'static',
             data:[
-              {name:'待制作',value:'0'},
-              {name:'已完成',value:'1'},
-              {name:'待确认',value:'2'},
-              {name:'已逾期',value:'-1'},
+              {name:'已审核',value:'true'},
+              {name:'未审核',value:'false'}
             ],
           },
         },

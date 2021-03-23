@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 16:03:13
+ * @LastEditTime: 2021-03-23 14:55:46
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1458,6 +1458,7 @@ const routes = [
                 meta:{ 
                   title:'制图审核',
                   group: 'chartingExamine',
+                  level: 1,
                 },
                 component: resolve=>(require(["@views/examine/chartingExamine/chartingExamineList"],resolve)),
               },
@@ -1467,6 +1468,7 @@ const routes = [
                 meta:{ 
                   title:'审核',
                   group: 'chartingExamine',
+                  level: 2,
                 },
                 component: resolve=>(require(["@views/examine/chartingExamine/addChartingExamine"],resolve)),
               },
@@ -1476,6 +1478,7 @@ const routes = [
                 meta:{ 
                   title:'制图查看',
                   group: 'chartingExamine',
+                  level: 2,
                 },
                 component: resolve=>(require(["@views/examine/chartingExamine/viewChartingExamine"],resolve)),
               },
@@ -1613,7 +1616,7 @@ const routes = [
                 meta:{ 
                   title:'调换',
                   group: 'chartingTimeExchange',
-                  level: 1,
+                  level: 2,
                 },
                 component: resolve=>(require(["@views/charting/chartingTimeExchange/changeTime"],resolve)),
               },
@@ -1623,7 +1626,7 @@ const routes = [
                 meta:{ 
                   title:'查看产品',
                   group: 'chartingTimeExchange',
-                  level: 1,
+                  level: 2,
                 },
                 component: resolve=>(require(["@views/charting/chartingTimeExchange/viewChangeTime"],resolve)),
               },

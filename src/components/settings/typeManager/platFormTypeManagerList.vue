@@ -26,7 +26,7 @@
             </Select>
         </div>
         <div>
-            <Input search clearable placeholder="" size="small" style="padding:5px;width: 200px" @on-search="onSearch" @on-clear="onCler" />
+            <Input v-model="value" search clearable placeholder="" size="small" style="padding:5px;width: 200px" @on-search="onSearch" @on-clear="onCler" />
         </div>
     </div>
     <Divider />
@@ -57,11 +57,11 @@ import {
     DropdownItem
 } from "view-design";
 import {
-    getEcommercePlatformList,
+    GetEcommerceCategoryList,
     GetPlatformsList
 } from "@service/settingsService"
 export default {
-    name: 'TypeManagerList',
+    name: 'platFormTypeManagerList',
     components: {
         Scroll,
         List,
@@ -69,31 +69,34 @@ export default {
         DropdownItem
     },
     props: {
-        list: {
-            type: Array,
-            default () {
-                return []
-            }
-        },
-        loading:{
-            type:Boolean,
-            default: true
-        }
+        // list: {
+        //     type: Array,
+        //     default () {
+        //         return []
+        //     }
+        // },
+        // loading:{
+        //     type:Boolean,
+        //     default: true
+        // }
     },
     watch:{
-        list:{
-            handler(val){
-                for(var i=0;i<val.length;i++){
-                    val[i].title = val[i].name;
-                    val[i].parentId = val[i].parentID;
-                    val[i].code = val[i].id;
-                }
-                this.data= val;
-            }    
-        },
+        // list:{
+        //     handler(val){
+        //         for(var i=0;i<val.length;i++){
+        //             val[i].title = val[i].name;
+        //             val[i].parentId = val[i].parentID;
+        //             val[i].code = val[i].id;
+        //         }
+        //         this.data= val;
+        //     }    
+        // },
         platFormId:{
             handler(val){
-                this.$emit('set-platform-filter',val);
+                this.pageData.keyword = '';
+                this.value = '';
+                this.pageData.platFormId = val;
+                this.GetEcommerceCategoryList();    
             }
         }
     },
@@ -102,7 +105,13 @@ export default {
             data: [],
             platFormId:'',
             platformList:[],
-            selectItem:{}
+            selectItem:{},
+            pageData:{
+                keyword:'',
+                maxResultCount:200,
+            },
+            loading: true,
+            value:''
         }
     },
     methods: {
@@ -216,29 +225,47 @@ export default {
             }
         },
         onSearch(value){
-            this.$emit('set-filter',value);
+            this.pageData.keyword = value;
+            this.GetEcommerceCategoryList();
         },
         onCler(){
-            this.$emit('set-filter','');
+            this.pageData.keyword = '';
+            this.value = ''
+            this.GetEcommerceCategoryList();
         },
-        onChange(){
-
+        onChange(e){
+            this.platFormId = e.value;
         },
         GetPlatformsList() {
-            return new Promise((resolve, reject) => {
-                GetPlatformsList({platformId:this.platFormId}).then(res => {
-                    if(res.result.code==200){
-                        this.$nextTick(() => {
-                            this.platformList = res.result.item;
-                            this.platFormId = this.platformList[0]['id'];
-                        });
-                    }
-                });
-            });
+            GetPlatformsList({platformId:this.platFormId}).then(res => {
+                if(res.result.code==200){
+                    this.platformList = res.result.item;
+                    this.platFormId = this.platformList[0]['id'];
+                    this.pageData.platFormId = this.platFormId;
+                }
+            }).catch(e =>{console.log(e)}); 
         },
+        GetEcommerceCategoryList() {
+            this.loading = true;
+            GetEcommerceCategoryList(this.pageData).then(res => {
+                if(res.result.code==200){
+                    this.data = res.result.item.map((e,index)=>{
+                        e.title = e.name;
+                        e.parentId = e.parentID;
+                        e.code = e.id;
+                        return e;
+                    });
+                    this.loading = false;
+                }
+            }).catch(e =>{console.log(e)}); 
+        },
+        async init(){
+            await this.GetPlatformsList();
+            await this.GetEcommerceCategoryList();
+        }
     },
     created() {
-        this.GetPlatformsList();
+        this.init();
     }
 }
 </script>

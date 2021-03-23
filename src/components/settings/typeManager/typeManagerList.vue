@@ -52,7 +52,7 @@ import {
     getEcommercePlatformList
 } from "@service/settingsService"
 export default {
-    name: 'TypeManagerList',
+    name: 'typeManagerList',
     components: {
         Scroll,
         List,

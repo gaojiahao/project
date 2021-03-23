@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 15:21:46
+ * @LastEditTime: 2021-03-23 11:48:49
 -->
 <template>
 <div class="addNewProductTable-container">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div style="width:100%;">
-            <Button @click="goReturn" style="float: left;">返回</Button>
+            <Button @click="goReturn" style="float: left;" v-if="!hidden">返回</Button>
         </div>
     </div>
 </div>
@@ -45,6 +45,10 @@ export default {
                 return {}
             }
         },
+        hidden:{
+            type: Boolean,
+            default: false    
+        }
     },
     mixins: [config],
     data() {

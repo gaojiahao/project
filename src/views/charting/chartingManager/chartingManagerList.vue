@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-20 10:20:09
+ * @LastEditTime: 2021-03-23 18:05:57
 -->
 <template>
 <div class="erp_table_container">
@@ -213,23 +213,39 @@ export default {
                 key: 'endTime',
                 width: 160,
                 resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                        style: {
+                            textAlign: "center",
+                            color: params.row.assignmentStatus==1 ? "#19be6b": "#ed4014"
+                        },
+                    },params.row.assignmentStatus ? params.row.startTime+'-'+params.row.endTime:'/');
+                },
             },
             {
                 title: '实际完成日期',
-                key: 'expectedTime',
+                key: 'finishTime',
                 width: 160,
                 resizable: true,
-            },
-            {
-                title: '是否逾期',
-                key: 'status2',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status2==0? "#19be6b": "#ed4014"
+                        color: params.row.expectedTime==0? "#19be6b": "#ed4014"
                     },
-                    },!params.row.status2?"逾期":"未逾期");
+                    },['2'].indexOf(params.row.assignmentStatus)!=-1 ? params.row.finishTime:"/");
+                },
+            },
+            {
+                title: '是否逾期',
+                key: 'overdue',
+                render: (h, params) => {
+                    return h("span", {
+                        style: {
+                            display: "inline-block",
+                            color: params.row.overdue>0? "#ed4014": "#ed4014"
+                        },
+                    },params.row.overdue>0 ? "逾期":"/");
                 },
                 width: 100,
                 resizable: true,
@@ -239,6 +255,14 @@ export default {
                 key: 'overdue',
                 width: 100,
                 resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                        style: {
+                            display: "inline-block",
+                            color: params.row.overdue>0? "#ed4014": "#ed4014"
+                        },
+                    },params.row.overdue>0 ? params.row.overdue:"/");
+                },
             },
             {
                 title: '状态',

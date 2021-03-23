@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 09:37:40
+ * @LastEditTime: 2021-03-23 15:58:55
 -->
 <template>
 <div>
@@ -29,7 +29,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true" :hidden="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -37,7 +37,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true" :hidden="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -45,16 +45,16 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
+                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true" :hidden="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
         <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
+            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog" :hidden="true"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
     <div class="top">
-        <Divider orientation="left" size="small">审核建议</Divider>
+        <Divider orientation="left" size="small">审核</Divider>
         <div class="top_tabale">
             <!-- <div style="height:40px;width:100%;padding:10px">
                 <RadioGroup v-model="platform" @on-change="onChange">

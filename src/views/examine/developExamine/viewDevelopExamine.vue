@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 16:29:11
+ * @LastEditTime: 2021-03-23 15:59:23
 -->
 <template>
 <div>
@@ -31,7 +31,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" :disabled="true" @go-return="goReturn"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" :disabled="true" @go-return="goReturn" :hidden="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -39,7 +39,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" :disabled="true" @go-return="goReturn"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" :disabled="true" @go-return="goReturn" :hidden="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -47,22 +47,22 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn"></NewHtmlEditor>
+                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn" :hidden="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
         <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
+            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog" :hidden="true"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
     <div class="top">
-        <Divider orientation="left" size="small">审核建议</Divider>
+        <Divider orientation="left" size="small">审核</Divider>
         <div class="top_tabale">
             <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
-                            <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button> 
+                            <Button @click="goReturn" style="float: left;">返回</Button> 
                         </div>
                     </FormItem>
                 </template>

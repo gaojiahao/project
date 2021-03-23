@@ -4,85 +4,86 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 15:29:35
+ * @LastEditTime: 2021-03-23 18:10:31
 -->
 <template>
-    <div>
-        <Tabs type="card" :animated="false" :value="tabName">
-            <TabPane label="基本信息" name="basicInfo">
-                <div class="top">
-                    <Divider orientation="left" size="small">基本信息</Divider>
-                    <div class="top_tabale">
-                        <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" ref="form" :divisionField="divisionField">
-                            <template slot="button">
-                                <FormItem>
-                                </FormItem>
-                            </template>
-                        </ViewForm>
-                    </div>
-                </div>
-            </TabPane>
-            <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
-                <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
-            </TabPane>
-            <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
-                <div class="top">
-                    <Divider orientation="left" size="small">上传信息</Divider>
-                    <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                        <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true" @go-return="goReturn"></UploadPic>
-                    </div>
-                </div>
-            </TabPane>
-            <TabPane label="属性" name="propertyInfo" :disabled="disabled">
-                <div class="top">
-                    <div class="top_tabale">
-                        <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true" @go-return="goReturn"></AddAttrProductTable>
-                    </div>
-                </div>
-            </TabPane>
-            <TabPane label="详细描述" name="detailInfo" :disabled="disabled">
-                <div class="top">
-                    <Divider orientation="left" size="small">详细描述</Divider>
-                    <div class="top_tabale1">
-                        <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn"></NewHtmlEditor>
-                    </div>
-                </div>
-            </TabPane>
-            <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-                <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
-            </TabPane>
-        </Tabs>
-        <div class="top">
-            <Divider orientation="left" size="small">制作信息</Divider>
-            <div class="top_tabale">
-                <ViewForm :formValidate="formValidate3" :ruleValidate="ruleValidate3" :formConfig="formConfig3">
-                    <template slot="button">
-                        <div style="width:100%">   
-                        </div>
-                    </template>
-                </ViewForm>
-            </div>
-        </div>
-        <div class="top">
-            <Divider orientation="left" size="small">上传</Divider>
-            <div class="top_tabale">
-                <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form">
-                    <template slot="button">
-                        <div style="width:100%">
+<div>
+    <Tabs type="card" :animated="false" :value="tabName">
+        <TabPane label="基本信息" name="basicInfo">
+            <div class="top">
+                <Divider orientation="left" size="small">基本信息</Divider>
+                <div class="top_tabale">
+                    <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" ref="form" :divisionField="divisionField">
+                        <template slot="button">
                             <FormItem>
-                                <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
                             </FormItem>
-                        </div>
-                    </template>
-                </ViewForm>
+                        </template>
+                    </ViewForm>
+                </div>
             </div>
+        </TabPane>
+        <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
+            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
+        </TabPane>
+        <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
+            <div class="top">
+                <Divider orientation="left" size="small">上传信息</Divider>
+                <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true" @go-return="goReturn" :hidden="true"></UploadPic>
+                </div>
+            </div>
+        </TabPane>
+        <TabPane label="属性" name="propertyInfo" :disabled="disabled">
+            <div class="top">
+                <div class="top_tabale">
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true" @go-return="goReturn" :hidden="true"></AddAttrProductTable>
+                </div>
+            </div>
+        </TabPane>
+        <TabPane label="详细描述" name="detailInfo" :disabled="disabled">
+            <div class="top">
+                <Divider orientation="left" size="small">详细描述</Divider>
+                <div class="top_tabale1">
+                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn" :hidden="true"></NewHtmlEditor>
+                </div>
+            </div>
+        </TabPane>
+        <TabPane label="日志文件" name="logInfo" :disabled="disabled">
+            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog" :hidden="true"></AddNewProductTableLog>
+        </TabPane>
+    </Tabs>
+    <div class="top">
+        <Divider orientation="left" size="small">制作信息</Divider>
+        <div class="top_tabale">
+            <ViewForm :formValidate="formValidate3" :ruleValidate="ruleValidate3" :formConfig="formConfig3">
+                <template slot="button">
+                    <div style="width:100%">   
+                    </div>
+                </template>
+            </ViewForm>
         </div>
     </div>
+    <div class="top">
+        <Divider orientation="left" size="small">上传</Divider>
+        <div class="top_tabale">
+            <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="form">
+                <template slot="button">
+                    <div style="width:100%">
+                        <FormItem>
+                            <Button @click="goReturn" style="float: left;">返回</Button>
+                        </FormItem>
+                    </div>
+                </template>
+            </ViewForm>
+        </div>
+    </div>
+</div>
 </template>
 
 <script>
-import config2 from "@views/charting/chartingManager/editProductAppointStoreConfig";
+import config2 from "@views/charting/chartingManager/productAppointStoreConfig";
 import ViewForm from "@components/public/form/viewForm";
+import XForm from "@components/public/form/xForm";
 import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
@@ -93,11 +94,10 @@ import AddNewProductTableLog from "@components/basicinfo/developNewProducts/addN
 import UploadPic from "@components/basicinfo/developNewProducts/uploadPic";
 import NewHtmlEditor from "@components/basicinfo/developNewProducts/newHtmlEditor";
 import AddAttrProductTable from "@components/basicinfo/developNewProducts/addAttrProductTable";
-
 import {
     GetFileDistributionById,
     CreateGoodsFile,
-    GetGoodsFileById
+    GetDistributionAndRelation
 } from "@service/tortExamineService";
 import {
     CreatePrepGoods,
@@ -108,17 +108,18 @@ import {
     GetPrepGoodsAttributeById,
     UpdatePrepGoodsAttribute,
     GetOperationLogPage
-} from "@service/basicinfoService";
+} from "@service/basicinfoService"
 import {
     Tabs,
     TabPane,
 } from "view-design";
 export default {
-    name: 'UploadProgress',
+    name: 'viewUploadProgress',
     components: {
         Tabs,
         TabPane,
         ViewForm,
+        XForm,
         AddNewProductTable,
         AddNewProductTableUploadPic,
         AddNewProductTableUploadVideo,
@@ -245,7 +246,8 @@ export default {
                 disabled:false,
             },
             loading: true,
-            isForm: false
+            isForm: false,
+            upLoadSize:0,
         }
     },
     computed:{
@@ -392,20 +394,18 @@ export default {
             this.GetOperationLogPage();
         },
         GetFileDistributionById(){
-            this.id = this.$route.query.goodsId;
+            this.id = this.$route.query.id;
             if(this.id) {
                 return new Promise((resolve, reject) => {
                     GetFileDistributionById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
-                            this.formValidate3 = {
-                                id: res.result.item.id,
-                                fileType: res.result.item.fileType,
-                                fileTypeName: res.result.item.fileTypeName,
-                                remark: res.result.item.remark,
-                                startTime: res.result.item.startTime,
-                                endTime: res.result.item.endTime,
-                            }
+                            this.formValidate3['id']=res.result.item.id;
+                            this.formValidate3['fileType']=res.result.item.fileType;
+                            this.formValidate3['fileTypeName']=res.result.item.fileTypeName;
+                            this.formValidate3['remark']=res.result.item.remark;
+                            this.formValidate3['startTime']=res.result.item.startTime;
+                            this.formValidate3['endTime']=res.result.item.endTime;
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
@@ -414,19 +414,35 @@ export default {
                         }
                     });
                 });    
-            }    
+            }
         },
         clearFormData() {
             this.formValidate2 = {
-                id:"",
-                data:[],
+                img:[],
             }
         },
+        goReturn(){
+            this.$router.push({name:'chartingManagerList'});
+        },
         save() {
-            var params = [];
+            var check = this.formValidate2['img'].length >= this.upLoadSize,
+            goodsFileList = [];
+            if(!this.upLoadSize){
+                this.$Notice.error({
+                    title: '制作数量为空，请联系管理员！'
+                });
+                return ;    
+            }
+            if (!check) {
+                this.$Notice.warning({
+                    title: '至少上传'+this.upLoadSize+'个文件！'
+                });
+                return ;
+            }
             for(var i=0;i<this.formValidate2.img.length;i++){
                 var obj = {}
                 obj = {
+                    fileDistributionId: this.$route.query.id,
                     name: this.formValidate2.img[i].name,
                     suffix: '',
                     fileType: this.formValidate3.fileType,
@@ -435,30 +451,31 @@ export default {
                     fileUrl: this.formValidate2.img[i].filePath,
                     status:1,
                     goodsId: this.formValidate.id,
-                };
-                this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                    if (valid) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            CreateGoodsFile(obj).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：保存成功！');
-                                    this.goReturn();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });   
-                    } else {
-                        this.$Message.error('保存失败');
-                    }
-                })   
-            }   
+                }
+                goodsFileList.push(obj);
+            }
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    return new Promise((resolve, reject) => {
+                        this.$FromLoading.show();
+                        CreateGoodsFile({goodsFileList:goodsFileList}).then(res => {
+                            if (res.result.code == 200) {
+                                this.$FromLoading.hide();
+                                this.$Message.info('温馨提示：保存成功！');
+                                this.goReturn();
+                            } else if (res.result.code == 400) {
+                                this.$Message.error({
+                                    background: true,
+                                    content: res.result.msg
+                                });
+                                this.$FromLoading.hide();
+                            }
+                        });
+                    });     
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         },
         cancel(){
             this.clearFormData();
@@ -471,6 +488,25 @@ export default {
         },
         showForm(flag){
             this.isForm = flag;
+        },
+        GetDistributionAndRelation(){
+            this.id = this.$route.query.id;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetDistributionAndRelation({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            this.$FromLoading.hide();
+                            this.formValidate3['quantity'] = res.result.item.quantity;
+                            this.upLoadSize = res.result.item.quantity;
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }    
         }
     },
     created() {
@@ -480,9 +516,7 @@ export default {
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
         this.GetFileDistributionById();
-        setTimeout(() => {
-            this.loading = false;
-        }, 1000);
+        this.GetDistributionAndRelation();
     }
 }
 </script>
@@ -490,5 +524,8 @@ export default {
 @import  "~@less/form.less";
 .myTable{
     padding:10px;
+}
+.top_tabale1{
+    background-color: #FFFFFF;
 }
 </style>

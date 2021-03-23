@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-13 14:58:34
+ * @LastEditTime: 2021-03-23 11:17:23
  */
 import $flyio from '@plugins/ajax';
 
@@ -110,7 +110,7 @@ export default {
           code:{
             name:'产品编码',
             type:'text',
-            disabled:true
+            // disabled:true
           },
           name:{
             name:'产品名称',
@@ -401,6 +401,7 @@ export default {
           detailInfo:''
         },
         ruleValidate: {
+          code: [{ pattern: /^[A-Za-z0-9-_]{4,30}$/, message: '产品编码只能由字母，数字，下划线加中横线组成', trigger: 'blur' }],
           name: [{
             required: true,
             type: 'string',

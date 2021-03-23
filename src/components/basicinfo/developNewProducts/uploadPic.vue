@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 17:19:03
+ * @LastEditTime: 2021-03-23 11:45:23
 -->
 <template>
 <div>
@@ -56,7 +56,7 @@
     </div>
     <div style="width:100%">
         <Button type="primary" @click="save" style="float: left;" v-if="!disabled">保存</Button>
-        <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+        <Button @click="goReturn" style="float: left; margin-left:10px" v-if="!hidden">返回</Button>
     </div>
 </div>
 </template>
@@ -92,6 +92,10 @@ export default {
         disabled:{
             type: Boolean,
             default: false
+        },
+        hidden:{
+            type: Boolean,
+            default: false    
         }
     },
     watch:{

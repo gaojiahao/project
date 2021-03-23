@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-11 15:50:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 15:36:23
+ * @LastEditTime: 2021-03-23 11:47:28
 -->
 <template>
   <div class="editor-container">
@@ -37,7 +37,7 @@
     <div style="width:100%;margin-top:10px">
         <!-- <Button @click="clearFormData" style="float: right; margin-right:10px">取消</Button> -->
         <Button type="primary" @click="save" style="float: left; margin-left:10px" v-if="!disabled">保存</Button>
-        <Button @click="goReturn" style="float: left; margin-left:10px">返回</Button>
+        <Button @click="goReturn" style="float: left; margin-left:10px" v-if="!hidden">返回</Button>
     </div>
   </div>
 </template>
@@ -71,6 +71,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false
+        },
+        hidden:{
+            type: Boolean,
+            default: false    
         }
     },
     watch:{

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 15:19:53
+ * @LastEditTime: 2021-03-23 15:26:20
 -->
 <template>
 <div>
@@ -27,6 +27,7 @@
         </TabPane>
         <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
             <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch" :disabled="true"></AddNewProductTable>
+            <Button @click="goReturn" style="float: left;">返回</Button>
         </TabPane>
         <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
             <div class="top">

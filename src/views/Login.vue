@@ -127,7 +127,7 @@ export default {
                     return;
                 }
                 if (this.code) {
-                    if (this.code!=1111 && this.code != this.identifyCode.toLowerCase()&&this.code != this.identifyCode.toUpperCase()) {
+                    if (this.code!=1111 && this.code.toLowerCase() != this.identifyCode.toLowerCase()) {
                         this.$Message.error("验证码出错");
                         return;
                     }

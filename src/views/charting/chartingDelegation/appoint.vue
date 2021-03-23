@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 10:59:39
+ * @LastEditTime: 2021-03-23 17:20:47
 -->
 <template>
 <div>
@@ -29,7 +29,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true" :hidden="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -37,7 +37,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true" :hidden="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -45,12 +45,12 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true"></NewHtmlEditor>
+                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true" :hidden="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
         <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
+            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog" :hidden="true"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
     <div class="top">
@@ -386,7 +386,8 @@ export default {
             this.GetOperationLogPage();
         },
         save() {
-            var data = this.storeList[0];
+            var data = this.storeList[0],
+            listFileDistribution = [];
              for(var i=0;i<this.filesData.length;i++){
                 if(!(this.filesData[i].userId&&this.filesData[i].date&&this.filesData[i].date[0]&&this.filesData[i].date[1])){
                     this.$Message.error('人员，制作时间未填写完整');   
@@ -410,29 +411,30 @@ export default {
                     storeName: data['storeName'],
                     relationId: this.filesData[i].id,
                 };
-                this.$refs['examine'].$refs['formValidate'].validate((valid) => {
-                    if (valid) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            CreateFileDistribution(obj).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：保存成功！');
-                                    this.goReturn();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });   
-                    } else {
-                        this.$Message.error('保存失败');
-                    }
-                })
+                listFileDistribution.push(obj);
             }
+            this.$refs['examine'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    return new Promise((resolve, reject) => {
+                        this.$FromLoading.show();
+                        CreateFileDistribution({listFileDistribution:listFileDistribution}).then(res => {
+                            if (res.result.code == 200) {
+                                this.$FromLoading.hide();
+                                this.$Message.info('温馨提示：保存成功！');
+                                this.goReturn();
+                            } else if (res.result.code == 400) {
+                                this.$Message.error({
+                                    background: true,
+                                    content: res.result.msg
+                                });
+                                this.$FromLoading.hide();
+                            }
+                        });
+                    });   
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         },
         GetFileDistributionInfo(){
             if(this.productId){

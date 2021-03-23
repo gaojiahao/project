@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-20 09:45:05
+ * @LastEditTime: 2021-03-23 17:43:08
  */
 import $flyio from '@plugins/ajax';
 
@@ -124,7 +124,7 @@ export default {
           code:{
             name:'产品编码',
             type:'text',
-            disabled:true
+            // disabled:true
           },
           name:{
             name:'产品名称',
@@ -426,6 +426,7 @@ export default {
           detailInfo:''
         },
         ruleValidate: {
+          code: [{ pattern: /^[A-Za-z0-9-_]{4,30}$/, message: '产品编码只能由字母，数字，下划线加中横线组成', trigger: 'blur' }],
           name: [{
             required: true,
             type: 'string',
@@ -456,9 +457,9 @@ export default {
           //   trigger: 'change'
           // }],
           weight:[{ 
-            required: true,
-            message: '请输入正确的商品重量', 
-            validator: weightVali,
+            // required: true,
+            message: '请输入正确的商品重量1', 
+            // validator: weightVali,
             trigger:'change',
           }],
           // productSize: [{ 
@@ -499,16 +500,16 @@ export default {
             validator: supplierIdSizeVali
           }],
           purchasePrices:[{ 
-            required: true, 
+            // required: true, 
             message: '请输入采购单价', 
             trigger:'change',
-            validator: purchasePricesVali
+            // validator: purchasePricesVali
           }],
           minQuantity:[{ 
-            required: true, 
+            // required: true, 
             message: '请输入最小采购量', 
             trigger:'change',
-            validator: minQuantityVali
+            // validator: minQuantityVali
           }],
           logisticsLabel:[{
             required: true, 

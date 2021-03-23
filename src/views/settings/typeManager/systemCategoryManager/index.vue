@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:26:25
+ * @LastEditTime: 2021-03-23 17:17:55
 -->
 <template>
 <div class="manager-container">
@@ -55,7 +55,7 @@ import {
 } from "@service/settingsService"
 
 export default {
-    name: "TypeManager",
+    name: "systemCategoryManager",
     mixins: [config],
     components: {
         TypeManagerList,

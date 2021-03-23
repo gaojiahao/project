@@ -4,24 +4,18 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 15:22:42
+ * @LastEditTime: 2021-03-23 14:48:21
 -->
 <template>
 <div>
-    <div class="prevPage" v-if="preId"  @click="prePage">
-        <Icon type="ios-arrow-back" />
-    </div>
     <Tabs type="card" :animated="false" :value="tabName">
         <TabPane label="基本信息" name="basicInfo">
             <div class="top">
                 <Divider orientation="left" size="small">基本信息</Divider>
                 <div class="top_tabale">
-                    <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" @save="save" @clear-form-data="clearFormData" ref="form" :divisionField="divisionField">
+                    <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" ref="form" :divisionField="divisionField">
                         <template slot="button">
                             <FormItem>
-                                <div style="width:100%"> 
-                                    <Button @click="goReturn" style="float: left;">返回</Button>
-                                </div>
                             </FormItem>
                         </template>
                     </ViewForm>
@@ -29,14 +23,13 @@
             </div>
         </TabPane>
         <TabPane label="供应商信息" name="sellInfo" :disabled="disabled">
-            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch" :disabled="true"></AddNewProductTable>
-            <Button @click="goReturn" style="float: left;">返回</Button>
+            <AddNewProductTable :data="dataPruch" :loading="loadingPruch" :pageData="pageDataPruch" @change-page="changePagePruch" @on-page-size-change="onPageSizeChangePruch"></AddNewProductTable>
         </TabPane>
         <TabPane label="制作文件" name="uploadInfo" :disabled="disabled">
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" :disabled="true" @go-return="goReturn"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true" :hidden="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -44,7 +37,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" :disabled="true" @go-return="goReturn"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true" :hidden="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -52,23 +45,53 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn"></NewHtmlEditor>
+                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true" :hidden="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
         <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
+            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog" :hidden="true"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
-    <div class="nextPage" v-if="nextId" @click="nextPage">
-        <Icon type="ios-arrow-forward" />
+    <div class="top">
+        <Divider orientation="left" size="small">人员分配</Divider>
+        <div class="top_tabale">
+            <div style="width:100%;height:100%;margin-top:10px;padding: 10px 10px 10px 50px;">
+                店铺选择：
+                <RadioGroup v-model="store" @on-change="onChange">
+                    <template v-for="(ditem,dIndex) in storeList">
+                        <Radio :label="ditem.storeId" :key="ditem.storeId">
+                            {{ditem.storeName}}
+                        </Radio>
+                    </template>
+                </RadioGroup>
+            </div>
+            <div style="width:100%;height:100%;margin-top:10px;padding: 0 10px 10px 50px;">
+                <Table border :columns="columns" :data="filesData" stripe v-if="store" :loading="filedLoading"></Table>
+            </div>
+            <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="examine">
+                <template slot="button">
+                    <FormItem>
+                        <div style="width:100%">
+                        </div>
+                    </FormItem>
+                </template>
+            </ViewForm>
+            <div style="width:100%;height:100%;margin-top:10px;padding: 0 10px 10px 50px;">
+                <div style="line-height: 32px;display: flex;">
+                    <Button @click="goReturn" style="float: left;">返回</Button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </template>
 
 <script>
 import ViewForm from "@components/public/form/viewForm";
+import XForm from "@components/public/form/xForm";
 import config from "@views/basicinfo/developNewProducts/viewNewProductConfig";
+import config2 from "@views/charting/chartingDelegation/productAppointStoreConfig";
 import AddNewProductTable from "@components/basicinfo/developNewProducts/addNewProductTable";
 import AddNewProductTableUploadPic from "@components/basicinfo/developNewProducts/addNewProductTableUploadPic";
 import AddNewProductTableUploadVideo from "@components/basicinfo/developNewProducts/addNewProductTableUploadVideo";
@@ -89,11 +112,19 @@ import {
     GetOperationLogPage
 } from "@service/basicinfoService"
 import {
+    CreateFileDistribution,
+    GetFileDistributionInfo
+} from "@service/tortExamineService";
+import {
+    GetUserInfoList
+} from "@service/settingsService";
+
+import {
     Tabs,
     TabPane,
 } from "view-design";
 export default {
-    name: 'ViewChartingDelegation',
+    name: 'viewChartingDelegation',
     components: {
         Tabs,
         TabPane,
@@ -106,9 +137,10 @@ export default {
         AddNewProductTableLog,
         UploadPic,
         NewHtmlEditor,
-        AddAttrProductTable
+        AddAttrProductTable,
+        XForm
     },
-    mixins: [config],
+    mixins: [config,config2],
     data(){
         return{
             tabName:'basicInfo',
@@ -139,8 +171,73 @@ export default {
             },
             dataLog:[],
             loadingLog:true,
-            preId:'',
-            nextId:''
+            store:'',
+            storeList:[],
+            filesData:[],
+            columns: [
+                {
+                    title: '制作文件类型',
+                    key: 'fileTypeName'
+                },
+                {
+                    title: '数量',
+                    key: 'quantity',
+                    align: 'center',
+                },
+                {
+                    title: '人员',
+                    key: 'userId',
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('Select',{
+                                props:{
+                                    value: params.row.logisticsMode,
+                                    transfer:true
+                                },
+                                on: {
+                                    'on-change':(event) => {
+                                        this.filesData[params.index].userId = event;
+                                    }
+                                },
+                            },
+                            this.peopleList.map((item) =>{
+                                return h('Option', {
+                                    props: {
+                                        value: item.id,
+                                        label: item.userName
+                                    },
+                                    value: params.row.userId
+                                })
+                            })
+                        )
+                    }
+                },
+                {
+                    title: '制作时间',
+                    key: 'date',
+                    align: 'center',
+                    render: (h, params) => {
+                        return h('DatePicker', {
+                            props: {
+                                value: this.filesData[params.index][params.column.key],
+                                format:"yyyy-MM-dd HH:mm", 
+                                type:"datetimerange",
+                                transfer:true,
+                            },
+                            on: {
+                                'on-change': (event) => {
+                                    this.filesData[params.index][params.column.key] = event;
+                                },
+                                'on-clear': (event) => {
+                                    this.filesData[params.index][params.column.key] = '';
+                                },
+                            }
+                        });
+                    }
+                },
+            ],
+            peopleList:[],
+            filedLoading:true
         }
     },
     computed:{
@@ -148,152 +245,8 @@ export default {
             return this.productId ? false : false;
         }
     },
-    watch:{
-        $route:function(to,from){
-            if(to.name==from.name){
-                if(to.query.id!=from.query.id){
-                    this.productId = to.query.id;
-                    if(this.productId)
-                    this.init();
-                }
-            }
-        }
-    },
     methods: {
         clearFormData() {},
-        descriptionClear(){
-            this.productInfoFormValidate.description = '';
-        },
-        save() {
-            var params = this.productInfoFormValidate;
-            params = {
-                ...params,
-                howlong:params.productSize.long,
-                width:params.productSize.wide,
-                high:params.productSize.high,
-                packageLong:params.packagingSize.long,
-                packageWidth:params.packagingSize.wide,
-                packageHigh:params.packagingSize.high,
-            }
-            console.log('params',params);
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    if (this.productId) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            UpdatePrepGoods(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
-                                    this.productId = res.result.item.id;
-                                    this.GetGoodsSupplierPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    } else  {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            CreatePrepGoods(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：新建成功！');
-                                    this.productId = res.result.item.id;
-                                    // this.$router.push({name:'editNewProduct',query: {id:this.productId}});
-                                    //this.GetGoodsSupplierPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })
-        },
-        savePurchase(){
-            var params = this.purchaseFormValidate;
-            params = {
-                ...params,
-                goodsId:this.productInfoFormValidate.id||this.productId,
-                goodsName:this.productInfoFormValidate.name||'是否第三方',
-            }
-            console.log('params',params);
-            this.$refs['formPurch'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    if (this.productId) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            CraeteGoodsSupplier(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：新建成功！');
-                                    this.GetGoodsSupplierPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })
-        },
-        saveDescription(value){
-            this.productInfoFormValidate.description = value;
-            var params = this.productInfoFormValidate;
-            params = {
-                ...params,
-                howlong:params.productSize.long,
-                width:params.productSize.wide,
-                high:params.productSize.high,
-                packageLong:params.packagingSize.long,
-                packageWidth:params.packagingSize.wide,
-                packageHigh:params.packagingSize.high,
-                description:value,
-            }
-            console.log('params',params);
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    if (this.productId) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            UpdatePrepGoods(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
-                                    this.productId = res.result.item.id;
-                                    this.GetGoodsSupplierPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })    
-        },
         GetGoodsSupplierPage() {
             if(this.productId){
                 return new Promise((resolve, reject) => {
@@ -315,7 +268,7 @@ export default {
                     GetPrepGoodsAttributeById({id:this.productId}).then(res => {
                         if(res.result.code==200){
                             this.$nextTick(() => {
-                                this.dataProp = res.result.item.attributesList;
+                                this.dataProp = res.result.item.attributesList||[];
                                 this.loadingProp = false;
                             });
                         }
@@ -330,21 +283,6 @@ export default {
         onPageSizeChangePruch(pagesize){
             this.pageDataPruch.maxResultCount = pagesize;
             this.GetGoodsSupplierPage();
-        },
-        saveUpload(){
-            this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledProperty = false;
-            this.tabName = 'propertyInfo';        
-        },
-        saveProperty(){
-            this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledDetailInfo = false; 
-            this.tabName = 'detailInfo';   
-        },
-        saveDetailInfo(){
-            this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledLog = false;    
-            this.tabName = 'logInfo';   
         },
         getFormData(){
             this.id = this.$route.query.id;
@@ -420,42 +358,8 @@ export default {
                 });    
             }
         },
-        descriptionClear(){
-            this.productInfoFormValidate.description='';
-        },
-        UpdatePrepGoodsAttribute(data){
-            var params = {};
-            params.prepGoodsId = this.productId;
-            params.prepGoodsAttributes = [];
-            for(var i in data){
-                var obj = {};
-                obj = {
-                    goodsId:  this.productId,
-                    goodsName: this.productInfoFormValidate.name,
-                    attributeId: data[i].tag,
-                    attributeValueId: data[i].value,
-                }
-                params.prepGoodsAttributes.push(obj);
-            }
-            return new Promise((resolve, reject) => {
-                this.$FromLoading.show();
-                UpdatePrepGoodsAttribute(params).then(res => {
-                    if (res.result.code == 200) {
-                        this.$FromLoading.hide();
-                        this.$Message.info('温馨提示：保存成功！');
-                        this.GetPrepGoodsAttributeById();
-                    } else if (res.result.code == 400) {
-                        this.$Message.error({
-                            background: true,
-                            content: res.result.msg
-                        });
-                        this.$FromLoading.hide();
-                    }
-                });
-            });    
-        },
         goReturn(){
-           this.$router.push({name:'chartingDelegationList'});
+            this.$router.push({name:'chartingDelegationList'});
         },
         GetOperationLogPage(){
             if(this.productId){
@@ -480,34 +384,93 @@ export default {
             this.pageDataLog.maxResultCount = pagesize;
             this.GetOperationLogPage();
         },
-        getNextPre(id){
-            var listID = JSON.parse(window.localStorage.getItem("listID"));
-            for(var i=0;i<listID.length;i++){
-                if(id==listID[i]){
-                    this.preId = listID[i-1];
-                    this.nextId = listID[i+1];
+        save() {
+            var data = this.storeList[0];
+             for(var i=0;i<this.filesData.length;i++){
+                if(!(this.filesData[i].userId&&this.filesData[i].date&&this.filesData[i].date[0]&&this.filesData[i].date[1])){
+                    this.$Message.error('人员，制作时间未填写完整');   
+                    return ; 
                 }
             }
-            this.$FromLoading.hide();
+            for(var i=0;i<this.filesData.length;i++){
+                var obj={};
+                obj={
+                    fileType: this.filesData[i].id,
+                    fileTypeName: this.filesData[i].fileTypeName,
+                    userId: this.filesData[i].userId,
+                    remark: this.formValidate2.remark,
+                    startTime: this.filesData[i].date[0],
+                    endTime: this.filesData[i].date[1],
+                    goodsId: this.productInfoFormValidate.id,
+                    goodsName: this.productInfoFormValidate.name,
+                    platformId: data['platfromId'],
+                    platformName: data['platfromName'],
+                    storeId: data['storeId'],
+                    storeName: data['storeName'],
+                    relationId: this.filesData[i].id,
+                };
+                this.$refs['examine'].$refs['formValidate'].validate((valid) => {
+                    if (valid) {
+                        return new Promise((resolve, reject) => {
+                            this.$FromLoading.show();
+                            CreateFileDistribution(obj).then(res => {
+                                if (res.result.code == 200) {
+                                    this.$FromLoading.hide();
+                                    this.$Message.info('温馨提示：保存成功！');
+                                    this.goReturn();
+                                } else if (res.result.code == 400) {
+                                    this.$Message.error({
+                                        background: true,
+                                        content: res.result.msg
+                                    });
+                                    this.$FromLoading.hide();
+                                }
+                            });
+                        });   
+                    } else {
+                        this.$Message.error('保存失败');
+                    }
+                })
+            }
         },
-        prePage(){
-            this.$router.push({name:'ViewNewProduct',query: {id:this.preId}});
+        GetFileDistributionInfo(){
+            if(this.productId){
+                return new Promise((resolve, reject) => {
+                    GetFileDistributionInfo({id:this.productId}).then(res => {
+                        if(res.result.code==200){
+                            this.storeList = res.result.item;
+                            this.store = this.storeList[0]['storeId'];
+                            this.filesData = this.storeList[0]['fileRelations'];
+                            this.filedLoading = false;
+                        }
+                    });
+                });
+            }    
         },
-        nextPage(){
-            this.$router.push({name:'ViewNewProduct',query: {id:this.nextId}});
+        onChange(){
+            
         },
-        init(){
-            this.$FromLoading.show();
-            this.getFormData();
-            this.GetGoodsSupplierPage();
-            this.GetPrepGoodsAttributeById();
-            this.GetOperationLogPage();
-            this.getNextPre(this.productId);
-        }
+        GetUserInfoList(){
+            return GetUserInfoList().then(res => {
+                if (res.result.code == 200) {
+                    var data = res.result.item;
+                    for(var i=0;i<data.length;i++){
+                        data[i]['name'] = data[i]['userName'];
+                        data[i]['value'] = data[i]['id'];
+                    }
+                    this.peopleList = data;
+                }
+            }).catch(e =>{console.log(e)}); 
+        },
     },
     created() {
         this.productId = this.$route.query.id;
-        this.init();
+        this.getFormData();
+        this.GetGoodsSupplierPage();
+        this.GetPrepGoodsAttributeById();
+        this.GetOperationLogPage();
+        this.GetFileDistributionInfo();
+        this.GetUserInfoList();
     }
 }
 </script>

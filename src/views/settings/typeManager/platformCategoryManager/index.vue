@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 12:20:42
+ * @LastEditTime: 2021-03-23 20:04:44
 -->
 <template>
 <div class="manager-container">
     <div class="manager-container-panel">
         <div class="left">
-            <PlatFormTypeManagerList :list="list" @select-item="selectItem" :loading="listLoading" @show-add="showAdd" @show-add-child="showAddChild" @edit="edit" @del="sureDeleteConfirm" @set-filter="setFilter" @set-platform-filter="setEcommerceCategoryFilter" ref="list"></PlatFormTypeManagerList>
+            <PlatFormTypeManagerList @select-item="selectItem" @show-add="showAdd" @show-add-child="showAddChild" @edit="edit" @del="sureDeleteConfirm" ref="list"></PlatFormTypeManagerList>
         </div>
         <div class="right">
             <div class="item" v-show="isShowAdd">
@@ -47,7 +47,7 @@ import {
 } from "@service/settingsService"
 
 export default {
-    name: "TypeManager",
+    name: "platformCategoryManager",
     mixins: [config],
     components: {
         PlatFormTypeManagerList,
@@ -60,13 +60,13 @@ export default {
             selectSBind: {},
             isShowAdd: true,
             isShowBind:false,
-            listLoading: true,
+            // listLoading: true,
             attrList:[],
             attrLoading:true,
-            pageData:{
-                keyword:'',
-                maxResultCount:200,
-            },
+            // pageData:{
+            //     keyword:'',
+            //     maxResultCount:200,
+            // },
             pageAttrData:{
                 skipCount: 1,
                 skipTotal: 10,
@@ -89,18 +89,17 @@ export default {
         }    
     },
     methods: {
-        GetEcommerceCategoryList() {
-            return new Promise((resolve, reject) => {
-                GetEcommerceCategoryList(this.pageData).then(res => {
-                    if(res.result.code==200){
-                        this.$nextTick(() => {
-                            this.list = res.result.item;
-                            this.listLoading = false;
-                        });
-                    }
-                });
-            });
-        },
+        // GetEcommerceCategoryList() {
+        //     this.listLoading = true;
+        //     return new Promise((resolve, reject) => {
+        //         GetEcommerceCategoryList(this.pageData).then(res => {
+        //             if(res.result.code==200){
+        //                 this.list = res.result.item;
+        //                 this.listLoading = false;
+        //             }
+        //         });
+        //     });
+        // },
         GetAttributeCategoryPage() {
             return new Promise((resolve, reject) => {
                 GetAttributeCategoryPage({categoryId:this.formValidate.id,...this.pageAttrData}).then(res => {
@@ -269,11 +268,6 @@ export default {
                 });
             }    
         },
-        setFilter(value){
-            this.pageData.keyword = value;
-            this.pageData.skipCount = 1;
-            this.GetEcommerceCategoryList(); 
-        },
         changePage(page) {
             this.pageAttrData.skipCount = page;
             this.GetAttributeCategoryPage();
@@ -282,13 +276,9 @@ export default {
             this.pageAttrData.maxResultCount = pagesize;
             this.GetAttributeCategoryPage();
         },
-        setEcommerceCategoryFilter(value){
-            this.pageData.platFormId = value;
-            this.GetEcommerceCategoryList();
-        }
     },
     created() {
-        this.GetEcommerceCategoryList();
+        // this.GetEcommerceCategoryList();
     }
 }
 </script>

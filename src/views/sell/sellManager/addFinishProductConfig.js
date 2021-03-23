@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-03 14:32:09
+ * @LastEditTime: 2021-03-23 11:23:32
  */
 export default {
     data() {
@@ -67,6 +67,7 @@ export default {
           remark:'',
         },
         ruleValidate: {
+          code: [{ pattern: /^[A-Za-z0-9-_]{4,30}$/, message: '产品编码只能由字母，数字，下划线加中横线组成', trigger: 'blur' }],
           name: [{
               required: true,
               type: 'string',

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 16:48:09
+ * @LastEditTime: 2021-03-23 15:12:09
 -->
 <template>
 <div>
@@ -29,14 +29,14 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true" @go-return="goReturn"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true" @go-return="goReturn" :hidden="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
         <TabPane label="属性" name="propertyInfo" :disabled="disabled">
             <div class="top">
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true" @go-return="goReturn"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true" @go-return="goReturn" :hidden="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -44,12 +44,12 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn"></NewHtmlEditor>
+                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn" :hidden="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
         <TabPane label="日志文件" name="logInfo" :disabled="disabled">
-            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog"></AddNewProductTableLog>
+            <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog" :hidden="true"></AddNewProductTableLog>
         </TabPane>
     </Tabs>
     <div class="top">
@@ -426,7 +426,8 @@ export default {
             this.$router.push({name:'chartingManagerList'});
         },
         save() {
-            var check = this.formValidate2['img'].length >= this.upLoadSize;
+            var check = this.formValidate2['img'].length >= this.upLoadSize,
+            goodsFileList = [];
             if(!this.upLoadSize){
                 this.$Notice.error({
                     title: '制作数量为空，请联系管理员！'
@@ -452,29 +453,30 @@ export default {
                     status:1,
                     goodsId: this.formValidate.id,
                 }
-                this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                    if (valid) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            CreateGoodsFile(obj).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：保存成功！');
-                                    this.goReturn();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });     
-                    } else {
-                        this.$Message.error('保存失败');
-                    }
-                })
-            }  
+                goodsFileList.push(obj);
+            }
+            this.$refs['form'].$refs['formValidate'].validate((valid) => {
+                if (valid) {
+                    return new Promise((resolve, reject) => {
+                        this.$FromLoading.show();
+                        CreateGoodsFile({goodsFileList:goodsFileList}).then(res => {
+                            if (res.result.code == 200) {
+                                this.$FromLoading.hide();
+                                this.$Message.info('温馨提示：保存成功！');
+                                this.goReturn();
+                            } else if (res.result.code == 400) {
+                                this.$Message.error({
+                                    background: true,
+                                    content: res.result.msg
+                                });
+                                this.$FromLoading.hide();
+                            }
+                        });
+                    });     
+                } else {
+                    this.$Message.error('保存失败');
+                }
+            })
         },
         cancel(){
             this.clearFormData();
@@ -523,5 +525,8 @@ export default {
 @import  "~@less/form.less";
 .myTable{
     padding:10px;
+}
+.top_tabale1{
+    background-color: #FFFFFF;
 }
 </style>
