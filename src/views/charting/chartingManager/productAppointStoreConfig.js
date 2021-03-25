@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-19 17:30:11
+ * @LastEditTime: 2021-03-25 15:04:05
  */
 export default {
   data() {
@@ -74,7 +74,7 @@ export default {
           name:"制作数量",
           type:"text",
         },
-        userId:{
+        userName:{
           name:'制作人员',
           type:'text',
         },
@@ -95,7 +95,7 @@ export default {
         fileType:'',
         fileTypeName:'',
         quantity:'',
-        userId:'',
+        userName:'',
         remark: '',
         startTime:'',
         endTime:'',

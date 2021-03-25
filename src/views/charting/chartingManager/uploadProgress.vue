@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 15:12:09
+ * @LastEditTime: 2021-03-25 15:05:16
 -->
 <template>
 <div>
@@ -400,13 +400,9 @@ export default {
                 return new Promise((resolve, reject) => {
                     GetFileDistributionById({id:this.id}).then(res => {
                         if (res.result.code == 200) {
+
                             this.$FromLoading.hide();
-                            this.formValidate3['id']=res.result.item.id;
-                            this.formValidate3['fileType']=res.result.item.fileType;
-                            this.formValidate3['fileTypeName']=res.result.item.fileTypeName;
-                            this.formValidate3['remark']=res.result.item.remark;
-                            this.formValidate3['startTime']=res.result.item.startTime;
-                            this.formValidate3['endTime']=res.result.item.endTime;
+                            
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,
@@ -497,6 +493,13 @@ export default {
                     GetDistributionAndRelation({id:this.id}).then(res => {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
+                            this.formValidate3['id']=res.result.item.id;
+                            this.formValidate3['fileType']=res.result.item.fileType;
+                            this.formValidate3['fileTypeName']=res.result.item.fileTypeName;
+                            this.formValidate3['userName']=res.result.item.userName;
+                            this.formValidate3['remark']=res.result.item.remark;
+                            this.formValidate3['startTime']=res.result.item.startTime;
+                            this.formValidate3['endTime']=res.result.item.endTime;
                             this.formValidate3['quantity'] = res.result.item.quantity;
                             this.upLoadSize = res.result.item.quantity;
                         } else if (res.result.code == 400) {
@@ -516,7 +519,7 @@ export default {
         this.GetGoodsSupplierPage();
         this.GetPrepGoodsAttributeById();
         this.GetOperationLogPage();
-        this.GetFileDistributionById();
+        //this.GetFileDistributionById();
         this.GetDistributionAndRelation();
     }
 }

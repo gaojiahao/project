@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 14:55:46
+ * @LastEditTime: 2021-03-25 12:16:53
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -647,6 +647,59 @@ const routes = [
                     meta: {
                       title: "查看国家",
                       group: "countryManager",
+                      level: 2,
+                    },
+                  },
+                ]
+              },
+              {
+                path: 'freightManager',
+                name: 'freightManager',
+                meta:{ 
+                  title:'运费设置',
+                  group: "freightManager",
+                  level: 1,
+                },
+                component: resolve=>(require(["@views/settings/freightManager"],resolve)),
+                redirect:'freightManager/freightList',
+                children:[
+                  {
+                    path: "freightList",
+                    name: "freightList",
+                    component: resolve=>(require(["@views/settings/freightManager/freightList"],resolve)),
+                    meta: {
+                      title: "运费设置列表",
+                      group: "freightManager",
+                      level: 1,
+                    },
+                  },
+                  {
+                    path: "addFreight",
+                    name: "addFreight",
+                    component: resolve=>(require(["@views/settings/freightManager/addFreight"],resolve)),
+                    meta: {
+                      title: "添加运费设置",
+                      group: "freightManager",
+                      level: 2,
+                    },
+                  },
+                  {
+                    path: "editFreight",
+                    name: "editFreight",
+                    component: resolve=>(require(["@views/settings/freightManager/editFreight"],resolve)),
+                    meta: {
+                      title: "编辑运费设置",
+                      group: "freightManager",
+                      level: 2,
+                    },
+                  },
+                  {
+                    path: "viewFreight",
+                    name: "viewFreight",
+                    component: resolve=>(require(["@views/settings/freightManager/viewFreight"],resolve)),
+                    meta: {
+                      title: "查看运费设置",
+                      group: "freightManager",
                       level: 2,
                     },
                   },

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 09:59:23
+ * @LastEditTime: 2021-03-22 16:19:55
 -->
 <template>
 <div class="erp_table_container">
@@ -13,12 +13,9 @@
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">
-                        <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
-                            <Radio label="-1">全部</Radio>
-                            <Radio label="2">未审核</Radio>
-                            <Radio label="3">通过</Radio>
-                            <Radio label="4">未通过</Radio>
-                        </RadioGroup>
+                        <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
+                        <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
+                        <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
@@ -30,7 +27,8 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.fileStatus==0">审核</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="goNewProduct(row.id)" v-if="row.isDeveloped!=1&&row.status==1">开发</Button>
+                <!-- <Button type="warning" size="small" style="margin-right: 5px" @click="goApproval(row.id)" v-if="row.status==0">审核</Button> -->
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -41,26 +39,33 @@
             </template>
         </Table>
     </div>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
-    <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
+    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
 </div>
 </template>
 
 <script>
-import config from "@views/examine/tortExamine/productConfig";
+import ModalForm from "@components/public/form/modalForm";
+import config from "@views/sell/sellManager/sellConfig";
 import list from "@mixins/list";
 import {
-    GetDistributionReviewPage
-} from "@service/tortExamineService"
+    GetRecommendGoodsPage,
+    DelRecommendGoods
+} from "@service/sellService"
 
 export default {
-    name: "ChartingExamineList",
+    name: "SellList",
+    components: {
+        ModalForm,
+    },
     mixins: [config,list],
     data() {
         return {
             titleText: '',
+            titleText2: '',
             showModel: false,
+            showModel2: false,
             columns: this.getTableColumn(),
             data: [],
             pageData:{
@@ -71,21 +76,13 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
-            filter:"2",
-        }
-    },
-    watch:{
-        filter:{
-            handler(val){
-                this.GetDistributionReviewPage();
-            }
         }
     },
     methods: {
-        GetDistributionReviewPage() {
-            this.pageData['assignmentStatus'] = this.filter;
+        GetRecommendGoodsPage() {
+            this.pageData['status'] = -1;
             return new Promise((resolve, reject) => {
-                GetDistributionReviewPage(this.pageData).then(res => {
+                GetRecommendGoodsPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -96,68 +93,53 @@ export default {
                 });
             });
         },
+        clearFormData() {
+
+        },
         showPop(flag, row) {
             if (row && row.id) {
-                this.selectData = row;
-                this.titleText = '派店';
+                this.formValidate['id'] = row.id;
+                this.titleText = '编辑';
+            } else {
+                this.titleText = '开发';
             }
             this.showModel = flag;
         },
-        goTortExamine(row) {
-            this.$router.push({name:'addChartingExamine',query: {id:row.id}});    
-        },
-        goViewTortExamine(row){
-            this.$router.push({path:'/examine/tortExamine/viewTortExamine',query: {id:row.id}});        
-        },
-        save(data) {
-            var params = {};
-            params = {
-                goodsName:this.selectData.goodsName,
-                goodsId:this.selectData.goodsId,
-                goodsCode:this.selectData.goodsCode,
-                status:this.selectData.status,
-                isSelect:data.isSelect,
-                remark:data.remark,
-                isMain:data.isMain,
-            }
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    return new Promise((resolve, reject) => {
-                        this.$FromLoading.show();
-                        CreatePieShop(params).then(res => {
-                            if (res.result.code == 200) {
-                                this.$FromLoading.hide();
-                                this.$Message.info('温馨提示：保存成功！');
-                                this.GetDistributionReviewPage();
-                            } else if (res.result.code == 400) {
-                                this.$Message.error({
-                                    background: true,
-                                    content: res.result.msg
-                                });
-                                this.$FromLoading.hide();
-                            }
-                        });
-                    });   
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })
-        },
-        clearFormData(){
-            this.selectData = {};
+        save() {
+            this.showPop(false);
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetDistributionReviewPage();
+            this.GetRecommendGoodsPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetDistributionReviewPage();
+            this.GetRecommendGoodsPage();
+        },
+        clearFormData2() {},
+        goAdd(){
+            this.$router.push({name:'addFinishProduct'});
+        },
+        goEdit(){
+            if(this.activatedRow.id){
+                this.$router.push({name:'editFinishProduct',query: {id:this.activatedRow.id}});
+            }
         },
         goDetail(id){
             if(id)
-            this.$router.push({name:'viewChartingExamine',query: {id:id}});
+            this.$router.push({name:'viewFinishProduct',query: {id:id}});
+        },
+        goApproval(id){
+            if(id)
+            this.$router.push({name:'approvalFinishProduct',query: {id:id}});
+        },
+        goNewProduct(id){
+            if(id)
+            this.$router.push({name:'sellNewProduct',query: {id:id}});    
+        },
+        showResearchModel(flag){
+            this.$router.push({name:'ResearchDevelopNewProducts'}); 
         },
         changeCoulmns(data){
             let datas = [];
@@ -177,7 +159,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetDistributionReviewPage();
+            this.GetRecommendGoodsPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -242,57 +224,58 @@ export default {
                 title: '产品编码',
                 key: 'code',
                 resizable: true,
-                width: 313,
+                width: 200,
             },
             {
                 title: '产品名称',
                 key: 'name',
                 render: (h, params) => {
-                    return h("span", {// 创建的标签名
-                    // 执行的一些列样式或者事件等操作
+                    return h("span", {
                     style: {
                         display: "inline-block",
                         color: "#2d8cf0"
                     },
                     on:{
-                        click:()=>{// 这里给了他一个打印事件，下面有展示图
+                        click:()=>{
                             this.goDetail(params.row.id)    
                         }
                     }
-                    },params.row.name);//  展示的内容
+                    },params.row.name);
                 },
-                width: 310,
+                width: 200,
                 resizable: true,
             },
             {
                 title: '类目',
                 key: 'categoryName',
                 resizable: true,
-                width: 186,
+                width: 100
             },
-            // {
-            //     title:'平台名称',
-            //     key: 'platformName',
-            //     resizable: true,
-            // },
-            // {
-            //     title:'店铺',
-            //     key: 'storeName',
-            //     resizable: true,
-            // },
             {
-                title: '状态',
-                key: 'assignmentStatus',
+                title: '参考链接',
+                key: 'urlOne',
+                resizable: true,
+                width: 150
+            },
+            {
+                title:'商户',
+                key: 'merchantName',
+                resizable: true,
+                width: 148
+            },
+            {
+                title: '审核状态',
+                key: 'status',
                 render: (h, params) => {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.assignmentStatus==3 ? "#19be6b": params.row.assignmentStatus == 2 ? "#ff9900":"#ed4014"
+                        color: params.row.status==1 ? "#19be6b": params.row.status == 0 ? "#ff9900":"#ed4014"
                     },
-                    },params.row.assignmentStatus==3 ?"通过": params.row.assignmentStatus==2 ? "未审核" : "未通过");
+                    },params.row.status == 1 ?"通过":params.row.status == 0 ? '未审核':"未通过");
                 },
+                width: 110,
                 resizable: true,
-                width: 100,
             },
             {
                 title: '创建者',
@@ -333,10 +316,70 @@ export default {
                 this.columns = this.getTableColumn();
             })
         },
+        sureDeleteConfirm(flag) {
+            if(flag){
+                this.$Modal.confirm({
+                    title: '温馨提示',
+                    content: '数据删除后将无法恢复！',
+                    onCancel: () => {
+                        this.$Message.info('取消');
+                    },
+                    onOk: () => {
+                        flag ? this.deletesData() : this.deleteData();
+                    },
+                });
+            } else {
+                if(this.activatedRow.id&&this.activatedRow.status==0){
+                    this.$Modal.confirm({
+                        title: '温馨提示',
+                        content: '数据删除后将无法恢复！',
+                        onCancel: () => {
+                            this.$Message.info('取消');
+                        },
+                        onOk: () => {
+                            flag ? this.deletesData() : this.deleteData();
+                        },
+                    });
+                } else {
+                    this.$Message.error('温馨提示：该数据无法删除！');
+                }   
+            }
+        },
+        deleteData(){
+            if(this.activatedRow.id){
+                this.loading = true;
+                return new Promise((resolve, reject) => {
+                    DelRecommendGoods({id:this.activatedRow.id}).then(res => {
+                        if (res.result.code == 200) {
+                            for(var i=0;i<this.selectedList.length;i++){
+                                for(var j=0;j<this.data.length;j++){
+                                    if(this.selectedList[i].id==this.data[j].id){
+                                        this.data.splice(j, 1);   
+                                    }
+                                }
+                            }
+                            this.$Message.info('温馨提示：删除成功！');
+                            if(this.data.length<1){
+                                this.pageData.skipCount-1;
+                            }
+                            this.GetRecommendGoodsPage();
+                            this.activatedRow = {};
+                            this.loading = false;
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                            this.loading = false;
+                        }
+                    });
+                });
+            } 
+        },
         setFilter(value){
             this.pageData.keyword=value;
             this.pageData.skipCount = 1;
-            this.GetDistributionReviewPage(); 
+            this.GetRecommendGoodsPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -345,11 +388,14 @@ export default {
                 data: this.data,
             });    
         }
-        
     },
     created(){
-        this.GetDistributionReviewPage();
-    }
+        this.GetRecommendGoodsPage();
+    },
+    activated() {
+        if(this.data.length)
+            this.GetRecommendGoodsPage();
+    },
 }
 </script>
 <style lang="less" scoped>

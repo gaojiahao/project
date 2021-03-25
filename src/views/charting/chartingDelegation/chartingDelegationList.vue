@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-24 16:02:37
+ * @LastEditTime: 2021-03-25 15:15:29
 -->
 <template>
 <div class="erp_table_container">
@@ -183,7 +183,7 @@ export default {
                     },
                     on:{
                         click:()=>{
-                            this.goDetail(params.row.gId)    
+                            this.goDetail(params.row.id)    
                         }
                     }
                     },params.row.name);
@@ -245,27 +245,27 @@ export default {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.assignmentStatus==1 ? "#19be6b": "#ed4014"
+                        color: params.row.assignmentStatus ==1 ? "#ff9900": params.row.assignmentStatus==3 ? "#19be6b" : params.row.assignmentStatus==4 ? "#ff9900" :"#ed4014"
                     },
-                    },params.row.assignmentStatus?"已委派":"未委派");
+                    },params.row.assignmentStatus ==1 ? "待制作": params.row.assignmentStatus==3 ? "已完成" : params.row.assignmentStatus==4 ? "待返工" :"未委派");
                 },
                 width:100,
                 resizable: true,
             },
-            {
-                title: '制图状态',
-                key: 'fileDistributionStatus',
-                render: (h, params) => {
-                    return h("span", {
-                    style: {
-                        display: "inline-block",
-                        color: params.row.fileDistributionStatus==1 ? "#19be6b": "#ed4014"
-                    },
-                    },params.row.fileDistributionStatus?"已完成":"未完成");
-                },
-                width:100,
-                resizable: true,
-            },
+            // {
+            //     title: '制图状态',
+            //     key: 'fileDistributionStatus',
+            //     render: (h, params) => {
+            //         return h("span", {
+            //         style: {
+            //             display: "inline-block",
+            //             color: params.row.fileDistributionStatus==1 ? "#19be6b": "#ed4014"
+            //         },
+            //         },params.row.fileDistributionStatus?"已完成":"未完成");
+            //     },
+            //     width:100,
+            //     resizable: true,
+            // },
             {
                 title: '委派人',
                 key: 'createdName',
@@ -487,7 +487,7 @@ export default {
         getDetail(id){
             this.loadingDetail = true;
             return new Promise((resolve, reject) => {
-                GetDistributionDetailPage({goodsId:id}).then(res => {
+                GetDistributionDetailPage({goodsId:id,fileDistributionStatus:-1}).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPageDetail = res.result.item.totalCount;

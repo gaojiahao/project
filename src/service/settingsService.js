@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-31 10:12:23
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 15:38:39
+ * @LastEditTime: 2021-03-25 12:20:34
  */
 /* 基础信息接口 */
 import $flyio from '@plugins/ajax';
@@ -707,6 +707,43 @@ export let GetMerchantInfoPage = (data = {}) => {
 export let GetMerchantInfoById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetMerchantInfoById',
+    data: data
+  })
+};
+//运费设置
+export let CreateTransportFormula = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateTransportFormula',
+    data: data
+  })
+};
+export let UpdateTransportFormula = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateTransportFormula',
+    data: data
+  })
+};
+export let TransportFormulaByID = (data = {}) => {
+  return $flyio.post({
+    url: '/api/TransportFormulaByID',
+    data: data
+  })
+};
+export let DeleteTransportFormula = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DeleteTransportFormula',
+    data: data
+  })
+};
+export let TransportFormulaList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/TransportFormulaList',
+    data: data
+  })
+};
+export let TransportFormulaPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/TransportFormulaPage',
     data: data
   })
 };

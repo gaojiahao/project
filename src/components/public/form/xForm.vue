@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 10:18:57
+ * @LastEditTime: 2021-03-25 17:14:15
 -->
 <template>
 <div class="content">
@@ -27,7 +27,7 @@
             </FormItem>
             <!--数值控件-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-if="formConfig[index]&&formConfig[index]['type']=='numbers'">
-                <InputNumber v-model="formValidate[index]" :style="{width:'200px'}" :editable="formConfig[index]['disabled']" :precision="formConfig[index]['precision']" v-show="!formConfig[index]['hidden']"></InputNumber><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
+                <InputNumber :max="999999999999999999" :min="0" v-model="formValidate[index]" :style="{width:'200px'}" :editable="formConfig[index]['disabled']" :precision="formConfig[index]['precision']" v-show="!formConfig[index]['hidden']"></InputNumber><span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <!--单选框-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='radio'">
@@ -315,7 +315,7 @@ export default {
         },
         radioOnChangeFun(data,event){
             this.$emit('on-change-'+data,{data:data,event:event});
-        }
+        },
     },
     mounted() {
         this.initClick();

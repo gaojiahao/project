@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-04 09:22:43
+ * @LastEditTime: 2021-03-25 11:16:40
  */
 export default {
     data() {
@@ -18,7 +18,7 @@ export default {
       return {
         formConfig:{
           longName:{
-            name:'全称',
+            name:'英文名称',
             type:'text',
             length:50
           },
@@ -52,17 +52,27 @@ export default {
           },
         },
         formValidate: {
+          chinaName:'',
           longName: '',
           abbreviation:'',
-          chinaName:'',
           areaLevel:'',
           directLevel:'',
         },
         ruleValidate: {
           longName: [{
               required: true,
-              message: '请输入全称',
+              message: '请输入英文名称',
               trigger: 'blur'
+          }],
+          abbreviation: [{
+            required: true,
+            message: '请输入简称',
+            trigger: 'blur'
+          }],
+          chinaName: [{
+            required: true,
+            message: '请输入中文名称',
+            trigger: 'blur'
           }],
           areaLevel: [{
             required: true,

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 11:12:57
+ * @LastEditTime: 2021-03-25 17:29:36
 -->
 <template>
 <div class="erp_table_container">
@@ -40,16 +40,15 @@
 </template>
 
 <script>
-import config from "@views/settings/logisticsManager/countryManager/countryListConfig";
+import config from "@views/settings/freightManager/freightListConfig";
 import list from "@mixins/list";
 import {
-    GetAreaPage,
-    UpdateArea,
-    DelArea,
+    TransportFormulaPage,
+    DeleteTransportFormula
 } from "@service/settingsService"
 
 export default {
-    name: "CountryList",
+    name: "freightList",
     mixins: [config,list],
     data() {
         return {
@@ -63,16 +62,16 @@ export default {
                 skipCount: 1,
                 skipTotal: 15,
                 maxResultCount: 15,
-                keyword:'',
+                keyWord:'',
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
         }
     },
     methods: {
-        GetAreaPage() {
+        TransportFormulaPage() {
             return new Promise((resolve, reject) => {
-                GetAreaPage(this.pageData).then(res => {
+                TransportFormulaPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -88,24 +87,24 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetAreaPage();
+            this.TransportFormulaPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetAreaPage();
+            this.TransportFormulaPage();
         },
         goAdd(){
-            this.$router.push({name:'addCountry'});
+            this.$router.push({name:'addFreight'});
         },
         goEdit(){
             if(this.activatedRow.id){
-                this.$router.push({name:'editCountry',query: {id:this.activatedRow.id}});
+                this.$router.push({name:'editFreight',query: {id:this.activatedRow.id}});
             }
         },
         goDetail(id){
             if(id)
-                this.$router.push({name:'viewCountry',query: {id:id}});
+                this.$router.push({name:'viewFreight',query: {id:id}});
         },
         checkALl(){
             this.$nextTick(function () {
@@ -130,7 +129,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetAreaPage();
+            this.TransportFormulaPage();
         },
         getTableColumn(){
             var data = [{
@@ -141,8 +140,8 @@ export default {
                     resizable: true,
                 },
                 {
-                    title: '中文名称',
-                    key: 'chinaName',
+                    title: '汇总地区名称',
+                    key: 'sumName',
                     resizable: true,
                     width: 270,
                     render: (h, params) => {
@@ -160,26 +159,26 @@ export default {
                     }
                 },
                 {
-                    title: '英文名称',
-                    key: 'longName',
+                    title: '汇总地区简称',
+                    key: 'sumCode',
                     resizable: true,
                     width:279,
                 },
                 {
-                    title: '简称',
-                    key: 'abbreviation',
+                    title: '是否带电',
+                    key: 'isElectrified',
                     resizable: true,
-                    width: 230,
+                    width: 110,
                 },
                 {
-                    title: '层级',
-                    key: 'areaLevel',
+                    title: '单品最小重量',
+                    key: 'minWeight',
                     resizable: true,
-                    width: 80,
+                    width: 200,
                 },
                 {
-                    title: '直观级别州，市',
-                    key: 'directLevel',
+                    title: '单品最大重量',
+                    key: 'maxWeight',
                     resizable: true,
                     width: 200,
                 },
@@ -218,7 +217,7 @@ export default {
             if(this.activatedRow.id){
                 this.loading = true;
                 return new Promise((resolve, reject) => {
-                    DelArea({id:this.activatedRow.id}).then(res => {
+                    DeleteTransportFormula({id:this.activatedRow.id}).then(res => {
                         if (res.result.code == 200) {
                             for(var i=0;i<this.selectedList.length;i++){
                                 for(var j=0;j<this.data.length;j++){
@@ -231,7 +230,7 @@ export default {
                             if(this.data.length<1){
                                 this.pageData.skipCount-1;
                             }
-                            this.GetAreaPage();
+                            this.TransportFormulaPage();
                             this.activatedRow = {};
                             this.loading = false;
                         } else if (res.result.code == 400) {
@@ -246,9 +245,9 @@ export default {
             } 
         },
         setFilter(value){
-            this.pageData.keyword=value;
+            this.pageData.keyWord=value;
             this.pageData.skipCount = 1;
-            this.GetAreaPage(); 
+            this.TransportFormulaPage(); 
         },
         onDragDrop(first, end) {
             this.data.splice(
@@ -259,11 +258,11 @@ export default {
         },
     },
     created(){
-        this.GetAreaPage();
+        this.TransportFormulaPage();
     },
     activated() {
         if(this.data.length)
-            this.GetAreaPage();    
+            this.TransportFormulaPage();    
     },
 }
 </script>

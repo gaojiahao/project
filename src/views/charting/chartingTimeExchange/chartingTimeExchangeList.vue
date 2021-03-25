@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-24 16:13:20
+ * @LastEditTime: 2021-03-25 10:21:56
 -->
 <template>
 <div class="erp_table_container">
@@ -174,12 +174,12 @@ export default {
                 width: 200,
                 resizable: true,
             },
-            {
-                title: '委派完成日期',
-                key: 'endTime',
-                width: 160,
-                resizable: true,
-            },
+            // {
+            //     title: '委派完成日期',
+            //     key: 'endTime',
+            //     width: 160,
+            //     resizable: true,
+            // },
             {
                 title: '状态',
                 key: 'assignmentStatus',
@@ -192,12 +192,12 @@ export default {
                     },params.row.assignmentStatus?"待制作":"未委派");
                 },
                 resizable: true,
-                width:80
+                width:160
             },
             {
                 title: '创建者',
                 key: 'createdName',
-                width: 100,
+                width: 180,
                 resizable: true,
             },
             {
