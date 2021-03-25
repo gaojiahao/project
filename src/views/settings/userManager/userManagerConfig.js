@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-03 19:24:18
+ * @LastEditTime: 2021-03-24 14:25:18
  */
 export default {
   data() {
@@ -71,6 +71,17 @@ export default {
           type:'password',
           placeholder:'密码由6-20位数字加大小写字母特殊字符组成',
         },
+        isManager:{
+          name:'是否主管',
+          type:'radio',
+          dataSource:{
+            type:'static',
+            data:[
+              {name:'是',value:true},
+              {name:'否',value:false}
+            ],
+          }  
+        },
         enabled:{
           name:'是否启用',
           type:'radio',
@@ -110,6 +121,7 @@ export default {
         birthday:'',
         sex:1,
         password:'',
+        isManager:false,
         enabled:true,
         remark:'',
       },

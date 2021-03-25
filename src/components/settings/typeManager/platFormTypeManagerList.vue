@@ -249,7 +249,14 @@ export default {
             this.loading = true;
             GetEcommerceCategoryList(this.pageData).then(res => {
                 if(res.result.code==200){
-                    this.data = res.result.item.map((e,index)=>{
+                    // this.data = res.result.item.map((e,index)=>{
+                    //     e.title = e.name;
+                    //     e.parentId = e.parentID;
+                    //     e.code = e.id;
+                    //     return e;
+                    // });
+                    this.data = res.result.item;
+                    this.data = this.data.map((e,index)=>{
                         e.title = e.name;
                         e.parentId = e.parentID;
                         e.code = e.id;
@@ -261,7 +268,7 @@ export default {
         },
         async init(){
             await this.GetPlatformsList();
-            await this.GetEcommerceCategoryList();
+            //await this.GetEcommerceCategoryList();
         }
     },
     created() {

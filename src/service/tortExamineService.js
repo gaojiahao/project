@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-01-14 10:49:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-20 09:49:20
+ * @LastEditTime: 2021-03-24 18:13:16
  */
 import $flyio from '@plugins/ajax';
 //分页获取产品审核/销售审核/侵权审核
@@ -60,6 +60,12 @@ export let GetFileDistributionInfo = (data = {}) => {
 export let GetDistributionPage = (data = {}) => {
   return $flyio.post({
     url: '/api/GetDistributionPage',
+    data: data
+  })
+};
+export let GetDistributionDetailPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetDistributionDetailPage',
     data: data
   })
 };
@@ -136,6 +142,18 @@ export let GetGoodsFileById = (data = {}) => {
 export let GetDistributionAndRelation = (data = {}) => {
   return $flyio.post({
     url: '/api/GetDistributionAndRelation',
+    data: data
+  })
+};
+export let GetReviewActionPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetReviewActionPage',
+    data: data
+  })
+};
+export let ConfirmFileDistribution = (data = {}) => {
+  return $flyio.post({
+    url: '/api/ConfirmFileDistribution',
     data: data
   })
 };

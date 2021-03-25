@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 16:03:30
+ * @LastEditTime: 2021-03-25 09:47:46
 -->
 <template>
 <div class="erp_table_container">
@@ -15,9 +15,9 @@
                     <div class="filter-button">
                         <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
                             <Radio label="-1">全部</Radio>
-                            <Radio label="0">未审核</Radio>
-                            <Radio label="1">通过</Radio>
-                            <Radio label="2">未通过</Radio>
+                            <Radio label="2">未审核</Radio>
+                            <Radio label="3">通过</Radio>
+                            <Radio label="4">未通过</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -71,7 +71,7 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
-            filter:"0",
+            filter:"2",
         }
     },
     watch:{
@@ -83,7 +83,7 @@ export default {
     },
     methods: {
         GetDistributionReviewPage() {
-            this.pageData['fileStatus'] = this.filter;
+            this.pageData['assignmentStatus'] = this.filter;
             return new Promise((resolve, reject) => {
                 GetDistributionReviewPage(this.pageData).then(res => {
                     if(res.result.code==200){

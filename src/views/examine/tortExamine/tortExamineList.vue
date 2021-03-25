@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 09:46:11
+ * @LastEditTime: 2021-03-24 11:30:42
 -->
 <template>
 <div class="erp_table_container">
@@ -31,7 +31,7 @@
             </template>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.tortStatus==0">审核</Button>
-                <Button size="small" style="margin-right: 5px" @click="showDetail(row)">明细</Button>
+                <Button size="small" style="margin-right: 5px" @click="showModalDetail(true)">明细</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -45,7 +45,7 @@
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
-    <ModalDetail @show-modal-detail="showModalDetail" ref="showModalDetail"></ModalDetail>
+    <ModalDetail :showModelDetail='showModelDetail' @show-modal-detail="showModalDetail" ref="showModalDetail"></ModalDetail>
 </div>
 </template>
 
@@ -358,9 +358,6 @@ export default {
                 data: this.data,
             });    
         },
-        showDetail(){
-            
-        }
     },
     created(){
         this.GetGoodsTortReviewPage();

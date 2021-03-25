@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 10:16:52
+ * @LastEditTime: 2021-03-24 09:46:15
 -->
 <template>
 <div class="erp_table_container">
@@ -374,7 +374,7 @@ export default {
             })
         },
         deleteData(){
-            if(this.activatedRow.id){
+            if(this.activatedRow.id&&!this.activatedRow.saleStatus){
                 this.loading = true;
                 return new Promise((resolve, reject) => {
                     DelPrepGoods({id:this.activatedRow.id}).then(res => {
@@ -402,7 +402,9 @@ export default {
                         }
                     });
                 });
-            } 
+            } else {
+                this.$Message.info('温馨提示：该数据无法删除！');    
+            }
         },
         setFilter(value){
             this.pageData.keyword = value;
@@ -551,7 +553,12 @@ export default {
         deletesData(){
             var data = [];
             for(var i=0;i<this.selectedList.length;i++){
-                data.push(this.selectedList[i]['id']);
+                if(this.selectedList[i]['saleStatus']){
+                    this.$Message.info('温馨提示：产品--'+ this.selectedList[i]['name'] +',无法删除！');
+                    return ;        
+                } else{
+                    data.push(this.selectedList[i]['id']);
+                }
             }
             data = data.toString();
             this.loading = true;

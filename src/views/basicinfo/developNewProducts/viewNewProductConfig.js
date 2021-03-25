@@ -508,20 +508,20 @@ export default {
           trigger: 'change',
           validator: supplierIdSizeVali
         }],
-        purchasePrices:[{ 
-          // required: true, 
-          // type: 'string',
-          message: '请输入采购单价', 
-          // trigger: 'blur',
-          trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
-        }],
-        minQuantity:[{ 
-          // required: true, 
-          // type: 'string',
-          message: '请输入最小采购量', 
-          // trigger: 'blur',
-          trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
-        }],
+        // purchasePrices:[{ 
+        //   // required: true, 
+        //   // type: 'string',
+        //   message: '请输入采购单价', 
+        //   // trigger: 'blur',
+        //   trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+        // }],
+        // minQuantity:[{ 
+        //   // required: true, 
+        //   // type: 'string',
+        //   message: '请输入最小采购量', 
+        //   // trigger: 'blur',
+        //   trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+        // }],
         logisticsLabel:[{
           required: true, 
           message: '请选择物流属性', 

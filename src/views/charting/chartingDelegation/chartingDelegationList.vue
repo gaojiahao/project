@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 20:30:15
+ * @LastEditTime: 2021-03-24 16:02:37
 -->
 <template>
 <div class="erp_table_container">
@@ -17,8 +17,8 @@
                             <Radio label="-1">全部</Radio>
                             <Radio label="0">未委派</Radio>
                             <Radio label="1">待制作</Radio>
-                            <Radio label="2">已完成</Radio>
-                            <Radio label="3">待返工</Radio>
+                            <Radio label="3">已完成</Radio>
+                            <Radio label="4">待返工</Radio>
                         </RadioGroup>
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
@@ -31,7 +31,8 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.gId,row.assignmentStatus)" v-if="!row.assignmentStatus">委派制图</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id,row.assignmentStatus)" v-if="!row.assignmentStatus">委派制图</Button>
+                <Button size="small" style="margin-right: 5px" @click="showModalDetail(true,row.id)" v-if="row.assignmentStatus">明细</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -45,6 +46,7 @@
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData" ref="form"></ModalForm>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
+    <ModalDetail :total="totalPageDetail" :columns="columnsDetail" :pageData="pageDataDetail" :data="dataDetail" :loading="loadingDetail" :showModelDetail='showModelDetail' @show-modal-detail="showModalDetail" ref="showModalDetail"></ModalDetail>
 </div>
 </template>
 
@@ -53,6 +55,7 @@ import config from "@views/charting/chartingDelegation/chartingDelegationCongfig
 import list from "@mixins/list";
 import {
     GetDistributionPage,
+    GetDistributionDetailPage
 } from "@service/tortExamineService"
 
 export default {
@@ -73,6 +76,7 @@ export default {
             },
             totalPage:0,
             filter:"0",
+            columnsDetail: this.getTableColumnDetail(),
         }
     },
     watch:{
@@ -84,8 +88,7 @@ export default {
     },
     methods: {
         GetDistributionPage() {
-            this.pageData['AssignmentStatus']= this.filter;
-            this.pageData['FileDistributionStatus']= -1;
+            this.pageData['assignmentStatus']= this.filter;
             return new Promise((resolve, reject) => {
                 GetDistributionPage(this.pageData).then(res => {
                     if(res.result.code==200){
@@ -168,7 +171,6 @@ export default {
                 title: '产品编码',
                 key: 'code',
                 resizable: true,
-                width: 240,
             },
             {
                 title: '产品名称',
@@ -186,57 +188,56 @@ export default {
                     }
                     },params.row.name);
                 },
-                width: 269,
                 resizable: true,
             },
-            {
-                title: '委派完成日期',
-                key: 'endTime',
-                width: 140,
-                resizable: true,
-                render: (h, params) => {
-                    return h("span", {
-                        style: {
-                            textAlign: "center",
-                            color: params.row.assignmentStatus==1 ? "#19be6b": "#ed4014"
-                        },
-                    },params.row.assignmentStatus ? params.row.startTime+'-'+params.row.endTime:'/');
-                },
-            },
-            {
-                title: '实际完成日期',
-                key: 'expectedTime',
-                width: 140,
-                resizable: true,
-                render: (h, params) => {
-                    return h("span", {
-                    },params.row.assignmentStatus&&params.row.expectedTime?params.row.expectedTime:"");
-                },
-            },
-            {
-                title: '是否逾期',
-                key: 'overdue',
-                width: 100,
-                resizable: true,
-                render: (h, params) => {
-                    return h("span", {
-                        style: {
-                        display: "inline-block",
-                        color: params.row.overdue>0 ? "#ed4014": "#ed4014"
-                    },
-                    },params.row.assignmentStatus&&params.row.overdue>0?"逾期":"");
-                },
-            },
-            {
-                title: '逾期天数',
-                key: 'overdue',
-                width: 100,
-                resizable: true,
-                render: (h, params) => {
-                    return h("span", {
-                    },params.row.assignmentStatus&&params.row.overdue>0?params.row.overdue:"");
-                },
-            },
+            // {
+            //     title: '委派完成日期',
+            //     key: 'endTime',
+            //     width: 140,
+            //     resizable: true,
+            //     render: (h, params) => {
+            //         return h("span", {
+            //             style: {
+            //                 textAlign: "center",
+            //                 color: params.row.assignmentStatus==1 ? "#19be6b": "#ed4014"
+            //             },
+            //         },params.row.assignmentStatus ? params.row.startTime+'-'+params.row.endTime:'/');
+            //     },
+            // },
+            // {
+            //     title: '实际完成日期',
+            //     key: 'expectedTime',
+            //     width: 140,
+            //     resizable: true,
+            //     render: (h, params) => {
+            //         return h("span", {
+            //         },params.row.assignmentStatus&&params.row.expectedTime?params.row.expectedTime:"");
+            //     },
+            // },
+            // {
+            //     title: '是否逾期',
+            //     key: 'overdue',
+            //     width: 100,
+            //     resizable: true,
+            //     render: (h, params) => {
+            //         return h("span", {
+            //             style: {
+            //             display: "inline-block",
+            //             color: params.row.overdue>0 ? "#ed4014": "#ed4014"
+            //         },
+            //         },params.row.assignmentStatus&&params.row.overdue>0?"逾期":"");
+            //     },
+            // },
+            // {
+            //     title: '逾期天数',
+            //     key: 'overdue',
+            //     width: 100,
+            //     resizable: true,
+            //     render: (h, params) => {
+            //         return h("span", {
+            //         },params.row.assignmentStatus&&params.row.overdue>0?params.row.overdue:"");
+            //     },
+            // },
             {
                 title: '委派状态',
                 key: 'assignmentStatus',
@@ -293,9 +294,94 @@ export default {
                 title: '操作',
                 slot: 'action',
                 align: 'center',
-                width: 150,
+                width: 250,
                 resizable: true,
             }
+        ];
+            return columns2;
+        },
+        getTableColumnDetail(){
+            var columns2 = [
+            {
+                type: 'index',
+                width: 60,
+                align: 'center',
+                title: '序号',
+                resizable: true,
+            },
+            {
+                title: '制作人',
+                key: 'userName',
+                width: 120,
+                resizable: true,
+            },
+            {
+                title: '委派时间',
+                key: 'createdOn',
+                width: 140,
+                resizable: true,
+            },
+            {
+                title: '委派完成日期',
+                key: 'endTime',
+                width: 406,
+                resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                        style: {
+                            textAlign: "center",
+                        },
+                    },params.row.startTime+'-'+params.row.endTime);
+                },
+            },
+            {
+                title: '实际完成日期',
+                key: 'finishTime',
+                width: 140,
+                resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                    },params.row.finishTime);
+                },
+            },
+            {
+                title: '是否逾期',
+                key: 'overdue',
+                width: 100,
+                resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                        style: {
+                        display: "inline-block",
+                        color: params.row.overdue>0 ? "#ed4014": "#ed4014"
+                    },
+                    },params.row.overdue>0?"逾期":"");
+                },
+            },
+            {
+                title: '逾期天数',
+                key: 'overdue',
+                width: 100,
+                resizable: true,
+                render: (h, params) => {
+                    return h("span", {
+                    },params.row.overdue>0?params.row.overdue:"");
+                },
+            },
+            {
+                title: '制图状态',
+                key: 'status',
+                render: (h, params) => {
+                    return h("span", {
+                    style: {
+                        display: "inline-block",
+                        color: params.row.status ? "#19be6b": "#ed4014"
+                    },
+                    },params.row.status?"已完成":"未完成");
+                },
+                width:100,
+                resizable: true,
+            },
         ];
             return columns2;
         },
@@ -398,6 +484,20 @@ export default {
             this.pageData.skipCount = 1;
             this.GetDistributionPage(); 
         },
+        getDetail(id){
+            this.loadingDetail = true;
+            return new Promise((resolve, reject) => {
+                GetDistributionDetailPage({goodsId:id}).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPageDetail = res.result.item.totalCount;
+                            this.dataDetail = res.result.item.items;
+                            this.loadingDetail = false;
+                        });
+                    }
+                });
+            });    
+        }
     },
     created(){
         this.GetDistributionPage();    

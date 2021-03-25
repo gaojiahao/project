@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 17:33:06
+ * @LastEditTime: 2021-03-24 10:13:04
 -->
 <template>
 <div>
@@ -591,11 +591,7 @@ export default {
                 return new Promise((resolve, reject) => {
                     GetPrepGoodsById({id:this.preId}).then(res => {
                         if (res.result.code == 200) {
-                            if(res.result.item.saleStatus){
-                                this.$router.push({name:'ViewNewProduct',query: {id:this.preId}});
-                            } else {
-                                this.$router.push({name:'editNewProduct',query: {id:this.preId}});    
-                            }
+                            this.$router.push({name:'editNewProduct',query: {id:this.preId}});    
                         }
                     });
                 });    
@@ -606,11 +602,7 @@ export default {
                 return new Promise((resolve, reject) => {
                     GetPrepGoodsById({id:this.nextId}).then(res => {
                         if (res.result.code == 200) {
-                            if(res.result.item.saleStatus){
-                                this.$router.push({name:'ViewNewProduct',query: {id:this.nextId}});
-                            } else {
-                                this.$router.push({name:'editNewProduct',query: {id:this.nextId}});    
-                            }
+                            this.$router.push({name:'editNewProduct',query: {id:this.nextId}});    
                         }
                     });
                 });    

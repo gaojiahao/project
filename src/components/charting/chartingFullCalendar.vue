@@ -1,11 +1,11 @@
 <template>
   <div style="display:flex;">
-    <div id='external-events' style="    margin: 20px 0 20px 20px;" v-if="eventInfo.id">
+    <div id='external-events' style="    margin: 20px 0 20px 20px;">
       <p>
         <strong>任务信息</strong>
       </p>
 
-      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+      <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event' v-if="eventInfo.id">
         <div class='fc-event-main'>产品名称：{{eventInfo.goodsName}}</div>
          <div class='fc-event-main'>制作类型：{{eventInfo.fileTypeName}}</div>
         <div class='fc-event-main'>制作人员：{{eventInfo.userName}}</div>
@@ -13,7 +13,7 @@
         <div class='fc-event-main'>预计完成时间：{{eventInfo.endTime}}</div>
         <!-- <div class='fc-event-main'>任务1</div> -->
       </div>
-      <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight" style="float:right">删除</Button>
+      <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm" class="marginRight" style="float:right" v-if="eventInfo.id">删除</Button>
       <!-- <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
         <div class='fc-event-main'>任务2</div>
       </div>

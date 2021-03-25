@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 11:17:23
+ * @LastEditTime: 2021-03-24 15:28:29
  */
 import $flyio from '@plugins/ajax';
 
@@ -431,17 +431,17 @@ export default {
           //   message: '请选择是否带包装',
           //   trigger: 'change'
           // }],
-          weight:[{ 
-            required: true,
-            // type: 'number',
-            message: '请输入正确的商品重量', 
-            // trigger: 'blur',
-            // transform(value) {
-            //   return Number(value);
-            // },
-            // validator: weightVali
-            trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
-          }],
+          // weight:[{ 
+          //   required: true,
+          //   // type: 'number',
+          //   message: '请输入正确的商品重量', 
+          //   // trigger: 'blur',
+          //   // transform(value) {
+          //   //   return Number(value);
+          //   // },
+          //   // validator: weightVali
+          //   trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+          // }],
           // productSize: [{ 
           //   required: true, 
           //   type: 'string',
@@ -484,20 +484,20 @@ export default {
             trigger: 'change',
             validator: supplierIdSizeVali
           }],
-          purchasePrices:[{ 
-            required: true, 
-            // type: 'string',
-            message: '请输入采购单价', 
-            // trigger: 'blur',
-            trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
-          }],
-          minQuantity:[{ 
-            required: true, 
-            // type: 'string',
-            message: '请输入最小采购量', 
-            // trigger: 'blur',
-            trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
-          }],
+          // purchasePrices:[{ 
+          //   required: true, 
+          //   // type: 'string',
+          //   message: '请输入采购单价', 
+          //   // trigger: 'blur',
+          //   trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+          // }],
+          // minQuantity:[{ 
+          //   required: true, 
+          //   // type: 'string',
+          //   message: '请输入最小采购量', 
+          //   // trigger: 'blur',
+          //   trigger:'change', pattern:/^(([1-9]\d{0,3})|0)(\.\d{0,2})?$/,
+          // }],
           logisticsLabel:[{
             required: true, 
             message: '请选择物流属性', 

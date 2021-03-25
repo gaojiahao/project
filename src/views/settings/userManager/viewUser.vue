@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-25 11:55:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-06 16:53:41
+ * @LastEditTime: 2021-03-24 14:28:03
 -->
 <template>
 <div class="add_store">
@@ -95,6 +95,7 @@ export default {
                             birthday:res.result.item.birthday,
                             sex:res.result.item.sex,
                             password:res.result.item.password,
+                            isManager:res.result.item.isManager,
                             enabled:res.result.item.enabled,
                             remark:res.result.item.remark,
                             userRoleId:res.result.item.userRoleId,

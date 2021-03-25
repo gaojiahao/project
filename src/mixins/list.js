@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-18 14:29:46
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-08 09:59:14
+ * @LastEditTime: 2021-03-24 15:33:10
  */
 import ModalForm from "@components/public/form/modalForm";
 import SeniorFilter from "@components/public/filter/seniorFilter";
@@ -30,7 +30,18 @@ export default {
             srcData:{},
             selectedList:[],
             activatedRow:{},
-            isMult:false
+            isMult:false,
+            showModelDetail:false,
+            pageDataDetail:{
+                skipCount: 1,
+                skipTotal: 15,
+                maxResultCount: 15,
+                keyword:'',
+                pageSizeOpts:[15,50,200],    
+            },
+            totalPageDetail:0,
+            dataDetail:[],
+            loadingDetail:true,
         }
     },
     methods: {
@@ -134,6 +145,11 @@ export default {
             } else {
                 this.columns.splice(0, 1);
             } 
+        },
+        showModalDetail(value,id){
+            this.showModelDetail = value;
+            if(value)
+                this.getDetail(id);   
         }
     },
     created(){

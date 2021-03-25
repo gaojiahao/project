@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 17:40:53
+ * @LastEditTime: 2021-03-24 15:28:46
  */
 import $flyio from '@plugins/ajax';
 
@@ -457,12 +457,12 @@ export default {
           //   message: '请选择是否带包装',
           //   trigger: 'change'
           // }],
-          weight:[{ 
-            // required: true,
-            message: '请输入正确的商品重量', 
-            // validator: weightVali,
-            trigger:'change',
-          }],
+          // weight:[{ 
+          //   // required: true,
+          //   message: '请输入正确的商品重量', 
+          //   // validator: weightVali,
+          //   trigger:'change',
+          // }],
           // productSize: [{ 
           //   required: true, 
           //   type: 'string',
@@ -500,18 +500,18 @@ export default {
             trigger: 'change',
             validator: supplierIdSizeVali
           }],
-          purchasePrices:[{ 
-            // required: true, 
-            message: '请输入采购单价', 
-            trigger:'change',
-            // validator: purchasePricesVali
-          }],
-          minQuantity:[{ 
-            // required: true, 
-            message: '请输入最小采购量', 
-            trigger:'change',
-            // validator: minQuantityVali
-          }],
+          // purchasePrices:[{ 
+          //   // required: true, 
+          //   message: '请输入采购单价', 
+          //   trigger:'change',
+          //   // validator: purchasePricesVali
+          // }],
+          // minQuantity:[{ 
+          //   // required: true, 
+          //   message: '请输入最小采购量', 
+          //   trigger:'change',
+          //   // validator: minQuantityVali
+          // }],
           logisticsLabel:[{
             required: true, 
             message: '请选择物流属性', 

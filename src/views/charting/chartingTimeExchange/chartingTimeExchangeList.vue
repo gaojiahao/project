@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:23:25
+ * @LastEditTime: 2021-03-24 16:13:20
 -->
 <template>
 <div class="erp_table_container">
@@ -24,7 +24,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goChangeTime(row.gId)">调换</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goChangeTime(row.id)">调换</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -67,8 +67,7 @@ export default {
     },
     methods: {
         GetPrepGoodsPage() {
-            this.pageData['AssignmentStatus']= 1;
-            this.pageData['FileDistributionStatus']= -1;
+            this.pageData['assignmentStatus']= 1;
             return new Promise((resolve, reject) => {
                 GetDistributionPage(this.pageData).then(res => {
                     if(res.result.code==200){

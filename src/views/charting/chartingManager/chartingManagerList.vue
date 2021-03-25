@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 18:05:57
+ * @LastEditTime: 2021-03-24 19:41:59
 -->
 <template>
 <div class="erp_table_container">
@@ -31,8 +31,10 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true)" v-if="row.status==0">确认</Button>
-                <Button type="success" size="small" style="margin-right: 5px" @click="goUpload(row)" v-if="row.status==0">上传</Button>
+                <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true,row)" v-if="row.status==0">确认</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="goUpload(row)" v-if="row.status==1">上传</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="goUpload(row)" v-if="row.status==2">上传</Button>
+                <Button type="success" size="small" style="margin-right: 5px" @click="goUpload(row)" v-if="row.status==3">上传</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -53,7 +55,8 @@
 import config from "@views/charting/chartingManager/chartingDelegationCongfig";
 import list from "@mixins/list";
 import {
-    GetDistributionPage,
+    GetDistributionDetailPage,
+    ConfirmFileDistribution
 } from "@service/tortExamineService"
 
 export default {
@@ -82,16 +85,16 @@ export default {
     watch:{
         filter:{
             handler(val){
-                this.GetFileDistributionPage();
+                this.GetDistributionDetailPage();
             }
         }
     },
     methods: {
-        GetFileDistributionPage() {
-            this.pageData['assignmentStatus']= this.filter;
-            this.pageData['fileDistributionStatus']= -1;
+        GetDistributionDetailPage() {
+            this.pageData['fileDistributionStatus']= this.filter;
+            this.loading = true;
             return new Promise((resolve, reject) => {
-                GetDistributionPage(this.pageData).then(res => {
+                GetDistributionDetailPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -106,6 +109,7 @@ export default {
 
         },
         showPop(flag, row) {
+            this.formValidate = {...row};
             this.showModel = flag;
         },
         showPop2(flag, row) {
@@ -118,7 +122,18 @@ export default {
             this.showModel2 = flag;
         },
         save() {
-
+            var parmas = [];
+            parmas['formValidate']=this.formValidate['formValidate'];
+            parmas['id']=this.formValidate['id'];
+            return new Promise((resolve, reject) => {
+                ConfirmFileDistribution({...parmas}).then(res => {
+                    if(res.result.code==200){
+                        this.$Message.info('温馨提示：保存成功！');
+                        this.showModel = false;
+                        this.GetDistributionDetailPage();
+                    }
+                });
+            });    
         },
         goAdd(){
             this.$router.push({name:'AddNewProduct'});
@@ -217,9 +232,8 @@ export default {
                     return h("span", {
                         style: {
                             textAlign: "center",
-                            color: params.row.assignmentStatus==1 ? "#19be6b": "#ed4014"
                         },
-                    },params.row.assignmentStatus ? params.row.startTime+'-'+params.row.endTime:'/');
+                    },params.row.startTime+'-'+params.row.endTime);
                 },
             },
             {
@@ -231,9 +245,8 @@ export default {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.expectedTime==0? "#19be6b": "#ed4014"
                     },
-                    },['2'].indexOf(params.row.assignmentStatus)!=-1 ? params.row.finishTime:"/");
+                    },[2,3].indexOf(params.row.status)!=-1 ? params.row.finishTime:"/");
                 },
             },
             {
@@ -271,9 +284,9 @@ export default {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.assignmentStatus ==1 ? "#ff9900": params.row.assignmentStatus==2 ? "#19be6b" : params.row.assignmentStatus==3 ? "#ff9900" :"#ed4014"
+                        color: params.row.status ==1 ? "#ff9900": params.row.status==2 ? "#19be6b" : params.row.status==3 ? "#ff9900" :"#ed4014"
                     },
-                    },params.row.assignmentStatus ==1 ? "未完成":  params.row.assignmentStatus==2 ? "已完成" : params.row.assignmentStatus==3 ? "待返工":"待确认");
+                    },params.row.status ==1 ? "未完成":  params.row.status==2 ? "已完成" : params.row.status==3 ? "待返工":"待确认");
                 },
                 width: 80,
                 resizable: true,
@@ -332,12 +345,12 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetFileDistributionPage();
+            this.GetDistributionDetailPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetFileDistributionPage();
+            this.GetDistributionDetailPage();
         },
         changeCoulmns(data){
             let datas = [];
@@ -357,7 +370,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetFileDistributionPage();
+            this.GetDistributionDetailPage();
         },
         checkALl(){
             this.$nextTick(function () {
@@ -367,15 +380,26 @@ export default {
         setFilter(value){
             this.pageData.keyword = value;
             this.pageData.skipCount = 1;
-            this.GetFileDistributionPage();
+            this.GetDistributionDetailPage();
         },
+        ConfirmFileDistribution(id){
+            return new Promise((resolve, reject) => {
+                ConfirmFileDistribution(this.pageData).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            debugger
+                        });
+                    }
+                });
+            });
+        }
     },
     created(){
-        this.GetFileDistributionPage();    
+        this.GetDistributionDetailPage();    
     },
     activated() {
         if(this.data.length)
-            this.GetFileDistributionPage();
+            this.GetDistributionDetailPage();
     }
 }
 </script>

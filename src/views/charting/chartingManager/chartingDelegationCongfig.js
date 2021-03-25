@@ -4,21 +4,20 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 14:53:47
+ * @LastEditTime: 2021-03-25 09:43:58
  */
 export default {
   data() {
     return {
       formConfig:{
-        date:{
-          name:"时间",
-          type:"dateTimes",
-          disabled:true,
-        },
-        shenhe:{
+        remark:{
           name:'制作意见',
           type:'textarea',
           disabled:true,
+        },
+        expectedTime:{
+          name:"确认日期",
+          type:"dateTime",
         },
         isMoreStore:{
           name:'是否多店多主图',
@@ -34,19 +33,14 @@ export default {
         },
       },
       formValidate: {
-        date:["2020-12-10 05:05","2021-01-22 05:05"],
-        shenhe:'dsfadsfdasfadsf',
+        remark:'',
+        expectedTime:'',
         isMoreStore: '1',
       },
       ruleValidate: {
-        people: [{ 
+        expectedTime: [{ 
           required: true, 
-          message: '请选择人员分配', 
-          trigger: 'change' 
-        }],
-        endDateTime: [{ 
-          required: true, 
-          message: '请选择完成日期', 
+          message: '请选择确认日期', 
           trigger: 'change' 
         }],
       },
