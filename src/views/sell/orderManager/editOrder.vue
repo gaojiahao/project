@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-08 12:30:05
+ * @LastEditTime: 2021-03-18 12:01:51
 -->
 <template>
     <div class="addFinishProduct">
@@ -32,13 +32,14 @@ import XForm from "@components/public/form/xForm";
 import config from "@views/sell/sellManager/addFinishProductConfig";
 import {
     CreateRecommendGoods,
-    UpdateRecommendGoods
+    UpdateRecommendGoods,
+    GetRecommendGoodsById
 } from "@service/sellService";
 import {
     GetSystemConfigList
 } from "@service/settingsService";
 export default {
-    name: "AddFinishProduct",
+    name: "editOrder",
     components: {
         XForm,
     },
@@ -90,6 +91,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
+                                    this.$router.go(-1);
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
                                         background: true,
@@ -112,6 +114,59 @@ export default {
         goReturn(){
             this.$router.go(-1);
         },
+        getFormData(){
+            this.id = this.$route.query.id;
+            var me = this;
+            if(this.id) {
+                return new Promise((resolve, reject) => {
+                    GetRecommendGoodsById({id:this.id}).then(res => {
+                        if (res.result.code == 200) {
+                            me.$FromLoading.hide();
+                            me.formValidate = {
+                                id: res.result.item.id,
+                                code: res.result.item.code,
+                                name: res.result.item.name,
+                                categoryId: res.result.item.categoryId,
+                                categoryName: res.result.item.categoryName,
+                                imgUrl: [],
+                                urlOne: res.result.item.urlOne,
+                                remark: res.result.item.remark,
+                                merchantId: res.result.item.merchantId
+                            }
+                            if(res.result.item.imgOne){
+                                me.formValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgOne,
+                                    type:res.result.item.imgOne ? res.result.item.imgOne.substring(res.result.item.imgOne.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgOne,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgTwo){
+                                me.formValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgTwo,
+                                    type:res.result.item.imgTwo ? res.result.item.imgTwo.substring(res.result.item.imgTwo.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgTwo,
+                                    status:'finished',
+                                });
+                            }
+                            if(res.result.item.imgThree){
+                                me.formValidate['imgUrl'].push({
+                                    filePath:res.result.item.imgThree,
+                                    type:res.result.item.imgThree ? res.result.item.imgThree.substring(res.result.item.imgThree.lastIndexOf('.') + 1):'',
+                                    name:res.result.item.imgThree,
+                                    status:'finished',
+                                });
+                            }
+                        } else if (res.result.code == 400) {
+                            this.$Message.error({
+                                background: true,
+                                content: res.result.msg
+                            });
+                        }
+                    });
+                });    
+            }
+        },
         GetSystemConfigList(){
             return new Promise((resolve, reject) => {
                 GetSystemConfigList({name:'图片张数'}).then(res => {
@@ -123,6 +178,7 @@ export default {
         }
     },
     created() {
+        this.getFormData();
         this.GetSystemConfigList();
     }
 }

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 11:59:31
+ * @LastEditTime: 2021-03-25 17:52:00
 -->
 <template>
     <div class="addFinishProduct">
@@ -34,7 +34,7 @@ import {
     GetRecommendGoodsById
 } from "@service/sellService"
 export default {
-    name: "ViewFinishProduct",
+    name: "viewOrder",
     components: {
         ViewForm,
     },

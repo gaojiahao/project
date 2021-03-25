@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 16:19:55
+ * @LastEditTime: 2021-03-25 18:35:25
 -->
 <template>
 <div class="erp_table_container">
@@ -19,6 +19,10 @@
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+                        <Button type="primary" size="small" icon="ios-cloud-upload-outline" @click="downLoad" :loading="exportLoading" class="marginRight">导出</Button>
+                        <Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :on-progress="handleProgress"  :on-error="onError" :action="'//'+`${uploadUrl}`+'/api/ImportPrepGoods'" :headers="headers"  style="display: inline-block;width:50px; margin-right: 10px;">
+                            <Button type="primary" size="small" icon="ios-cloud-download-outline" :loading="importLoading" class="marginRight">导入</Button>
+                        </Upload>
                         <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
                     </div>
                     <div class="filter-search">
@@ -41,23 +45,30 @@
     </div>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
-    <ImageModel :srcData="srcData" :visible="visible" @show-image-model="showImageModel"></ImageModel>
 </div>
 </template>
 
 <script>
+import {
+    Upload,
+    Progress,
+} from "view-design";
+import UploadProgress from '@components/public/upload/uploadProgress';
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/sell/sellManager/sellConfig";
 import list from "@mixins/list";
 import {
-    GetRecommendGoodsPage,
-    DelRecommendGoods
+    AliExpressOrderPage,
+    DeleteAliExpressOrder
 } from "@service/sellService"
 
 export default {
-    name: "SellList",
+    name: "orderManagerList",
     components: {
         ModalForm,
+        Upload,
+        Progress,
+        UploadProgress
     },
     mixins: [config,list],
     data() {
@@ -76,13 +87,18 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
+            exportLoading:false,
+            importLoading:false,
+            formats:[],
+            uploadUrl:'',
+            headers:{},
         }
     },
     methods: {
-        GetRecommendGoodsPage() {
+        AliExpressOrderPage() {
             this.pageData['status'] = -1;
             return new Promise((resolve, reject) => {
-                GetRecommendGoodsPage(this.pageData).then(res => {
+                AliExpressOrderPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -110,36 +126,25 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetRecommendGoodsPage();
+            this.AliExpressOrderPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetRecommendGoodsPage();
+            this.AliExpressOrderPage();
         },
         clearFormData2() {},
         goAdd(){
-            this.$router.push({name:'addFinishProduct'});
+            // this.$router.push({name:'addFinishProduct'});
         },
         goEdit(){
-            if(this.activatedRow.id){
-                this.$router.push({name:'editFinishProduct',query: {id:this.activatedRow.id}});
-            }
+            // if(this.activatedRow.id){
+            //     this.$router.push({name:'editFinishProduct',query: {id:this.activatedRow.id}});
+            // }
         },
         goDetail(id){
-            if(id)
-            this.$router.push({name:'viewFinishProduct',query: {id:id}});
-        },
-        goApproval(id){
-            if(id)
-            this.$router.push({name:'approvalFinishProduct',query: {id:id}});
-        },
-        goNewProduct(id){
-            if(id)
-            this.$router.push({name:'sellNewProduct',query: {id:id}});    
-        },
-        showResearchModel(flag){
-            this.$router.push({name:'ResearchDevelopNewProducts'}); 
+            // if(id)
+            // this.$router.push({name:'viewFinishProduct',query: {id:id}});
         },
         changeCoulmns(data){
             let datas = [];
@@ -159,7 +164,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetRecommendGoodsPage();
+            this.AliExpressOrderPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -171,111 +176,124 @@ export default {
                 resizable: true,
             },
             {
-                title: '图片',
-                key: 'img',
-                align: 'center',
-                render: (h, params) => {
-                    return h('div', 
-                    [
-                        h('Poptip',{
-                            props: {
-                                trigger:'hover',
-                                content:"content",
-                                placement:"right",
-                                transfer:true,
-                            },
-                        },[
-                            h('img', {
-                                attrs: {
-                                    src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
-                                },
-                                style: {
-                                    width: '30px',
-                                    height: '30px'
-                                },
-                                on: {
-                                    click:()=>{
-                                        this.srcData = {
-                                            imgName: '图片预览',
-                                            src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
-                                        }
-                                        this.showImageModel(true);
-                                    }
-                                }
-                            }),
-                            h('img',{
-                                slot:"content",
-                                attrs: {
-                                    src: (params.row.imgOne ?this.$base_url+params.row.imgOne:'') || require("@assets/default/logo.png")
-                                },
-                                style: {
-                                    width: '300px',
-                                    height: '300px'
-                                },
-                                class:'api'
-                            })
-                        ])    
-                    ]);
-                },
-                width: 80,
-                resizable: true,
-            },
-            {
-                title: '产品编码',
-                key: 'code',
-                resizable: true,
-                width: 200,
-            },
-            {
-                title: '产品名称',
-                key: 'name',
-                render: (h, params) => {
-                    return h("span", {
-                    style: {
-                        display: "inline-block",
-                        color: "#2d8cf0"
-                    },
-                    on:{
-                        click:()=>{
-                            this.goDetail(params.row.id)    
-                        }
-                    }
-                    },params.row.name);
-                },
+                title: '订单号',
+                key: 'orderCode',
                 width: 200,
                 resizable: true,
             },
             {
-                title: '类目',
-                key: 'categoryName',
+                title: '仓库',
+                key: 'warehouse',
+                resizable: true,
+                width: 100,
+            },
+            {
+                title: '买家姓名',
+                key: 'buyerName',
+                width: 200,
+                resizable: true,
+            },
+            {
+                title: '国家/地区',
+                key: 'country',
                 resizable: true,
                 width: 100
             },
             {
-                title: '参考链接',
-                key: 'urlOne',
+                title: '邮寄方式',
+                key: 'shippingMethod',
                 resizable: true,
                 width: 150
             },
             {
-                title:'商户',
-                key: 'merchantName',
+                title:'城市',
+                key: 'city',
                 resizable: true,
                 width: 148
             },
             {
-                title: '审核状态',
-                key: 'status',
-                render: (h, params) => {
-                    return h("span", {
-                    style: {
-                        display: "inline-block",
-                        color: params.row.status==1 ? "#19be6b": params.row.status == 0 ? "#ff9900":"#ed4014"
-                    },
-                    },params.row.status == 1 ?"通过":params.row.status == 0 ? '未审核':"未通过");
-                },
+                title: '产品金额',
+                key: 'productPrice',
                 width: 110,
                 resizable: true,
+            },
+            {
+                title: '产品金额币种',
+                key: 'productCurrency',
+                width: 120,
+                resizable: true,
+            },
+            {
+                title: '物流商',
+                key: 'logisticsName',
+                width: 100,
+                resizable: true,
+            },
+            {
+                title: '运费',
+                key: 'freight',
+                width: 80,
+                resizable: true,
+            },
+            {
+                title: '运费币种',
+                key: 'freightCurrency',
+                width: 100,
+                resizable: true,
+            },
+            {
+                title: '订单金额',
+                key: 'orderAmount',
+                resizable: true,
+                width: 100,
+            },
+            {
+                title: '订单金额币种',
+                key: 'orderCurrency',
+                resizable: true,
+                width: 180,
+            },
+            {
+                title: '实付金额',
+                key: 'paidAmout',
+                resizable: true,
+                width: 100,
+            },
+            {
+                title: '实付币别',
+                key: 'paidCurrency',
+                resizable: true,
+                width: 180,
+            },
+            {
+                title: '付款日期',
+                key: 'paidDate',
+                resizable: true,
+                width: 180,
+            },
+            {
+                title: '状态',
+                key: 'orderStatus',
+                resizable: true,
+                width: 180,
+            },
+            {
+                title: '包裹号',
+                key: 'packageNumber',
+                resizable: true,
+                width: 180,
+            },
+            {
+                title: '通途sku',
+                key: 'tongtuSku',
+                resizable: true,
+                width: 180,
+            },
+            {
+                title: '平台sku',
+                key: 'platformSku',
+                resizable: true,
+                width: 180,
             },
             {
                 title: '创建者',
@@ -301,13 +319,6 @@ export default {
                 resizable: true,
                 width: 180,
             },
-            {
-                title: '操作',
-                slot: 'action',
-                align: 'center',
-                width: 150,
-                resizable: true,
-            }
         ];
             return columns2;
         },
@@ -349,7 +360,7 @@ export default {
             if(this.activatedRow.id){
                 this.loading = true;
                 return new Promise((resolve, reject) => {
-                    DelRecommendGoods({id:this.activatedRow.id}).then(res => {
+                    DeleteAliExpressOrder({id:this.activatedRow.id}).then(res => {
                         if (res.result.code == 200) {
                             for(var i=0;i<this.selectedList.length;i++){
                                 for(var j=0;j<this.data.length;j++){
@@ -362,7 +373,7 @@ export default {
                             if(this.data.length<1){
                                 this.pageData.skipCount-1;
                             }
-                            this.GetRecommendGoodsPage();
+                            this.AliExpressOrderPage();
                             this.activatedRow = {};
                             this.loading = false;
                         } else if (res.result.code == 400) {
@@ -379,7 +390,7 @@ export default {
         setFilter(value){
             this.pageData.keyword=value;
             this.pageData.skipCount = 1;
-            this.GetRecommendGoodsPage(); 
+            this.AliExpressOrderPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -387,14 +398,32 @@ export default {
                 columns: this.columns,
                 data: this.data,
             });    
+        },
+        downLoad(){
+            
+        },
+        handleSuccess(){
+
+        },
+        handleFormatError(){
+
+        },
+        handleMaxSize(){
+
+        },
+        handleProgress(){
+
+        },
+        onError(){
+
         }
     },
     created(){
-        this.GetRecommendGoodsPage();
+        this.AliExpressOrderPage();
     },
     activated() {
         if(this.data.length)
-            this.GetRecommendGoodsPage();
+            this.AliExpressOrderPage();
     },
 }
 </script>

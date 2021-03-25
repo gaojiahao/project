@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-01-14 10:49:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-19 10:07:46
+ * @LastEditTime: 2021-03-25 18:01:32
  */
 import $flyio from '@plugins/ajax';
 //销售推品
@@ -74,6 +74,55 @@ export let GetPieShopPage = (data = {}) => {
 export let GetPieShopById = (data = {}) => {
   return $flyio.post({
     url: '/api/GetPieShopById',
+    data: data
+  })
+};
+//订单管理
+export let CreateAliExpressOrder = (data = {}) => {
+  return $flyio.post({
+    url: '/api/CreateAliExpressOrder',
+    data: data
+  })
+};
+export let UpdateAliExpressOrder = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdateAliExpressOrder',
+    data: data
+  })
+};
+export let AliExpressOrderByID = (data = {}) => {
+  return $flyio.post({
+    url: '/api/AliExpressOrderByID',
+    data: data
+  })
+};
+export let DeleteAliExpressOrder = (data = {}) => {
+  return $flyio.post({
+    url: '/api/DeleteAliExpressOrder',
+    data: data
+  })
+};
+export let AliExpressOrderList = (data = {}) => {
+  return $flyio.post({
+    url: '/api/AliExpressOrderList',
+    data: data
+  })
+};
+export let AliExpressOrderPage = (data = {}) => {
+  return $flyio.post({
+    url: '/api/AliExpressOrderPage',
+    data: data
+  })
+};
+export let ImportAliExpressOrder = (data = {}) => {
+  return $flyio.post({
+    url: '/api/ImportAliExpressOrder',
+    data: data
+  })
+};
+export let ExportAliExpressOrder = (data = {}) => {
+  return $flyio.post({
+    url: '/api/ExportAliExpressOrder',
     data: data
   })
 };
