@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-02-06 10:46:37
+ * @LastEditTime: 2021-03-25 19:49:48
 -->
 <template>
 <div class="add_store">
@@ -56,7 +56,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
-                                    this.$router.go(-1);
+                                    this.goReturn();
                                     this.$refs['form'].$refs['formValidate'].resetFields();
                                     this.$refs['form'].initEL('input');
                                 } else if (res.result.code == 400) {
@@ -79,7 +79,7 @@ export default {
             this.$refs['form'].$refs['formValidate'].resetFields();
         },
         goReturn(){
-            this.$router.go(-1);
+            this.$router.push({name:'userManagerList'});
         }
     },
     created() {

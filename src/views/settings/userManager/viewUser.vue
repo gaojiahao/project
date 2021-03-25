@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-12-25 11:55:52
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-24 14:28:03
+ * @LastEditTime: 2021-03-25 19:50:47
 -->
 <template>
 <div class="add_store">
@@ -73,7 +73,7 @@ export default {
         },
         clearFormData() {},
         goReturn(){
-            this.$router.go(-1);
+            this.$router.push({name:'userManagerList'});
         },
 
     },

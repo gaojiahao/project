@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 17:55:39
+ * @LastEditTime: 2021-03-25 19:58:35
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -237,16 +237,16 @@ const routes = [
             path: "userManager",
             name: "userManager",
             component: resolve=>(require(["@views/settings/userManager"],resolve)),
-            redirect:'userManager/userManager',
+            redirect:'userManager/userManagerList',
             meta: {
               title: "用户管理",
               group: "userManager",
             },
             children:[
               {
-                path: "userManager",
-                name: "userManager",
-                component: resolve=>(require(["@views/settings/userManager/userManager"],resolve)),
+                path: "userManagerList",
+                name: "userManagerList",
+                component: resolve=>(require(["@views/settings/userManager/userManagerList"],resolve)),
                 meta: {
                   title: "用户管理",
                   group: "userManager",
@@ -289,16 +289,16 @@ const routes = [
             path: "roleManager",
             name: "roleManager",
             component: resolve=>(require(["@views/settings/roleManager"],resolve)),
-            redirect:'roleManager/roleManager',
+            redirect:'roleManager/roleManagerList',
             meta: {
               title: "角色管理",
               group: "roleManager",
             },
             children:[
               {
-                path: "roleManager",
-                name: "roleManager",
-                component: resolve=>(require(["@views/settings/roleManager/roleManager"],resolve)),
+                path: "roleManagerList",
+                name: "roleManagerList",
+                component: resolve=>(require(["@views/settings/roleManager/roleManagerList"],resolve)),
                 meta: {
                   title: "角色管理",
                   group: "roleManager",
@@ -319,16 +319,6 @@ const routes = [
                 path: "editRole",
                 name: "editRole",
                 component: resolve=>(require(["@views/settings/roleManager/editRole"],resolve)),
-                meta: {
-                  title: "编辑角色",
-                  group: "roleManager",
-                  level: 2,
-                },
-              },
-              {
-                path: "addRole",
-                name: "addRole",
-                component: resolve=>(require(["@views/settings/roleManager/addRole"],resolve)),
                 meta: {
                   title: "编辑角色",
                   group: "roleManager",
@@ -502,17 +492,17 @@ const routes = [
               title: "系统配置",
               group: "systemConfigManager",
             },
-            redirect:'systemConfigManager/systemConfigManager',
+            redirect:'systemConfigManager/systemConfigManagerList',
             children:[
               {
-                path: 'systemConfigManager',
-                name: 'systemConfigManager',
+                path: 'systemConfigManagerList',
+                name: 'systemConfigManagerList',
                 meta:{ 
                   title:'系统配置列表',
                   group: "systemConfigManager",
                   level: 1,
                 },
-                component: resolve=>(require(["@views/settings/systemConfigManager/systemConfigManager"],resolve)),
+                component: resolve=>(require(["@views/settings/systemConfigManager/systemConfigManagerList"],resolve)),
               },
               {
                 path: "addSystem",
@@ -1214,17 +1204,17 @@ const routes = [
                   level: 2,
                 },
                 component: resolve=>(require(["@views/sell/mainResearch/researchResult/index"],resolve)),
-                redirect:'researchResult/researchResult',
+                redirect:'researchResult/researchResultList',
                 children:[
                   {
-                    path: 'researchResult',
-                    name: 'researchResult',
+                    path: 'researchResultList',
+                    name: 'researchResultList',
                     meta:{ 
                       title:'调研结果',
                       group: "mainResearch",
                       level: 3,
                     },
-                    component: resolve=>(require(["@views/sell/mainResearch/researchResult/researchResult"],resolve)),
+                    component: resolve=>(require(["@views/sell/mainResearch/researchResult/researchResultList"],resolve)),
                   },  
                 ]
               } 

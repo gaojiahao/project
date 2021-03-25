@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 09:31:26
+ * @LastEditTime: 2021-03-25 19:58:21
 -->
 <template>
 <div>
@@ -120,7 +120,7 @@ import {
     TabPane,
 } from "view-design";
 export default {
-    name: 'researchResult',
+    name: 'researchResultList',
     components: {
         Tabs,
         TabPane,

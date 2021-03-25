@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:26:05
+ * @LastEditTime: 2021-03-25 19:53:21
 -->
 <template>
 <div class="erp_table_container">
@@ -56,7 +56,7 @@ import {
 } from "@service/settingsService"
 
 export default {
-    name: 'RoleManager',
+    name: 'roleManagerList',
     components: {
         XTreeAdd,
     },

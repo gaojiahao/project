@@ -2,14 +2,14 @@
  * @Descripttion: 
  * @version: 1.0.0
  * @Author: gaojiahao
- * @Date: 2020-10-29 15:42:43
+ * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-12 16:05:44
+ * @LastEditTime: 2021-03-25 19:56:42
 -->
 <template>
 <div class="erp_table_container">
     <div class="myTable">
-        <Table row-key="id" border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
+        <Table border :columns="columns" :data="data" stripe :loading="loading" highlight-row ref="selection" @on-select="onSelect" @on-select-cancel="onSelectCancel" @on-select-all="onSelectAll" @on-select-all-cancel="onSelectAllCancel" @on-current-change="onCurrentChange">
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">
@@ -35,44 +35,42 @@
             </template>
         </Table>
     </div>
-    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setSeniorFilter" @show-filter="showFilter"></SeniorFilter>
 </div>
 </template>
 
 <script>
+import config from "@views/settings/systemConfigManager/systemConfigManagerConfig";
 import list from "@mixins/list";
-import config from '@views/settings/userManager/userManagerConfig.js';
 import {
-    GetUserInfoPage,
-    DelUserInfo
-} from "@service/settingsService";
+    GetSystemConfigPage,
+    DelSystemConfig
+} from "@service/settingsService"
 
 export default {
-    name: 'UserManager',
-    computed: {
-
-    },
+    name: "systemConfigManagerList",
     mixins: [config,list],
     data() {
         return {
-            data: [],
             titleText: '',
             showModel: false,
             columns: this.getTableColumn(),
+            data: [],
+            loading: true,
             pageData:{
                 skipCount: 1,
                 skipTotal: 15,
                 maxResultCount: 15,
-                keyWord:'',
+                name:'',
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
         }
     },
     methods: {
-        GetUserInfoPage() {
+        GetSystemConfigPage() {
             return new Promise((resolve, reject) => {
-                GetUserInfoPage(this.pageData).then(res => {
+                GetSystemConfigPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -88,126 +86,25 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetUserInfoPage();
+            this.GetSystemConfigPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetUserInfoPage();
+            this.GetSystemConfigPage();
         },
         goAdd(){
-            this.$router.push({name:'addUser'});
+            this.$router.push({name:'addSystem'});
         },
         goEdit(){
             if(this.activatedRow.id){
-                this.$router.push({name:'editUser',query: {id:this.activatedRow.id}});
+                this.$router.push({name:'editSystem',query: {id:this.activatedRow.id}});
             }
         },
         checkALl(){
             this.$nextTick(function () {
                 this.columns = this.getTableColumn();
             })
-        },
-        getTableColumn(){
-            var data = [{
-                    title: '序号',
-                    slot: 'number',
-                    type: 'index',
-                    width: 70,
-                    align: 'center',
-                    resizable: true,
-                },
-                {
-                    title: '用户名称',
-                    key: 'userName',
-                    resizable: true,
-                    width: 200,
-                    render: (h, params) => {
-                        return h("span", {
-                            style: {
-                                display: "inline-block",
-                                color: "#2d8cf0"
-                            },
-                            on:{
-                                click:()=>{
-                                    this.goDetail(params.row.id)    
-                                }
-                            }
-                        },params.row.userName);
-                    }
-                },
-                {
-                    title: '昵称',
-                    key: 'nickName',
-                    resizable: true,
-                    width: 200,
-                },
-                {
-                    title: '性别',
-                    key: 'sex',
-                    align: 'center',
-                    render: (h, params) => {
-                        return h("span", {
-                            style: {
-                                display: "inline-block",
-                            },
-                        },params.row.sex ==1 ?'男':'女');//  展示的内容
-                    },
-                    resizable: true,
-                    width: 70,
-                },
-                {
-                    title: '手机',
-                    key: 'phoneNumber',
-                    resizable: true,
-                    width: 120,
-                },
-                {
-                    title: '邮箱',
-                    key: 'email',
-                    resizable: true,
-                    width: 200,
-                },
-                {
-                    title: '所属角色',
-                    key: 'roleName',
-                    resizable: true,
-                    width: 169,
-                },
-                {
-                    title: '生日',
-                    key: 'birthday',
-                    resizable: true,
-                    width: 200,
-                },
-                {
-                    title: '是否启用',
-                    key: 'enabled',
-                    width: 120,
-                    render: (h, params) => {
-                        return h("span", {
-                            style: {
-                                display: "inline-block",
-                                color: params.row.enabled==true ? "#19be6b": "#ed4014"
-                            },
-                        },params.row.enabled?'是':'否');//  展示的内容
-                    },
-                    resizable: true,
-                    width: 90,
-                },
-                {
-                    title: '创建者',
-                    key: 'createdName',
-                    resizable: true,
-                    width: 200,
-                },
-                {
-                    title: '创建时间',
-                    key: 'createdOn',
-                    resizable: true,
-                    width: 200,
-                },]
-            return data;
         },
         changeCoulmns(data){
             let datas = [];
@@ -227,13 +124,90 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetUserInfoPage();
+            this.GetSystemConfigPage();
+        },
+        getTableColumn(){
+            var data = [{
+                    type: 'index',
+                    width: 80,
+                    align: 'center',
+                    title: '序号',
+                    resizable: true,
+                },
+                {
+                    title: '系统配置类型',
+                    key: 'congfigType',
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                            },
+                        },params.row.congfigType);//  展示的内容
+                    },
+                    resizable: true,
+                    width: 200,
+                }, 
+                {
+                    title: '名称',
+                    key: 'name',
+                    resizable: true,
+                    width: 239,
+                },
+                {
+                    title: '编码',
+                    key: 'code',
+                    resizable: true,
+                    width: 200,
+                },
+                {
+                    title: '是否启用',
+                    key: 'enabled',
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                                color: params.row.enabled==true ? "#19be6b": "#ed4014"
+                            },
+                        },params.row.enabled?'是':'否');//  展示的内容
+                    },
+                    resizable: true,
+                    width: 200,
+                },
+                {
+                    title: '创建者',
+                    key: 'createdName',
+                    resizable: true,
+                    width: 200,
+                },
+                {
+                    title: '创建时间',
+                    key: 'createdOn',
+                    width: 160,
+                    resizable: true,
+                    width: 200,
+                },
+                {
+                    title: '修改者',
+                    key: 'modifyName',
+                    resizable: true,
+                    width: 200,
+                },
+                {
+                    title: '修改时间',
+                    key: 'modifyOn',
+                    resizable: true,
+                    width: 200,
+                }]
+            return data;
+        },
+        change(value){
+            this.activatedIndex = value;
         },
         deleteData(){
             if(this.activatedRow.id){
                 this.loading = true;
                 return new Promise((resolve, reject) => {
-                    DelUserInfo({id:this.activatedRow.id,moduleIdList:this.activatedRow.moduleIdList||[]}).then(res => {
+                    DelSystemConfig({id:this.activatedRow.id}).then(res => {
                         if (res.result.code == 200) {
                             for(var i=0;i<this.selectedList.length;i++){
                                 for(var j=0;j<this.data.length;j++){
@@ -246,7 +220,7 @@ export default {
                             if(this.data.length<1){
                                 this.pageData.skipCount-1;
                             }
-                            this.GetUserInfoPage();
+                            this.GetSystemConfigPage();
                             this.activatedRow = {};
                             this.loading = false;
                         } else if (res.result.code == 400) {
@@ -261,21 +235,36 @@ export default {
             } 
         },
         setFilter(value){
-            this.pageData.keyWord=value;
+            this.pageData.name=value;
             this.pageData.skipCount = 1;
-            this.GetUserInfoPage(); 
+            this.GetSystemConfigPage(); 
         },
-        goDetail(id){
-            if(id)
-                this.$router.push({name:'viewUser',query: {id:id}});
+        getName(value){
+            var name = '';
+            if(value=='productLabel'){
+                name='特性标签';
+            } else if(value=='packageMaterial'){
+                name="包装材质";
+            } else if(value=='filetype'){
+                name="制图选项"
+            }
+            return name;
         },
+        setSeniorFilter(data){
+            this.pageData = {
+                ...this.pageData,
+                congfigType:data.congfigType,
+            },
+            this.$delete(this.pageData,'name');
+            this.GetSystemConfigPage(); 
+        }
     },
-    created() {
-        this.GetUserInfoPage();
+    created(){
+        this.GetSystemConfigPage();
     },
     activated() {
         if(this.data.length)
-            this.GetUserInfoPage();    
+            this.GetSystemConfigPage();    
     },
 }
 </script>
