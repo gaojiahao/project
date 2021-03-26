@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-24 19:41:59
+ * @LastEditTime: 2021-03-26 19:50:29
 -->
 <template>
 <div class="erp_table_container">
@@ -33,7 +33,6 @@
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="primary" size="small" style="margin-right: 5px" @click="showPop(true,row)" v-if="row.status==0">确认</Button>
                 <Button type="success" size="small" style="margin-right: 5px" @click="goUpload(row)" v-if="row.status==1">上传</Button>
-                <Button type="success" size="small" style="margin-right: 5px" @click="goUpload(row)" v-if="row.status==2">上传</Button>
                 <Button type="success" size="small" style="margin-right: 5px" @click="goUpload(row)" v-if="row.status==3">上传</Button>
             </template>
             <template slot="footer">

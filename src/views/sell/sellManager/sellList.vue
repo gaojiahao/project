@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 16:19:55
+ * @LastEditTime: 2021-03-26 19:44:14
 -->
 <template>
 <div class="erp_table_container">
@@ -23,6 +23,14 @@
                     </div>
                     <div class="filter-search">
                         <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
+                    </div>
+                    <div style="float:right;">
+                        <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
+                            <Radio label="-1">全部</Radio>
+                            <Radio label="0">未审核</Radio>
+                            <Radio label="1">通过</Radio>
+                            <Radio label="2">未通过</Radio>
+                        </RadioGroup>
                     </div>
                 </div>    
             </template>
@@ -76,11 +84,19 @@ export default {
                 pageSizeOpts:[15,50,200],
             },
             totalPage:0,
+            filter:"-1",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetRecommendGoodsPage();
+            }
         }
     },
     methods: {
         GetRecommendGoodsPage() {
-            this.pageData['status'] = -1;
+            this.pageData['status'] = this.filter;
             return new Promise((resolve, reject) => {
                 GetRecommendGoodsPage(this.pageData).then(res => {
                     if(res.result.code==200){

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 17:14:15
+ * @LastEditTime: 2021-03-26 20:09:01
 -->
 <template>
 <div class="content">
@@ -102,7 +102,7 @@
             <!-- 自定义下拉控件 -->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='selectCustom'">
                 <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" :allow-create="formConfig[index]['allow']" filterable :multiple="formConfig[index]['multiple']" @on-create="formConfig[index]['createFun']" :disabled="formConfig[index]['disabled']" v-show="!formConfig[index]['hidden']"  @on-select="onChange">
-                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id">{{ item.name }}</Option>
                 </Select>
             </FormItem>
             <!-- 下拉关联层级控件 -->
@@ -316,6 +316,10 @@ export default {
         radioOnChangeFun(data,event){
             this.$emit('on-change-'+data,{data:data,event:event});
         },
+        onChangeCustom(data){
+            debugger
+            this.$emit('value-change-custom-'+data.tag,data);    
+        }
     },
     mounted() {
         this.initClick();

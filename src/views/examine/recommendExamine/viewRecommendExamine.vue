@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 15:56:12
+ * @LastEditTime: 2021-03-26 16:30:33
 -->
 <template>
     <div class="addFinishProduct">
@@ -52,7 +52,10 @@ import {
     CreateRecommendGoods,
     UpdateRecommendGoods,
     GetRecommendGoodsById
-} from "@service/sellService"
+} from "@service/sellService";
+import {
+    GetReviewActionPage
+} from "@service/basicService";
 export default {
     name: "viewRecommendExamine",
     components: {
@@ -195,10 +198,24 @@ export default {
         nextPage(){
             this.$router.push({name:'viewRecommendExamine',query: {id:this.nextId}});
         },
+        GetReviewActionPage(){
+            if(this.id){
+                return new Promise((resolve, reject) => {
+                    GetReviewActionPage({reviewType:'recommendGoodsReview',relatedId:this.id}).then(res => {
+                        if(res.result.code==200){
+                            for(var i=0;i<res.result.item.items.length;i++){
+                                this.formValidate2['reviewRemark'] = res.result.item.items[i]['reviewRemark'];
+                            }
+                        }
+                    });
+                });
+            }     
+        },
         init(){
             this.$FromLoading.show();
             this.getFormData();
             this.getNextPre(this.id);
+            this.GetReviewActionPage();
         }
     },
     created() {

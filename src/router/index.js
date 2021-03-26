@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 19:58:35
+ * @LastEditTime: 2021-03-26 09:50:33
  */
 import Vue from "vue";
 import VueRouter from "vue-router";
@@ -1272,13 +1272,15 @@ const routes = [
               title:'订单管理',
               group: "orderManager",
             },
-            component: resolve=>(require(["@views/sell/orderManager/orderManagerList"],resolve)),
+            component: resolve=>(require(["@views/sell/orderManager/index"],resolve)),
+            redirect:'orderManager/orderManagerList',
             children:[{
               path: 'orderManagerList',
               name: 'orderManagerList',
               meta:{ 
                 title:'订单管理',
                 group: "orderManager",
+                level: 1,
               },
               component: resolve=>(require(["@views/sell/orderManager/orderManagerList"],resolve)),
              },
@@ -1288,6 +1290,7 @@ const routes = [
               meta:{ 
                 title:'新建订单',
                 group: "orderManager",
+                level: 2,
               },
               component: resolve=>(require(["@views/sell/orderManager/addOrder"],resolve)),
              },
@@ -1297,6 +1300,7 @@ const routes = [
               meta:{ 
                 title:'查看订单',
                 group: "orderManager",
+                level: 2,
               },
               component: resolve=>(require(["@views/sell/orderManager/viewOrder"],resolve)),
              },

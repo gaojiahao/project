@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 17:29:36
+ * @LastEditTime: 2021-03-26 15:03:08
 -->
 <template>
 <div class="erp_table_container">
@@ -143,7 +143,7 @@ export default {
                     title: '汇总地区名称',
                     key: 'sumName',
                     resizable: true,
-                    width: 270,
+                    width: 229,
                     render: (h, params) => {
                         return h("span", {
                             style: {
@@ -155,20 +155,28 @@ export default {
                                     this.goDetail(params.row.id)    
                                 }
                             }
-                        },params.row.chinaName);
+                        },params.row.sumName);
                     }
                 },
                 {
                     title: '汇总地区简称',
                     key: 'sumCode',
                     resizable: true,
-                    width:279,
+                    width:120,
                 },
                 {
                     title: '是否带电',
                     key: 'isElectrified',
                     resizable: true,
                     width: 110,
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                                display: "inline-block",
+                                color: params.row.isElectrified ? "#19be6b":"#ed4014"
+                            },
+                        },params.row.isElectrified ?"是" : "否");
+                    },
                 },
                 {
                     title: '单品最小重量',
@@ -179,6 +187,12 @@ export default {
                 {
                     title: '单品最大重量',
                     key: 'maxWeight',
+                    resizable: true,
+                    width: 200,
+                },
+                {
+                    title: '汇总地区合集',
+                    key: 'sumAreaCode',
                     resizable: true,
                     width: 200,
                 },
@@ -233,7 +247,7 @@ export default {
                             this.TransportFormulaPage();
                             this.activatedRow = {};
                             this.loading = false;
-                        } else if (res.result.code == 400) {
+                        } else {
                             this.$Message.error({
                                 background: true,
                                 content: res.result.msg

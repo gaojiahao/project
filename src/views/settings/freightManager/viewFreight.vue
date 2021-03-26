@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 16:11:27
+ * @LastEditTime: 2021-03-26 11:12:50
 -->
 <template>
 <div>
@@ -61,9 +61,19 @@ export default {
                                 isElectrified: res.result.item.isElectrified,
                                 minWeight: res.result.item.minWeight,
                                 maxWeight: res.result.item.maxWeight,
-                                sumAreaCode: res.result.item.sumAreaCode,
+                                sumAreaCode:[],
                             }
-                            this.formValidate['sumAreaCode'] = this.formValidate['sumAreaCode'].split(",");
+                            var data = res.result.item.sumAreaCode.split(","),
+                            data2=[];
+                            for(var i=0;i<data.length;i++){
+                                var obj = {
+                                    name: data[i],
+                                    value: data[i],
+                                    id: data[i],
+                                }
+                                data2.push(obj);
+                            }
+                            this.formValidate['sumAreaCode'] = data2;
                         } else if (res.result.code == 400) {
                             this.$Message.error({
                                 background: true,

@@ -96,7 +96,7 @@ export default {
             data:{
                 'BusinessType':''
             },
-            formats:['jpg','jpeg','png','bmp','gif','wmf','3GP','ASF','AVI','MOV',
+            formats:['jpg','jpeg','png','bmp','gif','psd','wmf','3GP','ASF','AVI','MOV',
             'MPEG','WMV','mp4','AAC','AIFF','AMR','FLAC','MIDI','mpeg','WMA','mp3','3dm','3ds','asm',
             'ade','drw','dwg','max','obj','prt','stl','stp','x-t','igs','rar','zip','7z']
         }

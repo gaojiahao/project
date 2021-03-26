@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 16:00:24
+ * @LastEditTime: 2021-03-26 20:02:33
 -->
 <template>
 <div>
@@ -23,10 +23,10 @@
                     <label class="ivu-form-item-label" style="width: 120px;">制图信息:</label> 
                     <div class="ivu-form-item-content" style="margin-left: 120px;">
                         <Table :columns="selectionColumns" :data="selectedGoods" height="300" width="1200"></Table>
-                        <span style="margin: 10px;">
+                        <!-- <span style="margin: 10px;">
                             <Button size="small" @click="handleSelectAll(true)">全选</Button>
                             <Button size="small" @click="handleSelectAll(false)">取消</Button>
-                        </span>
+                        </span> -->
                     </div>
                 </div>
             </div>
@@ -63,6 +63,9 @@ import {
     GetDistributionReviewInfo,
     CreateDistributionReview
 } from "@service/tortExamineService";
+import {
+    GetReviewActionPage
+} from "@service/basicService";
 
 import {
     Tabs,
@@ -87,7 +90,8 @@ export default {
                     render: (h, params) => {
                         return h('Checkbox', {
                             props: {
-                                value:  this.selectedGoods[params.index][params.column.key]
+                                value:  this.selectedGoods[params.index][params.column.key],
+                                disabled: true
                             },
                             on: {
                                 'on-change': (event) => {
@@ -376,11 +380,26 @@ export default {
                 this.$set(this.selectedGoods[i],'isPass',status);
             }
         },
+        GetReviewActionPage(){
+            this.id = this.$route.query.id;
+            if(this.id){
+                return new Promise((resolve, reject) => {
+                    GetReviewActionPage({reviewType:'fileDistributionReview',relatedId:this.id}).then(res => {
+                        if(res.result.code==200){
+                            for(var i=0;i<res.result.item.items.length;i++){
+                                this.formValidate2['reviewRemark'] = res.result.item.items[i]['reviewRemark'];
+                            }
+                        }
+                    });
+                });
+            }     
+        },
     },
     created() {
         this.baseUrl = this.$base_url;
         this.getFormData();
         this.GetDistributionReviewInfo();
+        this.GetReviewActionPage();
     }
 }
 </script>

@@ -4,17 +4,17 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 17:22:03
+ * @LastEditTime: 2021-03-26 20:08:49
  */
 export default {
     data() {
-      const isElectrifiedVali = (rule, value, callback) => {
-        if (value == ''||value === undefined) {
-            callback(new Error('请选择是否带电'));
-        } else {
-          callback();
-        }
-      };
+      // const isElectrifiedVali = (rule, value, callback) => {
+      //   if (value == ''||value === undefined) {
+      //       callback(new Error('请选择是否带电'));
+      //   } else {
+      //     callback();
+      //   }
+      // };
       const sumAreaCodeVali = (rule, value, callback) => {
         if (value == ''||value === undefined) {
           callback(new Error('请选择汇总地区合集'));
@@ -63,12 +63,20 @@ export default {
           },
           sumCode:{
             name:'汇总地区简称',
-            type:'text',
-            length:50
+            type:'select',
+            dataSource:{
+              type:'dynamic',
+              url:'/api/GetAreaList',
+              data:[],
+              col:[
+                {k:'name',v:'abbreviation'},
+                {k:'value',v:'abbreviation'}
+              ]
+            },
           },
           isElectrified:{
             name:'是否带电',
-            type:'select',
+            type:'radio',
             dataSource:{
               type:'static',
               data:[
@@ -124,13 +132,14 @@ export default {
               ]
             },
             valueField: "id",  //值字段
-            displayField: "name", //显示字段  
+            displayField: "name", //显示字段
+            checkField:'name',
           },
         },
         formValidate: {
           sumName:'',
           sumCode: '',
-          isElectrified:true,
+          isElectrified:false,
           minWeight:0,
           maxWeight:0,
           sumAreaCode:[]
@@ -138,13 +147,13 @@ export default {
         ruleValidate: {
           sumName: [{
               required: true,
-              message: '汇总地区名称',
+              message: '请输入汇总地区名称',
               trigger: 'blur'
           }],
           sumCode: [{
             required: true,
-            message: '汇总地区简称',
-            trigger: 'blur'
+            message: '请输入汇总地区简称',
+            trigger: 'change'
           }],
           chinaName: [{
             required: true,
@@ -163,12 +172,12 @@ export default {
             trigger: 'blur',
             validator: maxWeightVali
           }],
-          isElectrified: [{
-            required: true,
-            message: '请选择是否带电',
-            trigger: 'change',
-            validator: isElectrifiedVali
-          }],
+          // isElectrified: [{
+          //   // required: true,
+          //   message: '请选择是否带电',
+          //   trigger: 'change',
+          //   // validator: isElectrifiedVali
+          // }],
           sumAreaCode: [{
             required: true,
             message: '请选择汇总地区合集',

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 18:35:25
+ * @LastEditTime: 2021-03-26 09:47:34
 -->
 <template>
 <div class="erp_table_container">
@@ -20,7 +20,7 @@
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
                         <Button type="primary" size="small" icon="ios-cloud-upload-outline" @click="downLoad" :loading="exportLoading" class="marginRight">导出</Button>
-                        <Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :on-progress="handleProgress"  :on-error="onError" :action="'//'+`${uploadUrl}`+'/api/ImportPrepGoods'" :headers="headers"  style="display: inline-block;width:50px; margin-right: 10px;">
+                        <Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :on-progress="handleProgress"  :on-error="onError" :action="'//'+`${uploadUrl}`+'/api/ImportAliExpressOrder'" :headers="headers"  style="display: inline-block;width:50px; margin-right: 10px;">
                             <Button type="primary" size="small" icon="ios-cloud-download-outline" :loading="importLoading" class="marginRight">导入</Button>
                         </Upload>
                         <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
@@ -57,8 +57,10 @@ import UploadProgress from '@components/public/upload/uploadProgress';
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/sell/sellManager/sellConfig";
 import list from "@mixins/list";
+import tokenService from "@service/tokenService";
 import {
     AliExpressOrderPage,
+    ExportAliExpressOrder,
     DeleteAliExpressOrder
 } from "@service/sellService"
 
@@ -143,8 +145,8 @@ export default {
             // }
         },
         goDetail(id){
-            // if(id)
-            // this.$router.push({name:'viewFinishProduct',query: {id:id}});
+            if(id)
+                this.$router.push({name:'viewOrder',query: {id:id}});
         },
         changeCoulmns(data){
             let datas = [];
@@ -178,6 +180,20 @@ export default {
             {
                 title: '订单号',
                 key: 'orderCode',
+                render: (h, params) => {
+                    return h("span", {// 创建的标签名
+                    // 执行的一些列样式或者事件等操作
+                    style: {
+                        display: "inline-block",
+                        color: "#2d8cf0"
+                    },
+                    on:{
+                        click:()=>{// 这里给了他一个打印事件，下面有展示图
+                            this.goDetail(params.row.id)    
+                        }
+                    }
+                    },params.row.orderCode);//  展示的内容
+                },
                 width: 200,
                 resizable: true,
             },
@@ -399,26 +415,97 @@ export default {
                 data: this.data,
             });    
         },
+        handleSuccess(res, file) {
+            if(res.result.code==200){
+                this.$Notice.success({
+                    title: '导入成功',
+                    desc: ''
+                });
+                this.importLoading = false;
+                this.GetPrepGoodsPage();
+                this.showProgress = false;
+                this.percentage = 0;
+            } else {
+                this.$Notice.error({
+                    title: '导入失败',
+                    desc: res.result.msg
+                });
+                this.importLoading = false;    
+            }
+        },
+        handleFormatError(file) {
+            this.$Notice.warning({
+                title: '上传文件格式错误',
+                desc: '文件 ' + file.name + '不是表格格式'
+            });
+            this.importLoading = false;
+        },
+        handleMaxSize(file) {
+            this.$Notice.warning({
+                title: '超出文件上传大小',
+                desc: '文件  ' + file.name + '超过100M'
+            });
+            this.importLoading = false;
+        },
+        handleProgress(event, file, fileList){
+            debugger
+            this.importLoading = true;
+            event.target.onprogress = (event) => {
+                let uploadPercent = parseFloat(((event.loaded / event.total) * 100).toFixed(2))
+                this.showProgress = true
+                this.percentage = uploadPercent
+            }
+        },
+        onError(error, file, fileList){
+            this.$Notice.error({
+                title: '导入失败',
+                desc: error
+            });
+            this.importLoading = false;
+        },
         downLoad(){
-            
+            this.exportLoading= true;
+            var params = {},data=[];
+            for(var i=0;i<this.selectedList.length;i++){
+                data.push(this.selectedList[i]['id']);
+            }
+            var data2 = data.join(",");
+            params['IdList'] = data2;
+            return new Promise((resolve, reject) => {
+                ExportAliExpressOrder({...params}).then(res => {
+                    if (res.result.code == 200) {
+                        var blob = this.dataURLtoBlob(res.result.item);
+                        var downloadUrl = window.URL.createObjectURL(blob);
+                        var anchor = document.createElement("a");
+                        anchor.href = downloadUrl;
+                        anchor.setAttribute("download", '订单管理'+new Date().getTime()+'.xls');
+                        this.exportLoading=false;
+                        // anchor.download = decodeURI("");
+                        anchor.click();
+                    } else {
+                        this.$Message.error({
+                            background: true,
+                            content: res.result.msg
+                        });
+                        this.exportLoading=false;
+                    }
+                });
+            });  
         },
-        handleSuccess(){
-
+        dataURLtoBlob(base64Str) {
+            var bstr = atob(base64Str),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: "application/vnd.ms-excel" });
         },
-        handleFormatError(){
-
-        },
-        handleMaxSize(){
-
-        },
-        handleProgress(){
-
-        },
-        onError(){
-
-        }
     },
     created(){
+        this.uploadUrl = this.$upload_url?this.$upload_url:'localhost:8080';
+        this.headers['Utoken'] =  tokenService.getToken();
+        this.baseUrl = this.$base_url;
         this.AliExpressOrderPage();
     },
     activated() {

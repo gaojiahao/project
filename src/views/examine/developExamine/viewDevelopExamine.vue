@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 15:59:23
+ * @LastEditTime: 2021-03-26 16:39:14
 -->
 <template>
 <div>
@@ -13,7 +13,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">基本信息</Divider>
                 <div class="top_tabale">
-                    <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" @save="save" @clear-form-data="clearFormData" ref="form" :divisionField="divisionField">
+                    <ViewForm :formValidate="productInfoFormValidate" :ruleValidate="ruleValidate" :formConfig="productInfo" ref="form" :divisionField="divisionField">
                         <template slot="button">
                             <FormItem>
                                 <div style="width:100%"> 
@@ -31,7 +31,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">上传信息</Divider>
                 <div class="top_tabale" style="flex:display;padding:20px;flex-direction:column;display:flex">
-                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" @save="saveUpload" :disabled="true" @go-return="goReturn" :hidden="true"></UploadPic>
+                    <UploadPic :length="3" :value="productInfoFormValidate['imgUrl']" :disabled="true" @go-return="goReturn" :hidden="true"></UploadPic>
                 </div>
             </div>
         </TabPane>
@@ -39,7 +39,7 @@
             <div class="top">
                 <!-- <Divider orientation="left" size="small">属性</Divider> -->
                 <div class="top_tabale">
-                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" @save="UpdatePrepGoodsAttribute" :disabled="true" @go-return="goReturn" :hidden="true"></AddAttrProductTable>
+                    <AddAttrProductTable :data="dataProp" :loading="loadingProp" :disabled="true" @go-return="goReturn" :hidden="true"></AddAttrProductTable>
                 </div>
             </div>
         </TabPane>
@@ -47,7 +47,7 @@
             <div class="top">
                 <Divider orientation="left" size="small">详细描述</Divider>
                 <div class="top_tabale1">
-                    <NewHtmlEditor @save="saveDescription" @clear="descriptionClear" :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn" :hidden="true"></NewHtmlEditor>
+                    <NewHtmlEditor :value="productInfoFormValidate.description" :disabled="true" @go-return="goReturn" :hidden="true"></NewHtmlEditor>
                 </div>
             </div>
         </TabPane>
@@ -100,7 +100,10 @@ import {
     GetPrepGoodsAttributeById,
     UpdatePrepGoodsAttribute,
     GetOperationLogPage
-} from "@service/basicinfoService"
+} from "@service/basicinfoService";
+import {
+    GetReviewActionPage
+} from "@service/basicService";
 import {
     Tabs,
     TabPane,
@@ -171,140 +174,6 @@ export default {
         }
     },
     methods: {
-        clearFormData() {},
-        descriptionClear(){
-            this.productInfoFormValidate.description = '';
-        },
-        save() {
-            var params = this.productInfoFormValidate;
-            params = {
-                ...params,
-                howlong:params.productSize.long,
-                width:params.productSize.wide,
-                high:params.productSize.high,
-                packageLong:params.packagingSize.long,
-                packageWidth:params.packagingSize.wide,
-                packageHigh:params.packagingSize.high,
-            }
-            console.log('params',params);
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    if (this.productId) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            UpdatePrepGoods(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
-                                    this.productId = res.result.item.id;
-                                    this.GetGoodsSupplierPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    } else  {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            CreatePrepGoods(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：新建成功！');
-                                    this.productId = res.result.item.id;
-                                    // this.$router.push({name:'editNewProduct',query: {id:this.productId}});
-                                    //this.GetGoodsSupplierPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })
-        },
-        savePurchase(){
-            var params = this.purchaseFormValidate;
-            params = {
-                ...params,
-                goodsId:this.productInfoFormValidate.id||this.productId,
-                goodsName:this.productInfoFormValidate.name||'是否第三方',
-            }
-            console.log('params',params);
-            this.$refs['formPurch'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    if (this.productId) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            CraeteGoodsSupplier(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：新建成功！');
-                                    this.GetGoodsSupplierPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })
-        },
-        saveDescription(value){
-            this.productInfoFormValidate.description = value;
-            var params = this.productInfoFormValidate;
-            params = {
-                ...params,
-                howlong:params.productSize.long,
-                width:params.productSize.wide,
-                high:params.productSize.high,
-                packageLong:params.packagingSize.long,
-                packageWidth:params.packagingSize.wide,
-                packageHigh:params.packagingSize.high,
-                description:value,
-            }
-            console.log('params',params);
-            this.$refs['form'].$refs['formValidate'].validate((valid) => {
-                if (valid) {
-                    if (this.productId) {
-                        return new Promise((resolve, reject) => {
-                            this.$FromLoading.show();
-                            UpdatePrepGoods(params).then(res => {
-                                if (res.result.code == 200) {
-                                    this.$FromLoading.hide();
-                                    this.$Message.info('温馨提示：更新成功！');
-                                    this.productId = res.result.item.id;
-                                    this.GetGoodsSupplierPage();
-                                } else if (res.result.code == 400) {
-                                    this.$Message.error({
-                                        background: true,
-                                        content: res.result.msg
-                                    });
-                                    this.$FromLoading.hide();
-                                }
-                            });
-                        });
-                    }
-                } else {
-                    this.$Message.error('保存失败');
-                }
-            })    
-        },
         GetGoodsSupplierPage() {
             if(this.productId){
                 return new Promise((resolve, reject) => {
@@ -341,21 +210,6 @@ export default {
         onPageSizeChangePruch(pagesize){
             this.pageDataPruch.maxResultCount = pagesize;
             this.GetGoodsSupplierPage();
-        },
-        saveUpload(){
-            this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledProperty = false;
-            this.tabName = 'propertyInfo';        
-        },
-        saveProperty(){
-            this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledDetailInfo = false; 
-            this.tabName = 'detailInfo';   
-        },
-        saveDetailInfo(){
-            this.$Message.info({content:'温馨提示：保存成功'});
-            this.disabledLog = false;    
-            this.tabName = 'logInfo';   
         },
         getFormData(){
             this.id = this.$route.query.id;
@@ -434,37 +288,6 @@ export default {
         descriptionClear(){
             this.productInfoFormValidate.description='';
         },
-        UpdatePrepGoodsAttribute(data){
-            var params = {};
-            params.prepGoodsId = this.productId;
-            params.prepGoodsAttributes = [];
-            for(var i in data){
-                var obj = {};
-                obj = {
-                    goodsId:  this.productId,
-                    goodsName: this.productInfoFormValidate.name,
-                    attributeId: data[i].tag,
-                    attributeValueId: data[i].value,
-                }
-                params.prepGoodsAttributes.push(obj);
-            }
-            return new Promise((resolve, reject) => {
-                this.$FromLoading.show();
-                UpdatePrepGoodsAttribute(params).then(res => {
-                    if (res.result.code == 200) {
-                        this.$FromLoading.hide();
-                        this.$Message.info('温馨提示：保存成功！');
-                        this.GetPrepGoodsAttributeById();
-                    } else if (res.result.code == 400) {
-                        this.$Message.error({
-                            background: true,
-                            content: res.result.msg
-                        });
-                        this.$FromLoading.hide();
-                    }
-                });
-            });    
-        },
         goReturn(){
             this.$router.push({name:'developExamineList'});
         },
@@ -507,6 +330,19 @@ export default {
         nextPage(){
             this.$router.push({name:'viewTortExamine',query: {id:this.nextId}});
         },
+        GetReviewActionPage(){
+            if(this.productId){
+                return new Promise((resolve, reject) => {
+                    GetReviewActionPage({reviewType:'salesReview',relatedId:this.productId}).then(res => {
+                        if(res.result.code==200){
+                            for(var i=0;i<res.result.item.items.length;i++){
+                                this.formValidate2['reviewRemark'] = res.result.item.items[i]['reviewRemark'];
+                            }
+                        }
+                    });
+                });
+            }     
+        },
         init(){
             this.$FromLoading.show();
             this.getFormData();
@@ -514,6 +350,7 @@ export default {
             this.GetPrepGoodsAttributeById();
             this.GetOperationLogPage();
             this.getNextPre(this.productId);
+            this.GetReviewActionPage();
         }
     },
     created() {

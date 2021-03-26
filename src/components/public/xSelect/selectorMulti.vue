@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 11:23:27
+ * @LastEditTime: 2021-03-26 20:13:29
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" v-if="!hidden">
@@ -210,12 +210,21 @@ export default {
             //this.selectedList = selection;
         },
         checkSelectList(data){
-            for(var i=0;i<this.selectedList.length;i++){
-                if(this.selectedList[i].id==data.id){
-                    return true;
+            if(!this.config.checkField){
+                for(var i=0;i<this.selectedList.length;i++){
+                    if(this.selectedList[i].id==data.id){
+                        return true;
+                    }
                 }
+                return false;
+            } else {
+                for(var i=0;i<this.selectedList.length;i++){
+                    if(this.selectedList[i][this.config.checkField]==data[this.config.checkField]){
+                        return true;
+                    }
+                }
+                return false;    
             }
-            return false;
         },
         onSelectCancel(selection,row){
             this.selectedList.splice(row.id, 1);

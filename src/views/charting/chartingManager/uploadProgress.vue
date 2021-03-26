@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 15:05:16
+ * @LastEditTime: 2021-03-26 19:49:11
 -->
 <template>
 <div>
@@ -447,7 +447,7 @@ export default {
                     fileSize: this.formValidate2.img[i].size,
                     fileUrl: this.formValidate2.img[i].filePath,
                     status:1,
-                    goodsId: this.formValidate.id,
+                    goodsId: this.productInfoFormValidate.id,
                 }
                 goodsFileList.push(obj);
             }

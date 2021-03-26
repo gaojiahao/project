@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-24 09:46:15
+ * @LastEditTime: 2021-03-26 19:39:02
 -->
 <template>
 <div class="erp_table_container">
@@ -29,6 +29,14 @@
                     </div>
                     <div class="filter-search">
                         <CustomColumns :columns="columns" @change-coulmns="changeCoulmns" @check-all="checkALl" ref="customColumns"></CustomColumns>
+                    </div>
+                    <div style="float:right;">
+                        <RadioGroup v-model="filter" type="button" size="small" style="height: 24px; line-height: 24px;" class="marginRight">
+                            <Radio label="-1">全部</Radio>
+                            <Radio label="0">未审核</Radio>
+                            <Radio label="1">通过</Radio>
+                            <Radio label="2">未通过</Radio>
+                        </RadioGroup>
                     </div>
                 </div>    
             </template>
@@ -108,11 +116,19 @@ export default {
             headers:{},
             showProgress:false,
             percentage:0,
+            filter:"-1",
+        }
+    },
+    watch:{
+        filter:{
+            handler(val){
+                this.GetPrepGoodsPage();
+            }
         }
     },
     methods: {
         GetPrepGoodsPage() {
-            this.pageData['saleStatus'] =-1;
+            this.pageData['saleStatus'] =this.filter;
             this.pageData['pieStatus'] =-1;
             return new Promise((resolve, reject) => {
                 GetPrepGoodsPage(this.pageData).then(res => {
@@ -403,7 +419,7 @@ export default {
                     });
                 });
             } else {
-                this.$Message.info('温馨提示：该数据无法删除！');    
+                this.$Message.error('温馨提示：该数据无法删除！');    
             }
         },
         setFilter(value){
