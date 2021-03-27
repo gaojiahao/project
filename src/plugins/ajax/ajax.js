@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:30:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-11 14:19:38
+ * @LastEditTime: 2021-03-27 11:56:21
  */
 import Fly from "flyio/dist/npm/fly";
 // 请求地址引入
@@ -182,7 +182,7 @@ let Rxports = {
   post(opts = {}) {
     return new Promise((resolve, reject) => {
       fly
-        .post(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || process.env.VUE_APP_API })
+        .post(ensureUrl(opts.url), opts.data, { baseURL: window.baseURL || process.env.VUE_APP_API ,responseType:opts.responseType})
         .then(res => resolve(res.data))
         .catch(err => {
           // 弹窗提醒

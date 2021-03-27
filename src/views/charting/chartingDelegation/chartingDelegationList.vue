@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-26 17:35:45
+ * @LastEditTime: 2021-03-27 10:09:38
 -->
 <template>
 <div class="erp_table_container">
@@ -31,7 +31,7 @@
                 </div>    
             </template>
             <template slot-scope="{ row, index }" slot="action">
-                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id,row.assignmentStatus)" v-if="[0,4].indexOf(row.assignmentStatus)!=-1">委派制图</Button>
+                <Button type="warning" size="small" style="margin-right: 5px" @click="goCharting(row.id,row.assignmentStatus)" v-if="[0].indexOf(row.assignmentStatus)!=-1">委派制图</Button>
                 <Button size="small" style="margin-right: 5px" @click="showModalDetail(true,row.id)" v-if="row.assignmentStatus">明细</Button>
             </template>
             <template slot="footer">
@@ -375,9 +375,9 @@ export default {
                     return h("span", {
                     style: {
                         display: "inline-block",
-                        color: params.row.status ? "#19be6b": "#ed4014"
+                        color: params.row.status ==1 ? "#ff9900": params.row.status==2 ? "#19be6b" : params.row.status==3 ? "#ff9900" :"#ed4014"
                     },
-                    },params.row.status?"已完成":"未完成");
+                    },params.row.status ==1 ? "未完成":  params.row.status==2 ? "已完成" : params.row.status==3 ? "待返工":"待确认");
                 },
                 width:100,
                 resizable: true,

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-01-14 10:49:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 18:01:32
+ * @LastEditTime: 2021-03-27 11:56:59
  */
 import $flyio from '@plugins/ajax';
 //销售推品
@@ -123,6 +123,7 @@ export let ImportAliExpressOrder = (data = {}) => {
 export let ExportAliExpressOrder = (data = {}) => {
   return $flyio.post({
     url: '/api/ExportAliExpressOrder',
-    data: data
+    data: data,
+    responseType:'blob'
   })
 };

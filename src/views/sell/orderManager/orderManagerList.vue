@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-26 09:47:34
+ * @LastEditTime: 2021-03-27 12:00:10
 -->
 <template>
 <div class="erp_table_container">
@@ -19,6 +19,9 @@
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
+                        <Select v-model="sumAreaCode" style="width:250px" clearable filterable :label-in-value='true' @on-select="">
+                            <Option v-for="item in areaList" :value="item.sumCode" :key="item.id">{{ item.sumName }}</Option>
+                        </Select>
                         <Button type="primary" size="small" icon="ios-cloud-upload-outline" @click="downLoad" :loading="exportLoading" class="marginRight">导出</Button>
                         <Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :on-progress="handleProgress"  :on-error="onError" :action="'//'+`${uploadUrl}`+'/api/ImportAliExpressOrder'" :headers="headers"  style="display: inline-block;width:50px; margin-right: 10px;">
                             <Button type="primary" size="small" icon="ios-cloud-download-outline" :loading="importLoading" class="marginRight">导入</Button>
@@ -45,6 +48,7 @@
     </div>
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
+    <UploadProgress :showProgress="showProgress" :percent="percentage"></UploadProgress>
 </div>
 </template>
 
@@ -62,7 +66,10 @@ import {
     AliExpressOrderPage,
     ExportAliExpressOrder,
     DeleteAliExpressOrder
-} from "@service/sellService"
+} from "@service/sellService";
+import {
+    TransportFormulaList
+} from "@service/settingsService"
 
 export default {
     name: "orderManagerList",
@@ -94,6 +101,10 @@ export default {
             formats:[],
             uploadUrl:'',
             headers:{},
+            showProgress:false,
+            percentage:0,
+            sumAreaCode:'',
+            areaList:[]
         }
     },
     methods: {
@@ -422,7 +433,7 @@ export default {
                     desc: ''
                 });
                 this.importLoading = false;
-                this.GetPrepGoodsPage();
+                this.AliExpressOrderPage();
                 this.showProgress = false;
                 this.percentage = 0;
             } else {
@@ -448,7 +459,6 @@ export default {
             this.importLoading = false;
         },
         handleProgress(event, file, fileList){
-            debugger
             this.importLoading = true;
             event.target.onprogress = (event) => {
                 let uploadPercent = parseFloat(((event.loaded / event.total) * 100).toFixed(2))
@@ -464,33 +474,41 @@ export default {
             this.importLoading = false;
         },
         downLoad(){
-            this.exportLoading= true;
-            var params = {},data=[];
-            for(var i=0;i<this.selectedList.length;i++){
-                data.push(this.selectedList[i]['id']);
-            }
-            var data2 = data.join(",");
-            params['IdList'] = data2;
-            return new Promise((resolve, reject) => {
-                ExportAliExpressOrder({...params}).then(res => {
-                    if (res.result.code == 200) {
-                        var blob = this.dataURLtoBlob(res.result.item);
-                        var downloadUrl = window.URL.createObjectURL(blob);
-                        var anchor = document.createElement("a");
-                        anchor.href = downloadUrl;
-                        anchor.setAttribute("download", '订单管理'+new Date().getTime()+'.xls');
-                        this.exportLoading=false;
-                        // anchor.download = decodeURI("");
-                        anchor.click();
-                    } else {
+            if(this.sumAreaCode){
+                this.exportLoading= true;
+                return new Promise((resolve, reject) => {
+                    ExportAliExpressOrder({sumAreaCode:this.sumAreaCode}).then(res => {
+                        const time = new Date().getTime();
+                        const fileName = '订单管理' + "_" + time + ".xls";
+                        const blob = res;
+                        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+                            // 兼容IE
+                            window.navigator.msSaveOrOpenBlob(blob, fileName);
+                        } else {
+                            // 兼容Google及fireFox
+                            const link = document.createElement("a");
+                            link.style.display = "none";
+                            link.download = fileName;
+                            link.href = URL.createObjectURL(blob);
+                            document.body.appendChild(link);
+                            link.click();
+                            URL.revokeObjectURL(link.href); // 释放URL 对象
+                            document.body.removeChild(link);
+                            this.exportLoading=false;
+                        }
+                    }).catch(e=>{
                         this.$Message.error({
                             background: true,
-                            content: res.result.msg
-                        });
-                        this.exportLoading=false;
-                    }
+                            content: '导出接口出错！'
+                        });    
+                    });
                 });
-            });  
+            } else {
+                this.$Message.error({
+                    background: true,
+                    content: '请选择汇总条件'
+                });    
+            }
         },
         dataURLtoBlob(base64Str) {
             var bstr = atob(base64Str),
@@ -501,12 +519,22 @@ export default {
             }
             return new Blob([u8arr], { type: "application/vnd.ms-excel" });
         },
+        TransportFormulaList(){
+            return new Promise((resolve, reject) => {
+                TransportFormulaList().then(res => {
+                    if(res.result.code==200){
+                        this.areaList = res.result.item;
+                    }
+                });
+            });
+        }
     },
     created(){
         this.uploadUrl = this.$upload_url?this.$upload_url:'localhost:8080';
         this.headers['Utoken'] =  tokenService.getToken();
         this.baseUrl = this.$base_url;
         this.AliExpressOrderPage();
+        this.TransportFormulaList();
     },
     activated() {
         if(this.data.length)
@@ -516,4 +544,8 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/list/index.less";
+.ivu-select-default.ivu-select-multiple .ivu-select-selection {
+    min-height: 24px;
+    height: 24px;
+}
 </style>

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-26 20:02:33
+ * @LastEditTime: 2021-03-27 10:21:44
 -->
 <template>
 <div>
@@ -84,22 +84,17 @@ export default {
         return{
             selectionColumns: [
                 {
-                    title: '是否通过',
-                    key: 'isPass',
+                    title: '状态',
+                    key: 'status',
                     align: 'center',
                     render: (h, params) => {
-                        return h('Checkbox', {
-                            props: {
-                                value:  this.selectedGoods[params.index][params.column.key],
-                                disabled: true
-                            },
-                            on: {
-                                'on-change': (event) => {
-                                    this.selectedGoods[params.index][params.column.key] = event;
-                                }
-                            }
-                        });
-                    }
+                        return h("span", {
+                        style: {
+                            display: "inline-block",
+                            color: params.row.status ==1 ? "#ff9900": params.row.status==2 ? "#19be6b" : params.row.status==3 ? "#ff9900" :"#ed4014"
+                        },
+                        },params.row.status ==1 ? "未完成":  params.row.status==2 ? "已完成" : params.row.status==3 ? "待返工":"待确认");
+                    },
                 },
                 {
                     title: '制图类型',
