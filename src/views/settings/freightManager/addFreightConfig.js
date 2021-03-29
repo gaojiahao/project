@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-26 20:08:49
+ * @LastEditTime: 2021-03-29 14:08:57
  */
 export default {
     data() {
@@ -73,6 +73,7 @@ export default {
                 {k:'value',v:'abbreviation'}
               ]
             },
+            haveName:'chinaName'
           },
           isElectrified:{
             name:'是否带电',
@@ -134,6 +135,7 @@ export default {
             valueField: "id",  //值字段
             displayField: "name", //显示字段
             checkField:'name',
+            haveName:'chinaName'
           },
         },
         formValidate: {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-02 10:36:13
+ * @LastEditTime: 2021-03-29 14:42:31
  */
 export default {
   data() {
@@ -56,65 +56,55 @@ export default {
         }],
       },
       filtersConfig:{
-        name:{
-          name:'产品名称',
-          value:'name',
-          type:'text',
-        },
-        code:{
-          name:'产品编码',
-          value:'code',
-          type:'text',
-        },
-        productType:{
-          name:'类目',
-          value:'productType',
+        // orderCode:{
+        //   name:'订单号',
+        //   value:'orderCode',
+        //   type:'text',
+        // },
+        // warehouse:{
+        //   name:'仓库',
+        //   value:'warehouse',
+        //   type:'text',
+        // },
+        // buyerName:{
+        //   name:'买家姓名',
+        //   value:'buyerName',
+        //   type:'text',
+        // },
+        sumAreaCode:{
+          name:'国家/地区',
           type:'select',
           dataSource:{
-            type:'static',
-            data:[
-              {name:'积木',value:'001'},
-              {name:'灯',value:'002'}
-            ],
+            type:'dynamic',
+            url:'/api/GetAreaList',
+            data:[],
+            col:[
+              {k:'name',v:'abbreviation'},
+              {k:'value',v:'abbreviation'}
+            ]
           },
+          displayField: "chinaName", //显示字段
         },
-        createTime:{
+        createdTime:{
           name:'创建时间',
-          value:'createTime',
+          value:'createdTime',
           type:'dateTime',
         },
-        recommendingOfficer:{
-          name:'推荐人员',
-          value:'recommendingOfficer',
-          type:'text',
-        },
-        status:{
-          name:'状态',
-          value:'status',
-          type:'radio',
-          dataSource:{
-            type:'static',
-            data:[
-              {name:'已审核',value:'true'},
-              {name:'未审核',value:'false'}
-            ],
-          },
-        },
-        modifyTime:{
-          name:'修改时间',
-          value:'modifyTime',
-          type:'dateTime',
-        },
-        creater:{
-          name:'创建者',
-          value:'creater',
-          type:'text',
-        },
-        modifyer:{
-          name:'修改者',
-          value:'modifyer',
-          type:'text',
-        },
+        // modifyTime:{
+        //   name:'修改时间',
+        //   value:'modifyTime',
+        //   type:'dateTime',
+        // },
+        // creater:{
+        //   name:'创建者',
+        //   value:'creater',
+        //   type:'text',
+        // },
+        // modifyer:{
+        //   name:'修改者',
+        //   value:'modifyer',
+        //   type:'text',
+        // },
       }
     }
   }

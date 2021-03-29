@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-22 15:56:22
+ * @LastEditTime: 2021-03-29 11:37:20
 -->
 <template>
 <div class="content">
@@ -42,7 +42,7 @@
             <!--formConfig[index]['dataSource']['multiple']控制选择器是否多选，单选-->
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="(formConfig[index]&&formConfig[index]['type']=='select')&&!formConfig[index]['hidden']">
                 <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable disabled :label-in-value='true' v-show="!formConfig[index]['hidden']" @on-select="onChange">
-                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}</Option>
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item.name }}<template v-if="formConfig[index]['haveName']">-{{item[formConfig[index]['haveName']]}}</template></Option>
                 </Select>
                 <span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>

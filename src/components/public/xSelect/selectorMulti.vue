@@ -4,13 +4,13 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-26 20:13:29
+ * @LastEditTime: 2021-03-29 11:11:22
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" v-if="!hidden">
     <div class="ivu-select ivu-select-multiple ivu-select-default">
         <div class="ivu-select-selection">
-            <Tag v-for="item in selectedList" :key="item.id" :name="item.name" :closable="!disabled" @on-close="deleteSelect(item)">{{ item.name }}</Tag>
+            <Tag v-for="item in selectedList" :key="item.id" :name="item.name" :closable="!disabled" @on-close="deleteSelect(item)">{{ item.name }}<template v-show="item[config['haveName']]">-{{item[config['haveName']]}}</template></Tag>
         </div>
     </div>
     <Icon type="md-add-circle" style="color: green; font-size:24px;vertical-align: middle; line-height:34px; margin-left: 10px;" @click.native="showModel()" v-if="!disabled"/>
@@ -27,7 +27,7 @@
                 <strong>{{ row.userName }}</strong>
             </template>
         </Table>
-        <Tag v-for="item in selectedList" :key="item.id" :name="item.name" closable @on-close="deleteSelect(item)">{{ item.name }}</Tag>
+        <Tag v-for="item in selectedList" :key="item.id" :name="item.name" closable @on-close="deleteSelect(item)">{{ item.name }}<span v-show="item[config['haveName']]">-{{item[config['haveName']]}}</span></Tag>
         <div style="margin: 10px;overflow: hidden">
             <div style="float: right;">
                 <Page :total="totalPage" :current="pageData.skipCount" @on-change="changePage" show-elevator show-total show-sizer size="small" :page-size-opts="pageData.pageSizeOpts" :page-size="pageData.maxResultCount" @on-page-size-change="onPageSizeChange" :transfer="true"></Page>
@@ -259,6 +259,12 @@ export default {
                                 for(var j=0;j<me.selectedList.length;j++){
                                     if(e.id == me.selectedList[j]['id']){
                                         e._checked = true;
+                                    }
+                                    if(e[this.config.checkField] == me.selectedList[j][this.config.checkField]){
+                                        me.selectedList[j]={
+                                            ...me.selectedList[j],
+                                            ...e
+                                        }
                                     }
                                 }
                                 return e;

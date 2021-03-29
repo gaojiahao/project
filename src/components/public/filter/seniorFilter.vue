@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-08 09:57:01
+ * @LastEditTime: 2021-03-29 14:46:11
 -->
 <template>
 <Modal v-model="show" title="高级筛选" @on-ok="ok" @on-cancel="cancel" width="800" draggable >
@@ -26,10 +26,11 @@
                     </template>
                 </RadioGroup>
             </FormItem>
-            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='select'">
-                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable>
-                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.value">{{ item.name }}</Option>
+            <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="(formConfig[index]&&formConfig[index]['type']=='select')&&!formConfig[index]['hidden']">
+                <Select v-model="formValidate[index]" :style="{width:'200px',float: 'left'}" clearable :multiple="formConfig[index]['dataSource']['multiple']" filterable :disabled="formConfig[index]['disabled']" :label-in-value='true' v-show="!formConfig[index]['hidden']" @on-select="onChange">
+                    <Option v-for="item in formConfig[index]['dataSource']['data']" :value="item.value" :key="item.id" :tag="index">{{ item[formConfig[index]['displayField']]||item.name }}<template v-if="formConfig[index]['haveName']">-{{item[formConfig[index]['haveName']]}}</template></Option>
                 </Select>
+                <span style="margin-left:10px">{{formConfig[index]['unit']}}</span>
             </FormItem>
             <FormItem :label="formConfig[index]['name']" :prop="index" v-else-if="formConfig[index]&&formConfig[index]['type']=='dateTime'">
                 <DatePicker v-model="formValidate[index]" @on-change="formValidate[index]=$event" format="yyyy-MM-dd HH:mm" type="datetimerange" placeholder="" style="width: 400px"></DatePicker>
@@ -51,6 +52,8 @@
 </template>
 
 <script>
+import $flyio from '@plugins/ajax';
+
 export default {
     name: 'SeniorFilter',
     props: {
@@ -98,6 +101,7 @@ export default {
         },
         handleSubmit() {
             this.$emit('set-filter', this.formValidate);
+            this.$emit('show-filter', false);
         },
         initEL(type) {
             var controls = this.$el.getElementsByTagName(type);
@@ -139,10 +143,58 @@ export default {
                 controls[0].style.display = 'block';
                 controls2[0].style.display = 'block';    
             }
-        }
+        },
+        async initForm(){
+            for(var item in this.formConfig){
+                var form = this;
+                
+                if(this.formConfig[item].bind&&this.formConfig[item].bind.bindValue){
+                    var valueField = this.formConfig[item].bind.bindValue;
+                    form.$on('value-change-' + item,function(data){
+                        this.formValidate[this.formConfig[data.tag].bind.target] = data.label;
+                    })
+                }
+                if(this.formConfig[item].hiddenFun){
+                    form.$on('on-change-' + item,function(item){
+                        form.formConfig[item.data].hiddenFun(item.event);
+                    })
+                    this.radioOnChangeFun(item,form.formValidate[item]);
+                }
+                if((['select'].indexOf(this.formConfig[item].type)!=-1)&&this.formConfig[item].dataSource.type=='dynamic'&&this.formConfig[item].dataSource.url){
+                    var parmas = this.formConfig[item].dataSource.parmas ? this.formConfig[item].dataSource.parmas:{};
+                    await $flyio.post({
+                        url: this.formConfig[item].dataSource.url,
+                        data:{ ...parmas,maxResultCount:200}
+                    }).then((res) => {
+                        if(res.result.code==200){
+                            if(this.formConfig[item].dataSource.col){
+                                var data = res.result.item.map((e,index)=>{
+                                    for(var i=0;i<this.formConfig[item].dataSource.col.length;i++){
+                                        e[this.formConfig[item].dataSource.col[i]['k']] = e[this.formConfig[item].dataSource.col[i]['v']];
+                                    }
+                                    return e;
+                                });    
+                            } else {
+                                var data = res.result.item.map((e,index)=>{
+                                    e.value = e.id;
+                                    return e;
+                                });
+                            }
+                            this.formConfig[item].dataSource.data = data;
+                        }
+                    })
+                }
+            } 
+        },
+        onChange(data){
+            this.$emit('value-change-'+data.tag,data);
+        },
     },
     mounted() {
         this.initClick();
+    },
+    created(){
+        this.initForm();
     }
 }
 </script>

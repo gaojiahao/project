@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-27 12:00:10
+ * @LastEditTime: 2021-03-29 14:47:20
 -->
 <template>
 <div class="erp_table_container">
@@ -19,9 +19,9 @@
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
-                        <Select v-model="sumAreaCode" style="width:250px" clearable filterable :label-in-value='true' @on-select="">
+                        <!-- <Select v-model="sumAreaCode" style="width:250px" clearable filterable :label-in-value='true' @on-select="">
                             <Option v-for="item in areaList" :value="item.sumCode" :key="item.id">{{ item.sumName }}</Option>
-                        </Select>
+                        </Select> -->
                         <Button type="primary" size="small" icon="ios-cloud-upload-outline" @click="downLoad" :loading="exportLoading" class="marginRight">导出</Button>
                         <Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :on-progress="handleProgress"  :on-error="onError" :action="'//'+`${uploadUrl}`+'/api/ImportAliExpressOrder'" :headers="headers"  style="display: inline-block;width:50px; margin-right: 10px;">
                             <Button type="primary" size="small" icon="ios-cloud-download-outline" :loading="importLoading" class="marginRight">导入</Button>
@@ -415,6 +415,7 @@ export default {
             } 
         },
         setFilter(value){
+            this.pageData['sumAreaCode'] = value.sumAreaCode;
             this.pageData.keyword=value;
             this.pageData.skipCount = 1;
             this.AliExpressOrderPage(); 
@@ -474,10 +475,10 @@ export default {
             this.importLoading = false;
         },
         downLoad(){
-            if(this.sumAreaCode){
+            if(this.pageData['sumAreaCode']){
                 this.exportLoading= true;
                 return new Promise((resolve, reject) => {
-                    ExportAliExpressOrder({sumAreaCode:this.sumAreaCode}).then(res => {
+                    ExportAliExpressOrder({sumAreaCode:this.pageData['sumAreaCode']}).then(res => {
                         const time = new Date().getTime();
                         const fileName = '订单管理' + "_" + time + ".xls";
                         const blob = res;
@@ -506,7 +507,7 @@ export default {
             } else {
                 this.$Message.error({
                     background: true,
-                    content: '请选择汇总条件'
+                    content: '请选择筛选条件'
                 });    
             }
         },
@@ -544,8 +545,8 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/list/index.less";
-.ivu-select-default.ivu-select-multiple .ivu-select-selection {
-    min-height: 24px;
-    height: 24px;
-}
+// .ivu-select-default.ivu-select-multiple .ivu-select-selection {
+//     min-height: 24px;
+//     height: 24px;
+// }
 </style>

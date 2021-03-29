@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-26 19:39:02
+ * @LastEditTime: 2021-03-29 09:53:49
 -->
 <template>
 <div class="erp_table_container">
@@ -604,6 +604,35 @@ export default {
                     }
                 });
             });
+        },
+        sureDeleteConfirm(flag) {
+            if(flag){
+                this.$Modal.confirm({
+                    title: '温馨提示',
+                    content: '数据删除后将无法恢复！',
+                    onCancel: () => {
+                        this.$Message.info('取消');
+                    },
+                    onOk: () => {
+                        flag ? this.deletesData() : this.deleteData();
+                    },
+                });
+            } else {
+                if(this.activatedRow.id&&this.activatedRow.status==0){
+                    this.$Modal.confirm({
+                        title: '温馨提示',
+                        content: '数据删除后将无法恢复！',
+                        onCancel: () => {
+                            this.$Message.info('取消');
+                        },
+                        onOk: () => {
+                            flag ? this.deletesData() : this.deleteData();
+                        },
+                    });
+                } else {
+                    this.$Message.error('温馨提示：该数据无法删除！');
+                }   
+            }
         },
     },
     created(){
