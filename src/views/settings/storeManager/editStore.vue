@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 19:58:27
+ * @LastEditTime: 2021-03-30 19:54:19
 -->
 <template>
 <div class="edit_store">
@@ -199,6 +199,8 @@ export default {
                                 status: res.result.item.status,
                                 remark: res.result.item.remark,
                                 storeBinds: res.result.item.storeBinds,
+                                createdBy: res.result.item.createdBy,
+                                createdOn: res.result.item.createdOn,
                             }
                             var data = [];
                             for(var i=0;i<res.result.item.storeUsers.length;i++){

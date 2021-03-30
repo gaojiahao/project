@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 14:48:21
+ * @LastEditTime: 2021-03-30 16:42:43
 -->
 <template>
 <div>
@@ -52,38 +52,12 @@
         <TabPane label="日志文件" name="logInfo" :disabled="disabled">
             <AddNewProductTableLog :data="dataLog" :loading="loadingLog" :pageData="pageDataLog" @change-page-log="changePageLog" @on-page-size-change-log="onPageSizeChangeLog" :hidden="true"></AddNewProductTableLog>
         </TabPane>
-    </Tabs>
-    <div class="top">
-        <Divider orientation="left" size="small">人员分配</Divider>
-        <div class="top_tabale">
-            <div style="width:100%;height:100%;margin-top:10px;padding: 10px 10px 10px 50px;">
-                店铺选择：
-                <RadioGroup v-model="store" @on-change="onChange">
-                    <template v-for="(ditem,dIndex) in storeList">
-                        <Radio :label="ditem.storeId" :key="ditem.storeId">
-                            {{ditem.storeName}}
-                        </Radio>
-                    </template>
-                </RadioGroup>
-            </div>
-            <div style="width:100%;height:100%;margin-top:10px;padding: 0 10px 10px 50px;">
-                <Table border :columns="columns" :data="filesData" stripe v-if="store" :loading="filedLoading"></Table>
-            </div>
-            <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="examine">
-                <template slot="button">
-                    <FormItem>
-                        <div style="width:100%">
-                        </div>
-                    </FormItem>
-                </template>
-            </ViewForm>
-            <div style="width:100%;height:100%;margin-top:10px;padding: 0 10px 10px 50px;">
+         <div style="width:100%;height:100%;margin-top:10px;padding: 0 10px 10px 0;">
                 <div style="line-height: 32px;display: flex;">
                     <Button @click="goReturn" style="float: left;">返回</Button>
                 </div>
             </div>
-        </div>
-    </div>
+    </Tabs>
 </div>
 </template>
 

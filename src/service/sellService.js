@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2021-01-14 10:49:15
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-27 11:56:59
+ * @LastEditTime: 2021-03-30 12:15:16
  */
 import $flyio from '@plugins/ajax';
 //销售推品
@@ -125,5 +125,18 @@ export let ExportAliExpressOrder = (data = {}) => {
     url: '/api/ExportAliExpressOrder',
     data: data,
     responseType:'blob'
+  })
+};
+//上架管理
+export let GetShelvesGoodsPage  = (data = {}) => {
+  return $flyio.post({
+    url: '/api/GetShelvesGoodsPage ',
+    data: data
+  })
+};
+export let UpdatePrepGoods  = (data = {}) => {
+  return $flyio.post({
+    url: '/api/UpdatePrepGoods ',
+    data: data
   })
 };

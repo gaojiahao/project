@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 19:04:49
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-26 11:53:25
+ * @LastEditTime: 2021-03-30 15:07:19
 -->
 <template>
 <div>
@@ -141,33 +141,31 @@ export default {
                 file.filePath = res.result.item[0]['filePath'];
                 file.type = file.name.substring(file.name.lastIndexOf('.') + 1);
                 this.handleInput(file);
+                this.$FromLoading.hide();
             } else {
                 this.$Notice.warning({
                     title: '上传失败',
                     desc: res.result.msg
                 });
+                this.$FromLoading.hide();
             }
         },
         handleFormatError(file) {
+            this.$FromLoading.hide();
             this.$Notice.warning({
                 title: '上传文件格式错误',
                 desc: '文件 ' + file.name + '不是指定的上传格式'
             });
         },
         handleMaxSize(file) {
+            this.$FromLoading.hide();
             this.$Notice.warning({
                 title: 'Exceeding file size limit',
                 desc: 'File  ' + file.name + ' is too large, no more than 2M.'
             });
         },
         handleBeforeUpload() {
-            // const check = this.uploadList.length < this.length;
-            // if (!check) {
-            //     this.$Notice.warning({
-            //         title: '已达到图片最大上传数！'
-            //     });
-            // }
-            // return check;
+            this.$FromLoading.show();
         },
         handleInput(data) {
             if(this.checkFile(data)){
@@ -221,11 +219,12 @@ export default {
             // console.log('上传中 fileList', fileList); // 上传文件列表包含file
             // 调用监听 上传进度 的事件
             event.target.onprogress = (event) => {
-                let uploadPercent = parseFloat(((event.loaded / event.total) * 100).toFixed(2))	// 保留两位小数，具体根据自己需求做更改
+                let uploadPercent = parseFloat(((event.loaded / event.total) * 100).toFixed(2));	// 保留两位小数，具体根据自己需求做更改
             
                 // 手动设置显示上传进度条 以及上传百分比
-                file.showProgress = true
-                file.percentage = uploadPercent
+                file.showProgress = true;
+                file.percentage = uploadPercent;
+                this.$FromLoading.show();
             }
         }
     },

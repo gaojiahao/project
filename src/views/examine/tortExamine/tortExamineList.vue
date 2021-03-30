@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 19:14:24
+ * @LastEditTime: 2021-03-30 18:07:31
 -->
 <template>
 <div class="erp_table_container">
@@ -367,7 +367,7 @@ export default {
                         return h("span", {
                             style: {
                             display: "inline-block",
-                            color: params.row.isTort ? "#ed4014": "#ed4014"
+                            color: params.row.isTort ? "#ed4014": "#19be6b"
                         },
                         },params.row.isTort?"是":"否");
                     },

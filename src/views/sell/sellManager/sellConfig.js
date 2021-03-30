@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 14:42:31
+ * @LastEditTime: 2021-03-30 20:08:32
  */
 export default {
   data() {
@@ -84,6 +84,17 @@ export default {
             ]
           },
           displayField: "chinaName", //显示字段
+        },
+        isElectrified:{
+          name:'是否带电',
+          type:'radio',
+          dataSource:{
+            type:'static',
+            data:[
+              {name:'是',value:true},
+              {name:'否',value:false}
+            ],
+          }, 
         },
         createdTime:{
           name:'创建时间',

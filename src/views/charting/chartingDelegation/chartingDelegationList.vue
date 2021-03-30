@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 19:11:19
+ * @LastEditTime: 2021-03-30 16:46:10
 -->
 <template>
 <div class="erp_table_container">
@@ -315,15 +315,33 @@ export default {
                 resizable: true,
             },
             {
+                title: '制作类型',
+                key: 'fileTypeName',
+                width: 140,
+                resizable: true,
+            },
+            {
+                title: '平台',
+                key: 'platformName',
+                width: 140,
+                resizable: true,
+            },
+            {
+                title: '店铺',
+                key: 'storeName',
+                width: 140,
+                resizable: true,
+            },
+            {
                 title: '委派时间',
                 key: 'createdOn',
-                width: 140,
+                width: 160,
                 resizable: true,
             },
             {
                 title: '委派完成日期',
                 key: 'endTime',
-                width: 406,
+                width: 160,
                 resizable: true,
                 render: (h, params) => {
                     return h("span", {

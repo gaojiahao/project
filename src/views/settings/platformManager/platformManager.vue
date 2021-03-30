@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:25:54
+ * @LastEditTime: 2021-03-30 14:39:10
 -->
 <template>
 <div class="platformManager-container">
@@ -188,6 +188,8 @@ export default {
         },
         selectItem(id) {
             this.clearFormData();
+            this.selectPBind = [];
+            this.selectSBind = [];
             return new Promise((resolve, reject) => {
                 GetPlatformsById({id:id}).then(res => {
                     if (res.result.code == 200) {

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 16:26:25
+ * @LastEditTime: 2021-03-30 09:51:23
 -->
 <template>
 <div class="erp_table_container">
@@ -285,6 +285,12 @@ export default {
                 width: 368,
             },
             {
+                title: '店铺',
+                key: 'storeName',
+                resizable: true,
+                width: 140,
+            },
+            {
                 title: '产品名称',
                 key: 'name',
                 render: (h, params) => {
@@ -322,12 +328,6 @@ export default {
                 key: 'createdName',
                 resizable: true,
                 width: 120,
-            },
-            {
-                title: '店铺',
-                key: 'storeName',
-                resizable: true,
-                width: 140,
             },
             {
                 title: '选品时间',

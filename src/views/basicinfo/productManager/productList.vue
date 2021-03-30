@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 19:21:29
+ * @LastEditTime: 2021-03-30 11:23:28
 -->
 <template>
 <div class="erp_table_container">
@@ -215,7 +215,7 @@ export default {
                 title: '产品编码',
                 key: 'code',
                 resizable: true,
-                width: 220,
+                width: 270,
             },
             {
                 title: '产品名称',
@@ -234,7 +234,7 @@ export default {
                     }
                     },params.row.name);//  展示的内容
                 },
-                width: 220,
+                width: 280,
                 resizable: true,
             },
             {
@@ -243,12 +243,12 @@ export default {
                 resizable: true,
                 width: 120,
             },
-            {
-                title:'商户',
-                key: 'merchantName',
-                resizable: true,
-                width: 110,
-            },
+            // {
+            //     title:'商户',
+            //     key: 'merchantName',
+            //     resizable: true,
+            //     width: 110,
+            // },
             // {
             //     title:'平台名称',
             //     key: 'platformName',
@@ -263,7 +263,7 @@ export default {
                 title:'品牌名称',
                 key: 'brandName',
                 resizable: true,
-                width: 138,
+                width: 139,
             },
             {
                 title: '状态',

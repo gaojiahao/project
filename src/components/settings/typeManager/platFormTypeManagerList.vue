@@ -106,6 +106,7 @@ export default {
             platFormId:'',
             platformList:[],
             selectItem:{},
+            platFormObj:{},
             pageData:{
                 keyword:'',
                 maxResultCount:200,
@@ -235,12 +236,16 @@ export default {
         },
         onChange(e){
             this.platFormId = e.value;
+            this.platFormObj = e;
+            this.$emit('show-add'); 
         },
         GetPlatformsList() {
             GetPlatformsList({platformId:this.platFormId}).then(res => {
                 if(res.result.code==200){
                     this.platformList = res.result.item;
                     this.platFormId = this.platformList[0]['id'];
+                    this.platFormObj = {value:this.platformList[0]['id'],label:this.platformList[0]['name']}
+                    this.$emit('show-add'); 
                     this.pageData.platFormId = this.platFormId;
                 }
             }).catch(e =>{console.log(e)}); 

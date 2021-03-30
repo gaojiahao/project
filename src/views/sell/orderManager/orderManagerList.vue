@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 17:59:47
+ * @LastEditTime: 2021-03-30 20:10:46
 -->
 <template>
 <div class="erp_table_container">
@@ -428,6 +428,7 @@ export default {
         },
         setFilter(value){
             this.pageData['sumAreaCode'] = value.sumAreaCode;
+            this.pageData['isElectrified'] = value.isElectrified;
             this.pageData.keyword=value;
             this.pageData.skipCount = 1;
             this.AliExpressOrderPage(); 

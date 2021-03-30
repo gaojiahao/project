@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 20:31:12
+ * @LastEditTime: 2021-03-30 19:40:48
 -->
 <template>
 <div>
@@ -497,6 +497,7 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.formValidate3['id']=res.result.item.id;
+                            this.formValidate3['storeName']=res.result.item.storeName;
                             this.formValidate3['fileType']=res.result.item.fileType;
                             this.formValidate3['fileTypeName']=res.result.item.fileTypeName;
                             this.formValidate3['userName']=res.result.item.userName;

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 19:46:05
+ * @LastEditTime: 2021-03-30 10:54:12
 -->
 <template>
 <div class="manager-container">
@@ -184,17 +184,19 @@ export default {
             this.$refs['form'].$refs['formValidate'].resetFields();
             this.isShowAdd = true;
             this.isShowBind = false;
-            this.formValidate.platformId = this.$refs.list.platFormId;
+            this.formValidate.platformId = this.$refs.list.platFormObj['value'];
+            this.formValidate.platformName = this.$refs.list.platFormObj['label'];
             this.formValidate.parentId= 0;
             this.$refs['form'].initEL('input');
         },
         showAddChild(data) {
-            this.$refs['form'].$refs['formValidate'].resetFields();
-            this.$delete(this.formValidate,'id');
-            this.isShowAdd = true;
-            this.isShowBind = false;
-            this.formValidate.platformId = this.$refs.list.platFormId;
-            if(this.activatedRow.data.id){
+            if(this.activatedRow&&this.activatedRow.data&&this.activatedRow.data.id){
+                this.$refs['form'].$refs['formValidate'].resetFields();
+                this.$delete(this.formValidate,'id');
+                this.isShowAdd = true;
+                this.isShowBind = false;
+                this.formValidate.platformId = this.$refs.list.platFormObj['value'];
+                this.formValidate.platformName = this.$refs.list.platFormObj['label'];
                 this.formValidate.parentName = this.activatedRow.data.name;
                 this.formValidate.parentId = this.activatedRow.data.id;
             }

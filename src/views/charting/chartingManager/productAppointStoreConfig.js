@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-25 15:04:05
+ * @LastEditTime: 2021-03-30 19:40:25
  */
 export default {
   data() {
@@ -66,6 +66,10 @@ export default {
         //   name:"制作类型",
         //   type:"text",
         // },
+        storeName:{
+          name:'店铺',
+          type:'text',
+        },
         fileTypeName:{
           name:"制作类型",
           type:"text",
@@ -92,6 +96,7 @@ export default {
         },
       },
       formValidate3: {
+        storeName:'',
         fileType:'',
         fileTypeName:'',
         quantity:'',

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-26 19:50:29
+ * @LastEditTime: 2021-03-30 19:37:02
 -->
 <template>
 <div class="erp_table_container">
@@ -219,7 +219,13 @@ export default {
                     }
                     },params.row.goodsName);
                 },
-                width: 349,
+                width: 299,
+                resizable: true,
+            },
+            {
+                title: '店铺',
+                key: 'storeName',
+                width: 100,
                 resizable: true,
             },
             {
@@ -318,7 +324,7 @@ export default {
                 title: '操作',
                 slot: 'action',
                 align: 'center',
-                width: 150,
+                width: 100,
                 resizable: true,
             }
         ];

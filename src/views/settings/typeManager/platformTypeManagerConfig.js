@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-05 17:05:25
+ * @LastEditTime: 2021-03-30 10:16:47
  */
 export default {
     data() {
@@ -47,7 +47,8 @@ export default {
             bind:{
               target: 'platformName',
               bindValue: 'name'
-            }
+            },
+            disabled:true,
           },
           name:{
             name:'类目名称',

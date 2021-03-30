@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 17:26:31
+ * @LastEditTime: 2021-03-30 19:25:16
 -->
 <template>
 <div>
@@ -22,7 +22,7 @@
                 <div class="ivu-form-item">
                     <label class="ivu-form-item-label" style="width: 120px;">制图信息:</label> 
                     <div class="ivu-form-item-content" style="margin-left: 120px;">
-                        <Table :columns="selectionColumns" :data="selectedGoods" height="300" width="1200"></Table>
+                        <Table :columns="selectionColumns" :data="selectedGoods" height="300" width="1400"></Table>
                         <!-- <span style="margin: 10px;">
                             <Button size="small" @click="handleSelectAll(true)">全选</Button>
                             <Button size="small" @click="handleSelectAll(false)">取消</Button>
@@ -95,6 +95,17 @@ export default {
                         },
                         },params.row.status ==1 ? "未完成":  params.row.status==2 ? "已完成" : params.row.status==3 ? "待返工":"待确认");
                     },
+                    width:120
+                },
+                {
+                    title: '平台',
+                    key: 'platformName',
+                    width:120
+                },
+                {
+                    title: '店铺',
+                    key: 'storeName',
+                    width:120
                 },
                 {
                     title: '制图类型',
@@ -106,7 +117,7 @@ export default {
                     key: 'userName',
                     width:120
                 },
-                 {
+                {
                     title: '制图数量',
                     key: 'quantity',
                     width:120
@@ -172,6 +183,7 @@ export default {
                 {
                     title: '意见',
                     key: 'remark',
+                    width:250
                 }
             ],
             notSelectedColumns: [

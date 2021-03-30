@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 17:20:47
+ * @LastEditTime: 2021-03-30 16:39:50
 -->
 <template>
 <div>
@@ -58,16 +58,16 @@
         <div class="top_tabale">
             <div style="width:100%;height:100%;margin-top:10px;padding: 10px 10px 10px 50px;">
                 店铺选择：
-                <RadioGroup v-model="store" @on-change="onChange">
+                <RadioGroup v-model="store">
                     <template v-for="(ditem,dIndex) in storeList">
-                        <Radio :label="ditem.storeId" :key="ditem.storeId">
+                        <Radio :label="ditem.storeId" :key="dIndex">
                             {{ditem.storeName}}
                         </Radio>
                     </template>
                 </RadioGroup>
             </div>
             <div style="width:100%;height:100%;margin-top:10px;padding: 0 10px 10px 50px;">
-                <Table border :columns="columns" :data="filesData" stripe v-if="store" :loading="filedLoading"></Table>
+                <Table border :columns="columns" :data="storeList[storeIndex]['fileRelations']" stripe v-if="store" :loading="filedLoading"></Table>
             </div>
             <XForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" @save="save" @clear-form-data="clearFormData" ref="examine">
                 <template slot="button">
@@ -192,12 +192,13 @@ export default {
                     render: (h, params) => {
                         return h('Select',{
                                 props:{
-                                    value: params.row.logisticsMode,
+                                    value: this.storeList[this.storeIndex]['fileRelations'][params.index][params.column.key],
                                     transfer:true
                                 },
                                 on: {
                                     'on-change':(event) => {
-                                        this.filesData[params.index].userId = event;
+                                        // this.storeList[this.storeIndex]['fileRelations'][params.index][params.column.key] = event;
+                                        this.$set(this.storeList[this.storeIndex]['fileRelations'][params.index],params.column.key,event);
                                     }
                                 },
                             },
@@ -220,17 +221,20 @@ export default {
                     render: (h, params) => {
                         return h('DatePicker', {
                             props: {
-                                value: this.filesData[params.index][params.column.key],
+                                // value: this.filesData[params.index][params.column.key],
+                                value: this.storeList[this.storeIndex]['fileRelations'][params.index][params.column.key],
                                 format:"yyyy-MM-dd HH:mm", 
                                 type:"datetimerange",
                                 transfer:true,
                             },
                             on: {
                                 'on-change': (event) => {
-                                    this.filesData[params.index][params.column.key] = event;
+                                    // this.storeList[this.storeIndex]['fileRelations'][params.index][params.column.key] = event;
+                                    this.$set(this.storeList[this.storeIndex]['fileRelations'][params.index],params.column.key,event);
                                 },
                                 'on-clear': (event) => {
-                                    this.filesData[params.index][params.column.key] = '';
+                                    this.$set(this.storeList[this.storeIndex]['fileRelations'][params.index],params.column.key,'');
+                                    //this.storeList[this.storeIndex]['fileRelations'][params.index][params.column.key] = '';
                                 },
                             }
                         });
@@ -238,12 +242,25 @@ export default {
                 },
             ],
             peopleList:[],
-            filedLoading:true
+            filedLoading:true,
+            storeIndex:0,
         }
     },
     computed:{
         disabled(){
             return this.productId ? false : false;
+        }
+    },
+    watch:{
+        store:{
+            handler(val){
+                for(var i=0;i<this.storeList.length;i++){
+                    if(val==this.storeList[i]['storeId']){
+                        this.storeIndex = i;
+                        break;
+                    }
+                }
+            }
         }
     },
     methods: {
@@ -386,32 +403,41 @@ export default {
             this.GetOperationLogPage();
         },
         save() {
-            var data = this.storeList[0],
-            listFileDistribution = [];
-             for(var i=0;i<this.filesData.length;i++){
-                if(!(this.filesData[i].userId&&this.filesData[i].date&&this.filesData[i].date[0]&&this.filesData[i].date[1])){
-                    this.$Message.error('人员，制作时间未填写完整');   
-                    return ; 
+            var listFileDistribution = [];
+            // for(var i=0;i<this.filesData.length;i++){
+            //     if(!(this.filesData[i].userId&&this.filesData[i].date&&this.filesData[i].date[0]&&this.filesData[i].date[1])){
+            //         this.$Message.error('人员，制作时间未填写完整');   
+            //         return ; 
+            //     }
+            // }
+            for(var i=0;i<this.storeList.length;i++){
+                for(var j=0;j<this.storeList[i]['fileRelations'].length;j++){
+                    if(!(this.storeList[i]['fileRelations'][j].userId&&this.storeList[i]['fileRelations'][j].date&&this.storeList[i]['fileRelations'][j].date[0]&&this.storeList[i]['fileRelations'][j].date[1])){
+                        this.$Message.error('人员，制作时间未填写完整');   
+                        return ; 
+                    }
                 }
             }
-            for(var i=0;i<this.filesData.length;i++){
-                var obj={};
-                obj={
-                    fileType: this.filesData[i].id,
-                    fileTypeName: this.filesData[i].fileTypeName,
-                    userId: this.filesData[i].userId,
-                    remark: this.formValidate2.remark,
-                    startTime: this.filesData[i].date[0],
-                    endTime: this.filesData[i].date[1],
-                    goodsId: this.productInfoFormValidate.id,
-                    goodsName: this.productInfoFormValidate.name,
-                    platformId: data['platfromId'],
-                    platformName: data['platfromName'],
-                    storeId: data['storeId'],
-                    storeName: data['storeName'],
-                    relationId: this.filesData[i].id,
-                };
-                listFileDistribution.push(obj);
+            for(var i=0;i<this.storeList.length;i++){
+                for(var j=0;j<this.storeList[i]['fileRelations'].length;j++){
+                    var obj={};
+                    obj={
+                        fileType: this.storeList[i]['fileRelations'][j].id,
+                        fileTypeName: this.storeList[i]['fileRelations'][j].fileTypeName,
+                        userId: this.storeList[i]['fileRelations'][j].userId,
+                        remark: this.formValidate2.remark,
+                        startTime: this.storeList[i]['fileRelations'][j].date[0],
+                        endTime: this.storeList[i]['fileRelations'][j].date[1],
+                        goodsId: this.productInfoFormValidate.id,
+                        goodsName: this.productInfoFormValidate.name,
+                        platformId: this.storeList[i]['platformId'],
+                        platformName: this.storeList[i]['platformName'],
+                        storeId: this.storeList[i]['storeId'],
+                        storeName: this.storeList[i]['storeName'],
+                        relationId: this.storeList[i]['fileRelations'][j].id,
+                    };
+                    listFileDistribution.push(obj);
+                }
             }
             this.$refs['examine'].$refs['formValidate'].validate((valid) => {
                 if (valid) {
@@ -442,16 +468,14 @@ export default {
                     GetFileDistributionInfo({id:this.productId}).then(res => {
                         if(res.result.code==200){
                             this.storeList = res.result.item;
+                            this.storeIndex = 0;
                             this.store = this.storeList[0]['storeId'];
-                            this.filesData = this.storeList[0]['fileRelations'];
+                            // this.filesData = this.storeList[0]['fileRelations'];
                             this.filedLoading = false;
                         }
                     });
                 });
             }    
-        },
-        onChange(){
-            
         },
         GetUserInfoList(){
             return GetUserInfoList().then(res => {
