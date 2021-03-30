@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-26 16:09:57
+ * @LastEditTime: 2021-03-29 17:21:20
 -->
 <template>
 <div>
@@ -58,7 +58,15 @@
     <div class="top">
         <Divider orientation="left" size="small">审核</Divider>
         <div class="top_tabale">
-            <ViewForm :formValidate="formValidate2" :ruleValidate="ruleValidate2" :formConfig="formConfig2" ref="examine">
+            <div class="ivu-form ivu-form-label-right" style="    padding: 10px 10px 10px 10px;">
+                <div class="ivu-form-item">
+                    <!-- <label class="ivu-form-item-label" style="width: 120px;">制图信息:</label>  -->
+                    <div class="ivu-form-item-content" style="margin-left: 120px;">
+                        <Table :columns="columns" :data="dataColumns" height="300" width="1200"></Table>
+                    </div>
+                </div>
+            </div>
+            <ViewForm ref="examine">
                 <template slot="button">
                     <FormItem>
                         <div style="width:100%">
@@ -102,8 +110,8 @@ import {
     GetOperationLogPage
 } from "@service/basicinfoService";
 import {
-    GetReviewActionPage
-} from "@service/basicService";
+    GetGoodsTortDetailsPage
+} from "@service/tortExamineService";
 import {
     Tabs,
     TabPane,
@@ -156,7 +164,28 @@ export default {
             dataLog:[],
             loadingLog:true,
             preId:'',
-            nextId:''
+            nextId:'',
+            columns: [
+                {
+                    title: '平台名称',
+                    key: 'platformName',
+                    width:120
+                },
+                {
+                    title: '是否侵权',
+                    key: 'isTort',
+                    width:120,
+                    render: (h, params) => {
+                        return h("span", {
+                        },params.row.isTort ? "是":"否");
+                    },
+                },
+                {
+                    title: '意见',
+                    key: 'remark',
+                },
+            ],
+            dataColumns:[]
         }
     },
     computed:{
@@ -334,12 +363,12 @@ export default {
         nextPage(){
             this.$router.push({name:'viewTortExamine',query: {id:this.nextId}});
         },
-        GetReviewActionPage(){
+        GetGoodsTortDetailsPage(){
             if(this.productId){
                 return new Promise((resolve, reject) => {
-                    GetReviewActionPage({reviewType:'tortReview',relatedId:this.productId}).then(res => {
+                    GetGoodsTortDetailsPage({goodsId:this.productId}).then(res => {
                         if(res.result.code==200){
-                            debugger
+                            this.dataColumns = res.result.item.items;    
                         }
                     });
                 });
@@ -352,7 +381,7 @@ export default {
             this.GetPrepGoodsAttributeById();
             this.GetOperationLogPage();
             this.getNextPre(this.productId);
-            this.GetReviewActionPage();
+            this.GetGoodsTortDetailsPage();
         }
     },
     created() {

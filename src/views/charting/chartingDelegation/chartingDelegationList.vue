@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-27 10:09:38
+ * @LastEditTime: 2021-03-29 19:11:19
 -->
 <template>
 <div class="erp_table_container">
@@ -76,7 +76,6 @@ export default {
             },
             totalPage:0,
             filter:"0",
-            columnsDetail: this.getTableColumnDetail(),
         }
     },
     watch:{
@@ -487,7 +486,7 @@ export default {
         getDetail(id){
             this.loadingDetail = true;
             return new Promise((resolve, reject) => {
-                GetDistributionDetailPage({goodsId:id,fileDistributionStatus:-1}).then(res => {
+                GetDistributionDetailPage({...this.pageDataDetail,goodsId:id,fileDistributionStatus:-1}).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPageDetail = res.result.item.totalCount;

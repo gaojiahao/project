@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-18 14:29:46
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-24 15:33:10
+ * @LastEditTime: 2021-03-29 19:01:44
  */
 import ModalForm from "@components/public/form/modalForm";
 import SeniorFilter from "@components/public/filter/seniorFilter";
@@ -42,6 +42,7 @@ export default {
             totalPageDetail:0,
             dataDetail:[],
             loadingDetail:true,
+            columnsDetail: this.getTableColumnDetail(),
         }
     },
     methods: {
@@ -150,6 +151,9 @@ export default {
             this.showModelDetail = value;
             if(value)
                 this.getDetail(id);   
+        },
+        getTableColumnDetail(){
+            
         }
     },
     created(){

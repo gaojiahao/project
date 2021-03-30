@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-24 11:30:42
+ * @LastEditTime: 2021-03-29 19:14:24
 -->
 <template>
 <div class="erp_table_container">
@@ -31,7 +31,7 @@
             </template>
             <template slot-scope="{ row, index }" slot="action">
                 <Button type="info" size="small" style="margin-right: 5px" @click="goTortExamine(row)" v-if="row.tortStatus==0">审核</Button>
-                <Button size="small" style="margin-right: 5px" @click="showModalDetail(true)">明细</Button>
+                <Button size="small" style="margin-right: 5px" @click="showModalDetail(true,row.id)" v-if="row.tortStatus!=0">明细</Button>
             </template>
             <template slot="footer">
                 <div class="footer_page">
@@ -46,6 +46,7 @@
     <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
     <ImageModel :srcData="srcData" :visible="visible"></ImageModel>
     <ModalDetail :showModelDetail='showModelDetail' @show-modal-detail="showModalDetail" ref="showModalDetail"></ModalDetail>
+    <ModalDetail :total="totalPageDetail" :columns="columnsDetail" :pageData="pageDataDetail" :data="dataDetail" :loading="loadingDetail" :showModelDetail='showModelDetail' @show-modal-detail="showModalDetail" ref="showModalDetail"></ModalDetail>
 </div>
 </template>
 
@@ -53,7 +54,8 @@
 import config from "@views/examine/tortExamine/productConfig";
 import list from "@mixins/list";
 import {
-    GetGoodsTortReviewPage 
+    GetGoodsTortReviewPage,
+    GetGoodsTortDetailsPage
 } from "@service/tortExamineService"
 
 export default {
@@ -341,6 +343,43 @@ export default {
         ];
             return columns2;
         },
+        getTableColumnDetail(){
+            var columns2 = [
+                {
+                    type: 'index',
+                    width: 60,
+                    align: 'center',
+                    title: '序号',
+                    resizable: true,
+                },
+                {
+                    title: '平台名称',
+                    key: 'platformName',
+                    width: 140,
+                    resizable: true,
+                },
+                {
+                    title: '是否侵权',
+                    key: 'isTort',
+                    width: 100,
+                    resizable: true,
+                    render: (h, params) => {
+                        return h("span", {
+                            style: {
+                            display: "inline-block",
+                            color: params.row.isTort ? "#ed4014": "#ed4014"
+                        },
+                        },params.row.isTort?"是":"否");
+                    },
+                },
+                {
+                    title: '意见',
+                    key: 'remark',
+                    resizable: true,
+                },
+            ];
+            return columns2;
+        },
         checkALl(){
             this.$nextTick(function () {
                 this.columns = this.getTableColumn();
@@ -358,6 +397,20 @@ export default {
                 data: this.data,
             });    
         },
+        getDetail(id){
+            this.loadingDetail = true;
+            return new Promise((resolve, reject) => {
+                GetGoodsTortDetailsPage({...this.pageDataDetail,goodsId:id}).then(res => {
+                    if(res.result.code==200){
+                        this.$nextTick(() => {
+                            this.totalPageDetail = res.result.item.totalCount;
+                            this.dataDetail = res.result.item.items;
+                            this.loadingDetail = false;
+                        });
+                    }
+                });
+            });    
+        }
     },
     created(){
         this.GetGoodsTortReviewPage();

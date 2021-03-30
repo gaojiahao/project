@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:23:01
+ * @LastEditTime: 2021-03-29 19:21:29
 -->
 <template>
 <div class="erp_table_container">
@@ -46,7 +46,7 @@ import ModalForm from "@components/public/form/modalForm";
 import list from "@mixins/list";
 import config from "@views/basicinfo/productManager/productListConfig";
 import {
-    GetPrepGoodsPage,
+    GetPrepGoodsInfoPage,
     DelPrepGoods
 } from "@service/basicinfoService"
 
@@ -78,9 +78,9 @@ export default {
         }
     },
     methods: {
-        GetPrepGoodsPage() {
+        GetPrepGoodsInfoPage() {
             return new Promise((resolve, reject) => {
-                GetPrepGoodsPage(this.pageData).then(res => {
+                GetPrepGoodsInfoPage(this.pageData).then(res => {
                     if(res.result.code==200){
                         this.$nextTick(() => {
                             this.totalPage = res.result.item.totalCount;
@@ -125,12 +125,12 @@ export default {
         },
         changePage(page) {
             this.pageData.skipCount = page;
-            this.GetPrepGoodsPage();
+            this.GetPrepGoodsInfoPage();
         },
         refresh(){
             this.loading = true;
             this.pageData.skipCount=1;
-            this.GetPrepGoodsPage();
+            this.GetPrepGoodsInfoPage();
         },
         changeCoulmns(data){
             let datas = [];
@@ -150,7 +150,7 @@ export default {
         },
         onPageSizeChange(pagesize){
             this.pageData.maxResultCount = pagesize;
-            this.GetPrepGoodsPage();
+            this.GetPrepGoodsInfoPage();
         },
         getTableColumn(){
             var columns2 = [
@@ -321,7 +321,7 @@ export default {
         setFilter(value){
             this.pageData.keyword = value;
             this.pageData.skipCount = 1;
-            this.GetPrepGoodsPage(); 
+            this.GetPrepGoodsInfoPage(); 
         },
         exportData(){
              this.$refs.selection.exportCsv({
@@ -332,7 +332,7 @@ export default {
         }
     },
     created(){
-        this.GetPrepGoodsPage();
+        this.GetPrepGoodsInfoPage();
     }
 }
 </script>

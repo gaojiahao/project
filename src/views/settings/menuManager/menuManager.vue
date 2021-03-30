@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-29 15:42:43
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-16 11:10:07
+ * @LastEditTime: 2021-03-29 20:25:15
 -->
 <template>
 <div class="erp_table_container">
@@ -85,7 +85,7 @@ export default {
     },
     computed:{
         title(){
-            return this.activatedRow.id ? '编辑':'新建'
+            return this.activatedRow&&this.activatedRow.id ? '编辑':'新建'
         }
     },
     methods: {
@@ -124,6 +124,8 @@ export default {
         },
         showPop(flag, row) {
             this.showModel = flag;
+            this.activatedRow = {};
+            this.$refs.selection.clearCurrentRow();
         },
         showChildPop(flag, row, index) {
             this.clearFormData();

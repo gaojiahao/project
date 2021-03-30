@@ -4,11 +4,11 @@
  * @Author: Gabriel.gaojiahao
  * @Date: 2019-03-25 10:56:56
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-20 16:01:58
+ * @LastEditTime: 2021-03-29 16:15:21
  -->
 <template>
   <div v-show="show">
-    <Spin fix>
+    <Spin fix :style="autoHeight">
       <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
       <div>Loading</div>
     </Spin>
@@ -20,16 +20,34 @@ export default {
   name: "FromLoading",
   data() {
     return {
-      show: false
+      show: false,
+      autoHeight: {
+        height: ''
+      },
     };
   },
+  watch:{
+    show:{
+      handler(val){
+        if(val){
+          this.getHeight();
+        }
+      }
+    }
+  },
+  methods:{
+    getHeight() {
+      var obj = document.getElementById("app");
+      var h = obj.offsetHeight;
+      this.autoHeight.height = parseInt(h) + 'px';
+    },
+  }
 };
 </script>
 <style scoped>
 >>>.ivu-spin-fix {
   background-color: rgba(0,0,0,0.5);
   z-index: 11;
-  
 }
 >>>.ivu-spin {
     color: #fff;

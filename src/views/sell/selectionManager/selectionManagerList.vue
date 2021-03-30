@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-18 09:58:00
+ * @LastEditTime: 2021-03-29 16:26:25
 -->
 <template>
 <div class="erp_table_container">
@@ -321,13 +321,19 @@ export default {
                 title: '选品人',
                 key: 'createdName',
                 resizable: true,
-                width: 80,
+                width: 120,
+            },
+            {
+                title: '店铺',
+                key: 'storeName',
+                resizable: true,
+                width: 140,
             },
             {
                 title: '选品时间',
                 key: 'createdOn',
                 resizable: true,
-                width: 250,
+                width: 160,
             },
             {
                 title: '审核人',
@@ -339,7 +345,7 @@ export default {
                 title: '审核时间',
                 key: 'modifyOn',
                 resizable: true,
-                width: 250,
+                width: 160,
             },
             {
                 title: '操作',

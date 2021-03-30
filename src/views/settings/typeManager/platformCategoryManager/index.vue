@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-23 20:04:44
+ * @LastEditTime: 2021-03-29 19:46:05
 -->
 <template>
 <div class="manager-container">
@@ -124,7 +124,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：新建成功！');
-                                    this.GetEcommerceCategoryList();
+                                    this.$refs.list.GetEcommerceCategoryList();
                                     // this.clearFormData();
                                     this.formValidate.name='';
                                     this.formValidate.level='';
@@ -145,7 +145,7 @@ export default {
                                 if (res.result.code == 200) {
                                     this.$FromLoading.hide();
                                     this.$Message.info('温馨提示：更新成功！');
-                                    this.GetEcommerceCategoryList();
+                                    this.$refs.list.GetEcommerceCategoryList();
                                     this.activatedRow = {};
                                 } else if (res.result.code == 400) {
                                     this.$Message.error({
@@ -254,7 +254,7 @@ export default {
                         if (res.result.code == 200) {
                             this.$FromLoading.hide();
                             this.$Message.info('温馨提示：删除成功！');
-                            this.GetEcommerceCategoryList();
+                            this.$refs.list.GetEcommerceCategoryList();
                             this.clearFormData();
                             this.activatedRow = {};
                         } else if (res.result.code == 400) {
@@ -278,7 +278,7 @@ export default {
         },
     },
     created() {
-        // this.GetEcommerceCategoryList();
+        // this.$refs.list.GetEcommerceCategoryList();
     }
 }
 </script>

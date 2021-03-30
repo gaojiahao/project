@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-27 10:21:44
+ * @LastEditTime: 2021-03-29 17:26:31
 -->
 <template>
 <div>
@@ -108,7 +108,7 @@ export default {
                 },
                  {
                     title: '制图数量',
-                    key: 'quailty',
+                    key: 'quantity',
                     width:120
                 },
                 {

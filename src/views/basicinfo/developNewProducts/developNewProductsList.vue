@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 09:53:49
+ * @LastEditTime: 2021-03-29 16:17:40
 -->
 <template>
 <div class="erp_table_container">
@@ -530,6 +530,7 @@ export default {
         },
         downLoad(){
             this.exportLoading= true;
+            this.$FromLoading.show();
             var params = {},data=[];
             for(var i=0;i<this.selectedList.length;i++){
                 data.push(this.selectedList[i]['id']);
@@ -547,6 +548,7 @@ export default {
                         this.exportLoading=false;
                         // anchor.download = decodeURI("");
                         anchor.click();
+                        this.$FromLoading.hide();
                     } else {
                         this.$Message.error({
                             background: true,

@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 14:47:20
+ * @LastEditTime: 2021-03-29 17:59:47
 -->
 <template>
 <div class="erp_table_container">
@@ -237,6 +237,18 @@ export default {
                 key: 'city',
                 resizable: true,
                 width: 148
+            },
+            {
+                title: '重量',
+                key: 'tongtuSkuWeight',
+                width: 110,
+                resizable: true,
+            },
+            {
+                title: '数量',
+                key: 'tongtuSkuNumber',
+                width: 110,
+                resizable: true,
             },
             {
                 title: '产品金额',
@@ -477,6 +489,7 @@ export default {
         downLoad(){
             if(this.pageData['sumAreaCode']){
                 this.exportLoading= true;
+                this.$FromLoading.show();
                 return new Promise((resolve, reject) => {
                     ExportAliExpressOrder({sumAreaCode:this.pageData['sumAreaCode']}).then(res => {
                         const time = new Date().getTime();
@@ -497,6 +510,7 @@ export default {
                             document.body.removeChild(link);
                             this.exportLoading=false;
                         }
+                        this.$FromLoading.hide();
                     }).catch(e=>{
                         this.$Message.error({
                             background: true,
@@ -545,8 +559,4 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~@less/list/index.less";
-// .ivu-select-default.ivu-select-multiple .ivu-select-selection {
-//     min-height: 24px;
-//     height: 24px;
-// }
 </style>

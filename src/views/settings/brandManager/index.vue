@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-17 12:25:05
+ * @LastEditTime: 2021-03-29 20:03:14
 -->
 <template>
 <div class="manager-container">
@@ -161,6 +161,7 @@ export default {
                             name: res.result.item.name,
                             code: res.result.item.code,
                             platformId: res.result.item.platformId,
+                            platformName: res.result.item.platformName,
                             merchantId: res.result.item.merchantId,
                             parentIndex: res.result.item.parentIndex,
                             id: res.result.item.id,
