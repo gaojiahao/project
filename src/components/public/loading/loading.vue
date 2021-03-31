@@ -4,13 +4,13 @@
  * @Author: Gabriel.gaojiahao
  * @Date: 2019-03-25 10:56:56
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 16:15:21
+ * @LastEditTime: 2021-03-31 15:20:26
  -->
 <template>
   <div v-show="show">
     <Spin fix :style="autoHeight">
       <Icon type="ios-loading" size=18 class="demo-spin-icon-load"></Icon>
-      <div>Loading</div>
+      <div>{{text}}</div>
     </Spin>
   </div>
 </template>
@@ -24,6 +24,7 @@ export default {
       autoHeight: {
         height: ''
       },
+      text:''
     };
   },
   watch:{
@@ -33,7 +34,7 @@ export default {
           this.getHeight();
         }
       }
-    }
+    },
   },
   methods:{
     getHeight() {

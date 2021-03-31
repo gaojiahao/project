@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-30 20:08:32
+ * @LastEditTime: 2021-03-31 15:05:22
  */
 export default {
   data() {
@@ -23,7 +23,7 @@ export default {
         },
       },
       formValidate: {
-        shenhe:'',
+        isElectrified:false
       },
       ruleValidate: {
         shenhe: [{ 

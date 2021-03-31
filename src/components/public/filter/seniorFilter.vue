@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:35:57
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 14:46:11
+ * @LastEditTime: 2021-03-31 15:03:53
 -->
 <template>
 <Modal v-model="show" title="高级筛选" @on-ok="ok" @on-cancel="cancel" width="800" draggable >
@@ -67,12 +67,17 @@ export default {
             type: Boolean,
             default: false,
         },
+        formValidate: {
+            type: Object,
+            default () {
+                return {}
+            }
+        },
     },
     data() {
         return {
             data: {},
             show: false,
-            formValidate:{},
             showFlod: false,
         }
     },

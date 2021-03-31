@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-03 16:55:33
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 14:08:57
+ * @LastEditTime: 2021-03-31 14:48:36
  */
 export default {
     data() {
@@ -135,7 +135,11 @@ export default {
             valueField: "id",  //值字段
             displayField: "name", //显示字段
             checkField:'name',
-            haveName:'chinaName'
+            haveName:'chinaName',
+            list:{
+              url:'/api/GetAreaList',
+              checkField:'abbreviation'  
+            }
           },
         },
         formValidate: {

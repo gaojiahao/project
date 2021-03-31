@@ -3,8 +3,8 @@
  * @version: 1.0.0
  * @Author: gaojiahao
  * @Date: 2020-11-27 10:49:37
- * @LastEditors: gaojiahao
- * @LastEditTime: 2020-11-27 11:22:58
+ * @LastEditors: sueRimn
+ * @LastEditTime: 2021-03-31 15:20:40
  */
 import pageLoading from "./loading.vue";
 
@@ -20,11 +20,13 @@ FromLoading.install = Vue => {
   }
   // $loading即是你后期调用的名称
   Vue.prototype.$FromLoading = {
-    show() {
+    show(text) {
       pageLoadInstance.show = true;
+      pageLoadInstance.text = text||"Loading";
     },
-    hide() {
+    hide(text) {
       pageLoadInstance.show = false;
+      pageLoadInstance.text = text||"Loading";
     }
   };
 };

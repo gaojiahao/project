@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-31 11:01:48
+ * @LastEditTime: 2021-03-31 15:27:05
 -->
 <template>
 <div class="erp_table_container">
@@ -13,9 +13,9 @@
             <template slot="header">
                 <div class="filter">
                     <div class="filter-button">
-                        <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
+                        <!-- <Button size="small" type="primary" icon="ios-add" @click.native="goAdd" class="marginRight">新建</Button>
                         <Button type="info" size="small" icon="ios-create-outline" @click="goEdit" class="marginRight">编辑</Button>
-                        <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button>
+                        <Button type="error" size="small" icon="ios-close" @click="sureDeleteConfirm(false)" class="marginRight">删除</Button> -->
                         <AutoCompleteSearch :filtersConfig="filtersConfig" @set-filter="setFilter"></AutoCompleteSearch>
                         <Button type="primary" size="small" icon="ios-funnel-outline" @click="showFilter(true)" class="marginRight">高级筛选</Button>
                         <Button size="small" type="success" icon="md-refresh" @click="refresh" class="marginRight">刷新</Button>
@@ -23,7 +23,7 @@
                             <Option v-for="item in areaList" :value="item.sumCode" :key="item.id">{{ item.sumName }}</Option>
                         </Select> -->
                         <Button type="primary" size="small" icon="ios-cloud-upload-outline" @click="downLoad" :loading="exportLoading" class="marginRight">导出</Button>
-                        <Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :on-progress="handleProgress"  :on-error="onError" :action="'//'+`${uploadUrl}`+'/api/ImportAliExpressOrder'" :headers="headers"  style="display: inline-block;width:50px; margin-right: 10px;">
+                        <Upload ref="upload" :show-upload-list="false" :on-success="handleSuccess" :format="formats" :max-size="10240000" :on-format-error="handleFormatError" :on-exceeded-size="handleMaxSize" :on-progress="handleProgress" :before-upload="handleBeforeUpload" :on-error="onError" :action="'//'+`${uploadUrl}`+'/api/ImportAliExpressOrder'" :headers="headers"  style="display: inline-block;width:50px; margin-right: 10px;">
                             <Button type="primary" size="small" icon="ios-cloud-download-outline" :loading="importLoading" class="marginRight">导入</Button>
                         </Upload>
                         <!--<Button size="small" icon="ios-close" @click="sureDeleteConfirm(true)">批量删除</Button>-->
@@ -46,9 +46,8 @@
             </template>
         </Table>
     </div>
-    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
-    <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm>
-    <UploadProgress :showProgress="showProgress" :percent="percentage"></UploadProgress>
+    <SeniorFilter :showFilterModel='showFilterModel' :formConfig="filtersConfig" :formValidate="formValidate" @set-filter="setFilter" @show-filter="showFilter"></SeniorFilter>
+    <!-- <ModalForm :titleText="titleText" :formValidate="formValidate" :ruleValidate="ruleValidate" :showModel='showModel' :formConfig="formConfig" @save="save" @show-pop="showPop" @clear-form-data="clearFormData"></ModalForm> -->
 </div>
 </template>
 
@@ -57,7 +56,6 @@ import {
     Upload,
     Progress,
 } from "view-design";
-import UploadProgress from '@components/public/upload/uploadProgress';
 import ModalForm from "@components/public/form/modalForm";
 import config from "@views/sell/sellManager/sellConfig";
 import list from "@mixins/list";
@@ -76,8 +74,7 @@ export default {
     components: {
         ModalForm,
         Upload,
-        Progress,
-        UploadProgress
+        Progress
     },
     mixins: [config,list],
     data() {
@@ -189,7 +186,7 @@ export default {
                 resizable: true,
             },
             {
-                title: '订单号(通途sku)',
+                title: '订单号',
                 key: 'orderCode',
                 render: (h, params) => {
                     return h("span", {// 创建的标签名
@@ -209,7 +206,13 @@ export default {
                 resizable: true,
             },
             {
-                title: '产品名称(通途sku名称)',
+                title: '产品编号',
+                key: 'tongtuSku',
+                width: 200,
+                resizable: true,
+            },
+            {
+                title: '产品名称',
                 key: 'tongtuSkuName',
                 width: 200,
                 resizable: true,
@@ -231,17 +234,17 @@ export default {
                 resizable: true,
                 width: 100,
             },
+            // {
+            //     title: '买家姓名',
+            //     key: 'buyerName',
+            //     width: 200,
+            //     resizable: true,
+            // },
             {
-                title: '买家姓名',
-                key: 'buyerName',
-                width: 200,
-                resizable: true,
-            },
-            {
-                title: '收件人地区(简称-名称):',
+                title: '收件人国家地区',
                 key: 'areaAdd',
                 resizable: true,
-                width: 100
+                width: 130
             },
             {
                 title: '国家/地区',
@@ -480,6 +483,7 @@ export default {
                 });
                 this.importLoading = false;    
             }
+            this.$FromLoading.hide();
         },
         handleFormatError(file) {
             this.$Notice.warning({
@@ -487,6 +491,7 @@ export default {
                 desc: '文件 ' + file.name + '不是表格格式'
             });
             this.importLoading = false;
+            this.$FromLoading.hide();
         },
         handleMaxSize(file) {
             this.$Notice.warning({
@@ -494,6 +499,7 @@ export default {
                 desc: '文件  ' + file.name + '超过100M'
             });
             this.importLoading = false;
+            this.$FromLoading.hide();
         },
         handleProgress(event, file, fileList){
             this.importLoading = true;
@@ -509,11 +515,12 @@ export default {
                 desc: error
             });
             this.importLoading = false;
+            this.$FromLoading.hide();
         },
         downLoad(){
             if(this.pageData['sumAreaCode']){
                 this.exportLoading= true;
-                this.$FromLoading.show();
+                this.$FromLoading.show('正在导出，请稍等。。。');
                 return new Promise((resolve, reject) => {
                     ExportAliExpressOrder({sumAreaCode:this.pageData['sumAreaCode']}).then(res => {
                         const time = new Date().getTime();
@@ -566,7 +573,10 @@ export default {
                     }
                 });
             });
-        }
+        },
+        handleBeforeUpload() {
+            this.$FromLoading.show('正在导入，请稍等。。。');
+        },
     },
     created(){
         this.uploadUrl = this.$upload_url?this.$upload_url:'localhost:8080';

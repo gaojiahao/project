@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-02 15:05:02
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 11:11:22
+ * @LastEditTime: 2021-03-31 14:58:32
 -->
 <template>
 <div class="x-select" :class="[isCheck ? 'ivu-form-item-error':'']" v-if="!hidden">
@@ -242,6 +242,32 @@ export default {
                 }
             }
         },
+        async initList(){
+            var me = this;
+            await $flyio.post({
+                url: this.config.list.url,
+                data:{}
+            }).then((res) => {
+                if(res.result.code==200){
+                    if(this.config.dataSource.col){
+                        var temp=[];
+                        var data = res.result.item.map((e,index)=>{
+                            for(var j=0;j<me.selectedList.length;j++){
+                                if(e[this.config.list['checkField']] == me.selectedList[j][this.config.checkField]){
+                                    temp.push({
+                                        ...me.selectedList[j],
+                                        ...e
+                                    });
+                                }
+                            }
+                            return e;
+                        });
+                        this.selectedList = [];
+                        this.selectedList = temp;
+                    }
+                }
+            })     
+        },
         async init(){
             var me = this;
             if((['selectorMulti'].indexOf(this.config.type)!=-1)&&this.config.dataSource.type=='dynamic'){
@@ -256,17 +282,17 @@ export default {
                                 for(var i=0;i<this.config.dataSource.col.length;i++){
                                     e[this.config.dataSource.col[i]['k']] = e[this.config.dataSource.col[i]['v']];
                                 }
-                                for(var j=0;j<me.selectedList.length;j++){
-                                    if(e.id == me.selectedList[j]['id']){
-                                        e._checked = true;
-                                    }
-                                    if(e[this.config.checkField] == me.selectedList[j][this.config.checkField]){
-                                        me.selectedList[j]={
-                                            ...me.selectedList[j],
-                                            ...e
-                                        }
-                                    }
-                                }
+                                // for(var j=0;j<me.selectedList.length;j++){
+                                //     if(e.id == me.selectedList[j]['id']){
+                                //         e._checked = true;
+                                //     }
+                                //     if(e[this.config.checkField] == me.selectedList[j][this.config.checkField]){
+                                //         me.selectedList[j]={
+                                //             ...me.selectedList[j],
+                                //             ...e
+                                //         }
+                                //     }
+                                // }
                                 return e;
                             });
                             //this.timpList = this.timpList;
@@ -320,6 +346,9 @@ export default {
         // this.disabled = this.config.disabled;
         this.init();
         this.titleText = this.titleText+'-'+this.config.name;
+        if(this.config.list){
+            this.initList();
+        }
     },
 }
 </script>

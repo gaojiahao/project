@@ -307,6 +307,7 @@ export default {
             var inputGroup = document.getElementsByTagName("input");
             var inputGroupArr = Array.from(document.getElementsByTagName("input"));
             var iGlength = inputGroupArr.length;
+            var me = this;
             document.onkeypress = function (e) {
                 var e = event || e;
 
@@ -317,6 +318,9 @@ export default {
                         document.getElementsByTagName("button")[0].focus();
                     } else {
                         inputGroup[idx + 1].focus();
+                    }
+                    if(idx==2){
+                        me.login();    
                     }
                     e.preventDefault();
                 }
