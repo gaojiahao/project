@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-30 20:10:46
+ * @LastEditTime: 2021-03-31 11:01:48
 -->
 <template>
 <div class="erp_table_container">
@@ -189,7 +189,7 @@ export default {
                 resizable: true,
             },
             {
-                title: '订单号',
+                title: '订单号(通途sku)',
                 key: 'orderCode',
                 render: (h, params) => {
                     return h("span", {// 创建的标签名
@@ -209,6 +209,23 @@ export default {
                 resizable: true,
             },
             {
+                title: '产品名称(通途sku名称)',
+                key: 'tongtuSkuName',
+                width: 200,
+                resizable: true,
+            },
+            {
+                title: '是否带电',
+                key: 'isElectrified',
+                resizable: true,
+                width: 100,
+                render: (h, params) => {
+                    return h("span", {
+
+                    },params.row.isElectrified?'是':'否');
+                },
+            },
+            {
                 title: '仓库',
                 key: 'warehouse',
                 resizable: true,
@@ -219,6 +236,12 @@ export default {
                 key: 'buyerName',
                 width: 200,
                 resizable: true,
+            },
+            {
+                title: '收件人地区(简称-名称):',
+                key: 'areaAdd',
+                resizable: true,
+                width: 100
             },
             {
                 title: '国家/地区',

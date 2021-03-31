@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-26 12:11:24
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-30 14:39:10
+ * @LastEditTime: 2021-03-31 09:38:43
 -->
 <template>
 <div class="platformManager-container">
@@ -248,6 +248,10 @@ export default {
                                 background: true,
                                 content: res.result.msg
                             });
+                            this.$refs.selectPlatformBind.clear();
+                            this.$refs.selectSystemBind.clear();
+                            this.selectPBind = {};
+                            this.selectSBind = {};
                             this.$FromLoading.hide();
                         }
                     });
@@ -284,6 +288,10 @@ export default {
                                 background: true,
                                 content: res.result.msg
                             });
+                            this.$refs.selectPlatformBind.clear();
+                            this.$refs.selectSystemBind.clear();
+                            this.selectPBind = {};
+                            this.selectSBind = {};
                             this.$FromLoading.hide();
                         }
                     });

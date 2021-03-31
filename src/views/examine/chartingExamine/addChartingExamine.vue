@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-11-11 09:56:05
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-29 17:26:19
+ * @LastEditTime: 2021-03-31 10:50:06
 -->
 <template>
 <div>
@@ -22,7 +22,7 @@
                 <div class="ivu-form-item">
                     <label class="ivu-form-item-label" style="width: 120px;">制图信息:</label> 
                     <div class="ivu-form-item-content" style="margin-left: 120px;">
-                        <Table :columns="selectionColumns" :data="selectedGoods" height="300" width="1200"></Table>
+                        <Table :columns="selectionColumns" :data="selectedGoods" height="300" width="1400"></Table>
                         <span style="margin: 10px;">
                             <Button size="small" @click="handleSelectAll(true)">全选</Button>
                             <Button size="small" @click="handleSelectAll(false)">取消</Button>
@@ -95,7 +95,18 @@ export default {
                                 }
                             }
                         });
-                    }
+                    },
+                    width:120
+                },
+                {
+                    title: '平台',
+                    key: 'platformName',
+                    width:120
+                },
+                {
+                    title: '店铺',
+                    key: 'storeName',
+                    width:120
                 },
                 {
                     title: '制图类型',
@@ -173,6 +184,7 @@ export default {
                 {
                     title: '意见',
                     key: 'remark',
+                    width:250
                 }
             ],
             notSelectedColumns: [
@@ -324,7 +336,7 @@ export default {
             for(var i=0;i<this.selectedGoods.length;i++){
                 this.selectedGoods[i]['id'] = this.selectedGoods[i]['id'];
                 this.selectedGoods[i]['isPass'] = this.selectedGoods[i]['isPass'];
-                this.selectedGoods[i]['remark'] = this.selectedGoods[i]['remark'];
+                this.selectedGoods[i]['remark'] = this.formValidate2['reviewRemark'];
                 fileReviewInfos.push(this.selectedGoods[i]);
             };
             if (fileReviewInfos.length) {
