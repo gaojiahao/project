@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:27:12
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-03-31 11:36:34
+ * @LastEditTime: 2021-04-02 11:26:55
  */
 //引用插件
 import Vue from "vue";
@@ -44,8 +44,8 @@ Vue.use(AudioPlayer);
 Vue.use(FromLoading);
 Vue.use(VueQuillEditor);
 //本地图片路径
-Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL||'localhost:8080';
-Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://cbapi.com/';
+Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL||'192.168.1.23:8071';
+Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://192.168.1.23:8071/';
 //线上正式图片路径
 // Vue.prototype.$upload_url  = process.env.VUE_UPLOAD_URL||'192.168.1.23:8073';
 // Vue.prototype.$base_url  = process.env.VUE_BASE_URL||'http://192.168.1.23:8073/';

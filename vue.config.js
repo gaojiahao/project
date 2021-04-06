@@ -4,7 +4,7 @@
  * @Author: gaojiahao
  * @Date: 2020-10-19 15:37:14
  * @LastEditors: sueRimn
- * @LastEditTime: 2021-01-12 09:16:03
+ * @LastEditTime: 2021-04-02 11:58:53
  */
 const os = require('os');
 const path = require("path");
@@ -200,7 +200,7 @@ module.exports = {
     proxy: {
       //配置跨域
       "/api": {
-        target: "http://cbapi.com", //这里后台的地址模拟的;应该填写你们真实的后台接口
+        target: "http://192.168.1.23:8071", //这里后台的地址模拟的;应该填写你们真实的后台接口
         //ws: true,
         changOrigin: true, //允许跨域
         pathRewrite: {
